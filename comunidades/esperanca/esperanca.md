@@ -6,7 +6,7 @@ date: 2024-11-26
 time: 14:40
 type: garden
 tags: 
-draft: true
+draft: false
 ---
 2040, a Terra convulsiona e arde em chamas… O aquecimento global, eventos climáticos e geológicos extremos, florestas em chamas e a ação insana das guerras e da violência, a fome e a falta de água atingem níveis pandêmicos…  
 
