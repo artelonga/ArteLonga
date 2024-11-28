@@ -30,7 +30,7 @@ As nossas garantias
 * clareza sobre os **próximos passos**
 * autonomia para **escrever a sua história**, como preferir
 
-Estaremos sempre torcendo, e prontos pra ajudar!
+Estaremos sempre torcendo, e prontos pra ajudar
 
 ## Método 
 
