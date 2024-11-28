@@ -68,11 +68,11 @@ No final, você tem um plano **concreto** e **realístico** para praticar os há
 
 O preço de lançamento é de R$250/hora até o fim de Novembro, ou até encerrarem as vagas. No lançamento, ArteLonga acompanha no máximo 10 histórias por vez
 
-* Programa básico (2 horas/semana): R$1000
-* Programa avançado (4 horas/semana): R$2000, ou R$1800 à vista
+* Programa básico (2 horas/semana): 1000
+* Programa avançado (4 horas/semana): 2000, ou 1800 à vista
 	* detalhamento de mercado para o seu público-alvo
 	* uma consultoria com especialista no seu segmento
-* Programa expert (8 horas/semana) R$4000, ou R$3600 à vista
+* Programa expert (8 horas/semana) 4000, ou 3600 à vista
 	* detalhamento de mercado e estudo de nicho para o seu público-alvo
 	* estratégias de crescimento e expansão
 	* uma consultoria com especialista no seu segmento
