@@ -11,15 +11,19 @@ draft: false
 ---
 # Fábrica de Sonhos
 
-> [!quote] A vida é breve, a arte é longa, a oportunidade fugaz, a experiência incerta, e o julgamento difícil  -  [Hipócrates](https://pt.wikipedia.org/wiki/Vita_brevis,_ars_longa) (400 BC)
+ ArteLonga te ajuda a escrever sua história
   
+Às vezes, o que falta para o próximo passo é uma perspectiva externa. Esta é a nossa especialidade
+
 ### Quem é ArteLonga?
 
 ArteLonga faz gestão de carreira. Oferece serviços de gestão de marca e produto, gestão administrativa e tecnológica, e comunicação
 
 ArteLonga acompanha a sua jornada ao sucesso, com a tecnologia como ferramenta e a educação como missão 
 
-Quer companhia nos próximos passos?  [Agende](https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3Qd5k2P13F0XqUJCHdCxGPzoKuuAkbuGpH3B4NzFOUEkYZHCGS6I0P91QZGXYiq2O5KLnYHv39) um horário pra conversar
+Quer companhia nos próximos passos?
+
+[Agende](https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3Qd5k2P13F0XqUJCHdCxGPzoKuuAkbuGpH3B4NzFOUEkYZHCGS6I0P91QZGXYiq2O5KLnYHv39) um horário pra conversar, ou chama o [[sobre#Membros|Yuri]] no WhatsApp [(11) 99647-6219](https://wa.me/5511996476219)
 
 ## O que fazemos?
 
@@ -57,7 +61,7 @@ Você é o condutor do plano
 #### Faça parte do time! 
 
 [Agende](https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3Qd5k2P13F0XqUJCHdCxGPzoKuuAkbuGpH3B4NzFOUEkYZHCGS6I0P91QZGXYiq2O5KLnYHv39) um horário pra bater um papo, sem compromisso :)
-
+ou converse com o [[sobre#Membros|Yuri]] no WhatsApp [(11) 99647-6219](https://wa.me/5511996476219)
 
 ## Projetos
 
