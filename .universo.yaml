@@ -1,0 +1,10 @@
+nome: artelonga
+titulo: Arte Longa
+tipo: publico
+locale: pt-BR
+email: yuri@artelonga.com.br
+
+caminhos:
+  conteudo: .
+  quadro: quadro/
+  jardim: jardim/
