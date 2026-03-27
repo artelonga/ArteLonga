@@ -3,212 +3,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arte Longa — Semeando Sonhos</title>
+    <title>Arte Longa</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             background: #fff;
-            color: #111;
-            min-height: 100vh;
+            color: #0a0a0a;
+            height: 100vh;
+            overflow: hidden;
+            padding: 6vh 7vw;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
-            padding: 4rem 2rem;
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 4rem;
+        .whisper {
+            position: fixed;
+            top: 5vh;
+            right: 7vw;
+            font-size: 0.65rem;
+            letter-spacing: 0.22em;
+            text-transform: lowercase;
+            color: #c0c0c0;
         }
 
-        h1 {
-            font-size: clamp(2.5rem, 8vw, 5rem);
-            font-weight: 700;
+        .statement {
+            font-size: clamp(2.2rem, 4.5vw, 4.2rem);
+            font-weight: 800;
             letter-spacing: -0.03em;
-            line-height: 1;
-            text-transform: uppercase;
+            line-height: 1.1;
+            margin-bottom: 5vh;
         }
 
-        .slogan {
-            font-size: clamp(0.9rem, 2vw, 1.1rem);
-            font-weight: 300;
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-            color: #666;
-            margin-top: 1rem;
-        }
-
-        .divider {
-            width: 60px;
-            height: 1px;
-            background: #111;
-            margin: 3rem auto;
-        }
-
-        main {
-            text-align: center;
-            max-width: 520px;
-        }
-
-        .description {
-            font-size: 1rem;
-            line-height: 1.8;
-            color: #444;
-            margin-bottom: 3rem;
-        }
-
-        .team {
+        .roster {
             list-style: none;
-            margin-bottom: 3rem;
+            max-width: 560px;
         }
 
-        .team li {
-            font-size: 1rem;
-            line-height: 2.4;
-            letter-spacing: 0.05em;
+        .roster li {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 1.4vh 0;
+            position: relative;
         }
 
-        .team a {
-            color: #111;
+        .roster li::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(to right, #ddd 30%, transparent);
+        }
+
+        .roster li:last-child::after { display: none; }
+
+        .roster a {
+            font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+            font-weight: 700;
+            color: #0a0a0a;
             text-decoration: none;
-            font-weight: 600;
-            border-bottom: 1px solid transparent;
-            transition: border-color 0.2s;
+            transition: opacity 0.2s;
         }
 
-        .team a:hover {
-            border-bottom-color: #111;
-        }
+        .roster a:hover { opacity: 0.4; }
 
-        .team span {
-            color: #999;
-            font-weight: 300;
-            margin-left: 0.3em;
-        }
-
-        .partners a {
-            color: #111;
-            text-decoration: none;
-            font-weight: 600;
-            border-bottom: 1px solid transparent;
-            transition: border-color 0.2s;
-        }
-
-        .partners a:hover {
-            border-bottom-color: #111;
-        }
-
-        .partners {
-            font-size: 0.95rem;
-            color: #666;
-            margin-bottom: 4rem;
-        }
-
-        .launch {
-            font-size: 0.8rem;
-            letter-spacing: 0.2em;
+        .roster .role {
+            font-size: 0.65rem;
+            font-weight: 500;
+            letter-spacing: 0.14em;
             text-transform: uppercase;
+            color: #aaa;
+        }
+
+        .coda {
+            margin-top: 5vh;
+            max-width: 560px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .coda p {
+            font-size: 0.8rem;
             color: #999;
+            line-height: 1.7;
         }
 
-        footer {
-            margin-top: 4rem;
-            font-size: 0.75rem;
+        .coda a {
+            color: #0a0a0a;
+            text-decoration: none;
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+
+        .coda a:hover { opacity: 0.4; }
+
+        .coda .when {
+            font-size: 0.6rem;
+            letter-spacing: 0.2em;
             color: #ccc;
-            letter-spacing: 0.1em;
         }
 
-        /* coming soon overlay */
-        .coming-soon {
-            display: none;
+        /* veil */
+        .veil {
             position: fixed;
             inset: 0;
-            background: rgba(255,255,255,0.97);
+            background: #0a0a0a;
             z-index: 10;
+            display: flex;
             justify-content: center;
             align-items: center;
-            flex-direction: column;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
             cursor: pointer;
+            flex-direction: column;
         }
 
-        .coming-soon.active {
-            display: flex;
+        .veil.on { opacity: 1; pointer-events: all; }
+
+        .veil span {
+            color: #fff;
+            font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+            font-weight: 300;
+            letter-spacing: 0.04em;
         }
 
-        .coming-soon h2 {
-            font-size: 2rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-        }
-
-        .coming-soon p {
-            margin-top: 1rem;
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        .coming-soon .close-hint {
-            margin-top: 2rem;
-            font-size: 0.75rem;
-            color: #ccc;
-            letter-spacing: 0.15em;
+        .veil small {
+            display: block;
+            color: #444;
+            font-size: 0.6rem;
+            letter-spacing: 0.2em;
             text-transform: uppercase;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 640px) {
+            body { padding: 8vh 8vw; justify-content: flex-start; padding-top: 12vh; overflow: auto; height: auto; }
+            .whisper { position: static; margin-bottom: 6vh; }
+            .roster { max-width: 100%; }
+            .coda { max-width: 100%; flex-direction: column; gap: 2vh; }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Arte Longa</h1>
-        <p class="slogan">Semeando Sonhos</p>
-    </header>
+    <div class="whisper">semeando sonhos</div>
 
-    <div class="divider"></div>
+    <h1 class="statement">Arte Longa é:</h1>
 
-    <main>
-        <p class="description">
-            A excelência não é um ato, mas um hábito.<br>
-            Cultivamos visões e elevamos marcas ao patamar da arte.
-        </p>
+    <ul class="roster">
+        <li><a href="#" data-v>Yuri</a>     <span class="role">Semeador</span></li>
+        <li><a href="#" data-v>Igo</a>      <span class="role">Resistência</span></li>
+        <li><a href="#" data-v>José</a>     <span class="role">Recursos</span></li>
+        <li><a href="#" data-v>Mono</a>     <span class="role">Segurança</span></li>
+        <li><a href="#" data-v>Bruna</a>    <span class="role">Comunicação</span></li>
+    </ul>
 
-        <ul class="team">
-            <li><a href="#" onclick="showComingSoon(event)">Yuri</a> <span>— Semeador</span></li>
-            <li><a href="#" onclick="showComingSoon(event)">Igo</a> <span>— Resistência</span></li>
-            <li><a href="#" onclick="showComingSoon(event)">José</a> <span>— Recursos</span></li>
-            <li><a href="#" onclick="showComingSoon(event)">Mono</a> <span>— Segurança</span></li>
-            <li><a href="#" onclick="showComingSoon(event)">Bruna</a> <span>— Comunicação</span></li>
-        </ul>
+    <div class="coda">
+        <p>e todos os <a href="#" data-v>parceiros</a> e <a href="#" data-v>clientes</a></p>
+        <span class="when">01.04.2026</span>
+    </div>
 
-        <p class="partners">
-            e todos os <a href="#" onclick="showComingSoon(event)">parceiros</a> e <a href="#" onclick="showComingSoon(event)">clientes</a>
-        </p>
-
-        <p class="launch">Lançamento — 01 Abril 2026</p>
-    </main>
-
-    <footer>
-        &copy; 2026 Arte Longa
-    </footer>
-
-    <div class="coming-soon" id="overlay" onclick="hideComingSoon()">
-        <h2>Em breve</h2>
-        <p>Lançamento previsto para 01 de Abril de 2026</p>
-        <span class="close-hint">clique para voltar</span>
+    <div class="veil" id="v" onclick="this.classList.remove('on')">
+        <span>em breve</span>
+        <small>abril 2026</small>
     </div>
 
     <script>
-        function showComingSoon(e) {
-            e.preventDefault();
-            document.getElementById('overlay').classList.add('active');
-        }
-        function hideComingSoon() {
-            document.getElementById('overlay').classList.remove('active');
-        }
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') hideComingSoon();
+        document.querySelectorAll('[data-v]').forEach(a =>
+            a.addEventListener('click', e => {
+                e.preventDefault();
+                document.getElementById('v').classList.add('on');
+            })
+        );
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') document.getElementById('v').classList.remove('on');
         });
     </script>
 
