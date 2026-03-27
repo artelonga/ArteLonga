@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arte Longa — Semeando Sonhos</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background: #fff;
+            color: #111;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 4rem 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1;
+            text-transform: uppercase;
+        }
+
+        .slogan {
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: #666;
+            margin-top: 1rem;
+        }
+
+        .divider {
+            width: 60px;
+            height: 1px;
+            background: #111;
+            margin: 3rem auto;
+        }
+
+        main {
+            text-align: center;
+            max-width: 520px;
+        }
+
+        .description {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 3rem;
+        }
+
+        .team {
+            list-style: none;
+            margin-bottom: 3rem;
+        }
+
+        .team li {
+            font-size: 1rem;
+            line-height: 2.4;
+            letter-spacing: 0.05em;
+        }
+
+        .team a {
+            color: #111;
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+        }
+
+        .team a:hover {
+            border-bottom-color: #111;
+        }
+
+        .team span {
+            color: #999;
+            font-weight: 300;
+            margin-left: 0.3em;
+        }
+
+        .partners a {
+            color: #111;
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+        }
+
+        .partners a:hover {
+            border-bottom-color: #111;
+        }
+
+        .partners {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 4rem;
+        }
+
+        .launch {
+            font-size: 0.8rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #999;
+        }
+
+        footer {
+            margin-top: 4rem;
+            font-size: 0.75rem;
+            color: #ccc;
+            letter-spacing: 0.1em;
+        }
+
+        /* coming soon overlay */
+        .coming-soon {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(255,255,255,0.97);
+            z-index: 10;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .coming-soon.active {
+            display: flex;
+        }
+
+        .coming-soon h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .coming-soon p {
+            margin-top: 1rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .coming-soon .close-hint {
+            margin-top: 2rem;
+            font-size: 0.75rem;
+            color: #ccc;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Arte Longa</h1>
+        <p class="slogan">Semeando Sonhos</p>
+    </header>
+
+    <div class="divider"></div>
+
+    <main>
+        <p class="description">
+            A excelência não é um ato, mas um hábito.<br>
+            Cultivamos visões e elevamos marcas ao patamar da arte.
+        </p>
+
+        <ul class="team">
+            <li><a href="#" onclick="showComingSoon(event)">Yuri</a> <span>— Semeador</span></li>
+            <li><a href="#" onclick="showComingSoon(event)">Igo</a> <span>— Resistência</span></li>
+            <li><a href="#" onclick="showComingSoon(event)">José</a> <span>— Recursos</span></li>
+            <li><a href="#" onclick="showComingSoon(event)">Mono</a> <span>— Segurança</span></li>
+            <li><a href="#" onclick="showComingSoon(event)">Bruna</a> <span>— Comunicação</span></li>
+        </ul>
+
+        <p class="partners">
+            e todos os <a href="#" onclick="showComingSoon(event)">parceiros</a> e <a href="#" onclick="showComingSoon(event)">clientes</a>
+        </p>
+
+        <p class="launch">Lançamento — 01 Abril 2026</p>
+    </main>
+
+    <footer>
+        &copy; 2026 Arte Longa
+    </footer>
+
+    <div class="coming-soon" id="overlay" onclick="hideComingSoon()">
+        <h2>Em breve</h2>
+        <p>Lançamento previsto para 01 de Abril de 2026</p>
+        <span class="close-hint">clique para voltar</span>
+    </div>
+
+    <script>
+        function showComingSoon(e) {
+            e.preventDefault();
+            document.getElementById('overlay').classList.add('active');
+        }
+        function hideComingSoon() {
+            document.getElementById('overlay').classList.remove('active');
+        }
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') hideComingSoon();
+        });
+    </script>
+
+</body>
+</html>
