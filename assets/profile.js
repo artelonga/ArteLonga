@@ -57,6 +57,26 @@
              <ul><li><span class="email-display">rede@artelonga.com.br</span></li></ul>
            </section>`;
 
+    const counterHtml = (() => {
+        if (!p.birthDate) return "";
+        const birth = new Date(p.birthDate);
+        if (p.emMemoria) {
+            if (!p.deathDate) return "";
+            const death = new Date(p.deathDate);
+            const years = Math.floor((death - birth) / (365.25 * 24 * 3600 * 1000));
+            return `<section class="section counter-section">
+                 <h2>Idade ao falecer</h2>
+                 <div class="counter-big">${years} <span class="counter-unit">anos</span></div>
+                 <div class="counter-sub">${birth.getFullYear()} — ${death.getFullYear()} · em memória</div>
+               </section>`;
+        }
+        return `<section class="section counter-section">
+             <h2>Idade</h2>
+             <div class="counter-big" id="counter-live-big"></div>
+             <div class="counter-sub" id="counter-live-sub"></div>
+           </section>`;
+    })();
+
     document.body.innerHTML = `
         <header class="site-header">
           <div class="site-header-inner">
@@ -75,6 +95,7 @@
           </div>
           ${emBreveNote}
           ${emMemoriaNote}
+          ${counterHtml}
           ${missoesHtml}
           ${membrosHtml}
           ${comunidadesHtml}
@@ -82,4 +103,21 @@
           <a class="back" href="/">← voltar</a>
         </main>
     `;
+
+    if (p.birthDate && !p.emMemoria) {
+        const birth = new Date(p.birthDate);
+        const fmt = n => n.toLocaleString("pt-BR");
+        const tick = () => {
+            const diff = Date.now() - birth.getTime();
+            const mins = Math.floor(diff / 60000);
+            const hours = Math.floor(mins / 60);
+            const days = Math.floor(hours / 24);
+            const big = document.getElementById("counter-live-big");
+            const sub = document.getElementById("counter-live-sub");
+            if (big) big.innerHTML = `${fmt(days)} <span class="counter-unit">dias</span>`;
+            if (sub) sub.textContent = `${fmt(hours)} horas · ${fmt(mins)} minutos`;
+        };
+        tick();
+        setInterval(tick, 30000);
+    }
 })();

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Serviços — Arte Longa</title>
-    <link rel="stylesheet" href="/assets/site.css?v=20260417">
+    <link rel="stylesheet" href="/assets/site.css?v=20260418">
     <style>
         .page-title {
             font-size: clamp(2rem, 4vw, 3rem);
@@ -258,6 +258,7 @@
             { titulo: "Cuidado com o idoso", responsavel: [{ handle: "marina", nome: "Marina" }], funcao: "Cuidado" },
             { titulo: "Design", responsavel: [{ handle: "luck", nome: "Luck" }], funcao: "Experiência" },
             { titulo: "Desenvolvimento sustentável", responsavel: [{ handle: "quilomboaraucaria", nome: "Quilombo Araucária", url: "https://quilomboaraucaria.org" }], funcao: "Terra", contactUrl: "https://quilomboaraucaria.org" },
+            { titulo: "Desenvolvimento Web", responsavel: [{ handle: "yuri", nome: "Yuri" }], funcao: "Sementes" },
             { titulo: "Drywall e Bioconstrução", responsavel: [{ handle: "tiao", nome: "Tião" }], funcao: "" },
             { titulo: "Ensino, Formação e Liderança", responsavel: [{ handle: "yuri", nome: "Yuri" }], funcao: "Sementes" },
             { titulo: "Escrita, Interpretação e Tradução", responsavel: [{ handle: "yuri", nome: "Yuri" }], funcao: "Sementes" },
@@ -298,6 +299,27 @@
 
         const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
         const norm = s => String(s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+        // em_memoria: handles that should not appear as active service responsáveis
+        const emMemoriaHandles = new Set(["soninha"]);
+        // Hidden services: personal/family relations (not professional offerings)
+        const hiddenTitulos = new Set([
+            "Filha da Bruna",
+            "Filho da Aime",
+            "Pai do Yuri",
+            "Mãe do Yuri"
+        ]);
+
+        // Filter catalog: skip hidden titles + any service whose responsável is em memória
+        const publicServicos = servicos.filter(s => {
+            if (hiddenTitulos.has(s.titulo)) return false;
+            if (s.responsavel.some(r => emMemoriaHandles.has(r.handle))) return false;
+            return true;
+        });
+
+        // Replace reference used downstream
+        servicos.length = 0;
+        publicServicos.forEach(s => servicos.push(s));
 
         servicos.sort((a, b) => a.titulo.localeCompare(b.titulo, "pt-BR"));
 

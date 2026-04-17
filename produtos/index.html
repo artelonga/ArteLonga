@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Produtos — Arte Longa</title>
-    <link rel="stylesheet" href="/assets/site.css?v=20260417">
+    <link rel="stylesheet" href="/assets/site.css?v=20260418">
     <style>
         .page-title {
             font-size: clamp(2rem, 4vw, 3rem);
@@ -21,17 +21,48 @@
             margin-bottom: 4vh;
         }
 
-        .produtos-list {
-            list-style: none;
+        .section-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
             border-top: 2px solid #0a0a0a;
+            padding-top: 1.5vh;
+            margin-bottom: 3vh;
         }
 
-        .produtos-list li {
+        .section-header h2 {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            color: #0a0a0a;
+        }
+
+        .section-header .label {
+            font-size: 0.65rem;
+            letter-spacing: 0.18em;
+            color: #999;
+            text-transform: uppercase;
+        }
+
+        .produtos-list {
+            list-style: none;
+        }
+
+        .produto {
             padding: 3vh 0;
             border-bottom: 1px solid #eee;
         }
+        .produto:last-child { border-bottom: none; }
 
-        .produtos-list li:last-child { border-bottom: none; }
+        .produto-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5vh;
+        }
 
         .produto-nome {
             font-size: clamp(1.4rem, 3vw, 1.8rem);
@@ -44,30 +75,81 @@
             gap: 0.8em;
             transition: opacity 0.2s;
         }
-
         .produto-nome:hover { opacity: 0.5; }
 
-        .produto-nome .sub {
-            font-size: 0.9rem;
-            font-weight: 500;
-            letter-spacing: 0;
-            color: #666;
-        }
-
         .produto-nome .arrow {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             letter-spacing: 0.18em;
             text-transform: uppercase;
             font-weight: 500;
             color: #bbb;
         }
 
+        .produto-tagline {
+            font-size: 0.78rem;
+            color: #888;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
         .produto-url {
             display: block;
-            margin-top: 0.4rem;
-            font-size: 0.75rem;
+            margin-top: 0.3rem;
+            font-size: 0.72rem;
             color: #aaa;
             letter-spacing: 0.02em;
+        }
+
+        .platforms {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .platform {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.78rem;
+            letter-spacing: 0.04em;
+        }
+
+        .platform-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .platform.done .platform-dot {
+            background: #0a0a0a;
+        }
+        .platform.wip .platform-dot {
+            background: transparent;
+            border: 1.5px solid #0a0a0a;
+            animation: wip-pulse 2.2s ease-in-out infinite;
+        }
+
+        @keyframes wip-pulse {
+            0%, 100% { opacity: 0.35; }
+            50% { opacity: 1; }
+        }
+
+        .platform-name {
+            font-weight: 700;
+            color: #0a0a0a;
+        }
+        .platform-status {
+            color: #888;
+            font-weight: 400;
+        }
+        .platform.done .platform-status::before {
+            content: "disponível";
+            font-weight: 600;
+            color: #0a0a0a;
         }
 
         .back {
@@ -80,6 +162,11 @@
             text-decoration: none;
         }
         .back:hover { opacity: 0.5; }
+
+        @media (max-width: 640px) {
+            .produto-head { flex-direction: column; align-items: flex-start; gap: 0.4rem; }
+            .platforms { flex-direction: column; gap: 0.8rem; }
+        }
     </style>
 </head>
 <body>
@@ -97,12 +184,76 @@
         <h1 class="page-title">Produtos</h1>
         <div class="page-subtitle">Arte Longa · Produtos</div>
 
+        <div class="section-header">
+            <h2>Digital</h2>
+            <span class="label">Redes Sociais</span>
+        </div>
+
         <ul class="produtos-list">
-            <li>
-                <a class="produto-nome" href="https://co-artelonga-uat.fly.dev/" target="_blank" rel="noopener">
-                    Co <span class="sub">Gestão Coletiva</span> <span class="arrow">acessar →</span>
-                </a>
+            <li class="produto">
+                <div class="produto-head">
+                    <a class="produto-nome" href="https://artelonga.com.br" target="_blank" rel="noopener">
+                        Arte Longa <span class="arrow">acessar →</span>
+                    </a>
+                    <span class="produto-tagline">Rede Social Profissional</span>
+                </div>
+                <span class="produto-url">artelonga.com.br</span>
+                <ul class="platforms">
+                    <li class="platform done">
+                        <span class="platform-dot"></span>
+                        <span class="platform-name">Web</span>
+                        <span class="platform-status"></span>
+                    </li>
+                    <li class="platform wip">
+                        <span class="platform-dot"></span>
+                        <span class="platform-name">Mobile / App</span>
+                        <span class="platform-status">Q2 2026 · em desenvolvimento</span>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="produto">
+                <div class="produto-head">
+                    <a class="produto-nome" href="https://co-artelonga-uat.fly.dev/" target="_blank" rel="noopener">
+                        Co <span class="arrow">acessar →</span>
+                    </a>
+                    <span class="produto-tagline">Rede Social Colaborativa</span>
+                </div>
                 <span class="produto-url">co-artelonga-uat.fly.dev</span>
+                <ul class="platforms">
+                    <li class="platform done">
+                        <span class="platform-dot"></span>
+                        <span class="platform-name">Web</span>
+                        <span class="platform-status"></span>
+                    </li>
+                    <li class="platform wip">
+                        <span class="platform-dot"></span>
+                        <span class="platform-name">Mobile / App</span>
+                        <span class="platform-status">Q2 2026 · em desenvolvimento</span>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="produto">
+                <div class="produto-head">
+                    <a class="produto-nome" href="https://quilomboaraucaria.org" target="_blank" rel="noopener">
+                        Quilombo Araucária <span class="arrow">acessar →</span>
+                    </a>
+                    <span class="produto-tagline">Rede Social Ambiental</span>
+                </div>
+                <span class="produto-url">quilomboaraucaria.org</span>
+                <ul class="platforms">
+                    <li class="platform done">
+                        <span class="platform-dot"></span>
+                        <span class="platform-name">Web</span>
+                        <span class="platform-status"></span>
+                    </li>
+                    <li class="platform wip">
+                        <span class="platform-dot"></span>
+                        <span class="platform-name">Mobile / App</span>
+                        <span class="platform-status">Q2 2026 · em desenvolvimento</span>
+                    </li>
+                </ul>
             </li>
         </ul>
 

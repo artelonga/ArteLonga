@@ -118,6 +118,32 @@
 }
 .em-memoria-note em { font-style: italic; }
 
+.counter-section { text-align: center; }
+.counter-big {
+    font-size: clamp(2.4rem, 5.5vw, 3.6rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: #0a0a0a;
+    margin: 0.8rem 0 0.4rem;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+}
+.counter-unit {
+    font-size: 0.45em;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #999;
+    margin-left: 0.3em;
+    vertical-align: middle;
+}
+.counter-sub {
+    font-size: 0.78rem;
+    color: #888;
+    letter-spacing: 0.06em;
+    font-variant-numeric: tabular-nums;
+}
+
 @media (max-width: 640px) {
     .profile-hero { flex-direction: column; gap: 1.5rem; }
     .avatar { width: 96px; height: 96px; font-size: 2.6rem; }
