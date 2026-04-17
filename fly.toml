@@ -1,0 +1,44 @@
+app = "artelonga-dev"
+primary_region = "gru"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  NODE_ENV = "production"
+  PORT = "3000"
+  BODY_SIZE_LIMIT = "5242880"
+  PROTOCOL_HEADER = "x-forwarded-proto"
+  ADDRESS_HEADER = "X-Forwarded-For"
+  DATABASE_PATH = "/app/data/artelonga.db"
+  UPLOAD_DIR = "/app/data/uploads"
+  CONTENT_DIR = "/app/data/content"
+  TZ = "America/Sao_Paulo"
+
+[mounts]
+  source = "artelonga_dev_data"
+  destination = "/app/data"
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [http_service.concurrency]
+    type = "connections"
+    hard_limit = 50
+    soft_limit = 25
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "256mb"
+
+[checks]
+  [checks.health]
+    type = "http"
+    port = 3000
+    path = "/api/v1/artelonga/versao"
+    interval = "30s"
+    timeout = "5s"

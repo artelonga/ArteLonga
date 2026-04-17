@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre — Arte Longa</title>
+    <link rel="stylesheet" href="/assets/site.css">
+    <style>
+        .page-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 1vh;
+        }
+
+        .page-subtitle {
+            font-size: 0.75rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #999;
+            margin-bottom: 4vh;
+        }
+
+        .intro {
+            font-size: 1rem;
+            color: #333;
+            max-width: 60ch;
+            line-height: 1.7;
+            margin-bottom: 6vh;
+        }
+        .intro.empty {
+            color: #c8c8c8;
+            font-style: italic;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            border-top: 2px solid #0a0a0a;
+            padding-top: 1.5vh;
+            margin-bottom: 3vh;
+        }
+
+        .section-header h2 {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            color: #0a0a0a;
+        }
+
+        .section-header .label {
+            font-size: 0.65rem;
+            letter-spacing: 0.18em;
+            color: #999;
+            text-transform: uppercase;
+        }
+
+        .futuros {
+            list-style: none;
+            margin-bottom: 6vh;
+        }
+        .futuros li {
+            display: flex;
+            gap: 1.5rem;
+            padding: 2vh 0;
+            border-bottom: 1px solid #eee;
+            align-items: center;
+        }
+        .futuros li:last-child { border-bottom: none; }
+
+        .futuro-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: #f2f2f2;
+            color: #bbb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 300;
+            flex-shrink: 0;
+        }
+
+        .futuro-info .nome {
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            color: #0a0a0a;
+        }
+
+        .futuro-info .servico {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 0.2rem;
+            font-style: italic;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 4vh;
+            font-size: 0.65rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #999;
+            text-decoration: none;
+        }
+        .back:hover { opacity: 0.5; }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="site-header-inner">
+            <a class="site-brand" href="/">
+                <img src="/logo-al.png" alt="Arte Longa">
+            </a>
+            <span class="site-tagline">semeando sonhos</span>
+        </div>
+    </header>
+
+    <main class="main">
+        <h1 class="page-title">Sobre</h1>
+        <div class="page-subtitle">Arte Longa · Sobre nós</div>
+
+        <p class="intro empty">Em breve: a história de Arte Longa.</p>
+
+        <div class="section-header">
+            <h2>Hedix · Futuro</h2>
+            <span class="label">a próxima geração</span>
+        </div>
+
+        <ul class="futuros">
+            <li>
+                <div class="futuro-avatar">A</div>
+                <div class="futuro-info">
+                    <div class="nome">Alicia</div>
+                    <div class="servico">Filha da Bruna</div>
+                </div>
+            </li>
+            <li>
+                <div class="futuro-avatar">J</div>
+                <div class="futuro-info">
+                    <div class="nome">John</div>
+                    <div class="servico">Filho da Aime</div>
+                </div>
+            </li>
+        </ul>
+
+        <a class="back" href="/">← voltar</a>
+    </main>
+
+</body>
+</html>

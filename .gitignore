@@ -1,0 +1,33 @@
+# macOS
+.DS_Store
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# SvelteKit
+.svelte-kit/
+build/
+
+# Env
+.env
+.env.*
+!.env.example
+
+# Runtime data (SQLite + uploads)
+web/data/
+*.db
+*.db-shm
+*.db-wal
+
+# co-web cache/metadata
+.co/
+
+# Claude local config
+.claude/
+
+# IDE
+.vscode/
+.idea/

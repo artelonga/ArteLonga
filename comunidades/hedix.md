@@ -1,10 +1,11 @@
 ---
 type: comunidade
-nome: "{{name}}"
-usuario: "{{id}}"
-funcao: ""
+nome: Hedix
+usuario: hedix
+papel: parceiro
+funcao: Previsão
 descricao: ""
-tags: [comunidade]
+tags: [comunidade, parceiro]
 publicado: true
 reivindicado: false
 bio: ""

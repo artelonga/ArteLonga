@@ -1,0 +1,11 @@
+web/node_modules
+web/.svelte-kit
+web/build
+.git
+.DS_Store
+CLAUDE.md
+README.md
+design/
+.obsidian/
+data/
+*.pptx

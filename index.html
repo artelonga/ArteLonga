@@ -3,198 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arte Longa</title>
+    <title>Arte Longa — Semeando Sonhos</title>
+    <link rel="stylesheet" href="/assets/site.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            background: #fff;
-            color: #0a0a0a;
-            height: 100vh;
-            overflow: hidden;
-            padding: 6vh 7vw;
+        .home-wrap {
+            min-height: calc(100vh - 14vh);
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
 
-        .logo {
-            position: fixed;
-            top: 5vh;
-            left: 7vw;
-            height: 40px;
-            width: auto;
+        .home-hero {
+            margin-bottom: 6vh;
         }
 
-        .whisper {
-            position: fixed;
-            top: 5vh;
-            right: 7vw;
-            font-size: 0.65rem;
+        .home-title {
+            font-size: clamp(3rem, 7vw, 5.5rem);
+            font-weight: 800;
+            letter-spacing: -0.035em;
+            line-height: 1;
+            color: #0a0a0a;
+        }
+
+        .home-subtitle {
+            margin-top: 1.2vh;
+            font-size: clamp(0.9rem, 1.6vw, 1.1rem);
             letter-spacing: 0.22em;
             text-transform: lowercase;
-            color: #c0c0c0;
+            color: #999;
         }
 
-        .statement {
-            font-size: clamp(2.2rem, 4.5vw, 4.2rem);
-            font-weight: 800;
-            letter-spacing: -0.03em;
-            line-height: 1.1;
-            margin-bottom: 5vh;
-        }
-
-        .roster {
+        .home-menu {
             list-style: none;
-            max-width: 560px;
+            max-width: 640px;
         }
 
-        .roster li {
+        .home-menu a {
             display: flex;
             justify-content: space-between;
             align-items: baseline;
-            padding: 1.4vh 0;
-            position: relative;
-        }
-
-        .roster li::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(to right, #ddd 30%, transparent);
-        }
-
-        .roster li:last-child::after { display: none; }
-
-        .roster a {
-            font-size: clamp(1.3rem, 2.5vw, 1.8rem);
-            font-weight: 700;
+            padding: 2.8vh 0;
             color: #0a0a0a;
             text-decoration: none;
-            transition: opacity 0.2s;
+            font-size: clamp(1.7rem, 3.5vw, 2.6rem);
+            font-weight: 800;
+            letter-spacing: -0.025em;
+            line-height: 1.1;
+            border-bottom: 1px solid #eaeaea;
+            transition: padding-left 0.25s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s;
         }
 
-        .roster a:hover { opacity: 0.4; }
+        .home-menu a:hover {
+            padding-left: 0.6rem;
+            opacity: 0.65;
+        }
 
-        .roster .role {
-            font-size: 0.65rem;
+        .home-menu li:last-child a {
+            border-bottom: none;
+        }
+
+        .home-menu .arrow {
+            font-size: 0.85rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
             font-weight: 500;
-            letter-spacing: 0.14em;
+            color: #bbb;
+            transition: color 0.2s;
+        }
+
+        .home-menu a:hover .arrow {
+            color: #0a0a0a;
+        }
+
+        .home-menu .cta {
+            margin-top: 3vh;
+            display: inline-block;
+            padding: 1.2em 1.8em;
+            border: 1px solid #0a0a0a;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.24em;
             text-transform: uppercase;
-            color: #aaa;
-        }
-
-        .coda {
-            margin-top: 5vh;
-            max-width: 560px;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-        }
-
-        .coda p {
-            font-size: 0.8rem;
-            color: #999;
-            line-height: 1.7;
-        }
-
-        .coda a {
             color: #0a0a0a;
             text-decoration: none;
-            font-weight: 600;
-            transition: opacity 0.2s;
+            transition: background 0.2s, color 0.2s;
+            align-self: flex-start;
         }
 
-        .coda a:hover { opacity: 0.4; }
-
-        .coda .when {
-            font-size: 0.6rem;
-            letter-spacing: 0.2em;
-            color: #ccc;
-        }
-
-        /* veil */
-        .veil {
-            position: fixed;
-            inset: 0;
+        .home-menu .cta:hover {
             background: #0a0a0a;
-            z-index: 10;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-            cursor: pointer;
-            flex-direction: column;
-        }
-
-        .veil.on { opacity: 1; pointer-events: all; }
-
-        .veil span {
             color: #fff;
-            font-size: clamp(1.2rem, 2.5vw, 1.8rem);
-            font-weight: 300;
-            letter-spacing: 0.04em;
         }
 
-        .veil small {
-            display: block;
-            color: #444;
-            font-size: 0.6rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            margin-top: 2rem;
+        .cta-row {
+            margin-top: 3vh;
         }
 
         @media (max-width: 640px) {
-            body { padding: 8vh 8vw; justify-content: flex-start; padding-top: 12vh; overflow: auto; height: auto; }
-            .whisper { position: static; margin-bottom: 6vh; }
-            .roster { max-width: 100%; }
-            .coda { max-width: 100%; flex-direction: column; gap: 2vh; }
+            .home-menu a { padding: 2.4vh 0; }
+            .home-menu .arrow { font-size: 0.72rem; }
         }
     </style>
 </head>
 <body>
 
-    <img src="logo-al.png" alt="Arte Longa" class="logo">
-    <div class="whisper">semeando sonhos</div>
+    <header class="site-header">
+        <div class="site-header-inner">
+            <a class="site-brand" href="/">
+                <img src="/logo-al.png" alt="Arte Longa">
+            </a>
+            <span class="site-tagline">semeando sonhos</span>
+        </div>
+    </header>
 
-    <h1 class="statement">Arte Longa é:</h1>
+    <main class="main">
+        <div class="home-wrap">
+            <div class="home-hero">
+                <h1 class="home-title">Arte Longa</h1>
+                <div class="home-subtitle">semeando sonhos</div>
+            </div>
 
-    <ul class="roster">
-        <li><a href="#" data-v>Yuri</a>     <span class="role">Semeador</span></li>
-        <li><a href="#" data-v>Igo</a>      <span class="role">Resistência</span></li>
-        <li><a href="#" data-v>José</a>     <span class="role">Recursos</span></li>
-        <li><a href="#" data-v>Mono</a>     <span class="role">Segurança</span></li>
-        <li><a href="#" data-v>Bruna</a>    <span class="role">Comunicação</span></li>
-    </ul>
+            <ul class="home-menu">
+                <li><a href="/parceiros/">Parceiros <span class="arrow">ver →</span></a></li>
+                <li><a href="/produtos-e-servicos/">Produtos e Serviços <span class="arrow">ver →</span></a></li>
+            </ul>
 
-    <div class="coda">
-        <p>e todos os <a href="#" data-v>parceiros</a> e <a href="#" data-v>clientes</a></p>
-        <span class="when">01.04.2026</span>
-    </div>
-
-    <div class="veil" id="v" onclick="this.classList.remove('on')">
-        <span>em breve</span>
-        <small>abril 2026</small>
-    </div>
-
-    <script>
-        document.querySelectorAll('[data-v]').forEach(a =>
-            a.addEventListener('click', e => {
-                e.preventDefault();
-                document.getElementById('v').classList.add('on');
-            })
-        );
-        document.addEventListener('keydown', e => {
-            if (e.key === 'Escape') document.getElementById('v').classList.remove('on');
-        });
-    </script>
+            <div class="cta-row">
+                <a class="cta" href="/sobre/">Sobre →</a>
+            </div>
+        </div>
+    </main>
 
 </body>
 </html>

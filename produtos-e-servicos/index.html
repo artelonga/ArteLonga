@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produtos e Serviços — Arte Longa</title>
+    <link rel="stylesheet" href="/assets/site.css">
+    <style>
+        .page-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 1vh;
+        }
+
+        .page-subtitle {
+            font-size: 0.75rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #999;
+            margin-bottom: 5vh;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            border-top: 2px solid #0a0a0a;
+            padding-top: 1.5vh;
+            margin-bottom: 2vh;
+            margin-top: 5vh;
+        }
+        .section-header:first-of-type { margin-top: 0; }
+
+        .section-header h2 {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            color: #0a0a0a;
+        }
+
+        .section-header .label {
+            font-size: 0.65rem;
+            letter-spacing: 0.18em;
+            color: #999;
+            text-transform: uppercase;
+        }
+
+        .produtos-list {
+            list-style: none;
+            margin-bottom: 3vh;
+        }
+
+        .produtos-list li {
+            padding: 2vh 0;
+            border-bottom: 1px solid #eee;
+        }
+        .produtos-list li:last-child { border-bottom: none; }
+
+        .produto-nome {
+            font-size: clamp(1.2rem, 2.4vw, 1.6rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: #0a0a0a;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: baseline;
+            gap: 0.8em;
+            transition: opacity 0.2s;
+        }
+
+        .produto-nome:hover { opacity: 0.5; }
+
+        .produto-nome .arrow {
+            font-size: 0.65rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            font-weight: 500;
+            color: #bbb;
+        }
+
+        .produto-url {
+            display: block;
+            margin-top: 0.3rem;
+            font-size: 0.72rem;
+            color: #aaa;
+            letter-spacing: 0.02em;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 2.5vh;
+        }
+
+        .controls input[type="search"],
+        .controls select {
+            font-family: inherit;
+            font-size: 0.9rem;
+            padding: 0.7em 1em;
+            border: 1px solid #ddd;
+            background: #fff;
+            color: #333;
+            border-radius: 2px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .controls input[type="search"] { flex: 1; min-width: 200px; }
+        .controls input[type="search"]:focus,
+        .controls select:focus { border-color: #0a0a0a; }
+
+        .count {
+            font-size: 0.7rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: #999;
+            margin-bottom: 1vh;
+        }
+
+        .servicos-list {
+            list-style: none;
+        }
+
+        .servicos-list li {
+            padding: 1.6vh 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .servico-titulo a {
+            font-size: 1.02rem;
+            font-weight: 700;
+            color: #0a0a0a;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+        .servico-titulo a:hover { opacity: 0.5; }
+        .servico-titulo { flex: 1; min-width: 240px; }
+
+        .servico-meta {
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            color: #888;
+            text-align: right;
+        }
+
+        .servico-meta a {
+            color: #0a0a0a;
+            text-decoration: none;
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+        .servico-meta a:hover { opacity: 0.5; }
+
+        .servico-meta .funcao {
+            display: inline-block;
+            margin-left: 0.6em;
+            text-transform: uppercase;
+            font-size: 0.6rem;
+            letter-spacing: 0.16em;
+            color: #aaa;
+        }
+
+        .empty-state {
+            padding: 6vh 0;
+            text-align: center;
+            color: #bbb;
+            font-style: italic;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 6vh;
+            font-size: 0.65rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #999;
+            text-decoration: none;
+        }
+        .back:hover { opacity: 0.5; }
+
+        @media (max-width: 640px) {
+            .servicos-list li { flex-direction: column; gap: 0.4rem; align-items: flex-start; }
+            .servico-meta { text-align: left; }
+            .servico-meta .funcao { margin-left: 0; display: block; margin-top: 0.3em; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="site-header-inner">
+            <a class="site-brand" href="/">
+                <img src="/logo-al.png" alt="Arte Longa">
+            </a>
+            <span class="site-tagline">semeando sonhos</span>
+        </div>
+    </header>
+
+    <main class="main">
+        <h1 class="page-title">Produtos e Serviços</h1>
+        <div class="page-subtitle">Arte Longa</div>
+
+        <div class="section-header">
+            <h2>Produtos</h2>
+            <span class="label">plataformas da Arte Longa</span>
+        </div>
+
+        <ul class="produtos-list">
+            <li>
+                <a class="produto-nome" href="https://co-artelonga-uat.fly.dev/" target="_blank" rel="noopener">
+                    Co <span class="arrow">Gestão de Coletivos →</span>
+                </a>
+                <span class="produto-url">co-artelonga-uat.fly.dev</span>
+            </li>
+        </ul>
+
+        <div class="section-header">
+            <h2>Serviços</h2>
+            <span class="label">contato: yuri@artelonga.com.br</span>
+        </div>
+
+        <div class="controls">
+            <input type="search" id="search" placeholder="Buscar serviço ou responsável…" autocomplete="off">
+            <select id="filter-funcao">
+                <option value="">Todas as funções</option>
+            </select>
+            <select id="filter-responsavel">
+                <option value="">Todos os responsáveis</option>
+            </select>
+        </div>
+
+        <div class="count" id="count"></div>
+        <ul class="servicos-list" id="servicos-list"></ul>
+
+        <a class="back" href="/">← voltar</a>
+    </main>
+
+    <script>
+        const MAILTO = "mailto:yuri@artelonga.com.br";
+
+        const servicos = [
+            { titulo: "Acompanhamento nutricional", responsavel: [{ handle: "marina", nome: "Marina" }], funcao: "Cuidado" },
+            { titulo: "Alfabetização", responsavel: [{ handle: "marina", nome: "Marina" }], funcao: "Cuidado" },
+            { titulo: "Alimentação e Bebidas", responsavel: [{ handle: "veh", nome: "Veh" }, { handle: "ken", nome: "Ken" }], funcao: "" },
+            { titulo: "Artes Visuais", responsavel: [{ handle: "quinho", nome: "Quinho" }], funcao: "" },
+            { titulo: "Comunicação visual", responsavel: [{ handle: "bruna", nome: "Bruna" }], funcao: "Comunicação" },
+            { titulo: "Consultoria em Moda", responsavel: [{ handle: "kayra", nome: "Kayra" }], funcao: "Expressão" },
+            { titulo: "Consultoria em TI", responsavel: [{ handle: "mono", nome: "Mono" }], funcao: "Segurança" },
+            { titulo: "Consultoria Jurídica", responsavel: [{ handle: "hfsassociados", nome: "HFS Associados", url: "https://hfsassociados.com.br/" }], funcao: "Transparência", contact: "https://hfsassociados.com.br/" },
+            { titulo: "Criação de conteúdo", responsavel: [{ handle: "bruna", nome: "Bruna" }], funcao: "Comunicação" },
+            { titulo: "Cuidado com o idoso", responsavel: [{ handle: "marina", nome: "Marina" }], funcao: "Cuidado" },
+            { titulo: "Design", responsavel: [{ handle: "luck", nome: "Luck" }], funcao: "Experiência" },
+            { titulo: "Desenvolvimento sustentável", responsavel: [{ handle: "quilomboaraucaria", nome: "Quilombo Araucária", url: "https://quilomboaraucaria.org" }], funcao: "Terra", contact: "https://quilomboaraucaria.org" },
+            { titulo: "Drywall e Bioconstrução", responsavel: [{ handle: "tiao", nome: "Tião" }], funcao: "" },
+            { titulo: "Ensino, Formação e Liderança", responsavel: [{ handle: "yuri", nome: "Yuri" }], funcao: "Sementes" },
+            { titulo: "Escrita, Interpretação e Tradução", responsavel: [{ handle: "yuri", nome: "Yuri" }], funcao: "Sementes" },
+            { titulo: "Experiência de usuário (UI/UX)", responsavel: [{ handle: "luck", nome: "Luck" }], funcao: "Experiência" },
+            { titulo: "Filha da Bruna", responsavel: [{ handle: "alicia", nome: "Alicia" }], funcao: "futuro" },
+            { titulo: "Filho da Aime", responsavel: [{ handle: "john", nome: "John" }], funcao: "futuro" },
+            { titulo: "Fotografia", responsavel: [{ handle: "karina", nome: "Karina" }], funcao: "Visão" },
+            { titulo: "Gestão administrativa", responsavel: [{ handle: "jose", nome: "José" }], funcao: "Recursos" },
+            { titulo: "Gestão Contábil", responsavel: [{ handle: "hfsassociados", nome: "HFS Associados", url: "https://hfsassociados.com.br/" }], funcao: "Transparência", contact: "https://hfsassociados.com.br/" },
+            { titulo: "Gestão Executiva", responsavel: [{ handle: "yuri", nome: "Yuri" }], funcao: "Sementes" },
+            { titulo: "Gestão financeira", responsavel: [{ handle: "jose", nome: "José" }], funcao: "Recursos" },
+            { titulo: "Gestão Fiscal", responsavel: [{ handle: "hfsassociados", nome: "HFS Associados", url: "https://hfsassociados.com.br/" }], funcao: "Transparência", contact: "https://hfsassociados.com.br/" },
+            { titulo: "Gestão Operacional", responsavel: [{ handle: "igo", nome: "Igo" }], funcao: "Resistência" },
+            { titulo: "Grafite", responsavel: [{ handle: "quinho", nome: "Quinho" }], funcao: "" },
+            { titulo: "Inteligência de Previsão", responsavel: [{ handle: "hedix", nome: "Hedix", url: "https://hedix.com.br/" }], funcao: "Previsão", contact: "https://hedix.com.br/" },
+            { titulo: "Inteligência e Tecnologia", responsavel: [{ handle: "yuri", nome: "Yuri" }], funcao: "Sementes" },
+            { titulo: "Market Making Preditivo", responsavel: [{ handle: "hedix", nome: "Hedix", url: "https://hedix.com.br/" }], funcao: "Previsão", contact: "https://hedix.com.br/" },
+            { titulo: "Marketing digital", responsavel: [{ handle: "bruna", nome: "Bruna" }], funcao: "Comunicação" },
+            { titulo: "Modelo", responsavel: [{ handle: "kayra", nome: "Kayra" }], funcao: "Expressão" },
+            { titulo: "Murais e Fachadas", responsavel: [{ handle: "quinho", nome: "Quinho" }], funcao: "" },
+            { titulo: "Privacidade e segurança digital", responsavel: [{ handle: "mono", nome: "Mono" }], funcao: "Segurança" },
+            { titulo: "Produção Musical", responsavel: [{ handle: "antony", nome: "Antony" }], funcao: "" },
+            { titulo: "Raízes do futuro", responsavel: [{ handle: "quilomboaraucaria", nome: "Quilombo Araucária", url: "https://quilomboaraucaria.org" }], funcao: "Terra", contact: "https://quilomboaraucaria.org" },
+            { titulo: "Rede de parcerias", responsavel: [{ handle: "igo", nome: "Igo" }], funcao: "Resistência" },
+            { titulo: "Rede de Talentos", responsavel: [{ handle: "kayra", nome: "Kayra" }], funcao: "Expressão" },
+            { titulo: "Reforço escolar", responsavel: [{ handle: "marina", nome: "Marina" }], funcao: "Cuidado" },
+            { titulo: "Tortas Salgadas da Veh", responsavel: [{ handle: "veh", nome: "Veh" }], funcao: "" }
+        ];
+
+        const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        const norm = s => String(s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+        servicos.sort((a, b) => a.titulo.localeCompare(b.titulo, "pt-BR"));
+
+        const funcaoSet = new Set(servicos.map(s => s.funcao).filter(Boolean));
+        const respMap = new Map();
+        for (const s of servicos) for (const r of s.responsavel) respMap.set(r.handle, r.nome);
+
+        const funcSelect = document.getElementById("filter-funcao");
+        [...funcaoSet].sort((a, b) => a.localeCompare(b, "pt-BR")).forEach(f => {
+            const opt = document.createElement("option");
+            opt.value = f; opt.textContent = f;
+            funcSelect.appendChild(opt);
+        });
+
+        const respSelect = document.getElementById("filter-responsavel");
+        [...respMap.entries()].sort((a, b) => a[1].localeCompare(b[1], "pt-BR")).forEach(([h, n]) => {
+            const opt = document.createElement("option");
+            opt.value = h; opt.textContent = n;
+            respSelect.appendChild(opt);
+        });
+
+        const listEl = document.getElementById("servicos-list");
+        const countEl = document.getElementById("count");
+        const searchEl = document.getElementById("search");
+
+        function render() {
+            const q = norm(searchEl.value);
+            const f = funcSelect.value;
+            const r = respSelect.value;
+
+            const filtered = servicos.filter(s => {
+                if (f && s.funcao !== f) return false;
+                if (r && !s.responsavel.some(x => x.handle === r)) return false;
+                if (q) {
+                    const hay = norm(s.titulo + " " + s.responsavel.map(x => x.nome).join(" ") + " " + s.funcao);
+                    if (!hay.includes(q)) return false;
+                }
+                return true;
+            });
+
+            countEl.textContent = `${filtered.length} de ${servicos.length} serviços`;
+
+            if (!filtered.length) {
+                listEl.innerHTML = `<li class="empty-state">Nenhum serviço encontrado.</li>`;
+                return;
+            }
+
+            listEl.innerHTML = filtered.map(s => {
+                const contactUrl = s.contact || MAILTO;
+                const ext = s.contact ? ` target="_blank" rel="noopener"` : "";
+                const respHtml = s.responsavel.map(r => {
+                    const url = r.url || `/${r.handle}/`;
+                    const rExt = r.url ? ` target="_blank" rel="noopener"` : "";
+                    return `<a href="${esc(url)}"${rExt}>${esc(r.nome)}</a>`;
+                }).join(", ");
+                const funcaoTag = s.funcao ? `<span class="funcao">${esc(s.funcao)}</span>` : "";
+                return `<li>
+                    <div class="servico-titulo"><a href="${esc(contactUrl)}"${ext}>${esc(s.titulo)}</a></div>
+                    <div class="servico-meta">${respHtml}${funcaoTag}</div>
+                </li>`;
+            }).join("");
+        }
+
+        searchEl.addEventListener("input", render);
+        funcSelect.addEventListener("change", render);
+        respSelect.addEventListener("change", render);
+        render();
+    </script>
+
+</body>
+</html>
