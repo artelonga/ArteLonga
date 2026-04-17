@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produtos — Arte Longa</title>
+    <link rel="stylesheet" href="/assets/site.css">
+    <style>
+        .page-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 1vh;
+        }
+
+        .page-subtitle {
+            font-size: 0.75rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #999;
+            margin-bottom: 4vh;
+        }
+
+        .produtos-list {
+            list-style: none;
+            border-top: 2px solid #0a0a0a;
+        }
+
+        .produtos-list li {
+            padding: 3vh 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .produtos-list li:last-child { border-bottom: none; }
+
+        .produto-nome {
+            font-size: clamp(1.4rem, 3vw, 1.8rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: #0a0a0a;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: baseline;
+            gap: 0.8em;
+            transition: opacity 0.2s;
+        }
+
+        .produto-nome:hover { opacity: 0.5; }
+
+        .produto-nome .sub {
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0;
+            color: #666;
+        }
+
+        .produto-nome .arrow {
+            font-size: 0.7rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            font-weight: 500;
+            color: #bbb;
+        }
+
+        .produto-url {
+            display: block;
+            margin-top: 0.4rem;
+            font-size: 0.75rem;
+            color: #aaa;
+            letter-spacing: 0.02em;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 6vh;
+            font-size: 0.65rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #999;
+            text-decoration: none;
+        }
+        .back:hover { opacity: 0.5; }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="site-header-inner">
+            <a class="site-brand" href="/">
+                <img src="/logo-al.png" alt="Arte Longa">
+            </a>
+            <span class="site-tagline">semeando sonhos</span>
+        </div>
+    </header>
+
+    <main class="main">
+        <h1 class="page-title">Produtos</h1>
+        <div class="page-subtitle">Arte Longa · Produtos</div>
+
+        <ul class="produtos-list">
+            <li>
+                <a class="produto-nome" href="https://co-artelonga-uat.fly.dev/" target="_blank" rel="noopener">
+                    Co <span class="sub">Gestão Coletiva</span> <span class="arrow">acessar →</span>
+                </a>
+                <span class="produto-url">co-artelonga-uat.fly.dev</span>
+            </li>
+        </ul>
+
+        <a class="back" href="/">← voltar</a>
+    </main>
+
+</body>
+</html>

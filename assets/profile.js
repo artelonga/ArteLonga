@@ -50,7 +50,7 @@
            </section>`
         : `<section class="section">
              <h2>Contato</h2>
-             <ul><li><a href="mailto:yuri@artelonga.com.br">yuri@artelonga.com.br</a></li></ul>
+             <ul><li><span class="email-display">rede@artelonga.com.br</span></li></ul>
            </section>`;
 
     document.body.innerHTML = `
