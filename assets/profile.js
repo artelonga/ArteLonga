@@ -73,6 +73,7 @@
         return `<section class="section counter-section">
              <h2>Idade</h2>
              <div class="counter-big" id="counter-live-big"></div>
+             <div class="counter-mid" id="counter-live-mid"></div>
              <div class="counter-sub" id="counter-live-sub"></div>
            </section>`;
     })();
@@ -106,18 +107,31 @@
 
     if (p.birthDate && !p.emMemoria) {
         const birth = new Date(p.birthDate);
-        const fmt = n => n.toLocaleString("pt-BR");
+        const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
         const tick = () => {
-            const diff = Date.now() - birth.getTime();
-            const mins = Math.floor(diff / 60000);
-            const hours = Math.floor(mins / 60);
-            const days = Math.floor(hours / 24);
+            const now = new Date();
+            let years = now.getFullYear() - birth.getFullYear();
+            let months = now.getMonth() - birth.getMonth();
+            let days = now.getDate() - birth.getDate();
+            let hours = now.getHours() - birth.getHours();
+            let minutes = now.getMinutes() - birth.getMinutes();
+            if (minutes < 0) { minutes += 60; hours -= 1; }
+            if (hours < 0) { hours += 24; days -= 1; }
+            if (days < 0) {
+                const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+                days += prevMonth.getDate();
+                months -= 1;
+            }
+            if (months < 0) { months += 12; years -= 1; }
+
             const big = document.getElementById("counter-live-big");
+            const mid = document.getElementById("counter-live-mid");
             const sub = document.getElementById("counter-live-sub");
-            if (big) big.innerHTML = `${fmt(days)} <span class="counter-unit">dias</span>`;
-            if (sub) sub.textContent = `${fmt(hours)} horas · ${fmt(mins)} minutos`;
+            if (big) big.innerHTML = `${years} <span class="counter-unit">anos</span>, ${plural(months, "mês", "meses")}`;
+            if (mid) mid.textContent = plural(days, "dia", "dias");
+            if (sub) sub.textContent = `${plural(hours, "hora", "horas")}, ${plural(minutes, "minuto", "minutos")}`;
         };
         tick();
-        setInterval(tick, 30000);
+        setInterval(tick, 20000);
     }
 })();
