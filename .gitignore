@@ -31,3 +31,21 @@ web/data/
 # IDE
 .vscode/
 .idea/
+
+# Office / binary drafts (not for public repo)
+*.pptx
+*.xlsx
+*.docx
+*.key
+*.numbers
+*.pages
+
+# Obsidian
+.obsidian/
+
+# Temporary / scratch
+tmp/
+scratch/
+*.tmp
+*.bak
+*.swp
