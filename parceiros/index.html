@@ -228,6 +228,15 @@
         }
         .mini-missoes li::before { content: "· "; color: #ccc; }
 
+        .mini-memoria {
+            font-size: 0.6rem;
+            letter-spacing: 0.14em;
+            color: #b0b0b0;
+            font-style: italic;
+            margin-left: 0.6em;
+        }
+        .mini-row-memoria .mini-name { font-style: italic; color: #666; }
+
         .see-more {
             display: inline-block;
             font-size: 0.6rem;
@@ -347,7 +356,11 @@
         // Re-sync by hand when those files change.
         const data = [
             { handle: "yuri",   nome: "Yuri",   role: "Sementes",    bio: "",
-              missoes: ["Escrita, Interpretação e Tradução", "Ensino, Formação e Liderança", "Inteligência e Tecnologia", "Gestão Executiva"] },
+              missoes: ["Escrita, Interpretação e Tradução", "Ensino, Formação e Liderança", "Inteligência e Tecnologia", "Gestão Executiva"],
+              membros: [
+                  { handle: "kiyoshi", nome: "Kiyoshi (Shin)", missoes: ["Pai do Yuri", "Poeta"] },
+                  { handle: "soninha", nome: "Soninha", emMemoria: true, missoes: ["Mãe do Yuri", "Atriz", "Cantora"] }
+              ] },
             { handle: "igo",    nome: "Igo",    role: "Resistência", bio: "",
               missoes: ["Gestão Operacional", "Rede de parcerias"] },
             { handle: "jose",   nome: "José",   role: "Recursos",    bio: "",
@@ -426,8 +439,9 @@
                     const miniMissoes = m.missoes && m.missoes.length
                         ? `<div class="mini-drawer"><ul class="mini-missoes">${m.missoes.map(mm => `<li>${esc(mm)}</li>`).join("")}</ul></div>`
                         : "";
-                    return `<li class="mini-row">
-                        <a class="mini-name" href="/${esc(m.handle)}/">${esc(m.nome)}</a>
+                    const memoriaTag = m.emMemoria ? ` <span class="mini-memoria">em memória</span>` : "";
+                    return `<li class="mini-row${m.emMemoria ? ' mini-row-memoria' : ''}">
+                        <a class="mini-name" href="/${esc(m.handle)}/">${esc(m.nome)}</a>${memoriaTag}
                         ${miniMissoes}
                     </li>`;
                 }).join("")}</ul>`

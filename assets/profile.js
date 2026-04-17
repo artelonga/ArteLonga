@@ -43,6 +43,10 @@
         ? `<div class="em-breve-note">Perfil em breve.</div>`
         : "";
 
+    const emMemoriaNote = p.emMemoria
+        ? `<div class="em-memoria-note"><em>em memória</em></div>`
+        : "";
+
     const contactHtml = p.site
         ? `<section class="section">
              <h2>Contato e Orçamento</h2>
@@ -70,6 +74,7 @@
             </div>
           </div>
           ${emBreveNote}
+          ${emMemoriaNote}
           ${missoesHtml}
           ${membrosHtml}
           ${comunidadesHtml}
