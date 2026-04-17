@@ -333,7 +333,6 @@
         <ul class="roster" id="roster"></ul>
 
         <div class="coda">
-            <p>e todos os <a href="#" data-veil>parceiros</a></p>
             <span class="when">01.04.2026</span>
         </div>
     </main>
@@ -358,7 +357,10 @@
             { handle: "bruna",  nome: "Bruna",  role: "Comunicação",
               bio: "Sou uma pessoa prática, criativa e muito orientada a resolver problemas. Minha trajetória começou com produção de eventos, até chegar no nicho da comédia stand-up, sempre curiosa sobre tudo, aprendi diversas áreas da produção e também da comunicação, o que me deu jogo de cintura e a capacidade de me conectar com diferentes públicos de forma leve e autêntica.",
               pic: "/bruna/bruna.jpeg",
-              missoes: ["Comunicação visual", "Criação de conteúdo", "Marketing digital"] },
+              missoes: ["Comunicação visual", "Criação de conteúdo", "Marketing digital"],
+              membros: [
+                  { handle: "alicia", nome: "Alicia", missoes: ["Futuro", "Filha da Bruna"] }
+              ] },
             { handle: "luck",   nome: "Luck",   role: "Experiência", bio: "",
               missoes: ["Design", "Experiência de usuário (UI/UX)"] },
             { handle: "karina", nome: "Karina", role: "Visão",       bio: "",
@@ -369,13 +371,14 @@
             { handle: "kayra",  nome: "Kayra",  role: "Expressão",   bio: "",
               pic: "/kayra/kayra.jpg",
               missoes: ["Modelo", "Consultoria em Moda", "Rede de Talentos"] },
-            { handle: "aime",   nome: "Aime",   role: "Futuro",      bio: "",
-              tipo: "comunidade",
-              missoes: [],
+            { handle: "aime",   nome: "Aime",   role: "em breve",    bio: "", muted: true, missoes: [],
               membros: [
-                  { handle: "alicia", nome: "Alicia", missoes: ["Filha da Bruna"] },
-                  { handle: "john",   nome: "John",   missoes: ["Filho da Aime"] }
+                  { handle: "john", nome: "John", missoes: ["Futuro", "Filho da Aime"] }
               ] },
+            { handle: "sylvia", nome: "Sylvia", role: "Consciência", bio: "",
+              missoes: ["Meditação", "Autocuidado"] },
+            { handle: "raquel", nome: "Raquel", role: "Presença",    bio: "",
+              missoes: ["Saúde Mental", "Terapia Comportamental", "Autocuidado"] },
             { handle: "quilomboaraucaria", nome: "Quilombo Araucária", role: "Terra", bio: "",
               sectionBreak: true,
               tipo: "comunidade",
@@ -414,9 +417,7 @@
                 ? `<p class="card-bio">${esc(p.bio)}</p>`
                 : `<p class="card-bio empty">Biografia em breve.</p>`;
 
-            const isComunidadeEarly = p.tipo === "comunidade";
-
-            const membrosHtml = (isComunidadeEarly && p.membros && p.membros.length)
+            const membrosHtml = (p.membros && p.membros.length)
                 ? `<ul class="card-membros">${p.membros.map(m => {
                     const miniMissoes = m.missoes && m.missoes.length
                         ? `<div class="mini-drawer"><ul class="mini-missoes">${m.missoes.map(mm => `<li>${esc(mm)}</li>`).join("")}</ul></div>`
@@ -450,9 +451,7 @@
                 ? bioHtml
                 : `<div class="profile-block">${avatarHtml}${bioHtml}</div>`;
 
-            const leftContent = isComunidade
-                ? `${profileBlock}${membrosHtml}${seeMore}`
-                : `${profileBlock}${seeMore}`;
+            const leftContent = `${profileBlock}${membrosHtml}${seeMore}`;
 
             li.innerHTML = `
                 <div class="row">
