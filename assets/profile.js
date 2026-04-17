@@ -45,11 +45,11 @@
 
     const contactHtml = p.site
         ? `<section class="section">
-             <h2>Contato</h2>
+             <h2>Contato e Orçamento</h2>
              <ul><li><a href="${esc(p.site)}" target="_blank" rel="noopener">${esc(p.site)}</a></li></ul>
            </section>`
         : `<section class="section">
-             <h2>Contato</h2>
+             <h2>Contato e Orçamento</h2>
              <ul><li><span class="email-display">rede@artelonga.com.br</span></li></ul>
            </section>`;
 
