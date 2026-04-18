@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Próximos Passos — Arte Longa</title>
+    <link rel="stylesheet" href="/assets/site.css?v=20260422">
+    <link rel="stylesheet" href="/assets/components.css?v=20260422">
+    <link rel="stylesheet" href="/assets/pages.css?v=20260422">
+    <style>
+        .page-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 1vh;
+        }
+
+        .page-subtitle {
+            font-size: 0.75rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #999;
+            margin-bottom: 5vh;
+        }
+
+        .intro {
+            font-size: 1rem;
+            color: #444;
+            line-height: 1.7;
+            margin-bottom: 6vh;
+            max-width: 60ch;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            border-top: 2px solid #0a0a0a;
+            padding-top: 1.5vh;
+            margin-bottom: 3vh;
+        }
+        .section-header h2 {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            color: #0a0a0a;
+        }
+        .section-header .label {
+            font-size: 0.65rem;
+            letter-spacing: 0.18em;
+            color: #999;
+            text-transform: uppercase;
+        }
+
+        .todo-list {
+            list-style: none;
+        }
+
+        .todo {
+            display: flex;
+            gap: 1.2rem;
+            align-items: flex-start;
+            padding: 2.4vh 0;
+            border-bottom: 1px solid #eee;
+        }
+        .todo:last-child { border-bottom: none; }
+
+        .todo-check {
+            width: 22px;
+            height: 22px;
+            border: 2px solid #0a0a0a;
+            border-radius: 2px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 0.15em;
+            background: #fff;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #0a0a0a;
+        }
+        .todo.done .todo-check { background: #0a0a0a; color: #fff; }
+        .todo.done .todo-check::before { content: "✓"; }
+        .todo.wip .todo-check { border-style: dashed; animation: wip-pulse 2.2s ease-in-out infinite; }
+
+        @keyframes wip-pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .todo-body { flex: 1; }
+        .todo-titulo {
+            font-size: 1.08rem;
+            font-weight: 700;
+            color: #0a0a0a;
+            margin-bottom: 0.4em;
+            letter-spacing: -0.01em;
+        }
+        .todo-meta {
+            font-size: 0.72rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: #999;
+        }
+        .todo-desc {
+            margin-top: 0.5em;
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.55;
+        }
+        .todo.done .todo-titulo { color: #999; text-decoration: line-through; }
+
+        .quarter-badge {
+            display: inline-block;
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            color: #0a0a0a;
+            background: #f0f0f0;
+            padding: 0.3em 0.7em;
+            margin-left: 0.6em;
+            border-radius: 2px;
+            vertical-align: middle;
+            text-transform: uppercase;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 6vh;
+            font-size: 0.65rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #999;
+            text-decoration: none;
+        }
+        .back:hover { opacity: 0.5; }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="site-header-inner">
+            <a class="site-brand" href="/">
+                <img src="/logo-al.png" alt="Arte Longa">
+            </a>
+            <span class="site-tagline">semeando sonhos</span>
+        </div>
+    </header>
+
+    <main class="main">
+        <h1 class="page-title">Próximos Passos</h1>
+        <div class="page-subtitle">Arte Longa · Metas e transparência</div>
+
+        <p class="intro">
+            Onde queremos chegar e como mediremos o progresso. Atualizado publicamente à medida que avançamos.
+        </p>
+
+        <div class="section-header">
+            <h2>Metas</h2>
+            <span class="label">Q2 2026</span>
+        </div>
+
+        <ul class="todo-list">
+            <li class="todo wip">
+                <div class="todo-check"></div>
+                <div class="todo-body">
+                    <div class="todo-titulo">Transparência Contábil <span class="quarter-badge">contínuo</span></div>
+                    <div class="todo-meta">Publicar gastos e receita</div>
+                    <div class="todo-desc">Disponibilizar relatório mensal de entrada e saída, com CNAEs correspondentes para cada serviço faturado.</div>
+                </div>
+            </li>
+
+            <li class="todo wip">
+                <div class="todo-check"></div>
+                <div class="todo-body">
+                    <div class="todo-titulo">100 Parceiros <span class="quarter-badge">Q2 2026</span></div>
+                    <div class="todo-meta">Meta de rede</div>
+                    <div class="todo-desc">Alcançar 100 parceiros ativos na rede até o final do Q2 2026.</div>
+                </div>
+            </li>
+
+            <li class="todo wip">
+                <div class="todo-check"></div>
+                <div class="todo-body">
+                    <div class="todo-titulo">Receita Recorrente Positiva <span class="quarter-badge">Q2 2026</span></div>
+                    <div class="todo-meta">Meta financeira</div>
+                    <div class="todo-desc">Atingir receita recorrente mensal positiva (MRR) até o final do Q2 2026.</div>
+                </div>
+            </li>
+
+            <li class="todo wip">
+                <div class="todo-check"></div>
+                <div class="todo-body">
+                    <div class="todo-titulo">R$ 50.000 em Receita Total <span class="quarter-badge">Q2 2026</span></div>
+                    <div class="todo-meta">Meta financeira</div>
+                    <div class="todo-desc">Faturamento acumulado de R$ 50.000,00 no Q2 2026.</div>
+                </div>
+            </li>
+        </ul>
+
+        <a class="back" href="/">← voltar</a>
+    </main>
+
+</body>
+</html>

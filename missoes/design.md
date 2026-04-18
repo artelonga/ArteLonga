@@ -3,7 +3,7 @@ type: missao
 titulo: Design
 slug: design
 funcao: Experiência
-responsavel: luck
+responsavel: luke
 descricao: ""
 tags: []
 publicado: true

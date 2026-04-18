@@ -1,0 +1,320 @@
+/* Arte Longa · component styles. Reusable, composable. */
+
+/* Avatar ---------------------------------------------------------------- */
+.avatar-sm, .avatar-lg {
+    border-radius: 50%;
+    background: #f2f2f2;
+    color: #a0a0a0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 300;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+.avatar-sm { width: 52px; height: 52px; font-size: 1.4rem; }
+.avatar-lg { width: 128px; height: 128px; font-size: 3.5rem; }
+.avatar-sm img, .avatar-lg img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Section header -------------------------------------------------------- */
+.section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    border-top: 2px solid #0a0a0a;
+    padding-top: 1.5vh;
+    margin-bottom: 2.5vh;
+    margin-top: 4vh;
+}
+.section-header:first-of-type { margin-top: 0; }
+.section-header h2 {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: #0a0a0a;
+}
+.section-header .label {
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    color: #999;
+    text-transform: uppercase;
+}
+
+/* Generic profile section ---------------------------------------------- */
+.section { margin-top: 4vh; padding-top: 3vh; border-top: 1px solid #eee; }
+.section h2 {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #0a0a0a;
+    margin-bottom: 1.6rem;
+}
+.section ul { list-style: none; }
+.section li {
+    padding: 0.55rem 0;
+    font-size: 0.95rem;
+    color: #333;
+    border-bottom: 1px solid #f4f4f4;
+}
+.section li:last-child { border-bottom: none; }
+.section a { color: inherit; text-decoration: none; transition: opacity 0.2s; }
+.section a:hover { opacity: 0.5; }
+
+.section-hint {
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: lowercase;
+    color: #aaa;
+    margin-left: 0.8em;
+    font-style: italic;
+}
+
+/* Missão link (collection → services) ---------------------------------- */
+.missao-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    color: inherit;
+    text-decoration: none;
+    transition: opacity 0.2s, padding-left 0.2s;
+}
+.missao-link:hover { opacity: 0.65; padding-left: 0.4rem; }
+.missao-arrow {
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #bbb;
+    flex-shrink: 0;
+}
+.missao-link:hover .missao-arrow { color: #0a0a0a; }
+
+/* Counter (inline under role) ------------------------------------------ */
+.profile-counter, .profile-counter-static {
+    font-size: 0.72rem;
+    color: #888;
+    letter-spacing: 0.06em;
+    font-variant-numeric: tabular-nums;
+    margin: 0.4rem 0 1.2rem;
+    min-height: 1.1em;
+}
+.profile-counter-static { font-style: italic; }
+
+/* Profile bio + role + name -------------------------------------------- */
+.profile-hero {
+    display: flex;
+    gap: 2.5rem;
+    align-items: flex-start;
+    margin: 5vh 0 4vh;
+}
+.profile-name {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 0.55rem;
+}
+.profile-role {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #999;
+    margin-bottom: 0.5rem;
+}
+.profile-bio { font-size: 1rem; color: #333; max-width: 55ch; }
+.profile-bio.empty { color: #c0c0c0; font-style: italic; }
+.profile-bio + .profile-bio { margin-top: 1rem; }
+
+.em-breve-note {
+    margin-top: 3vh;
+    padding: 2vh 2rem;
+    background: #fafafa;
+    color: #aaa;
+    font-size: 0.85rem;
+    font-style: italic;
+    text-align: center;
+}
+.em-memoria-note {
+    margin-top: 2vh;
+    padding: 1.5vh 2rem;
+    border-top: 1px solid #eaeaea;
+    border-bottom: 1px solid #eaeaea;
+    color: #888;
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    text-align: center;
+}
+.em-memoria-note em { font-style: italic; }
+
+.email-display { font-weight: 600; color: #0a0a0a; user-select: all; }
+
+/* Back link ------------------------------------------------------------ */
+.back {
+    display: inline-block;
+    margin-top: 5vh;
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #999;
+    text-decoration: none;
+}
+.back:hover { opacity: 0.5; }
+
+/* Lead-magnet (CTA block) ---------------------------------------------- */
+.lead-magnet {
+    margin-top: 8vh;
+    padding: 5vh 3rem;
+    border: 2px solid #0a0a0a;
+    text-align: center;
+}
+.lead-magnet h3 {
+    font-size: clamp(1.4rem, 3vw, 1.9rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #0a0a0a;
+    margin-bottom: 1rem;
+}
+.lead-magnet p {
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    max-width: 50ch;
+    margin-left: auto;
+    margin-right: auto;
+}
+.cta-button {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: #fff;
+    background: #0a0a0a;
+    padding: 1.2em 2em;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: opacity 0.2s;
+    font-family: inherit;
+}
+.cta-button:hover { opacity: 0.75; }
+
+/* Modal ----------------------------------------------------------------- */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 10, 10, 0.82);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: 100;
+    padding: 4vh 6vw;
+}
+.modal-overlay.on { opacity: 1; pointer-events: all; }
+.modal-card {
+    background: #fff;
+    border: 2px solid #0a0a0a;
+    padding: 5vh 3rem 4vh;
+    max-width: 620px;
+    width: 100%;
+    max-height: 88vh;
+    overflow-y: auto;
+}
+.modal-servico-nome {
+    font-size: clamp(1.4rem, 3vw, 1.9rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #0a0a0a;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+.modal-servico-resp {
+    font-size: 0.78rem;
+    color: #888;
+    letter-spacing: 0.04em;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-style: italic;
+}
+.modal-contact {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #eee;
+    text-align: center;
+}
+.modal-contact-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 0.6rem;
+}
+.modal-email {
+    font-size: clamp(1.1rem, 2.6vw, 1.5rem);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: #0a0a0a;
+    user-select: all;
+    word-break: break-all;
+}
+.modal-close {
+    display: block;
+    margin: 2.5rem auto 0;
+    font-family: inherit;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    border: 1px solid #0a0a0a;
+    background: #fff;
+    color: #0a0a0a;
+    padding: 0.9em 1.6em;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+.modal-close:hover { background: #0a0a0a; color: #fff; }
+
+/* Platform status dot/pulse -------------------------------------------- */
+.platforms {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+.platform {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.02em;
+}
+.platform-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+.platform.done .platform-dot { background: #0a0a0a; }
+.platform.wip .platform-dot {
+    background: transparent;
+    border: 1.5px solid #0a0a0a;
+    animation: wip-pulse 2.2s ease-in-out infinite;
+}
+@keyframes wip-pulse { 0%,100% { opacity: .35; } 50% { opacity: 1; } }
+.platform-name { font-weight: 700; color: #0a0a0a; }
+.platform-status { color: #888; font-weight: 400; }
+
+@media (max-width: 640px) {
+    .profile-hero { flex-direction: column; gap: 1.5rem; }
+    .avatar-lg { width: 96px; height: 96px; font-size: 2.6rem; }
+}

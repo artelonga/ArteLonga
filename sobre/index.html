@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre — Arte Longa</title>
+    <link rel="stylesheet" href="/assets/site.css?v=20260422">
+    <link rel="stylesheet" href="/assets/components.css?v=20260422">
+    <link rel="stylesheet" href="/assets/pages.css?v=20260422">
+    <style>
+        .page-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 1vh;
+        }
+
+        .page-subtitle {
+            font-size: 0.75rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #999;
+            margin-bottom: 5vh;
+        }
+
+        .sub-nav {
+            list-style: none;
+            display: flex;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+            margin-bottom: 6vh;
+            padding-bottom: 2vh;
+            border-bottom: 1px solid #eee;
+        }
+        .sub-nav a {
+            font-size: 0.68rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #888;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .sub-nav a:hover { color: #0a0a0a; }
+        .sub-nav a.active { color: #0a0a0a; font-weight: 700; border-bottom: 1px solid #0a0a0a; padding-bottom: 0.4em; }
+
+        .section-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            border-top: 2px solid #0a0a0a;
+            padding-top: 1.5vh;
+            margin: 5vh 0 3vh;
+        }
+        .section-header:first-of-type { margin-top: 0; }
+        .section-header h2 {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            color: #0a0a0a;
+        }
+        .section-header .label {
+            font-size: 0.65rem;
+            letter-spacing: 0.18em;
+            color: #999;
+            text-transform: uppercase;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 210px 1fr;
+            gap: 0.8rem 2rem;
+            margin-bottom: 2vh;
+        }
+        .info-label {
+            font-size: 0.68rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #999;
+            font-weight: 500;
+            padding-top: 0.2em;
+        }
+        .info-value {
+            font-size: 0.95rem;
+            color: #0a0a0a;
+            font-variant-numeric: tabular-nums;
+        }
+        .info-value.mono { font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace; }
+
+        .cnae-list {
+            list-style: none;
+        }
+        .cnae-list li {
+            padding: 0.85vh 0;
+            border-bottom: 1px solid #f4f4f4;
+            display: grid;
+            grid-template-columns: 110px 1fr;
+            gap: 1.2rem;
+            align-items: baseline;
+        }
+        .cnae-list li:last-child { border-bottom: none; }
+        .cnae-code {
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
+            font-size: 0.78rem;
+            color: #888;
+            font-variant-numeric: tabular-nums;
+        }
+        .cnae-desc {
+            font-size: 0.88rem;
+            color: #333;
+            line-height: 1.5;
+        }
+        .cnae-principal .cnae-code,
+        .cnae-principal .cnae-desc { color: #0a0a0a; font-weight: 600; }
+
+        .transparency-note {
+            margin-top: 6vh;
+            padding: 3vh 2rem;
+            background: #fafafa;
+            font-size: 0.82rem;
+            line-height: 1.6;
+            color: #555;
+            border-left: 3px solid #0a0a0a;
+        }
+        .transparency-note strong { color: #0a0a0a; font-weight: 700; }
+
+        .back {
+            display: inline-block;
+            margin-top: 6vh;
+            font-size: 0.65rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #999;
+            text-decoration: none;
+        }
+        .back:hover { opacity: 0.5; }
+
+        @media (max-width: 640px) {
+            .info-grid { grid-template-columns: 1fr; gap: 0.3rem 0; }
+            .info-label { margin-top: 1.5vh; }
+            .cnae-list li { grid-template-columns: 1fr; gap: 0.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="site-header-inner">
+            <a class="site-brand" href="/">
+                <img src="/logo-al.png" alt="Arte Longa">
+            </a>
+            <span class="site-tagline">semeando sonhos</span>
+        </div>
+    </header>
+
+    <main class="main">
+        <h1 class="page-title">Sobre</h1>
+        <div class="page-subtitle">Arte Longa · Transparência</div>
+
+        <ul class="sub-nav">
+            <li><a href="#empresa" class="active">Empresa</a></li>
+            <li><a href="#contato">Contato</a></li>
+            <li><a href="#cnae">CNAE</a></li>
+            <li><a href="/proximos-passos/">Próximos Passos</a></li>
+        </ul>
+
+        <div class="section-header" id="empresa">
+            <h2>Empresa</h2>
+            <span class="label">dados cadastrais</span>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-label">Razão Social</div>
+            <div class="info-value">Yuri Yukio Vieira Sugano LTDA</div>
+
+            <div class="info-label">Nome Fantasia</div>
+            <div class="info-value">Arte Longa</div>
+
+            <div class="info-label">CNPJ</div>
+            <div class="info-value mono">56.975.561/0001-60</div>
+
+            <div class="info-label">Natureza Jurídica</div>
+            <div class="info-value">Sociedade Empresária Limitada</div>
+
+            <div class="info-label">Porte</div>
+            <div class="info-value">Empresa de Pequeno Porte (EPP)</div>
+
+            <div class="info-label">Data de Abertura</div>
+            <div class="info-value">22 de agosto de 2024</div>
+
+            <div class="info-label">Capital Social</div>
+            <div class="info-value">R$ 5.000,00</div>
+        </div>
+
+        <div class="section-header" id="contato">
+            <h2>Contato</h2>
+            <span class="label">sede</span>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-label">Endereço</div>
+            <div class="info-value">Av. Brigadeiro Faria Lima, 1811, sala 1119<br>Jardim Paulistano, São Paulo — SP<br>CEP 01452-001</div>
+
+            <div class="info-label">Rede</div>
+            <div class="info-value"><span class="email-display">rede@artelonga.com.br</span></div>
+
+            <div class="info-label">Site</div>
+            <div class="info-value"><a href="https://artelonga.com.br">artelonga.com.br</a></div>
+        </div>
+
+        <div class="section-header" id="cnae">
+            <h2>CNAE</h2>
+            <span class="label">classificação nacional de atividades econômicas</span>
+        </div>
+
+        <ul class="cnae-list">
+            <li class="cnae-principal">
+                <div class="cnae-code">5911-1/99</div>
+                <div class="cnae-desc"><strong>Principal.</strong> Atividades de produção cinematográfica, de vídeos e de programas de televisão não especificadas anteriormente</div>
+            </li>
+            <li><div class="cnae-code">5620-1/02</div><div class="cnae-desc">Serviços de alimentação para eventos e recepções — bufê</div></li>
+            <li><div class="cnae-code">5811-5/00</div><div class="cnae-desc">Edição de livros</div></li>
+            <li><div class="cnae-code">5911-1/01</div><div class="cnae-desc">Estúdios cinematográficos</div></li>
+            <li><div class="cnae-code">5911-1/02</div><div class="cnae-desc">Produção de filmes para publicidade</div></li>
+            <li><div class="cnae-code">5912-0/01</div><div class="cnae-desc">Serviços de dublagem</div></li>
+            <li><div class="cnae-code">5912-0/02</div><div class="cnae-desc">Serviços de mixagem sonora em produção audiovisual</div></li>
+            <li><div class="cnae-code">5912-0/99</div><div class="cnae-desc">Atividades de pós-produção cinematográfica, de vídeos e de programas de televisão não especificadas anteriormente</div></li>
+            <li><div class="cnae-code">5913-8/00</div><div class="cnae-desc">Distribuição cinematográfica, de vídeo e de programas de televisão</div></li>
+            <li><div class="cnae-code">5914-6/00</div><div class="cnae-desc">Atividades de exibição cinematográfica</div></li>
+            <li><div class="cnae-code">5920-1/00</div><div class="cnae-desc">Atividades de gravação de som e de edição de música</div></li>
+            <li><div class="cnae-code">6201-5/02</div><div class="cnae-desc">Web design</div></li>
+            <li><div class="cnae-code">6202-3/00</div><div class="cnae-desc">Desenvolvimento e licenciamento de programas de computador customizáveis</div></li>
+            <li><div class="cnae-code">6204-0/00</div><div class="cnae-desc">Consultoria em tecnologia da informação</div></li>
+            <li><div class="cnae-code">6319-4/00</div><div class="cnae-desc">Portais, provedores de conteúdo e outros serviços de informação na internet</div></li>
+            <li><div class="cnae-code">7319-0/01</div><div class="cnae-desc">Criação de estandes para feiras e exposições</div></li>
+            <li><div class="cnae-code">7319-0/04</div><div class="cnae-desc">Consultoria em publicidade</div></li>
+            <li><div class="cnae-code">7410-2/03</div><div class="cnae-desc">Design de produto</div></li>
+            <li><div class="cnae-code">7420-0/01</div><div class="cnae-desc">Atividades de produção de fotografias, exceto aérea e submarina</div></li>
+            <li><div class="cnae-code">7420-0/03</div><div class="cnae-desc">Laboratórios fotográficos</div></li>
+            <li><div class="cnae-code">7420-0/04</div><div class="cnae-desc">Filmagem de festas e eventos</div></li>
+            <li><div class="cnae-code">7420-0/05</div><div class="cnae-desc">Serviços de microfilmagem</div></li>
+            <li><div class="cnae-code">7490-1/01</div><div class="cnae-desc">Serviços de tradução, interpretação e similares</div></li>
+            <li><div class="cnae-code">7723-3/00</div><div class="cnae-desc">Aluguel de objetos do vestuário, jóias e acessórios</div></li>
+            <li><div class="cnae-code">8299-7/07</div><div class="cnae-desc">Salas de acesso à internet</div></li>
+            <li><div class="cnae-code">8592-9/01</div><div class="cnae-desc">Ensino de dança</div></li>
+            <li><div class="cnae-code">8592-9/02</div><div class="cnae-desc">Ensino de artes cênicas, exceto dança</div></li>
+            <li><div class="cnae-code">8592-9/03</div><div class="cnae-desc">Ensino de música</div></li>
+            <li><div class="cnae-code">8592-9/99</div><div class="cnae-desc">Ensino de arte e cultura não especificado anteriormente</div></li>
+            <li><div class="cnae-code">8593-7/00</div><div class="cnae-desc">Ensino de idiomas</div></li>
+            <li><div class="cnae-code">8599-6/03</div><div class="cnae-desc">Treinamento em informática</div></li>
+            <li><div class="cnae-code">8599-6/99</div><div class="cnae-desc">Outras atividades de ensino não especificadas anteriormente</div></li>
+            <li><div class="cnae-code">9001-9/02</div><div class="cnae-desc">Produção musical</div></li>
+            <li><div class="cnae-code">9001-9/03</div><div class="cnae-desc">Produção de espetáculos de dança</div></li>
+            <li><div class="cnae-code">9001-9/04</div><div class="cnae-desc">Produção de espetáculos circenses, de marionetes e similares</div></li>
+            <li><div class="cnae-code">9002-7/02</div><div class="cnae-desc">Restauração de obras-de-arte</div></li>
+            <li><div class="cnae-code">9003-5/00</div><div class="cnae-desc">Gestão de espaços para artes cênicas, espetáculos e outras atividades artísticas</div></li>
+            <li><div class="cnae-code">9319-1/01</div><div class="cnae-desc">Produção e promoção de eventos esportivos</div></li>
+            <li><div class="cnae-code">9529-1/05</div><div class="cnae-desc">Reparação de artigos do mobiliário</div></li>
+            <li><div class="cnae-code">9602-5/01</div><div class="cnae-desc">Cabeleireiros, manicure e pedicure</div></li>
+        </ul>
+
+        <a class="back" href="/">← voltar</a>
+    </main>
+
+</body>
+</html>

@@ -1,135 +1,15 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arte Longa — Semeando Sonhos</title>
-    <link rel="stylesheet" href="/assets/site.css?v=20260419">
-    <style>
-        .home-wrap {
-            min-height: calc(100vh - 14vh);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .home-hero {
-            margin-bottom: 6vh;
-        }
-
-        .home-title {
-            font-size: clamp(3rem, 7vw, 5.5rem);
-            font-weight: 800;
-            letter-spacing: -0.035em;
-            line-height: 1;
-            color: #0a0a0a;
-        }
-
-        .home-subtitle {
-            margin-top: 1.2vh;
-            font-size: clamp(0.9rem, 1.6vw, 1.1rem);
-            letter-spacing: 0.22em;
-            text-transform: lowercase;
-            color: #999;
-        }
-
-        .home-menu {
-            list-style: none;
-            max-width: 640px;
-        }
-
-        .home-menu a {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            padding: 2.8vh 0;
-            color: #0a0a0a;
-            text-decoration: none;
-            font-size: clamp(1.7rem, 3.5vw, 2.6rem);
-            font-weight: 800;
-            letter-spacing: -0.025em;
-            line-height: 1.1;
-            border-bottom: 1px solid #eaeaea;
-            transition: padding-left 0.25s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s;
-        }
-
-        .home-menu a:hover {
-            padding-left: 0.6rem;
-            opacity: 0.65;
-        }
-
-        .home-menu li:last-child a {
-            border-bottom: none;
-        }
-
-        .home-menu .arrow {
-            font-size: 0.85rem;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            font-weight: 500;
-            color: #bbb;
-            transition: color 0.2s;
-        }
-
-        .home-menu a:hover .arrow {
-            color: #0a0a0a;
-        }
-
-        .home-menu .cta {
-            margin-top: 3vh;
-            display: inline-block;
-            padding: 1.2em 1.8em;
-            border: 1px solid #0a0a0a;
-            font-size: 0.78rem;
-            font-weight: 700;
-            letter-spacing: 0.24em;
-            text-transform: uppercase;
-            color: #0a0a0a;
-            text-decoration: none;
-            transition: background 0.2s, color 0.2s;
-            align-self: flex-start;
-        }
-
-        .home-menu .cta:hover {
-            background: #0a0a0a;
-            color: #fff;
-        }
-
-        .cta-row {
-            margin-top: 3vh;
-        }
-
-        @media (max-width: 640px) {
-            .home-menu a { padding: 2.4vh 0; }
-            .home-menu .arrow { font-size: 0.72rem; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Arte Longa — Semeando Sonhos</title>
+<link rel="stylesheet" href="/assets/site.css?v=20260422">
+<link rel="stylesheet" href="/assets/components.css?v=20260422">
+<link rel="stylesheet" href="/assets/pages.css?v=20260422">
 </head>
-<body>
-
-    <header class="site-header">
-        <div class="site-header-inner">
-            <a class="site-brand" href="/">
-                <img src="/logo-al.png" alt="Arte Longa">
-            </a>
-            <span class="site-tagline">semeando sonhos</span>
-        </div>
-    </header>
-
-    <main class="main">
-        <div class="home-wrap">
-            <div class="home-hero">
-                <h1 class="home-title">Arte Longa</h1>
-                <div class="home-subtitle">semeando sonhos</div>
-            </div>
-
-            <ul class="home-menu">
-                <li><a href="/parceiros/">Parceiros <span class="arrow">ver →</span></a></li>
-                <li><a href="/produtos/">Produtos <span class="arrow">ver →</span></a></li>
-                <li><a href="/servicos/">Serviços <span class="arrow">ver →</span></a></li>
-            </ul>
-        </div>
-    </main>
-
+<body data-page="home">
+<script src="/assets/data.js?v=20260422"></script>
+<script src="/assets/renderer.js?v=20260422"></script>
 </body>
 </html>

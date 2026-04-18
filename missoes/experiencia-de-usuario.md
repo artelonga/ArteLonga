@@ -3,7 +3,7 @@ type: missao
 titulo: Experiência de usuário (UI/UX)
 slug: experiencia-de-usuario
 funcao: Experiência
-responsavel: luck
+responsavel: luke
 descricao: ""
 tags: []
 publicado: true
