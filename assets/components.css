@@ -14,7 +14,10 @@
 }
 .avatar-sm { width: 52px; height: 52px; font-size: 1.4rem; }
 .avatar-lg { width: 128px; height: 128px; font-size: 3.5rem; }
-.avatar-sm img, .avatar-lg img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.avatar-sm img, .avatar-lg img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    filter: grayscale(100%);
+}
 
 /* Section header -------------------------------------------------------- */
 .section-header {

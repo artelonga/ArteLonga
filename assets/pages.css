@@ -370,6 +370,49 @@
     max-width: 60ch;
 }
 
+.service-summary {
+    font-size: 1.02rem;
+    color: #333;
+    line-height: 1.7;
+    max-width: 62ch;
+    margin-bottom: 4vh;
+    padding: 2.5vh 0;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+.service-attachments { list-style: none; margin-bottom: 3vh; }
+.service-attachments .attachment-link {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.8vh 0;
+    border-bottom: 1px solid #eee;
+    color: inherit;
+    text-decoration: none;
+    transition: padding-left 0.2s, background 0.15s;
+}
+.service-attachments .attachment-link:hover { padding-left: 0.5rem; background: #fafafa; }
+.service-attachments li:last-child .attachment-link { border-bottom: none; }
+.att-kind {
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    color: #fff;
+    background: #0a0a0a;
+    padding: 0.35em 0.6em;
+    text-align: center;
+    font-weight: 600;
+}
+.att-label { font-size: 0.95rem; color: #0a0a0a; font-weight: 600; }
+.att-arrow {
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #888;
+    font-weight: 500;
+}
+
 /* SOLUCOES ------------------------------------------------------------- */
 .intro {
     font-size: 0.95rem;

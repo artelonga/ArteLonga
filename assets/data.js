@@ -14,7 +14,7 @@
         {
             handle: "yuri", type: "person", nome: "Yuri",
             role: "Sementes", tags: ["fundador", "parceiro"],
-            pic: null,
+            pic: "/yuri/yuri.jpg",
             birthDate: "1993-06-24T12:30:00-03:00",
             bio: "",
             missoes: ["Escrita, Interpretação e Tradução", "Ensino, Formação e Liderança", "Inteligência e Tecnologia", "Gestão Executiva"],
@@ -54,7 +54,7 @@
         {
             handle: "luke", type: "person", nome: "Luke",
             role: "Experiência", tags: ["parceiro"],
-            pic: null,
+            pic: "/luke/luke.jpeg",
             bioCurta: "Entusiasta de RPG há cerca de 10 anos, apaixonado por jogos narrativos. Hoje atua como mestre, desenvolvendo um universo próprio onde aplica e testa diferentes ideias narrativas e mecânicas.",
             bio: "Sou Luke, entusiasta de RPG, apaixonado por jogos narrativos e jogo RPG há cerca de 10 anos.\n\nAmo como os designs de RPGs podem influenciar a experiência dos jogadores e gosto de explorar e acompanhar o cenário, sempre buscando entender como mecânicas, narrativa e criatividade se conectam.\n\nExploro novos sistemas, modelos e abordagens, busco entender diferentes formas de construção de regras e experiências e, quando necessário, adaptar e implementar essas ideias em minhas mesas.\n\nUtilizo como base sistemas como D&D, Tormenta 20 e 3D&T, além de mecânicas adaptadas e conteúdos desenvolvidos pela comunidade no estilo homebrew.\n\nHoje atuo como mestre, explorando a condução de histórias e a criação de experiências para os jogadores. Como parte desse processo, desenvolvi um universo próprio, onde aplico e testo diferentes ideias narrativas e mecânicas.",
             missoes: ["Design", "Experiência de usuário (UI/UX)"]
@@ -135,7 +135,7 @@
         {
             handle: "quilomboaraucaria", type: "community", nome: "Quilombo Araucária",
             role: "Terra", tags: ["comunidade", "parceiro"],
-            pic: null, bio: "",
+            pic: "/quilomboaraucaria/quilomboaraucaria.png", bio: "",
             externalUrl: "https://quilomboaraucaria.org",
             site: "https://quilomboaraucaria.org",
             missoes: ["Desenvolvimento sustentável", "Raízes do futuro", "Resistência dos Povos Originários"],
@@ -211,6 +211,16 @@
         { titulo: "Desenvolvimento Web", responsavel: ["yuri"] }
     ];
 
+    // Per-service overrides (summaries, attachments). Keyed by service title.
+    const serviceOverrides = {
+        "Raízes do futuro": {
+            summary: "Projeto educacional do Quilombo Araucária. Formação, cultura e pertencimento enraizados na terra — para plantar as próximas gerações.",
+            attachments: [
+                { label: "Projeto — Raízes do Futuro", url: "/servicos/raizes-do-futuro/projeto.pdf", kind: "pdf" }
+            ]
+        }
+    };
+
     // Auto-derive services from people.missoes (each unique missão with its responsible people)
     function deriveServices() {
         const byTitle = new Map();
@@ -231,10 +241,12 @@
         return Array.from(byTitle.values()).sort((a, b) => a.titulo.localeCompare(b.titulo, "pt-BR"));
     }
     const services = deriveServices();
-    // Attach slugs + cnae to each service
+    // Attach slugs + cnae + overrides to each service
     services.forEach(s => {
         s.slug = slugify(s.titulo);
         s.cnae = cnaeMap[s.titulo] || null;
+        const ov = serviceOverrides[s.titulo];
+        if (ov) Object.assign(s, ov);
     });
 
     // ─── SOLUTIONS ───────────────────────────────────────────────────────────

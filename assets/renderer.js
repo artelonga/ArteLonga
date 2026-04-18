@@ -235,7 +235,7 @@
                 <div class="coda"><span class="when">01.04.2026</span></div>
                 ${ctaLead({
                     title: "Seja um parceiro",
-                    body: "Tem uma missão que dialoga com a rede? Entre para a Arte Longa. Acompanhamos seu crescimento, com transparência e CNAE claro.",
+                    body: "Tem uma missão que dialoga com a rede? Entre para a Arte Longa. Acompanhamos seu crescimento.",
                     id: "parceiros"
                 }, "Quero ser parceiro →")}
             </main>
@@ -512,6 +512,21 @@
             ).join("")}</ul>`
             : "";
 
+        const summaryHtml = s.summary
+            ? `<p class="service-summary">${esc(s.summary)}</p>`
+            : "";
+
+        const attachmentsHtml = (s.attachments && s.attachments.length)
+            ? `<div class="section-header"><h2>Material</h2><span class="label">download</span></div>
+               <ul class="service-attachments">${s.attachments.map(a =>
+                   `<li><a href="${esc(a.url)}" target="_blank" rel="noopener" class="attachment-link">
+                     <span class="att-kind">${esc((a.kind || "arquivo").toUpperCase())}</span>
+                     <span class="att-label">${esc(a.label)}</span>
+                     <span class="att-arrow">baixar →</span>
+                   </a></li>`
+               ).join("")}</ul>`
+            : "";
+
         document.body.innerHTML = `
             ${siteHeader()}
             <main class="main">
@@ -519,6 +534,8 @@
                 <div class="service-label">Serviço</div>
                 <h1 class="service-title">${esc(s.titulo)}</h1>
                 <div class="service-resp">Responsável: ${respLinks}</div>
+                ${summaryHtml}
+                ${attachmentsHtml}
 
                 <div class="section-header"><h2>CNAE</h2><span class="label">classificação oficial</span></div>
                 ${cnaeHtml}
