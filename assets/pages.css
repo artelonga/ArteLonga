@@ -413,6 +413,122 @@
     font-weight: 500;
 }
 
+/* RECURSOS ------------------------------------------------------------- */
+.fin-list { list-style: none; margin-bottom: 3vh; }
+.fin-item {
+    padding: 2.2vh 0;
+    border-bottom: 1px solid #eee;
+}
+.fin-item:last-child { border-bottom: none; }
+.fin-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+}
+.fin-label {
+    font-size: 1.02rem;
+    font-weight: 700;
+    color: #0a0a0a;
+    letter-spacing: -0.01em;
+}
+.fin-value {
+    font-size: 1.1rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: #0a0a0a;
+    font-variant-numeric: tabular-nums;
+}
+.fin-detail {
+    font-size: 0.78rem;
+    color: #888;
+    margin-top: 0.4rem;
+    letter-spacing: 0.02em;
+    line-height: 1.5;
+}
+.fin-sub-breakdown {
+    margin-top: 0.6rem;
+    padding-left: 1rem;
+    border-left: 2px solid #eee;
+}
+.fin-sub-breakdown .sub-line {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.82rem;
+    color: #666;
+    padding: 0.25em 0;
+    font-variant-numeric: tabular-nums;
+}
+
+.fin-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 3vh 0;
+    margin-bottom: 4vh;
+    border-top: 2px solid #0a0a0a;
+    border-bottom: 2px solid #0a0a0a;
+}
+.fin-total-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #0a0a0a;
+}
+.fin-total-value {
+    font-size: clamp(1.6rem, 3.2vw, 2rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #0a0a0a;
+    font-variant-numeric: tabular-nums;
+}
+
+.fin-goal-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 4vh;
+}
+.fin-goal {
+    padding: 3vh 2rem;
+    border: 1px solid #eee;
+}
+.fin-goal-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #999;
+    margin-bottom: 0.8rem;
+}
+.fin-goal-value {
+    font-size: clamp(1.8rem, 4vw, 2.4rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #0a0a0a;
+    font-variant-numeric: tabular-nums;
+    margin-bottom: 0.4rem;
+}
+.fin-goal-note {
+    font-size: 0.72rem;
+    color: #888;
+    letter-spacing: 0.02em;
+}
+
+.fin-footnote {
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: 3vh;
+    line-height: 1.6;
+}
+.fin-footnote a { color: #0a0a0a; font-weight: 600; text-decoration: none; }
+.fin-footnote a:hover { opacity: 0.5; }
+
+@media (max-width: 640px) {
+    .fin-goal-grid { grid-template-columns: 1fr; }
+}
+
 /* SOLUCOES ------------------------------------------------------------- */
 .intro {
     font-size: 0.95rem;

@@ -380,9 +380,44 @@
             .filter(Boolean);
     }
 
+    // ─── FINANCES ────────────────────────────────────────────────────────────
+    // Mensal recurring + metas trimestrais. Editado manualmente aqui.
+    const finances = {
+        currency: "BRL",
+        recorrente: {
+            socios: {
+                label: "Sócios · pro labore",
+                perPerson: 2000,
+                handles: ["yuri", "igo", "jose", "mono", "bruna", "luke", "marina"],
+                get total() { return this.perPerson * this.handles.length; }
+            },
+            contabilidade: {
+                label: "Contabilidade",
+                detail: "1 salário mínimo",
+                value: 1612
+            },
+            operacional: {
+                label: "Despesas operacionais",
+                value: 3000,
+                breakdown: [
+                    { label: "Produtos", value: 1000 },
+                    { label: "Serviços", value: 2000 }
+                ]
+            },
+            impacto: {
+                label: "Impacto ambiental, social e cultural",
+                detail: "investimento ativo em rede",
+                value: 8000
+            }
+        },
+        metaMensal: 25000,
+        metaQ2_2026: 75000,
+        quarter: "Q2 2026"
+    };
+
     global.AL = {
         version: "1.0",
-        people, communities, services, solutions, rosterOrder,
+        people, communities, services, solutions, rosterOrder, finances,
         get, byHandle, isEmMemoria,
         publicServices, roster, membersOf, subMembersOf, bundledServices,
         hiddenServiceTitles, slugify,

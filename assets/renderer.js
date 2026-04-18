@@ -556,12 +556,104 @@
         `;
     }
 
+    // ─── PAGE: RECURSOS ──────────────────────────────────────────────────────
+    function renderRecursos() {
+        const f = AL.finances;
+        const fmt = n => n.toLocaleString("pt-BR", { style: "currency", currency: "BRL", minimumFractionDigits: 2 });
+        const shortFmt = n => n.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
+
+        // Sócios line
+        const sociosTotal = f.recorrente.socios.total;
+        const sociosNomes = f.recorrente.socios.handles.map(h => {
+            const p = AL.get(h);
+            return p ? p.nome : h;
+        }).join(", ");
+
+        // Sum computed
+        const computedTotal = sociosTotal + f.recorrente.contabilidade.value + f.recorrente.operacional.value + f.recorrente.impacto.value;
+
+        // Operacional breakdown
+        const opBreakdown = (f.recorrente.operacional.breakdown || []).map(b =>
+            `<div class="sub-line"><span>${esc(b.label)}</span><span>${fmt(b.value)}</span></div>`
+        ).join("");
+
+        document.body.innerHTML = `
+            ${siteHeader()}
+            <main class="main">
+                <h1 class="page-title">Recursos</h1>
+                <div class="page-subtitle">Arte Longa · transparência financeira</div>
+
+                <p class="intro">Como a rede se sustenta. Gastos recorrentes mensais e metas de receita. Página pública, atualizada à medida que avançamos.</p>
+
+                <div class="section-header"><h2>Gastos recorrentes</h2><span class="label">mensal</span></div>
+
+                <ul class="fin-list">
+                    <li class="fin-item">
+                        <div class="fin-head">
+                            <div class="fin-label">${esc(f.recorrente.socios.label)}</div>
+                            <div class="fin-value">${fmt(sociosTotal)}</div>
+                        </div>
+                        <div class="fin-detail">${f.recorrente.socios.handles.length} pessoas × ${fmt(f.recorrente.socios.perPerson)} · ${esc(sociosNomes)}</div>
+                    </li>
+                    <li class="fin-item">
+                        <div class="fin-head">
+                            <div class="fin-label">${esc(f.recorrente.contabilidade.label)}</div>
+                            <div class="fin-value">${fmt(f.recorrente.contabilidade.value)}</div>
+                        </div>
+                        <div class="fin-detail">${esc(f.recorrente.contabilidade.detail)}</div>
+                    </li>
+                    <li class="fin-item">
+                        <div class="fin-head">
+                            <div class="fin-label">${esc(f.recorrente.operacional.label)}</div>
+                            <div class="fin-value">${fmt(f.recorrente.operacional.value)}</div>
+                        </div>
+                        ${opBreakdown ? `<div class="fin-sub-breakdown">${opBreakdown}</div>` : ""}
+                    </li>
+                    <li class="fin-item">
+                        <div class="fin-head">
+                            <div class="fin-label">${esc(f.recorrente.impacto.label)}</div>
+                            <div class="fin-value">${fmt(f.recorrente.impacto.value)}</div>
+                        </div>
+                        <div class="fin-detail">${esc(f.recorrente.impacto.detail)}</div>
+                    </li>
+                </ul>
+
+                <div class="fin-total">
+                    <span class="fin-total-label">Total mensal</span>
+                    <span class="fin-total-value">${fmt(computedTotal)}</span>
+                </div>
+
+                <div class="section-header"><h2>Meta</h2><span class="label">${esc(f.quarter)}</span></div>
+
+                <div class="fin-goal-grid">
+                    <div class="fin-goal">
+                        <div class="fin-goal-label">Receita trimestral</div>
+                        <div class="fin-goal-value">${shortFmt(f.metaQ2_2026)}</div>
+                        <div class="fin-goal-note">meta de receita total ${esc(f.quarter)}</div>
+                    </div>
+                    <div class="fin-goal">
+                        <div class="fin-goal-label">Runway mensal</div>
+                        <div class="fin-goal-value">${shortFmt(f.metaMensal)}</div>
+                        <div class="fin-goal-note">referência de receita mensal</div>
+                    </div>
+                </div>
+
+                <p class="fin-footnote">
+                    Consulte também <a href="/sobre/">Sobre</a> (dados cadastrais e CNAEs) e <a href="/proximos-passos/">Próximos Passos</a> (metas gerais).
+                </p>
+
+                <a class="back" href="/">← voltar</a>
+            </main>
+        `;
+    }
+
     // ─── DISPATCHER ──────────────────────────────────────────────────────────
     const pageFns = {
         home: renderHome,
         parceiros: renderParceiros,
         servicos: renderServicos,
         solucoes: renderSolucoes,
+        recursos: renderRecursos,
         profile: () => renderProfile(document.body.dataset.handle),
         service: () => renderService(document.body.dataset.slug)
     };
