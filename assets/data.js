@@ -208,7 +208,14 @@
     // Extra services that exist in the public catalog but aren't on any profile's
     // missões list (e.g. cross-cutting offerings like "Desenvolvimento Web").
     const extraServices = [
-        { titulo: "Desenvolvimento Web", responsavel: ["yuri"] }
+        { titulo: "Desenvolvimento Web", responsavel: ["yuri"] },
+        // Consultoria em TI · subseções não-sobrepostas (Yuri, R$ 100/h)
+        { titulo: "Data e Storage", responsavel: ["yuri"] },
+        { titulo: "Compute", responsavel: ["yuri"] },
+        { titulo: "Cloud", responsavel: ["yuri"] },
+        { titulo: "Network", responsavel: ["yuri"] },
+        { titulo: "Analytics e Growth", responsavel: ["yuri"] },
+        { titulo: "API Development", responsavel: ["yuri"] }
     ];
 
     // Per-service overrides (summaries, attachments). Keyed by service title.
@@ -384,35 +391,135 @@
     // Mensal recurring + metas trimestrais. Editado manualmente aqui.
     const finances = {
         currency: "BRL",
-        recorrente: {
-            socios: {
+        quarter: "Q2 2026",
+        metaMensal: 25000,
+        metaQ2: 75000,
+
+        // Gastos recorrentes mensais. Total = R$ 25.000.
+        custos: [
+            {
+                key: "socios",
                 label: "Sócios · pro labore",
-                perPerson: 2000,
-                handles: ["yuri", "igo", "jose", "mono", "bruna", "luke", "marina"],
-                get total() { return this.perPerson * this.handles.length; }
-            },
-            contabilidade: {
-                label: "Contabilidade",
-                detail: "1 salário mínimo",
-                value: 1612
-            },
-            operacional: {
-                label: "Despesas operacionais",
-                value: 3000,
+                value: 14000,
+                detail: "7 pessoas × R$ 2.000",
                 breakdown: [
-                    { label: "Produtos", value: 1000 },
-                    { label: "Serviços", value: 2000 }
+                    { label: "Yuri", value: 2000, handle: "yuri" },
+                    { label: "Igo", value: 2000, handle: "igo" },
+                    { label: "José Antônio", value: 2000, handle: "jose" },
+                    { label: "Mono", value: 2000, handle: "mono" },
+                    { label: "Bruna", value: 2000, handle: "bruna" },
+                    { label: "Luke", value: 2000, handle: "luke" },
+                    { label: "Marina", value: 2000, handle: "marina" }
                 ]
             },
-            impacto: {
+            {
+                key: "contabilidade",
+                label: "Contabilidade",
+                value: 1612,
+                detail: "1 salário mínimo · coberto pela receita de API Development (Hedix)"
+            },
+            {
+                key: "operacional",
+                label: "Despesas operacionais",
+                value: 1388,
+                breakdown: [
+                    { label: "Produtos", value: 500 },
+                    { label: "Serviços", value: 888 }
+                ]
+            },
+            {
+                key: "coworking",
+                label: "Coworking · escritório",
+                value: 3000
+            },
+            {
+                key: "infra",
+                label: "Armazenamento e computação",
+                value: 2000
+            },
+            {
+                key: "impacto",
                 label: "Impacto ambiental, social e cultural",
-                detail: "investimento ativo em rede",
-                value: 8000
+                value: 3000,
+                detail: "investimento ativo em rede — também via trabalho pro-bono"
             }
-        },
-        metaMensal: 25000,
-        metaQ2_2026: 75000,
-        quarter: "Q2 2026"
+        ],
+
+        // Receita potencial Q2 2026. Misto de recorrente + rampa + projetos.
+        receita: {
+            recorrenteMensal: [
+                {
+                    label: "API Development",
+                    client: "Hedix",
+                    detail: "16,12 h/mês × R$ 100/h — cobre a contabilidade",
+                    responsavel: "yuri",
+                    mensal: 1612
+                },
+                {
+                    label: "Consultoria em TI (outros clientes)",
+                    detail: "23,88 h/mês × R$ 100/h (40h/mês total, menos Hedix)",
+                    responsavel: "yuri",
+                    mensal: 2388
+                },
+                {
+                    label: "Criação de conteúdo",
+                    detail: "1 job fixo / mês",
+                    responsavel: "bruna",
+                    mensal: 1000
+                }
+            ],
+            rampa: [
+                {
+                    label: "Market Making (Hedix)",
+                    client: "Hedix",
+                    detail: "prediction markets — rampa de crescimento",
+                    responsavel: "yuri",
+                    meses: [
+                        { mes: "abril", value: 1000 },
+                        { mes: "maio", value: 5000 },
+                        { mes: "junho", value: 10000 }
+                    ]
+                }
+            ],
+            projetos: [
+                {
+                    label: "Website estático",
+                    detail: "3 × R$ 5.000",
+                    unitValue: 5000,
+                    unidades: 3,
+                    responsavel: "yuri"
+                },
+                {
+                    label: "Website dinâmico",
+                    detail: "1 projeto",
+                    unitValue: 15000,
+                    unidades: 1,
+                    responsavel: "yuri"
+                },
+                {
+                    label: "Interpretação e Tradução",
+                    detail: "2 jobs × R$ 2.000/dia",
+                    unitValue: 2000,
+                    unidades: 2,
+                    responsavel: "yuri"
+                },
+                {
+                    label: "Consultoria avulsa",
+                    detail: "10 h × R$ 100/h (no trimestre)",
+                    unitValue: 100,
+                    unidades: 10,
+                    responsavel: "yuri"
+                }
+            ],
+            // Pro-bono · não conta como receita mas é parte da atuação
+            proBono: [
+                {
+                    label: "Desenvolvimento Web — Quilombo Araucária",
+                    detail: "portfolio institucional · impacto social, ambiental e cultural",
+                    responsavel: "yuri"
+                }
+            ]
+        }
     };
 
     global.AL = {

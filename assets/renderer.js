@@ -560,86 +560,156 @@
     function renderRecursos() {
         const f = AL.finances;
         const fmt = n => n.toLocaleString("pt-BR", { style: "currency", currency: "BRL", minimumFractionDigits: 2 });
-        const shortFmt = n => n.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
+        const short = n => n.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
+        const nomeOf = h => { const p = AL.get(h); return p ? p.nome : h; };
 
-        // Sócios line
-        const sociosTotal = f.recorrente.socios.total;
-        const sociosNomes = f.recorrente.socios.handles.map(h => {
-            const p = AL.get(h);
-            return p ? p.nome : h;
-        }).join(", ");
+        // ── COSTS ──
+        const totalCustos = f.custos.reduce((a, c) => a + c.value, 0);
+        const custosHtml = f.custos.map(c => {
+            const breakdownHtml = c.breakdown
+                ? `<div class="fin-sub-breakdown">${c.breakdown.map(b =>
+                    `<div class="sub-line"><span>${esc(b.label)}${b.handle ? ` <a class="sub-link" href="/${esc(b.handle)}/">↗</a>` : ""}</span><span>${fmt(b.value)}</span></div>`
+                  ).join("")}</div>`
+                : "";
+            const detailHtml = c.detail ? `<div class="fin-detail">${esc(c.detail)}</div>` : "";
+            return `<li class="fin-item">
+                <div class="fin-head">
+                    <div class="fin-label">${esc(c.label)}</div>
+                    <div class="fin-value">${fmt(c.value)}</div>
+                </div>
+                ${detailHtml}${breakdownHtml}
+            </li>`;
+        }).join("");
 
-        // Sum computed
-        const computedTotal = sociosTotal + f.recorrente.contabilidade.value + f.recorrente.operacional.value + f.recorrente.impacto.value;
+        // ── REVENUE ──
+        const recorrenteMensalTotal = f.receita.recorrenteMensal.reduce((a, r) => a + r.mensal, 0);
+        const recorrenteQ2 = recorrenteMensalTotal * 3;
 
-        // Operacional breakdown
-        const opBreakdown = (f.recorrente.operacional.breakdown || []).map(b =>
-            `<div class="sub-line"><span>${esc(b.label)}</span><span>${fmt(b.value)}</span></div>`
-        ).join("");
+        const rampaQ2 = f.receita.rampa.reduce((a, r) => a + r.meses.reduce((b, m) => b + m.value, 0), 0);
+
+        const projetosQ2 = f.receita.projetos.reduce((a, p) => a + (p.unitValue * p.unidades), 0);
+
+        const totalReceitaQ2 = recorrenteQ2 + rampaQ2 + projetosQ2;
+        const percentMeta = Math.round((totalReceitaQ2 / f.metaQ2) * 100);
+        const gap = f.metaQ2 - totalReceitaQ2;
+
+        const recorrenteHtml = f.receita.recorrenteMensal.map(r => `
+            <li class="fin-item">
+                <div class="fin-head">
+                    <div class="fin-label">${esc(r.label)}${r.client ? ` <span class="client-tag">cliente: ${esc(r.client)}</span>` : ""}</div>
+                    <div class="fin-value">${fmt(r.mensal)}<span class="fin-unit">/mês</span></div>
+                </div>
+                <div class="fin-detail">${esc(r.detail)} · por <a href="/${esc(r.responsavel)}/">${esc(nomeOf(r.responsavel))}</a></div>
+            </li>
+        `).join("");
+
+        const rampaHtml = f.receita.rampa.map(r => `
+            <li class="fin-item">
+                <div class="fin-head">
+                    <div class="fin-label">${esc(r.label)}${r.client ? ` <span class="client-tag">cliente: ${esc(r.client)}</span>` : ""}</div>
+                    <div class="fin-value">${fmt(r.meses.reduce((a, m) => a + m.value, 0))}<span class="fin-unit"> · Q2</span></div>
+                </div>
+                <div class="fin-detail">${esc(r.detail)} · por <a href="/${esc(r.responsavel)}/">${esc(nomeOf(r.responsavel))}</a></div>
+                <div class="fin-sub-breakdown">${r.meses.map(m =>
+                    `<div class="sub-line"><span>${esc(m.mes)}</span><span>${fmt(m.value)}</span></div>`
+                ).join("")}</div>
+            </li>
+        `).join("");
+
+        const projetosHtml = f.receita.projetos.map(p => {
+            const total = p.unitValue * p.unidades;
+            return `<li class="fin-item">
+                <div class="fin-head">
+                    <div class="fin-label">${esc(p.label)}</div>
+                    <div class="fin-value">${fmt(total)}</div>
+                </div>
+                <div class="fin-detail">${esc(p.detail)} · por <a href="/${esc(p.responsavel)}/">${esc(nomeOf(p.responsavel))}</a></div>
+            </li>`;
+        }).join("");
+
+        const proBonoHtml = f.receita.proBono.map(p => `
+            <li class="fin-item pro-bono">
+                <div class="fin-head">
+                    <div class="fin-label">${esc(p.label)}</div>
+                    <div class="fin-value pro-bono-tag">pro-bono</div>
+                </div>
+                <div class="fin-detail">${esc(p.detail)} · por <a href="/${esc(p.responsavel)}/">${esc(nomeOf(p.responsavel))}</a></div>
+            </li>
+        `).join("");
 
         document.body.innerHTML = `
             ${siteHeader()}
             <main class="main">
                 <h1 class="page-title">Recursos</h1>
-                <div class="page-subtitle">Arte Longa · transparência financeira</div>
+                <div class="page-subtitle">Arte Longa · modelo de negócio</div>
 
-                <p class="intro">Como a rede se sustenta. Gastos recorrentes mensais e metas de receita. Página pública, atualizada à medida que avançamos.</p>
+                <p class="intro">Como a rede se sustenta. Gastos recorrentes, receita potencial e metas de ${esc(f.quarter)}. Página pública, atualizada à medida que avançamos.</p>
 
+                <!-- ──── GASTOS ──── -->
                 <div class="section-header"><h2>Gastos recorrentes</h2><span class="label">mensal</span></div>
-
-                <ul class="fin-list">
-                    <li class="fin-item">
-                        <div class="fin-head">
-                            <div class="fin-label">${esc(f.recorrente.socios.label)}</div>
-                            <div class="fin-value">${fmt(sociosTotal)}</div>
-                        </div>
-                        <div class="fin-detail">${f.recorrente.socios.handles.length} pessoas × ${fmt(f.recorrente.socios.perPerson)} · ${esc(sociosNomes)}</div>
-                    </li>
-                    <li class="fin-item">
-                        <div class="fin-head">
-                            <div class="fin-label">${esc(f.recorrente.contabilidade.label)}</div>
-                            <div class="fin-value">${fmt(f.recorrente.contabilidade.value)}</div>
-                        </div>
-                        <div class="fin-detail">${esc(f.recorrente.contabilidade.detail)}</div>
-                    </li>
-                    <li class="fin-item">
-                        <div class="fin-head">
-                            <div class="fin-label">${esc(f.recorrente.operacional.label)}</div>
-                            <div class="fin-value">${fmt(f.recorrente.operacional.value)}</div>
-                        </div>
-                        ${opBreakdown ? `<div class="fin-sub-breakdown">${opBreakdown}</div>` : ""}
-                    </li>
-                    <li class="fin-item">
-                        <div class="fin-head">
-                            <div class="fin-label">${esc(f.recorrente.impacto.label)}</div>
-                            <div class="fin-value">${fmt(f.recorrente.impacto.value)}</div>
-                        </div>
-                        <div class="fin-detail">${esc(f.recorrente.impacto.detail)}</div>
-                    </li>
-                </ul>
-
+                <ul class="fin-list">${custosHtml}</ul>
                 <div class="fin-total">
                     <span class="fin-total-label">Total mensal</span>
-                    <span class="fin-total-value">${fmt(computedTotal)}</span>
+                    <span class="fin-total-value">${fmt(totalCustos)}</span>
                 </div>
 
-                <div class="section-header"><h2>Meta</h2><span class="label">${esc(f.quarter)}</span></div>
+                <!-- ──── RECEITA RECORRENTE ──── -->
+                <div class="section-header"><h2>Receita · recorrente mensal</h2><span class="label">baseline</span></div>
+                <ul class="fin-list">${recorrenteHtml}</ul>
+                <div class="fin-subtotal">
+                    <span>Subtotal recorrente · mensal</span>
+                    <span>${fmt(recorrenteMensalTotal)}</span>
+                </div>
+                <div class="fin-subtotal">
+                    <span>Subtotal recorrente · ${esc(f.quarter)} (× 3)</span>
+                    <span>${fmt(recorrenteQ2)}</span>
+                </div>
 
+                <!-- ──── RECEITA RAMPA ──── -->
+                <div class="section-header"><h2>Receita · rampa</h2><span class="label">crescimento mensal</span></div>
+                <ul class="fin-list">${rampaHtml}</ul>
+                <div class="fin-subtotal">
+                    <span>Subtotal rampa · ${esc(f.quarter)}</span>
+                    <span>${fmt(rampaQ2)}</span>
+                </div>
+
+                <!-- ──── RECEITA PROJETOS ──── -->
+                <div class="section-header"><h2>Receita · projetos</h2><span class="label">one-off no trimestre</span></div>
+                <ul class="fin-list">${projetosHtml}</ul>
+                <div class="fin-subtotal">
+                    <span>Subtotal projetos · ${esc(f.quarter)}</span>
+                    <span>${fmt(projetosQ2)}</span>
+                </div>
+
+                <!-- ──── PRO-BONO ──── -->
+                <div class="section-header"><h2>Pro-bono</h2><span class="label">não entra na receita</span></div>
+                <p class="intro-short">Na Arte Longa nem tudo é receita. O trabalho pro-bono é parte do impacto social, ambiental e cultural.</p>
+                <ul class="fin-list">${proBonoHtml}</ul>
+
+                <!-- ──── META ──── -->
+                <div class="section-header"><h2>Meta vs Potencial</h2><span class="label">${esc(f.quarter)}</span></div>
                 <div class="fin-goal-grid">
                     <div class="fin-goal">
-                        <div class="fin-goal-label">Receita trimestral</div>
-                        <div class="fin-goal-value">${shortFmt(f.metaQ2_2026)}</div>
-                        <div class="fin-goal-note">meta de receita total ${esc(f.quarter)}</div>
+                        <div class="fin-goal-label">Meta de receita · ${esc(f.quarter)}</div>
+                        <div class="fin-goal-value">${short(f.metaQ2)}</div>
+                        <div class="fin-goal-note">objetivo trimestral</div>
                     </div>
-                    <div class="fin-goal">
-                        <div class="fin-goal-label">Runway mensal</div>
-                        <div class="fin-goal-value">${shortFmt(f.metaMensal)}</div>
-                        <div class="fin-goal-note">referência de receita mensal</div>
+                    <div class="fin-goal highlighted">
+                        <div class="fin-goal-label">Potencial estimado</div>
+                        <div class="fin-goal-value">${short(totalReceitaQ2)}</div>
+                        <div class="fin-goal-note">${percentMeta}% da meta · gap ${gap > 0 ? short(gap) : 'nenhum'}</div>
                     </div>
+                </div>
+
+                <div class="fin-breakdown-summary">
+                    <div class="sum-line"><span>Recorrente × 3</span><span>${fmt(recorrenteQ2)}</span></div>
+                    <div class="sum-line"><span>Rampa (Hedix MM)</span><span>${fmt(rampaQ2)}</span></div>
+                    <div class="sum-line"><span>Projetos</span><span>${fmt(projetosQ2)}</span></div>
+                    <div class="sum-line sum-total"><span>Total estimado</span><span>${fmt(totalReceitaQ2)}</span></div>
                 </div>
 
                 <p class="fin-footnote">
-                    Consulte também <a href="/sobre/">Sobre</a> (dados cadastrais e CNAEs) e <a href="/proximos-passos/">Próximos Passos</a> (metas gerais).
+                    Consulte também <a href="/sobre/">Sobre</a> (dados cadastrais e CNAEs), <a href="/proximos-passos/">Próximos Passos</a> (metas) e <a href="/servicos/">Serviços</a> (catálogo completo).
                 </p>
 
                 <a class="back" href="/">← voltar</a>
