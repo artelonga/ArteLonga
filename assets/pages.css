@@ -71,7 +71,9 @@
     margin-bottom: 4vh;
 }
 .roster { list-style: none; max-width: 760px; }
-.roster li { padding: 1.3vh 0; position: relative; }
+/* Linha enxuta para encurtar distância mouse → cartão flutuante.
+   (Cada row continua clicável com padding em torno do nome/role.) */
+.roster li { padding: 0.5vh 0; position: relative; }
 .roster li::after {
     content: '';
     position: absolute;
@@ -108,14 +110,41 @@
     cursor: pointer;
     padding: 0.5em 0 0.5em 0.8em;
 }
+/* Cartão flutuante — não empurra a lista.
+   position:absolute sobre <li> (position:relative) + opacidade + pointer-events
+   para garantir hit-test limpo quando oculto. O cartão pousa abaixo da linha e
+   vive por cima das linhas seguintes (z-index maior). */
 .card {
-    max-height: 0;
-    overflow: hidden;
+    position: absolute;
+    /* Encosta o cartão imediatamente abaixo do nome/role da linha.
+       Cortamos o padding-bottom do li via calc para colar. */
+    top: calc(100% - 0.5vh);
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid #0a0a0a;
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.12);
     opacity: 0;
-    transition: max-height 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s;
+    pointer-events: none;
+    transition: opacity 0.15s ease-out;
+    z-index: 30;
+    padding: 0 1.4rem;
 }
-.roster li:hover .card, .roster li.open .card { max-height: 900px; opacity: 1; }
-.card-inner { display: flex; gap: 2rem; padding: 1.6vh 0.2rem 0.8vh; align-items: flex-start; }
+.roster li:hover .card,
+.roster li.open .card {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+.roster li.servicos-open .card {
+    /* popover aberto prende o cartão visível mesmo sem hover */
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+/* Padding-top enxuto: o conteúdo do cartão pousa imediatamente abaixo da row.
+   1.6vh antes deixava o bio/bio-curta 26px abaixo do cursor — sensação de "longe". */
+.card-inner { display: flex; gap: 2rem; padding: 0.5vh 0.2rem 0.8vh; align-items: flex-start; }
 .card-left {
     flex: 1; min-width: 0;
     display: flex; flex-direction: column; gap: 1.1rem; align-items: flex-start;
@@ -132,7 +161,7 @@
     overflow: hidden;
 }
 .card-bio.empty { color: #c8c8c8; font-style: italic; }
-.card-right { flex-shrink: 0; text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 0.9rem; }
+.card-right { flex-shrink: 0; text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 0.9rem; position: relative; }
 .card-missoes { list-style: none; }
 .card-missoes li { font-size: 0.78rem; color: #777; letter-spacing: 0.02em; padding: 0.22em 0; }
 .card-missoes li::before { content: "· "; color: #bbb; }
@@ -153,12 +182,37 @@
     max-height: 0; overflow: hidden; opacity: 0;
     transition: max-height 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s;
 }
-.mini-row:hover .mini-drawer, .mini-row.open .mini-drawer { max-height: 220px; opacity: 1; }
+/* Só abre por clique — hover causaria shift dos membros seguintes dentro do cartão. */
+.mini-row.open .mini-drawer { max-height: 220px; opacity: 1; }
 .mini-missoes { list-style: none; padding: 0.35em 0 0.15em 1em; }
 .mini-missoes li { font-size: 0.72rem; color: #888; padding: 0.15em 0; letter-spacing: 0.02em; }
 .mini-missoes li::before { content: "· "; color: #ccc; }
 .mini-memoria { font-size: 0.6rem; letter-spacing: 0.14em; color: #b0b0b0; font-style: italic; margin-left: 0.6em; }
 .mini-row-memoria .mini-name { font-style: italic; color: #666; }
+
+.card-membros .mini-hidden { display: none; }
+.card-membros.membros-expanded .mini-hidden { display: block; }
+
+.membros-more-btn {
+    margin-top: 0.6rem;
+    font-family: inherit;
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #0a0a0a;
+    background: none;
+    border: none;
+    padding: 0.4em 0;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+    transition: opacity 0.2s;
+    align-self: flex-start;
+    width: 100%;
+    text-align: left;
+}
+.membros-more-btn:hover { opacity: 0.55; }
 
 .see-more {
     display: inline-block;
@@ -250,6 +304,54 @@
     text-decoration: none;
     width: 100%;
 }
+
+/* Parent service with children — show hover-drawer */
+.portfolio-list li.has-children .portfolio-expand {
+    display: inline-block;
+    margin-left: 0.6em;
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    color: #fff;
+    background: #0a0a0a;
+    padding: 0.25em 0.6em;
+    border-radius: 2px;
+    font-weight: 600;
+    vertical-align: middle;
+}
+.portfolio-parent {
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #aaa;
+    margin-right: 0.4em;
+}
+.portfolio-children {
+    list-style: none;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s, padding 0.3s;
+    padding: 0;
+}
+.portfolio-list li.has-children:hover .portfolio-children,
+.portfolio-list li.has-children.open .portfolio-children {
+    max-height: 600px;
+    opacity: 1;
+    padding: 0.5rem 0 0.8rem 1.5rem;
+    border-left: 2px solid #eee;
+    margin-left: 0.4rem;
+}
+.portfolio-children li {
+    padding: 0.5rem 0 !important;
+    border-bottom: 1px solid #f5f5f5;
+}
+.portfolio-children li:last-child { border-bottom: none !important; }
+.portfolio-children .child-link {
+    font-size: 0.88rem;
+    color: #444;
+    display: block;
+}
+.portfolio-children .child-link:hover { color: #0a0a0a; }
 
 /* SERVICE DETAIL ------------------------------------------------------- */
 .service-crumb {
@@ -446,6 +548,24 @@
     letter-spacing: 0.02em;
     line-height: 1.5;
 }
+.fin-solucoes {
+    margin-top: 0.5rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    color: #999;
+    text-transform: uppercase;
+}
+.fin-sol-link {
+    color: #0a0a0a;
+    text-decoration: none;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    border-bottom: 1px dotted #bbb;
+    padding-bottom: 1px;
+    transition: border-color 0.15s, color 0.15s;
+}
+.fin-sol-link:hover { color: #555; border-bottom-color: #555; }
 .fin-sub-breakdown {
     margin-top: 0.6rem;
     padding-left: 1rem;
@@ -700,7 +820,322 @@
 }
 .bundle-more-btn:hover { opacity: 0.55; }
 
+/* MISSÕES (em /solucoes/) ---------------------------------------------- */
+.missoes-group { list-style: none; margin-bottom: 4vh; }
+.missoes-comunidade-head {
+    margin: 5vh 0 1.5vh;
+    padding-bottom: 1vh;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+}
+.missoes-comunidade-head .c-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #999;
+    font-weight: 600;
+}
+.missoes-comunidade-head .c-link {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #0a0a0a;
+    text-decoration: none;
+    letter-spacing: -0.01em;
+}
+.missoes-comunidade-head .c-link:hover { opacity: 0.55; }
+
+.missao-card {
+    padding: 2.2vh 0;
+    border-bottom: 1px solid #eee;
+}
+.missao-card:last-child { border-bottom: none; }
+.missao-card.depth-1 {
+    padding-left: 1.5rem;
+    border-left: 2px solid #eee;
+    margin-left: 1rem;
+    border-bottom: none;
+    margin-bottom: 0.5vh;
+}
+.missao-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.4rem;
+}
+.missao-nome {
+    font-size: clamp(1.1rem, 2.3vw, 1.4rem);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: #0a0a0a;
+}
+.missao-card.depth-1 .missao-nome {
+    font-size: 1rem;
+}
+.missao-subtitle {
+    font-size: 0.78rem;
+    color: #888;
+    letter-spacing: 0.02em;
+    font-style: italic;
+}
+.missao-objetivo {
+    font-size: 0.9rem;
+    color: #444;
+    line-height: 1.55;
+    margin: 0.4rem 0;
+    max-width: 65ch;
+}
+.missao-envolvidos {
+    font-size: 0.78rem;
+    color: #888;
+    margin-top: 0.4rem;
+    letter-spacing: 0.02em;
+}
+.missao-envolvidos a {
+    color: #0a0a0a;
+    font-weight: 600;
+    text-decoration: none;
+}
+.missao-envolvidos a:hover { opacity: 0.5; }
+
+.missao-attach {
+    list-style: none;
+    margin-top: 0.8rem;
+}
+.missao-attach li { padding: 0.3rem 0; }
+.missao-attach a {
+    font-size: 0.78rem;
+    color: #0a0a0a;
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+}
+.missao-attach a:hover { opacity: 0.6; }
+.missao-attach .att-kind {
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    color: #fff;
+    background: #0a0a0a;
+    padding: 0.25em 0.5em;
+    font-weight: 600;
+}
+
+.missao-children {
+    list-style: none;
+    margin-top: 1vh;
+    padding-top: 1vh;
+    border-top: 1px dashed #eee;
+}
+.missao-autor {
+    font-size: 0.8rem;
+    color: #888;
+    font-style: italic;
+    letter-spacing: 0.02em;
+}
+.missao-autor a { color: #0a0a0a; font-weight: 600; text-decoration: none; }
+.missao-autor a:hover { opacity: 0.5; }
+
+/* PARCERIAS no profile de comunidade */
+.parceria-section { }
+.parceria-desc {
+    color: #444;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    max-width: 62ch;
+    margin-bottom: 2vh;
+}
+.parceria-contribs {
+    list-style: none;
+}
+.parceria-contribs li {
+    padding: 0.7rem 0;
+    border-bottom: 1px solid #f4f4f4;
+    font-size: 0.9rem;
+    color: #444;
+    line-height: 1.55;
+}
+.parceria-contribs li:last-child { border-bottom: none; }
+.parceria-contribs a { color: #0a0a0a; text-decoration: none; }
+.parceria-contribs a:hover { opacity: 0.55; }
+
+/* PERGUNTA/RESPOSTA em Soluções (Arte Longa framing) */
+.solucao-pergunta {
+    margin: 1vh 0 2vh;
+    padding: 2vh 0;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+.solucao-pergunta .q { color: #666; }
+.solucao-pergunta .a {
+    color: #0a0a0a;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    margin-left: 0.4em;
+}
+.solucao-platforms { margin-top: 1.5rem; }
+
+/* Lema — linha de posicionamento curta entre pergunta e desc. */
+.solucao-lema {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #0a0a0a;
+    letter-spacing: -0.01em;
+    margin: 1.4vh 0 0.6vh;
+}
+
+/* Badge "+N membros" na lista de comunidade em /parceiros/ */
+.card-membros .membros-badge {
+    padding: 0.45em 0 !important;
+    font-size: 0.72rem;
+    color: #888;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-style: italic;
+    border-bottom: none !important;
+    border-top: 1px dashed #ddd;
+    margin-top: 0.3em;
+    padding-top: 0.8em !important;
+    cursor: default;
+}
+
+/* Service children popover — floating, smaller, doesn't overflow */
+.portfolio-list li.has-children .portfolio-children {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    width: min(320px, 80vw);
+    background: #fff;
+    border: 1px solid #0a0a0a;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    z-index: 20;
+    padding: 0;
+    margin-left: 0;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.25s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s;
+    border-left: none;
+}
+.portfolio-list li.has-children { position: relative; }
+.portfolio-list li.has-children:hover .portfolio-children,
+.portfolio-list li.has-children.open .portfolio-children {
+    max-height: 520px;
+    opacity: 1;
+    padding: 0.8rem 1.2rem;
+}
+.portfolio-children li {
+    padding: 0.4rem 0 !important;
+    font-size: 0.8rem;
+    border-bottom: 1px solid #f5f5f5 !important;
+}
+.portfolio-children .child-link {
+    font-size: 0.82rem;
+    color: #0a0a0a;
+    font-weight: 500;
+    display: block;
+}
+.portfolio-children .child-link:hover { opacity: 0.55; }
+
+/* /parceiros/ — botão "Ver serviços" + popover flutuante.
+   Popover vive fora do .card (irmão) para escapar do overflow/clip e
+   ancorar no <li> (position: relative). Não empurra layout. */
+.ver-servicos-btn {
+    font-family: inherit;
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #555;
+    background: transparent;
+    border: 1px solid #ddd;
+    padding: 0.6em 0.9em;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+}
+.ver-servicos-btn:hover,
+.ver-servicos-btn[aria-expanded="true"] {
+    color: #0a0a0a;
+    border-color: #0a0a0a;
+}
+.card-missoes-hint {
+    font-size: 0.72rem;
+    color: #c5c5c5;
+    font-style: italic;
+    letter-spacing: 0.08em;
+}
+
+.servicos-popover {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    width: min(320px, 80vw);
+    background: #fff;
+    border: 1px solid #0a0a0a;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    z-index: 50;
+    padding: 1rem 1.2rem;
+    display: none;
+}
+.servicos-open .servicos-popover { display: block; }
+
+/* Host de popover em /solucoes/ */
+.solucao { position: relative; }
+.solucao-actions { position: relative; margin-top: 1.2rem; display: flex; justify-content: flex-start; }
+.servicos-popover-head {
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 0.6rem;
+    font-weight: 600;
+}
+.servicos-popover-list { list-style: none; max-height: 60vh; overflow-y: auto; }
+.servicos-popover-list li {
+    padding: 0.35em 0;
+    border-bottom: 1px solid #f3f3f3;
+}
+.servicos-popover-list li:last-child { border-bottom: none; }
+.servicos-popover-list a {
+    font-size: 0.82rem;
+    color: #0a0a0a;
+    text-decoration: none;
+    display: block;
+    transition: opacity 0.15s;
+}
+.servicos-popover-list a:hover { opacity: 0.55; }
+/* Parent (grupo) vs child (sub-serviço) — cabeçalho negrito, filhos indentados */
+.servicos-popover-list li.svc-group {
+    padding-top: 0.6em;
+    border-bottom: none;
+}
+.servicos-popover-list li.svc-group:first-child { padding-top: 0; }
+.servicos-popover-list li.svc-group a {
+    font-weight: 700;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #0a0a0a;
+}
+.servicos-popover-list li.svc-child {
+    padding-left: 0.9rem;
+    border-bottom: 1px solid #f7f7f7;
+}
+.servicos-popover-list li.svc-child a {
+    font-size: 0.78rem;
+    color: #555;
+}
+.servicos-popover-list li.svc-child a:hover { color: #0a0a0a; opacity: 1; }
+
 @media (max-width: 640px) {
+    .servicos-popover { right: 0; left: 0; width: auto; }
+
     .home-menu a { padding: 2.4vh 0; }
     .home-menu .arrow { font-size: 0.72rem; }
     .portfolio-list li { flex-direction: column; gap: 0.4rem; align-items: flex-start; }

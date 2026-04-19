@@ -16,6 +16,10 @@
 .avatar-lg { width: 128px; height: 128px; font-size: 3.5rem; }
 .avatar-sm img, .avatar-lg img {
     width: 100%; height: 100%; object-fit: cover; display: block;
+}
+/* B&W apenas para quem está em memória — cor para quem está vivo. */
+body.em-memoria-profile .avatar-sm img,
+body.em-memoria-profile .avatar-lg img {
     filter: grayscale(100%);
 }
 

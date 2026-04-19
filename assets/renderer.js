@@ -38,10 +38,20 @@
         return `<p class="card-bio empty">Biografia em breve.</p>`;
     }
 
+    // Inline markdown: [text](url) → anchor. Safe-escaped first, then rehydrated.
+    function mdInline(s) {
+        return esc(s).replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, text, url) => {
+            // url is already escaped — we need to unescape HTML entities for the href
+            const href = url.replace(/&amp;/g, "&").replace(/&#39;/g, "'").replace(/&quot;/g, '"');
+            const external = /^https?:\/\//.test(href);
+            return `<a href="${href}"${external ? ' target="_blank" rel="noopener"' : ''}>${text}</a>`;
+        });
+    }
+
     function bioFull(entity) {
         if (!entity.bio) return `<p class="profile-bio empty">Biografia em breve.</p>`;
         const paragraphs = entity.bio.split(/\n\s*\n/).map(s => s.trim()).filter(Boolean);
-        return paragraphs.map(p => `<p class="profile-bio">${esc(p)}</p>`).join("");
+        return paragraphs.map(p => `<p class="profile-bio">${mdInline(p)}</p>`).join("");
     }
 
     // Inline age counter, under the role. Returns element + optional tick function.
@@ -99,15 +109,51 @@
         return `<a class="missao-link" href="/servicos/?q=${encodeQ(titulo)}">${esc(titulo)} <span class="missao-arrow">→ serviços</span></a>`;
     }
 
+    // Expande uma lista de títulos de serviços para exibição no popover.
+    // Se um título tiver filhos (ex.: "Inteligência e Tecnologia" → 10 subs),
+    // o pai vira cabeçalho do grupo e os filhos ficam indentados abaixo.
+    // Usado em /parceiros/ (servicos da pessoa) e /solucoes/ (bundledServices).
+    function expandTitlesForPopover(titles) {
+        const items = [];
+        for (const t of titles) {
+            const children = AL.services.filter(s => s.parent === t);
+            if (children.length) {
+                const parentSvc = AL.serviceByTitle(t);
+                items.push({
+                    titulo: t,
+                    slug: parentSvc ? parentSvc.slug : AL.slugify(t),
+                    role: "group"
+                });
+                for (const c of children) {
+                    items.push({ titulo: c.titulo, slug: c.slug, role: "child" });
+                }
+            } else {
+                const svc = AL.serviceByTitle(t);
+                items.push({
+                    titulo: t,
+                    slug: svc ? svc.slug : AL.slugify(t),
+                    role: "item"
+                });
+            }
+        }
+        return items;
+    }
+    function renderPopoverList(items) {
+        return items.map(it => {
+            const cls = it.role === "group" ? "svc-group" : it.role === "child" ? "svc-child" : "";
+            return `<li${cls ? ` class="${cls}"` : ""}><a href="/servicos/${esc(it.slug)}/">${esc(it.titulo)} →</a></li>`;
+        }).join("");
+    }
+
     function miniRow(entity) {
         const nome = entity.nome;
         const memoriaTag = entity.emMemoria ? ` <span class="mini-memoria">em memória</span>` : "";
-        const missoes = entity.missoes && entity.missoes.length
-            ? `<div class="mini-drawer"><ul class="mini-missoes">${entity.missoes.map(m => `<li>${esc(m)}</li>`).join("")}</ul></div>`
+        const servicos = entity.servicos && entity.servicos.length
+            ? `<div class="mini-drawer"><ul class="mini-missoes">${entity.servicos.map(m => `<li>${esc(m)}</li>`).join("")}</ul></div>`
             : "";
         return `<li class="mini-row${entity.emMemoria ? ' mini-row-memoria' : ''}">
             <a class="mini-name" href="/${esc(entity.handle)}/">${esc(nome)}</a>${memoriaTag}
-            ${missoes}
+            ${servicos}
         </li>`;
     }
 
@@ -191,22 +237,59 @@
 
         const rows = roster.map(entity => {
             const isComunidade = entity.type === "community";
-            const targetUrl = entity.externalUrl || `/${entity.handle}/`;
-            const targetAttrs = entity.externalUrl ? ` target="_blank" rel="noopener"` : "";
-            const seeMore = entity.muted ? "" : `<a class="see-more" href="${targetUrl}"${targetAttrs}>ver mais →</a>`;
-            const nameHtml = `<a href="${targetUrl}" class="name"${targetAttrs}>${esc(entity.nome)}</a>`;
+            // Name click: externa se a comunidade tem site próprio (QA, HFS, Hedix)
+            const nameUrl = entity.externalUrl || `/${entity.handle}/`;
+            const nameAttrs = entity.externalUrl ? ` target="_blank" rel="noopener"` : "";
+            // Ver Mais: sempre leva ao perfil interno (página estendida da Arte Longa)
+            const verMaisUrl = `/${entity.handle}/`;
+            const verMaisLabel = isComunidade ? "Ver Mais →" : "ver mais →";
+            const seeMore = entity.muted ? "" : `<a class="see-more" href="${verMaisUrl}">${verMaisLabel}</a>`;
+            const nameHtml = `<a href="${nameUrl}" class="name"${nameAttrs}>${esc(entity.nome)}</a>`;
 
             // Sub-members come from either .membros (community) or .subMembers (person)
             const subHandles = isComunidade ? entity.membros : (entity.subMembers || []);
             const subs = (subHandles || []).map(h => AL.get(h)).filter(Boolean);
 
-            const membrosHtml = subs.length
-                ? `<ul class="card-membros">${subs.map(miniRow).join("")}</ul>`
+            // Para comunidades: esconde membros que já aparecem no roster principal
+            // + coloca em-memória por último, atrás de "ver mais".
+            const rosterSet = new Set(AL.rosterOrder || []);
+            // Regra: quem já está no roster principal fica atrás de "ver mais"
+            // (evita redundância). Em-memória permanece visível — honra a lembrança.
+            const splitSubs = (list) => {
+                if (!isComunidade) return { visible: list, hidden: [] };
+                const visible = [];
+                const hidden = [];
+                for (const m of list) {
+                    if (rosterSet.has(m.handle)) hidden.push(m);
+                    else visible.push(m);
+                }
+                return { visible, hidden };
+            };
+            const { visible: subsVisible, hidden: subsHidden } = splitSubs(subs);
+
+            // Comunidade: só a lista curta (únicos + em memória) + badge "+N" indicando
+            // quantos outros existem. Não expande inline — CTA "Ver Mais" leva ao perfil da comunidade.
+            const hiddenBadge = subsHidden.length ? `<li class="membros-badge">+ ${subsHidden.length} membros</li>` : "";
+            const membrosHtml = (subsVisible.length || subsHidden.length)
+                ? `<ul class="card-membros">${subsVisible.map(miniRow).join("")}${hiddenBadge}</ul>`
                 : "";
 
-            const missoesHtml = (entity.missoes && entity.missoes.length)
-                ? `<ul class="card-missoes">${entity.missoes.map(m => `<li>${esc(m)}</li>`).join("")}</ul>`
-                : (entity.muted ? "" : `<ul class="card-missoes"><li style="font-style:italic;color:#bbb;">em breve</li></ul>`);
+            // Serviços saem do corpo do cartão — viram um botão "Ver serviços" que
+            // abre um popover flutuante (position: absolute) para não empurrar o layout.
+            // Comunidades não têm serviços comerciais (oferecem via missões).
+            const svcList = (!isComunidade && entity.servicos && entity.servicos.length)
+                ? entity.servicos
+                : [];
+            const svcItems = svcList.length ? expandTitlesForPopover(svcList) : [];
+            const servicosBtn = svcItems.length
+                ? `<button type="button" class="ver-servicos-btn" aria-expanded="false">Ver serviços (${svcItems.length}) →</button>`
+                : (isComunidade || entity.muted ? "" : `<span class="card-missoes-hint">em breve</span>`);
+            const servicosPopover = svcItems.length
+                ? `<div class="servicos-popover" role="dialog" aria-label="Serviços de ${esc(entity.nome)}">
+                    <div class="servicos-popover-head">Serviços de ${esc(entity.nome)}</div>
+                    <ul class="servicos-popover-list">${renderPopoverList(svcItems)}</ul>
+                   </div>`
+                : "";
 
             const avatar = isComunidade ? "" : avatarSm(entity);
             const profileBlock = isComunidade
@@ -222,7 +305,7 @@
                 <div class="row">${nameHtml}<span class="role">${esc(entity.role || "")}</span></div>
                 <div class="card"><div class="card-inner">
                     <div class="card-left">${profileBlock}${membrosHtml}${seeMore}</div>
-                    <div class="card-right">${missoesHtml}</div>
+                    <div class="card-right">${servicosBtn}${servicosPopover}</div>
                 </div></div>
             </li>`;
         }).join("");
@@ -234,10 +317,10 @@
                 <ul class="roster">${rows}</ul>
                 <div class="coda"><span class="when">01.04.2026</span></div>
                 ${ctaLead({
-                    title: "Seja um parceiro",
-                    body: "Tem uma missão que dialoga com a rede? Entre para a Arte Longa. Acompanhamos seu crescimento.",
+                    title: "Participe",
+                    body: "Faça parte da rede.",
                     id: "parceiros"
-                }, "Quero ser parceiro →")}
+                }, "Entrar →")}
             </main>
             ${modalContact("contact-modal", "Bem-vindo à rede")}
         `;
@@ -255,6 +338,18 @@
             });
         });
 
+        // Ver mais para lista de membros de comunidade
+        document.querySelectorAll(".membros-more-btn").forEach(btn => {
+            const list = btn.previousElementSibling; // .card-membros
+            const more = btn.dataset.more;
+            btn.addEventListener("click", e => {
+                e.stopPropagation();
+                const expanded = list.classList.toggle("membros-expanded");
+                btn.textContent = expanded ? "ver menos" : `ver mais (+${more})`;
+            });
+        });
+
+        wirePopover(".roster > li");
         wireModal("contact-modal", '[data-cta="parceiros"]');
     }
 
@@ -264,24 +359,25 @@
         const handleToNome = Object.fromEntries(AL.people.concat(AL.communities).map(e => [e.handle, e.nome]));
         const respNames = handles => handles.map(h => handleToNome[h] || h).join(", ");
 
+
         document.body.innerHTML = `
             ${siteHeader()}
             <main class="main">
                 <h1 class="page-title">Serviços</h1>
                 <div class="page-subtitle">Arte Longa · catálogo</div>
 
-                <p class="intro">Um serviço é uma unidade combinável. A rede pacota serviços em <a href="/solucoes/">soluções</a> — ou monta uma custom, sob encomenda.</p>
+                <p class="intro">Serviços são compostos em <a href="/solucoes/">Soluções</a>.</p>
 
-                <div class="section-header"><h2>Portfólio</h2><span class="label">serviços da rede · clique para abrir</span></div>
+                <div class="section-header"><h2>Portfólio</h2><span class="label">clique para abrir · hover revela sub-serviços</span></div>
                 <div class="controls"><input type="search" id="search" placeholder="Buscar serviço…" autocomplete="off"></div>
                 <div class="count" id="count"></div>
                 <ul class="portfolio-list" id="portfolio-list"></ul>
 
                 ${ctaLead({
-                    title: "Anuncie seus serviços com a Arte Longa",
-                    body: "Tem um serviço que dialoga com a rede? Junte-se ao portfólio. Transparência e rede de parceiros.",
+                    title: "Anuncie",
+                    body: "Participe da Rede.",
                     id: "servicos"
-                }, "Quero anunciar →")}
+                }, "Entrar →")}
 
                 <a class="back" href="/">← voltar</a>
             </main>
@@ -299,20 +395,47 @@
         document.addEventListener("keydown", e => { if (e.key === "Escape") leadModal.classList.remove("on"); });
         document.querySelector('[data-cta="servicos"]').addEventListener("click", () => leadModal.classList.add("on"));
 
+        // Renderização em dois modos:
+        // 1) Sem busca: mostra apenas serviços top-level (sem parent). Parents com filhos
+        //    ganham uma hover-drawer revelando sub-serviços.
+        // 2) Com busca: achata toda a hierarquia e mostra resultados com breadcrumb de parent.
+        function makeRow(s, { inChildren = false } = {}) {
+            const parent = s.parent ? `<span class="portfolio-parent">${esc(s.parent)} ›</span> ` : "";
+            const titulo = inChildren ? esc(s.titulo) : `${parent}${esc(s.titulo)}`;
+            const childCount = (s.children && s.children.length) || 0;
+            const expandable = childCount > 0 && !inChildren ? `<span class="portfolio-expand">+${childCount}</span>` : "";
+            const resp = inChildren ? "" : `<div class="portfolio-resp">${esc(respNames(s.responsavel))}</div>`;
+            const children = (!inChildren && s.children && s.children.length)
+                ? `<ul class="portfolio-children">${s.children.map(ct => {
+                    const ch = servicos.find(x => x.titulo === ct);
+                    if (!ch) return "";
+                    return `<li><a href="/servicos/${esc(ch.slug)}/" class="portfolio-link child-link"><span>${esc(ch.titulo)}</span></a></li>`;
+                  }).join("")}</ul>`
+                : "";
+            return `<li class="${expandable ? 'has-children' : ''}">
+                <a href="/servicos/${esc(s.slug)}/" class="portfolio-link">
+                    <div class="portfolio-titulo">${titulo}${expandable}</div>
+                    ${resp}
+                </a>
+                ${children}
+            </li>`;
+        }
+
         function render() {
             const q = norm(searchEl.value);
-            const filtered = q ? servicos.filter(s => norm(s.titulo).includes(q) || norm(respNames(s.responsavel)).includes(q)) : servicos;
-            countEl.textContent = `${filtered.length} de ${servicos.length} serviços`;
+            let filtered;
+            if (q) {
+                filtered = servicos.filter(s => norm(s.titulo).includes(q) || norm(respNames(s.responsavel)).includes(q) || (s.parent && norm(s.parent).includes(q)));
+                countEl.textContent = `${filtered.length} de ${servicos.length} serviços`;
+            } else {
+                filtered = servicos.filter(s => !s.parent);
+                countEl.textContent = `${filtered.length} serviços · ${servicos.length - filtered.length} sub-serviços`;
+            }
             if (!filtered.length) {
                 listEl.innerHTML = `<li class="empty-state">Nenhum serviço encontrado.</li>`;
                 return;
             }
-            listEl.innerHTML = "";
-            filtered.forEach(s => {
-                const li = document.createElement("li");
-                li.innerHTML = `<a href="/servicos/${esc(s.slug)}/" class="portfolio-link"><div class="portfolio-titulo">${esc(s.titulo)}</div><div class="portfolio-resp">${esc(respNames(s.responsavel))}</div></a>`;
-                listEl.appendChild(li);
-            });
+            listEl.innerHTML = filtered.map(s => makeRow(s, { inChildren: !!q })).join("");
         }
 
         const urlQ = new URLSearchParams(location.search).get("q");
@@ -321,47 +444,111 @@
         render();
     }
 
+    // ─── MISSION COMPONENTS ──────────────────────────────────────────────────
+    function missionCard(m, depth = 0) {
+        const subs = AL.subMissionsOf(m.handle);
+        const sub = m.subtitle ? `<span class="missao-subtitle">${esc(m.subtitle)}</span>` : "";
+        const attach = m.attachments && m.attachments.length
+            ? `<ul class="missao-attach">${m.attachments.map(a =>
+                `<li><a href="${esc(a.url)}" target="_blank" rel="noopener"><span class="att-kind">${esc((a.kind || "arquivo").toUpperCase())}</span> ${esc(a.label)} →</a></li>`).join("")}</ul>`
+            : "";
+        const children = subs.length
+            ? `<ul class="missao-children">${subs.map(s => missionCard(s, depth + 1)).join("")}</ul>`
+            : "";
+        const envolvidos = m.envolvidos && m.envolvidos.length
+            ? `<div class="missao-envolvidos">com ${m.envolvidos.map(h => {
+                const p = AL.get(h);
+                return p ? `<a href="/${esc(h)}/">${esc(p.nome)}</a>` : esc(h);
+              }).join(", ")}</div>`
+            : "";
+        return `<li class="missao-card depth-${depth}">
+            <div class="missao-head">
+                <span class="missao-nome">${esc(m.nome)}</span>
+                ${sub}
+            </div>
+            ${m.objetivo ? `<p class="missao-objetivo">${esc(m.objetivo)}${m.objetivoAutor ? ` <cite class="missao-autor">— <a href="/${esc(m.objetivoAutor)}/">${esc((AL.get(m.objetivoAutor) || {}).nome || m.objetivoAutor)}</a></cite>` : ""}</p>` : ""}
+            ${envolvidos}
+            ${attach}
+            ${children}
+        </li>`;
+    }
+
+    function renderMissionsSection() {
+        const missoes = AL.topLevelMissions();
+        if (!missoes.length) return "";
+
+        // Agrupa por comunidade, exceto quando displayAtRoot=true (mostra no topo sem agrupamento)
+        const rootLevel = missoes.filter(m => m.displayAtRoot);
+        const byComunidade = new Map();
+        for (const m of missoes) {
+            if (m.displayAtRoot) continue;
+            const key = m.comunidade || "_";
+            if (!byComunidade.has(key)) byComunidade.set(key, []);
+            byComunidade.get(key).push(m);
+        }
+
+        let html = `<div class="section-header"><h2>Missões</h2></div>`;
+        html += `<p class="intro">Missões são comunidades com objetivos em comum.</p>`;
+
+        if (rootLevel.length) {
+            html += `<ul class="missoes-group">${rootLevel.map(m => missionCard(m)).join("")}</ul>`;
+        }
+        for (const [comunidadeHandle, list] of byComunidade) {
+            const c = AL.get(comunidadeHandle);
+            const head = c
+                ? `<div class="missoes-comunidade-head"><span class="c-label">Comunidade</span><a class="c-link" href="/${esc(c.handle)}/">${esc(c.nome)}</a></div>`
+                : "";
+            html += head + `<ul class="missoes-group">${list.map(m => missionCard(m)).join("")}</ul>`;
+        }
+        return html;
+    }
+
     // ─── PAGE: SOLUCOES ──────────────────────────────────────────────────────
     function renderSolucoes() {
         const cards = AL.solutions.map(s => {
             const urlAttrs = s.internalLink ? "" : ` target="_blank" rel="noopener"`;
             const urlArrow = s.internalLink ? "ver →" : "acessar →";
 
-            // Bundle list
-            let bundleHtml = "";
-            if (s.bundledServices === "*") {
-                bundleHtml = `<ul class="bundle-list"><li><a href="/servicos/">catálogo completo →</a></li></ul>`;
-            } else {
-                const items = s.bundledServices;
-                const show = 3;
-                const lis = items.map((t, i) => {
-                    const slug = AL.slugify(t);
-                    return `<li${i >= show ? ' class="more-item"' : ''}><a href="/servicos/${slug}/">${esc(t)}</a></li>`;
-                }).join("");
-                const moreCount = Math.max(0, items.length - show);
-                const btn = moreCount > 0
-                    ? `<button type="button" class="bundle-more-btn" data-more="${moreCount}">ver mais (+${moreCount})</button>`
-                    : "";
-                bundleHtml = `<ul class="bundle-list">${lis}</ul>${btn}`;
-            }
+            // Serviços via popover (mesmo padrão de /parceiros/).
+            // Uma solução = coleção de serviços. bundledServices="*" vai para o catálogo;
+            // lista concreta expande pais em filhos (ex.: IT → 10 sub-serviços do Yuri).
+            const isCatalog = s.bundledServices === "*";
+            const rawTitles = isCatalog ? [] : (s.bundledServices || []);
+            const expanded = rawTitles.length ? expandTitlesForPopover(rawTitles) : [];
+            const hasServicos = isCatalog || expanded.length > 0;
+            const svcCount = isCatalog ? "catálogo" : expanded.length;
+            const svcBtn = hasServicos
+                ? `<button type="button" class="ver-servicos-btn" aria-expanded="false">Ver serviços (${svcCount}) →</button>`
+                : "";
+            const svcListHtml = isCatalog
+                ? `<li><a href="/servicos/">Catálogo completo →</a></li>`
+                : renderPopoverList(expanded);
+            const svcPopover = hasServicos
+                ? `<div class="servicos-popover" role="dialog" aria-label="Serviços de ${esc(s.nome)}">
+                    <div class="servicos-popover-head">Serviços · ${esc(s.nome)}</div>
+                    <ul class="servicos-popover-list">${svcListHtml}</ul>
+                   </div>`
+                : "";
 
-            return `<li class="solucao">
+            // respostaChave pode vir sozinha (só a palavra-chave em destaque) ou
+            // acompanhada de uma pergunta (framing socrático). lema é a linha de
+            // posicionamento curta ("A Rede — Conectando Pessoas"); desc dá o
+            // texto evocativo. As três vivem juntas sem repetição.
+            const pergunta = s.respostaChave
+                ? `<div class="solucao-pergunta${s.pergunta ? "" : " resposta-solo"}">${s.pergunta ? `<span class="q">${esc(s.pergunta)}</span> ` : ""}<strong class="a">${esc(s.respostaChave)}</strong></div>`
+                : "";
+            const lema = s.lema ? `<div class="solucao-lema">${esc(s.lema)}</div>` : "";
+            return `<li class="solucao" id="${esc(s.handle)}">
                 <div class="solucao-head">
                     <a class="solucao-nome" href="${esc(s.url)}"${urlAttrs}>${esc(s.nome)} <span class="arrow">${urlArrow}</span></a>
                     <span class="solucao-tagline">${esc(s.tagline)}</span>
                 </div>
                 <span class="solucao-url">${esc(s.urlLabel)}</span>
+                ${pergunta}
+                ${lema}
                 <p class="solucao-desc">${esc(s.desc)}</p>
-                <div class="solucao-grid">
-                    <div>
-                        <div class="bundle-label">Serviços</div>
-                        ${bundleHtml}
-                    </div>
-                    <div>
-                        <div class="bundle-label">Plataformas</div>
-                        <ul class="platforms">${s.platforms.map(platformItem).join("")}</ul>
-                    </div>
-                </div>
+                <ul class="platforms solucao-platforms">${s.platforms.map(platformItem).join("")}</ul>
+                <div class="solucao-actions">${svcBtn}${svcPopover}</div>
             </li>`;
         }).join("");
 
@@ -370,29 +557,57 @@
             <main class="main">
                 <h1 class="page-title">Soluções</h1>
                 <div class="page-subtitle">Arte Longa · Produtos</div>
-                <p class="intro">Uma solução é um conjunto de serviços da rede organizados em uma plataforma. Cada solução reúne pessoas, missões e tecnologia em torno de um tema.</p>
+                <p class="intro">Soluções são conjuntos de serviços.</p>
                 <ul class="solucoes-list">${cards}</ul>
 
+                ${renderMissionsSection()}
+
                 ${ctaLead({
-                    title: "Construa soluções com a Arte Longa",
-                    body: "Tem uma ideia de plataforma ou rede social que junta pessoas em torno de algo? A gente ajuda a sair do papel — da concepção ao lançamento.",
+                    title: "Construa uma solução",
+                    body: "Da ideia ao lançamento.",
                     id: "solucoes"
-                }, "Quero construir →")}
+                }, "Compartilhe →")}
 
                 <a class="back" href="/">← voltar</a>
             </main>
             ${modalContact("contact-modal", "Vamos construir?")}
         `;
 
-        document.querySelectorAll(".bundle-more-btn").forEach(btn => {
-            const list = btn.previousElementSibling;
-            const more = btn.dataset.more;
-            btn.addEventListener("click", () => {
-                const expanded = list.classList.toggle("expanded");
-                btn.textContent = expanded ? "ver menos" : `ver mais (+${more})`;
+        wirePopover(".solucao");
+        wireModal("contact-modal", '[data-cta="solucoes"]');
+    }
+
+    // Popover "Ver serviços" — clicar toggla; clique fora ou Esc fecha.
+    // Usado em /parceiros/ (host = .roster > li) e em /solucoes/ (host = .solucao).
+    function wirePopover(hostSelector) {
+        const hosts = () => document.querySelectorAll(hostSelector + ".servicos-open");
+        const closeAll = () => {
+            hosts().forEach(h => {
+                h.classList.remove("servicos-open");
+                const btn = h.querySelector(".ver-servicos-btn");
+                if (btn) btn.setAttribute("aria-expanded", "false");
+            });
+        };
+        document.querySelectorAll(hostSelector + " .ver-servicos-btn").forEach(btn => {
+            btn.addEventListener("click", e => {
+                e.stopPropagation();
+                const host = btn.closest(hostSelector);
+                const wasOpen = host.classList.contains("servicos-open");
+                closeAll();
+                if (!wasOpen) {
+                    host.classList.add("servicos-open");
+                    btn.setAttribute("aria-expanded", "true");
+                }
             });
         });
-        wireModal("contact-modal", '[data-cta="solucoes"]');
+        document.addEventListener("click", e => {
+            if (!e.target.closest(".servicos-popover") && !e.target.closest(".ver-servicos-btn")) {
+                closeAll();
+            }
+        });
+        document.addEventListener("keydown", e => {
+            if (e.key === "Escape") closeAll();
+        });
     }
 
     // ─── PAGE: PROFILE ───────────────────────────────────────────────────────
@@ -406,12 +621,13 @@
                 ...p,
                 role: p.tagline,
                 bio: p.desc,
-                missoes: p.bundledServices === "*" ? [] : p.bundledServices,
+                servicos: p.bundledServices === "*" ? [] : p.bundledServices,
                 emBreve: p.platforms && p.platforms.every(pl => pl.status === "wip")
             };
         }
 
         document.title = `${p.nome} — Arte Longa`;
+        document.body.classList.toggle("em-memoria-profile", !!p.emMemoria);
 
         const { html: counterHtml, tick: tickFn } = counter(p);
 
@@ -419,11 +635,27 @@
         const emBreveNote = p.emBreve ? `<div class="em-breve-note">Perfil em breve.</div>` : "";
         const emMemoriaNote = p.emMemoria ? `<div class="em-memoria-note"><em>em memória</em></div>` : "";
 
-        const missoesHtml = (p.missoes && p.missoes.length)
-            ? `<section class="section missoes-section">
-                 <h2>Missões <span class="section-hint">coleções de serviços — clique para ver</span></h2>
-                 <ul>${p.missoes.map(m => `<li>${missaoLink(m)}</li>`).join("")}</ul>
-               </section>` : "";
+        const isCommunity = p.type === "community";
+        // Label do bloco de serviços — varia por status:
+        //   comunidade → Missões · aposentado → Legado · em memória → Legado · ativo → Serviços
+        const legadoCase = p.aposentado || p.emMemoria;
+        const servicoLabel = isCommunity ? "Missões" : (legadoCase ? "Legado" : "Serviços");
+        const servicoHint = isCommunity
+            ? "comunidade oferece via serviços"
+            : p.emMemoria ? "serviços prestados · em memória"
+            : p.aposentado ? "serviços prestados · aposentado"
+            : "clique para ver no catálogo";
+        // Underage: perfil privado, serviços não aparecem
+        const missoesHtml = (p.underage || !p.servicos || !p.servicos.length)
+            ? ""
+            : `<section class="section missoes-section">
+                 <h2>${servicoLabel} <span class="section-hint">${servicoHint}</span></h2>
+                 <ul>${p.servicos.map(m => `<li>${missaoLink(m)}</li>`).join("")}</ul>
+               </section>`;
+
+        const underageNote = p.underage
+            ? `<div class="em-memoria-note"><em>perfil sob responsabilidade parental</em></div>`
+            : "";
 
         // Sub-members (for persons) OR community members
         let membrosHtml = "";
@@ -444,9 +676,32 @@
             </section>`;
         }
 
-        const contactHtml = p.site
-            ? `<section class="section"><h2>Contato e Orçamento</h2><ul><li><a href="${esc(p.site)}" target="_blank" rel="noopener">${esc(p.site)}</a></li></ul></section>`
-            : `<section class="section"><h2>Contato e Orçamento</h2><ul><li><span class="email-display">${REDE_EMAIL}</span></li></ul></section>`;
+        // Reference-only (ex.: Papa Leão XIII citado em Valores) não tem canal
+        // de contato institucional; só bio + link externo para a obra.
+        const contactHtml = p.referenceOnly
+            ? ""
+            : p.site
+                ? `<section class="section"><h2>Contato e Parcerias</h2><ul><li><a href="${esc(p.site)}" target="_blank" rel="noopener">${esc(p.site)}</a></li></ul></section>`
+                : `<section class="section"><h2>Contato e Parcerias</h2><ul><li><span class="email-display">${REDE_EMAIL}</span></li></ul></section>`;
+
+        // Parcerias recebidas (pro-bono etc.) — só para comunidades
+        let parceriasHtml = "";
+        if (p.parcerias && p.parcerias.length) {
+            parceriasHtml = p.parcerias.map(par => {
+                const parceiro = AL.get(par.de);
+                const nomeP = parceiro ? parceiro.nome : par.de;
+                const contribs = par.contribuicoes.map(c => {
+                    const quem = AL.get(c.quem);
+                    const link = quem ? `<a href="/${esc(c.quem)}/">${esc(quem.nome)}</a>` : esc(c.quem);
+                    return `<li><strong>${link}</strong> — ${esc(c.oque)}</li>`;
+                }).join("");
+                return `<section class="section parceria-section">
+                    <h2>Parceria · ${esc(nomeP)} <span class="section-hint">${esc(par.tipo)}</span></h2>
+                    <p class="parceria-desc">${esc(par.descricao)}</p>
+                    <ul class="parceria-contribs">${contribs}</ul>
+                </section>`;
+            }).join("");
+        }
 
         document.body.innerHTML = `
             ${siteHeader()}
@@ -462,8 +717,10 @@
                 </div>
                 ${emBreveNote}
                 ${emMemoriaNote}
+                ${underageNote}
                 ${missoesHtml}
                 ${membrosHtml}
+                ${parceriasHtml}
                 ${comunidadesHtml}
                 ${contactHtml}
                 <a class="back" href="/">← voltar</a>
@@ -563,6 +820,18 @@
         const short = n => n.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
         const nomeOf = h => { const p = AL.get(h); return p ? p.nome : h; };
 
+        // Links para soluções que são exemplos concretos do serviço cobrado/prestado.
+        // Aparecem enxutos no final de cada linha ("exemplo em: Co, Yggdrasil").
+        const solucoesLinks = (handles) => {
+            if (!handles || !handles.length) return "";
+            const links = handles.map(h => {
+                const s = AL.get(h);
+                if (!s) return null;
+                return `<a class="fin-sol-link" href="/solucoes/#${esc(s.handle)}">${esc(s.nome)}</a>`;
+            }).filter(Boolean);
+            return links.length ? `<div class="fin-solucoes">exemplo em: ${links.join(" · ")}</div>` : "";
+        };
+
         // ── COSTS ──
         const totalCustos = f.custos.reduce((a, c) => a + c.value, 0);
         const custosHtml = f.custos.map(c => {
@@ -600,6 +869,7 @@
                     <div class="fin-value">${fmt(r.mensal)}<span class="fin-unit">/mês</span></div>
                 </div>
                 <div class="fin-detail">${esc(r.detail)} · por <a href="/${esc(r.responsavel)}/">${esc(nomeOf(r.responsavel))}</a></div>
+                ${solucoesLinks(r.solucoes)}
             </li>
         `).join("");
 
@@ -613,6 +883,7 @@
                 <div class="fin-sub-breakdown">${r.meses.map(m =>
                     `<div class="sub-line"><span>${esc(m.mes)}</span><span>${fmt(m.value)}</span></div>`
                 ).join("")}</div>
+                ${solucoesLinks(r.solucoes)}
             </li>
         `).join("");
 
@@ -624,6 +895,7 @@
                     <div class="fin-value">${fmt(total)}</div>
                 </div>
                 <div class="fin-detail">${esc(p.detail)} · por <a href="/${esc(p.responsavel)}/">${esc(nomeOf(p.responsavel))}</a></div>
+                ${solucoesLinks(p.solucoes)}
             </li>`;
         }).join("");
 
@@ -634,6 +906,7 @@
                     <div class="fin-value pro-bono-tag">pro-bono</div>
                 </div>
                 <div class="fin-detail">${esc(p.detail)} · por <a href="/${esc(p.responsavel)}/">${esc(nomeOf(p.responsavel))}</a></div>
+                ${solucoesLinks(p.solucoes)}
             </li>
         `).join("");
 
