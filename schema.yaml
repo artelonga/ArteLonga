@@ -1,71 +1,134 @@
 name: artelonga
-version: 1
+version: 2
+
+# Content types form a nested hierarchy:
+# universe ⊇ community ⊇ mission ⊇ service, with content and people attached.
 content_types:
-  - relato
-  - evento
-  - projeto
-  - missao
-  - membro
-  - comunidade
-  - pagina
+  - membro       # person
+  - comunidade   # group (recursive)
+  - missao       # community with an explicit objetivo
+  - servico      # concrete offering in catalog
+  - solucao      # product bundling services
+  - relato       # post, essay, portfolio (paridade com QA)
+  - evento       # event (paridade com QA)
+  - pagina       # static page (paridade com QA)
+
 properties:
-  titulo:
+  # Identity
+  nome:
     kind: text
     required: true
-  descricao:
+  nome_completo:
     kind: text
   slug:
     kind: text
-  tags:
-    kind: list
-  autor:
+  tipo:
+    kind: text          # person | community | mission | service | solution | content | pagina
+  subtype:
+    kind: text          # for content: post | essay | portfolio | event
+
+  # Description
+  titulo:
     kind: text
-  publicado:
-    kind: checkbox
-  data:
-    kind: date
-  hora:
-    kind: text
-  local:
-    kind: text
-  objetivo:
-    kind: text
-  status:
-    kind: text
-  prioridade:
-    kind: text
-  prazo:
-    kind: date
-  nome:
-    kind: text
-  papel:
+  descricao:
     kind: text
   bio:
     kind: text
+  bioCurta:
+    kind: text
+  objetivo:
+    kind: text          # mission requires this
+
+  # Relations
+  autor:
+    kind: text          # handle ref (person or community)
+  responsavel:
+    kind: list          # for services: array of handle refs
+  comunidade:
+    kind: text          # parent community handle
+  comunidades:
+    kind: list          # for persons: community memberships
+  membros:
+    kind: list          # for community: person/community handles
+  subMembros:
+    kind: list          # for person: dependents (family, etc)
+  subComunidades:
+    kind: list          # for community: nested communities
+  missoes:
+    kind: list          # community.missoes or person.missoes (role focus)
+  servicos:
+    kind: list          # mission.servicos
+  parentHandle:
+    kind: text          # for sub-members
+
+  # Lifecycle
+  tags:
+    kind: list
+  publicado:
+    kind: checkbox
+  reivindicado:
+    kind: checkbox
+  emMemoria:
+    kind: checkbox      # binary — alive today or not
+  emBreve:
+    kind: checkbox      # still-in-planning
+
+  # Dates
+  data:
+    kind: date
+  birthDate:
+    kind: text          # ISO 8601 with optional precision (YYYY-MM-DD, T12:30, T12:30:00-03:00)
+  deathDate:
+    kind: date
+  criado:
+    kind: date
+  atualizado:
+    kind: date
+
+  # Visuals
+  pic:
+    kind: link          # path to profile image
   foto_url:
     kind: link
   fotos:
     kind: list
-  funcao:
+
+  # Attachments (files linked from a service or content item)
+  attachments:
+    kind: list          # [{ label, url, kind }]
+
+  # Service-specific
+  cnae:
+    kind: list          # [{ c: "XXXX-X/XX", d: "descrição" }]
+  preco:
+    kind: text          # free-form ("R$ 100/h", "R$ 5.000")
+  summary:
     kind: text
-  reivindicado:
+
+  # Solution-specific
+  tagline:
+    kind: text
+  url:
+    kind: link
+  urlLabel:
+    kind: text
+  internalLink:
     kind: checkbox
-  responsavel:
+  bundledServices:
+    kind: list          # service titles OR "*"
+  platforms:
+    kind: list          # [{ name, status: done|wip, statusText }]
+
+  # Content-specific
+  papel:
+    kind: text          # roles: admin | editor | membro | parceiro
+  role:
+    kind: text          # display role on landing
+
+  # External
+  externalUrl:
+    kind: link
+  site:
+    kind: link
+  client:
     kind: text
-  membros:
-    kind: list
-  comunidades:
-    kind: list
-  arquivo:
-    kind: text
-    required: true
-  legenda:
-    kind: text
-  credito:
-    kind: text
-  destaque:
-    kind: checkbox
-  etiquetas:
-    kind: list
-  criado:
-    kind: date

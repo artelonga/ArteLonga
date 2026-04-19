@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sobre — Arte Longa</title>
-    <link rel="stylesheet" href="/assets/site.css?v=20260424">
-    <link rel="stylesheet" href="/assets/components.css?v=20260424">
-    <link rel="stylesheet" href="/assets/pages.css?v=20260424">
+    <link rel="stylesheet" href="/assets/site.css?v=20260503">
+    <link rel="stylesheet" href="/assets/components.css?v=20260503">
+    <link rel="stylesheet" href="/assets/pages.css?v=20260503">
     <style>
         .page-title {
             font-size: clamp(2rem, 4vw, 3rem);
@@ -125,6 +125,54 @@
         }
         .transparency-note strong { color: #0a0a0a; font-weight: 700; }
 
+        /* Manifesto — Missão · Visão · Valores */
+        .manifesto-item { margin-bottom: 3vh; }
+        .manifesto-item h3 {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: #0a0a0a;
+            margin-bottom: 0.8vh;
+        }
+        .manifesto-item p {
+            font-size: 0.95rem;
+            line-height: 1.55;
+            color: #333;
+            max-width: 62ch;
+        }
+        .valores-list { list-style: none; margin-top: 1vh; }
+        .valores-list li {
+            padding: 2vh 0;
+            border-bottom: 1px solid #f4f4f4;
+        }
+        .valores-list li:last-child { border-bottom: none; }
+        .valor-titulo {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: #0a0a0a;
+            margin-bottom: 0.4vh;
+        }
+        .valor-texto {
+            font-size: 0.9rem;
+            line-height: 1.55;
+            color: #333;
+            max-width: 62ch;
+        }
+        .valor-ref {
+            display: block;
+            margin-top: 0.8vh;
+            font-size: 0.78rem;
+            color: #888;
+            font-style: italic;
+        }
+        .valor-ref a {
+            color: #555;
+            text-decoration: none;
+            border-bottom: 1px dotted #bbb;
+        }
+        .valor-ref a:hover { color: #0a0a0a; border-bottom-color: #0a0a0a; }
+
         .back {
             display: inline-block;
             margin-top: 6vh;
@@ -159,15 +207,21 @@
         <div class="page-subtitle">Arte Longa · Transparência</div>
 
         <ul class="sub-nav">
-            <li><a href="#empresa" class="active">Empresa</a></li>
+            <li><a href="#manifesto" class="active">Manifesto</a></li>
+            <li><a href="#empresa">Empresa</a></li>
             <li><a href="#contato">Contato</a></li>
             <li><a href="#cnae">CNAE</a></li>
             <li><a href="/proximos-passos/">Próximos Passos</a></li>
         </ul>
 
+        <div class="section-header" id="manifesto">
+            <h2>Missão · Visão · Valores</h2>
+        </div>
+        <div id="manifesto-body"></div>
+
         <div class="section-header" id="empresa">
             <h2>Empresa</h2>
-            <span class="label">dados cadastrais</span>
+            
         </div>
 
         <div class="info-grid">
@@ -195,7 +249,7 @@
 
         <div class="section-header" id="contato">
             <h2>Contato</h2>
-            <span class="label">sede</span>
+            
         </div>
 
         <div class="info-grid">
@@ -211,7 +265,7 @@
 
         <div class="section-header" id="cnae">
             <h2>CNAE</h2>
-            <span class="label">classificação nacional de atividades econômicas</span>
+            <span class="label">classificação oficial</span>
         </div>
 
         <ul class="cnae-list">
@@ -263,5 +317,49 @@
         <a class="back" href="/">← voltar</a>
     </main>
 
+    <script src="/assets/data.js?v=20260503"></script>
+    <script>
+    (function () {
+        if (!window.AL || !AL.manifesto) return;
+        const m = AL.manifesto;
+        const esc = s => String(s || "").replace(/[&<>"']/g, c => ({
+            "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+        }[c]));
+
+        function valorLi(v) {
+            let ref = "";
+            if (v.referencia) {
+                const r = v.referencia;
+                const autor = AL.get(r.autor);
+                const autorHtml = autor
+                    ? `<a href="/${esc(r.autor)}/">${esc(autor.nome)}</a>`
+                    : esc(r.autor);
+                const obraHtml = r.url
+                    ? `<a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.obra)}</a>`
+                    : esc(r.obra);
+                ref = `<span class="valor-ref">— ${obraHtml}, ${esc(r.data)} · ${autorHtml}</span>`;
+            }
+            return `<li>
+                <div class="valor-titulo">${esc(v.titulo)}</div>
+                <div class="valor-texto">${esc(v.texto)}${ref}</div>
+            </li>`;
+        }
+
+        document.getElementById("manifesto-body").innerHTML = `
+            <div class="manifesto-item">
+                <h3>Missão</h3>
+                <p>${esc(m.missao)}</p>
+            </div>
+            <div class="manifesto-item">
+                <h3>Visão</h3>
+                <p>${esc(m.visao)}</p>
+            </div>
+            <div class="manifesto-item">
+                <h3>Valores</h3>
+                <ul class="valores-list">${m.valores.map(valorLi).join("")}</ul>
+            </div>
+        `;
+    })();
+    </script>
 </body>
 </html>
