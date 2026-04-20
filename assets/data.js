@@ -643,7 +643,7 @@
                     detail: "16,12 h/mês × R$ 100/h — cobre a contabilidade",
                     responsavel: "yuri",
                     mensal: 1612,
-                    solucoes: ["co", "yggdrasil"]
+                    solucoes: ["hedix-solution"]
                 },
                 {
                     label: "Consultoria em TI (outros clientes)",
