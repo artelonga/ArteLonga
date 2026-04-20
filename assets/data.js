@@ -115,7 +115,7 @@
         },
         {
             handle: "ramona", type: "person", nome: "Ramona",
-            role: "Internalização", tags: ["parceiro"],
+            role: "Internacionalização", tags: ["parceiro"],
             pic: null, bio: "",
             servicos: ["Tradução de Inglês"]
         },
