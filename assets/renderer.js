@@ -247,7 +247,7 @@
             const socioMark = (!isComunidade && AL.isSocio && AL.isSocio(entity.handle))
                 ? `<span class="socio-mark" aria-label="sócio">*</span>`
                 : "";
-            const nameHtml = `<a href="${nameUrl}" class="name"${nameAttrs}>${esc(entity.nome)}</a>${socioMark}`;
+            const nameHtml = `<a href="${nameUrl}" class="name"${nameAttrs}>${esc(entity.nome)}${socioMark}</a>`;
 
             // Sub-members come from either .membros (community) or .subMembers (person)
             const subHandles = isComunidade ? entity.membros : (entity.subMembers || []);
