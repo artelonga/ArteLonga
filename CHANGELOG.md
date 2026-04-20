@@ -9,6 +9,13 @@ Each release links to a *why* (the pain or opportunity it addresses) so a reader
 
 ## [Unreleased]
 
+### Added (analytics · Fase 1 frontend)
+- **`assets/analytics.js`** — beacon self-hosted, carregado em todas as 99 páginas com `<script defer>`. Captura: `page_view` · `scroll_depth` (25/50/75/100) · `click_section` (parceiros, serviços, soluções, etc.) · `click_profile` · `click_outbound` · `click_email` · `click_whatsapp` · `click_tel` · `click_pdf` · `click_cta` (ver mais, ver serviços) · `page_end` (duração de visita).
+- **Privacidade** por design: sem cookies, sem fingerprint. Session ID efêmero em `sessionStorage` (some ao fechar aba). IP nunca sai do navegador — quando backend entrar, será hasheado lá.
+- **Resiliência**: queue persistente em `localStorage` (cap 1000 eventos). Se endpoint offline ou vazio, eventos acumulam; drenam quando o collector em `artelonga/co` entrar no ar (basta definir `ENDPOINT` no topo do `analytics.js`). Unload usa `navigator.sendBeacon` com fallback pro queue.
+- **API pública**: `window.AL_track(name, props)` para eventos custom e `window.AL_analytics` para inspeção (sid, queueSize, flush).
+- **Fase 2** (pendente, `artelonga/co`): `POST /events` Axum + SQLite + Grafana datasource + dashboards (Overview, Parceiros, Serviços).
+
 ### Added
 - **Marcador de sócio** em `/parceiros/` — asterisco discreto (`.socio-mark`) ao lado do nome de cada pessoa que recebe pro-labore. Fonte única: `finances.custos[socios].breakdown` → exposto como `AL.isSocio(handle)`. Legenda abaixo do roster: *"* sócio · sempre em expansão"* — símbolo + insinuação de crescimento contínuo.
 
