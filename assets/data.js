@@ -684,34 +684,26 @@
     // `autor` resolve para um perfil interno via AL.get — permite citar
     // pessoas históricas (referenceOnly: true) sem expô-las nos rosters.
     const manifesto = {
-        missao: "Semear sonhos. Cultivar rede. Fazer com que arte, trabalho e comunidade se sustentem no longo prazo.",
-        visao: "Uma rede onde cada pessoa é sujeito do próprio caminho — e, junto, sujeito de um caminho comum.",
+        missao: "Semear sonhos, escrever legados.",
+        visao: {
+            texto: "Trabalho digno.",
+            referencia: {
+                obra: "Rerum Novarum",
+                data: "15 de maio de 1891",
+                autor: "leaoxiii",
+                url: "https://www.vatican.va/content/leo-xiii/pt/encyclicals/documents/hf_l-xiii_enc_15051891_rerum-novarum.html"
+            }
+        },
         valores: [
             {
-                titulo: "Comunidade antes de transação",
-                texto: "Relações precedem contratos. A rede existe para aprofundar laços, não apenas para fechar negócios."
-            },
-            {
-                titulo: "Dignidade do trabalho",
-                texto: "Todo trabalho honesto é fonte de dignidade — e merece justo salário, tempo de descanso e liberdade de associação.",
+                titulo: "Desenvolvimento sustentável",
+                texto: "",
                 referencia: {
-                    obra: "Rerum Novarum",
-                    data: "15 de maio de 1891",
-                    autor: "leaoxiii",
-                    url: "https://www.vatican.va/content/leo-xiii/pt/encyclicals/documents/hf_l-xiii_enc_15051891_rerum-novarum.html"
+                    obra: "Objetivos de Desenvolvimento Sustentável",
+                    data: "2015",
+                    autor: "ONU",
+                    url: "https://brasil.un.org/pt-br/sdgs"
                 }
-            },
-            {
-                titulo: "Transparência radical",
-                texto: "Custos, receitas, metas e pro-bono são públicos. Confiança se constrói à luz do dia."
-            },
-            {
-                titulo: "Memória viva",
-                texto: "Quem passou continua presente como legado. A rede honra raízes — e planta futuro."
-            },
-            {
-                titulo: "Autoria compartilhada",
-                texto: "Consciência coletiva, coinvenção. Ninguém carrega sozinho o que foi construído em conjunto."
             }
         ]
     };

@@ -147,14 +147,10 @@
             border-bottom: 1px solid #f4f4f4;
         }
         .valores-list li:last-child { border-bottom: none; }
-        .valor-titulo {
-            font-size: 0.92rem;
-            font-weight: 700;
-            color: #0a0a0a;
-            margin-bottom: 0.4vh;
-        }
+        .valor-titulo,
         .valor-texto {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
+            font-weight: 400;
             line-height: 1.55;
             color: #333;
             max-width: 62ch;
@@ -317,7 +313,7 @@
         <a class="back" href="/">← voltar</a>
     </main>
 
-    <script src="/assets/data.js?v=20260503"></script>
+    <script src="/assets/data.js?v=20260504"></script>
     <script>
     (function () {
         if (!window.AL || !AL.manifesto) return;
@@ -326,24 +322,28 @@
             "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
         }[c]));
 
+        function refHtml(r) {
+            if (!r) return "";
+            const autor = AL.get(r.autor);
+            const autorHtml = autor
+                ? `<a href="/${esc(r.autor)}/">${esc(autor.nome)}</a>`
+                : esc(r.autor);
+            const obraHtml = r.url
+                ? `<a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.obra)}</a>`
+                : esc(r.obra);
+            return `<span class="valor-ref">— ${obraHtml}, ${esc(r.data)} · ${autorHtml}</span>`;
+        }
+
         function valorLi(v) {
-            let ref = "";
-            if (v.referencia) {
-                const r = v.referencia;
-                const autor = AL.get(r.autor);
-                const autorHtml = autor
-                    ? `<a href="/${esc(r.autor)}/">${esc(autor.nome)}</a>`
-                    : esc(r.autor);
-                const obraHtml = r.url
-                    ? `<a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.obra)}</a>`
-                    : esc(r.obra);
-                ref = `<span class="valor-ref">— ${obraHtml}, ${esc(r.data)} · ${autorHtml}</span>`;
-            }
+            const textoHtml = v.texto ? `<div class="valor-texto">${esc(v.texto)}</div>` : "";
             return `<li>
                 <div class="valor-titulo">${esc(v.titulo)}</div>
-                <div class="valor-texto">${esc(v.texto)}${ref}</div>
+                ${textoHtml}
+                ${refHtml(v.referencia)}
             </li>`;
         }
+
+        const visao = typeof m.visao === "string" ? { texto: m.visao } : m.visao;
 
         document.getElementById("manifesto-body").innerHTML = `
             <div class="manifesto-item">
@@ -352,7 +352,8 @@
             </div>
             <div class="manifesto-item">
                 <h3>Visão</h3>
-                <p>${esc(m.visao)}</p>
+                <p>${esc(visao.texto)}</p>
+                ${refHtml(visao.referencia)}
             </div>
             <div class="manifesto-item">
                 <h3>Valores</h3>
