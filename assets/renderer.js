@@ -659,6 +659,35 @@
                  <ul>${p.servicos.map(m => `<li>${missaoLink(m)}</li>`).join("")}</ul>
                </section>`;
 
+        // Ensaios / publicações — estrutura dupla (curto + longo) por item.
+        // Títulos e URLs preenchidos à medida que os textos ficam prontos.
+        // Enquanto vazios, mostram "em breve" desabilitado.
+        let essaysHtml = "";
+        if (p.essays && p.essays.length) {
+            const allPending = p.essays.every(e => !e.short && !e.long && !e.titulo);
+            const items = p.essays.map((e, i) => {
+                const num = String(i + 1).padStart(2, "0");
+                const tituloHtml = e.titulo
+                    ? esc(e.titulo)
+                    : `<span class="essay-pending">(título em breve)</span>`;
+                const shortHtml = e.short
+                    ? `<a href="${esc(e.short)}">curto</a>`
+                    : `<span class="essay-pending">curto</span>`;
+                const longHtml = e.long
+                    ? `<a href="${esc(e.long)}">longo</a>`
+                    : `<span class="essay-pending">longo</span>`;
+                return `<li>
+                    <span class="essay-num">${num}</span>
+                    <span class="essay-titulo">${tituloHtml}</span>
+                    <span class="essay-formats">${shortHtml} · ${longHtml}</span>
+                </li>`;
+            }).join("");
+            essaysHtml = `<section class="section essays-section">
+                <h2>${esc(p.essaysTitle || "Ensaios")} <span class="section-hint">${allPending ? "em breve" : "curto e longo"}</span></h2>
+                <ul class="essays-list">${items}</ul>
+            </section>`;
+        }
+
         const underageNote = p.underage
             ? `<div class="em-memoria-note"><em>perfil sob responsabilidade parental</em></div>`
             : "";
@@ -725,6 +754,7 @@
                 ${emMemoriaNote}
                 ${underageNote}
                 ${missoesHtml}
+                ${essaysHtml}
                 ${membrosHtml}
                 ${parceriasHtml}
                 ${comunidadesHtml}

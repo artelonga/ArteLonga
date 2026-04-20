@@ -554,6 +554,58 @@
     font-weight: 500;
 }
 
+/* ENSAIOS / PUBLICAÇÕES ------------------------------------------------ */
+/* Lista numerada com dois formatos (curto + longo) por item. Placeholders
+   "em breve" renderizam cinza-claro e sem link até a URL chegar. */
+.essays-list { list-style: none; }
+.essays-list li {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1rem;
+    padding: 0.7rem 0;
+    font-size: 0.92rem;
+    color: #333;
+    border-bottom: 1px solid #f4f4f4;
+    align-items: baseline;
+}
+.essays-list li:last-child { border-bottom: none; }
+.essay-num {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: #aaa;
+    font-variant-numeric: tabular-nums;
+}
+.essay-titulo { color: #0a0a0a; }
+.essay-formats {
+    font-size: 0.76rem;
+    color: #888;
+    letter-spacing: 0.04em;
+    font-variant-numeric: tabular-nums;
+}
+.essay-formats a {
+    color: #0a0a0a;
+    text-decoration: none;
+    border-bottom: 1px dotted #bbb;
+    padding-bottom: 1px;
+}
+.essay-formats a:hover { color: #555; border-bottom-color: #555; }
+.essay-pending {
+    color: #c8c8c8;
+    font-style: italic;
+}
+
+@media (max-width: 640px) {
+    .essays-list li {
+        grid-template-columns: auto 1fr;
+        grid-template-areas: "num titulo" "num formats";
+        row-gap: 0.2rem;
+    }
+    .essay-num { grid-area: num; }
+    .essay-titulo { grid-area: titulo; }
+    .essay-formats { grid-area: formats; }
+}
+
 /* RECURSOS ------------------------------------------------------------- */
 .fin-list { list-style: none; margin-bottom: 3vh; }
 .fin-item {

@@ -33,6 +33,14 @@ Each release links to a *why* (the pain or opportunity it addresses) so a reader
 ### Fixed (parceiros)
 - **Aime parecia "em memória"**. `muted: true` aplicava italic-cinza ao nome, mesma linguagem visual de entidades falecidas. Split de classes: `.em-memoria` (italic, dessaturado, honra o legado) e `.em-breve` (peso normal, cor preservada — apenas role em cinza médio). `.muted` agora é só comportamental (suprime see-more e hint). Cache-buster `?v=20260507` em `/parceiros/` e `/recursos/` (renderer.js, pages.css, data.js).
 
+### Added (parceiros)
+- **Alice** (`alice`) — parceira · role **Movimento**. Serviços: *Pensamento Islâmico* e *Dança e Expressão Corporal*. Perfil inclui estrutura de **8 ensaios** (`essays`), cada um com slots para versão curta e longa — todos em breve.
+- **Ramona** (`ramona`) — parceira · role **Internalização**. Serviço: *Tradução de Inglês*.
+- **Dança e Expressão Corporal** — serviço compartilhado entre **Alice** e **Sylvia** (auto-derivado do catálogo).
+- **Seção "Ensaios"** no render de perfil. Novo padrão: `{ essaysTitle, essays: [{ titulo, short, long }] }`. Lista numerada em grid 3-col (número · título · formatos curto/longo). Placeholders "em breve" em cinza-claro até URL chegar. Mobile colapsa para 2-col com formatos embaixo do título.
+- Roster: Alice e Ramona entram entre Raquel e Rogério.
+- Cache-buster `?v=20260508` em `/parceiros/`, `/alice/` e `/ramona/`.
+
 ## [0.11.0] — 2026-04-19
 
 **Why**. Duas frentes convergindo. **(1) Narrativa**: Co ganhou identidade própria ("Rede Social Web") distinta do slogan abstrato da Arte Longa ("Rede do Futuro"), e a Arte Longa passou a se posicionar por uma pergunta — *"Por que precisamos de uma Rede do Futuro?" → Comunidade.* A descrição do Co virou uma cadência em C: *Comunidade. Consciência Coletiva. Colaborar. Compartilhar. Comunicar. Coinventar.* **(2) Ergonomia**: o `/parceiros/` estava distraindo — cartões expandindo inline empurravam o layout inteiro. Migramos para popover flutuante, cartão menor, e serviços atrás de um botão "Ver Serviços" (revelação progressiva em vez de ruído de base). Mesma cura no `/servicos/` para o drawer de filhos do guarda-chuva (Inteligência e Tecnologia). Bônus: atribuição de autoria (Bia na Reparação Histórica) virou padrão reutilizável para citações.

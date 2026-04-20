@@ -88,13 +88,36 @@
             handle: "sylvia", type: "person", nome: "Sylvia",
             role: "Consciência", tags: ["parceiro"],
             pic: null, bio: "",
-            servicos: ["Meditação", "Autocuidado"]
+            servicos: ["Meditação", "Autocuidado", "Dança e Expressão Corporal"]
         },
         {
             handle: "raquel", type: "person", nome: "Raquel",
             role: "Presença", tags: ["parceiro"],
             pic: null, bio: "",
             servicos: ["Saúde Mental", "Autocuidado"]
+        },
+        {
+            handle: "alice", type: "person", nome: "Alice",
+            role: "Movimento", tags: ["parceiro"],
+            pic: null, bio: "",
+            servicos: ["Pensamento Islâmico", "Dança e Expressão Corporal"],
+            essaysTitle: "Ensaios · Pensamento Islâmico",
+            essays: [
+                { titulo: "", short: "", long: "" },
+                { titulo: "", short: "", long: "" },
+                { titulo: "", short: "", long: "" },
+                { titulo: "", short: "", long: "" },
+                { titulo: "", short: "", long: "" },
+                { titulo: "", short: "", long: "" },
+                { titulo: "", short: "", long: "" },
+                { titulo: "", short: "", long: "" }
+            ]
+        },
+        {
+            handle: "ramona", type: "person", nome: "Ramona",
+            role: "Internalização", tags: ["parceiro"],
+            pic: null, bio: "",
+            servicos: ["Tradução de Inglês"]
         },
         {
             handle: "rogerio", type: "person", nome: "Rogério",
@@ -470,7 +493,7 @@
     const rosterOrder = [
         "yuri", "igo", "joseantonio", "mono", "bruna",
         "luke", "marina", "karina", "kayra", "aime",
-        "sylvia", "raquel", "rogerio", "alzira",
+        "sylvia", "raquel", "alice", "ramona", "rogerio", "alzira",
         "quilomboaraucaria", "hfsassociados", "hedix"
     ];
     function roster() {
