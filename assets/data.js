@@ -423,6 +423,18 @@
                 { name: "Web", status: "wip", statusText: "junho 2026" },
                 { name: "Mobile / App", status: "wip", statusText: "junho 2026" }
             ]
+        },
+        {
+            handle: "hedix-solution", type: "solution", nome: "Hedix",
+            tagline: "Market Making em Mercados de Previsão",
+            url: "https://hedix.com.br/", urlLabel: "hedix.com.br",
+            lema: "Liquidez e formação de preço em mercados de previsão.",
+            desc: "Plataforma de market making preditivo. Provê liquidez, forma preço e agrega sinal em prediction markets — onde o mercado é o oráculo.",
+            comunidade: "hedix",
+            bundledServices: ["Market Making Preditivo", "Inteligência de Previsão"],
+            platforms: [
+                { name: "Web", status: "done", statusText: "disponível" }
+            ]
         }
     ];
 
