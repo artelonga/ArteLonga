@@ -40,6 +40,9 @@ Each release links to a *why* (the pain or opportunity it addresses) so a reader
 ### Fixed (parceiros)
 - **Aime parecia "em memória"**. `muted: true` aplicava italic-cinza ao nome, mesma linguagem visual de entidades falecidas. Split de classes: `.em-memoria` (italic, dessaturado, honra o legado) e `.em-breve` (peso normal, cor preservada — apenas role em cinza médio). `.muted` agora é só comportamental (suprime see-more e hint). Cache-buster `?v=20260507` em `/parceiros/` e `/recursos/` (renderer.js, pages.css, data.js).
 
+### Added (parceiros · Miguel)
+- **Miguel** (`miguel`) — parceiro · role **Futuro**. Bio pessoal (18 anos, robótica/negócios/desenvolvimento de ideias, meta de MS&E em Stanford). Entra no roster abaixo de Rogério e Alzira. Email pessoal (`mkbrito06@gmail.com`) incluso na própria bio — seção "Contato e Parcerias" continua com `rede@artelonga.com.br` padrão.
+
 ### Added (parceiros)
 - **Alice** (`alice`) — parceira · role **Movimento**. Serviços: *Pensamento Islâmico* e *Dança e Expressão Corporal*. Perfil inclui estrutura de **8 ensaios** (`essays`), cada um com slots para versão curta e longa — todos em breve.
 - **Ramona** (`ramona`) — parceira · role **Internalização**. Serviço: *Tradução de Inglês*.

@@ -131,6 +131,14 @@
             pic: null, bio: "",
             servicos: ["Mentoria Espiritual"]
         },
+        {
+            handle: "miguel", type: "person", nome: "Miguel",
+            role: "Futuro", tags: ["parceiro"],
+            pic: null,
+            bioCurta: "18 anos. Apaixonado por resolver problemas, robótica, negócios e contribuir para a evolução das pessoas. Mira no MS&E da Stanford University.",
+            bio: "Olá! Me chamo Miguel, tenho 18 anos.\n\nGosto muito de resolver problemas, robótica, negócios, desenvolver ideias, conversar, e contribuir para a evolução das pessoas (genuinamente, não só para ficar bonito no papel).\n\nLuto diariamente para superar a minha inevitável temporalidade deixando coisas boas por onde passo, quero deixar uma marca muito maior do que eu mesmo nesse mundo quando partir.\n\nMinha principal meta no momento é ingressar na Stanford University para cursar MS&E.\n\nSe quiser conversar, me chama aqui: mkbrito06@gmail.com\n\nObrigado :)",
+            servicos: []
+        },
 
         // sub-members (shown under a parent profile, not on top-level roster)
         { handle: "alicia", type: "person", nome: "Alicia", role: "", tags: ["parceiro", "menor"], pic: null, bio: "", underage: true, servicos: ["Futuro", "Filha da Bruna"], parentHandle: "bruna" },
@@ -493,7 +501,7 @@
     const rosterOrder = [
         "yuri", "igo", "joseantonio", "mono", "bruna",
         "luke", "marina", "karina", "kayra", "aime",
-        "sylvia", "raquel", "alice", "ramona", "rogerio", "alzira",
+        "sylvia", "raquel", "alice", "ramona", "rogerio", "alzira", "miguel",
         "quilomboaraucaria", "hfsassociados", "hedix"
     ];
     function roster() {
