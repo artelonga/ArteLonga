@@ -234,27 +234,36 @@ Acceptance criteria para a rodada 0.11 (2026-04-17). Formato **Given / When / Th
 
 **Given** `/sobre/`
 **Then**:
-- [ ] Nova seção **"Missão · Visão · Valores"** visível (âncora `#manifesto`).
+- [ ] Seção **"Missão · Visão · Valores"** visível (âncora `#manifesto`).
 - [ ] Aparece na sub-nav junto com Empresa / Contato / CNAE.
-- [ ] **Missão**. Texto institucional (1-2 frases).
-- [ ] **Visão**. Texto institucional (1-2 frases).
-- [ ] **Valores**. Lista enxuta; pelo menos um valor com **referência externa**.
+- [ ] **Missão**. *"Semear sonhos, escrever legados."*
+- [ ] **Visão**. *"Trabalho digno."* + referência externa (Rerum Novarum).
+- [ ] **Valores**. Lista de 1 item — *"Desenvolvimento sustentável"* + referência externa (ODS/ONU).
+- [ ] Tipografia unificada: os três statements (missão, visão, valor-título) no mesmo peso/tamanho/cor.
 
-### 10.1 Padrão de referência em Valores
+### 10.1 Padrão de referência em Visão e Valores
 
-**Given** um valor com referência (ex.: "Dignidade do trabalho")
+**Given** um statement (visão ou valor) com `referencia`
 **Then**:
 - [ ] Citação visível com título da obra, data e autor.
 - [ ] Autor é link para perfil interno (mesmo se for um personagem histórico em-memória).
 - [ ] Obra (quando aplicável) é link externo (`target="_blank" rel="noopener"`).
 
-### 10.2 Rerum Novarum · Papa Leão XIII
+### 10.2 Rerum Novarum · Papa Leão XIII (ancora a Visão)
 
-**Given** o valor que referencia **Rerum Novarum**
+**Given** a **Visão** que referencia **Rerum Novarum**
 **Then**:
-- [ ] Exibe **"Rerum Novarum, 15 de maio de 1891"**.
+- [ ] Exibe **"Rerum Novarum: sobre a condição dos operários, 15 de maio de 1891"**.
 - [ ] Link autor **"Papa Leão XIII"** aponta para `/leaoxiii/`.
 - [ ] Link da obra aponta para `https://www.vatican.va/content/leo-xiii/pt/encyclicals/documents/hf_l-xiii_enc_15051891_rerum-novarum.html`.
+
+### 10.2.1 Desenvolvimento sustentável · ONU (ancora o valor único)
+
+**Given** o valor **Desenvolvimento sustentável**
+**Then**:
+- [ ] Exibe **"Objetivos de Desenvolvimento Sustentável, 2015 · ONU"**.
+- [ ] Link da obra aponta para `https://brasil.un.org/pt-br/sdgs`.
+- [ ] "ONU" renderiza como texto puro (sem perfil interno).
 
 ### 10.3 Papa Leão XIII — entidade "reference"
 

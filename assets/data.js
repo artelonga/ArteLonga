@@ -688,7 +688,7 @@
         visao: {
             texto: "Trabalho digno.",
             referencia: {
-                obra: "Rerum Novarum",
+                obra: "Rerum Novarum: sobre a condição dos operários",
                 data: "15 de maio de 1891",
                 autor: "leaoxiii",
                 url: "https://www.vatican.va/content/leo-xiii/pt/encyclicals/documents/hf_l-xiii_enc_15051891_rerum-novarum.html"

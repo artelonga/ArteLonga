@@ -13,7 +13,8 @@ Each release links to a *why* (the pain or opportunity it addresses) so a reader
 - **Manifesto** enxuto. Missão: *"Semear sonhos, escrever legados."* Visão: *"Trabalho digno."* (agora com `referencia`, mesma estrutura dos valores) ancorada em *Rerum Novarum · Leão XIII*. Valores reduzidos de 5 para 1: **Desenvolvimento sustentável**, ancorado nos *Objetivos de Desenvolvimento Sustentável · ONU, 2015* — especificidades vivem no link.
 - **`manifesto.visao`** passa de `string` para `{ texto, referencia? }`. Render em `/sobre/` isola `refHtml()` e aplica em visão + valores. Shim em tempo de render aceita string legada (`typeof m.visao === "string"`) para tolerar cache antigo.
 - **Tipografia unificada** do manifesto: `.valor-titulo` e `.valor-texto` agora herdam o mesmo tamanho/peso/cor das frases de missão e visão (`0.95rem`, `400`, `#333`) — os três statements leem em pé de igualdade. Valor sem `texto` não renderiza o wrapper vazio; a referência ancora direto sob o título.
-- Cache-buster `?v=20260504` (apenas em `/sobre/`, única página que consome `manifesto`).
+- **Rerum Novarum** recebe subtítulo completo: *"Rerum Novarum: sobre a condição dos operários"* (acentos e cedilha corretos). UAT §10.2 atualizada + §10.2.1 adicionada cobrindo o valor ODS/ONU.
+- Cache-buster `?v=20260505` (apenas em `/sobre/`, única página que consome `manifesto`).
 
 ## [0.11.0] — 2026-04-19
 
