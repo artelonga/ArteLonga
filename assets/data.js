@@ -251,7 +251,7 @@
             pic: null, bio: "",
             externalUrl: "https://hedix.com.br/",
             site: "https://hedix.com.br/",
-            servicos: ["Market Making Preditivo", "Inteligência de Previsão"],
+            servicos: ["Market Making Preditivo", "Inteligência de Previsão", "Desenvolvimento de API"],
             membros: []
         }
     ];
@@ -431,7 +431,7 @@
             lema: "Liquidez e formação de preço em mercados de previsão.",
             desc: "Plataforma de market making preditivo. Provê liquidez, forma preço e agrega sinal em prediction markets — onde o mercado é o oráculo.",
             comunidade: "hedix",
-            bundledServices: ["Market Making Preditivo", "Inteligência de Previsão"],
+            bundledServices: ["Market Making Preditivo", "Inteligência de Previsão", "Desenvolvimento de API"],
             platforms: [
                 { name: "Web", status: "done", statusText: "disponível" }
             ]
