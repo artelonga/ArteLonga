@@ -100,6 +100,33 @@
 .roster a.name:hover { opacity: 0.45; }
 .roster li.muted a.name { color: #c5c5c5; font-style: italic; font-weight: 500; }
 .roster li.muted .role { color: #d5d5d5; font-style: italic; }
+
+/* Marcador de sócio — asterisco discreto ao lado do nome.
+   Visual minimal: cor dessaturada, peso leve, tamanho relativo menor.
+   A legenda abaixo do roster explica o símbolo + insinua expansão contínua. */
+.socio-mark {
+    display: inline-block;
+    margin-left: 0.2em;
+    color: #bbb;
+    font-weight: 400;
+    font-size: 0.7em;
+    vertical-align: super;
+    user-select: none;
+}
+.socio-legend {
+    margin-top: 3vh;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: lowercase;
+    color: #999;
+    font-style: italic;
+}
+.socio-legend .socio-mark {
+    vertical-align: baseline;
+    font-size: 1em;
+    margin-right: 0.2em;
+    margin-left: 0;
+}
 .role {
     font-size: 0.65rem;
     font-weight: 500;

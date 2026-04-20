@@ -244,7 +244,10 @@
             const verMaisUrl = `/${entity.handle}/`;
             const verMaisLabel = isComunidade ? "Ver Mais →" : "ver mais →";
             const seeMore = entity.muted ? "" : `<a class="see-more" href="${verMaisUrl}">${verMaisLabel}</a>`;
-            const nameHtml = `<a href="${nameUrl}" class="name"${nameAttrs}>${esc(entity.nome)}</a>`;
+            const socioMark = (!isComunidade && AL.isSocio && AL.isSocio(entity.handle))
+                ? `<span class="socio-mark" aria-label="sócio">*</span>`
+                : "";
+            const nameHtml = `<a href="${nameUrl}" class="name"${nameAttrs}>${esc(entity.nome)}</a>${socioMark}`;
 
             // Sub-members come from either .membros (community) or .subMembers (person)
             const subHandles = isComunidade ? entity.membros : (entity.subMembers || []);
@@ -315,6 +318,7 @@
             <main class="main">
                 <h1 class="statement">Arte Longa é:</h1>
                 <ul class="roster">${rows}</ul>
+                <p class="socio-legend"><span class="socio-mark">*</span> sócio · sempre em expansão</p>
                 <div class="coda"><span class="when">01.04.2026</span></div>
                 ${ctaLead({
                     title: "Participe",

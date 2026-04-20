@@ -469,7 +469,7 @@
     // Order is explicit (the editorial layout).
     const rosterOrder = [
         "yuri", "igo", "joseantonio", "mono", "bruna",
-        "luke", "karina", "marina", "kayra", "aime",
+        "luke", "marina", "karina", "kayra", "aime",
         "sylvia", "raquel", "rogerio", "alzira",
         "quilomboaraucaria", "hfsassociados", "hedix"
     ];
@@ -708,10 +708,21 @@
         ]
     };
 
+    // ─── SÓCIOS ──────────────────────────────────────────────────────────────
+    // Fonte única: o breakdown de `custos.socios` em finances.
+    // Quem recebe pro-labore é sócio. Ponto.
+    const socioCusto = (finances.custos || []).find(c => c.key === "socios");
+    const socioHandles = new Set(
+        ((socioCusto && socioCusto.breakdown) || [])
+            .map(b => b.handle)
+            .filter(Boolean)
+    );
+    function isSocio(handle) { return socioHandles.has(handle); }
+
     global.AL = {
         version: "2.1",
         people, communities, services, solutions, missions, rosterOrder, finances, manifesto,
-        get, byHandle, isEmMemoria, isInactive,
+        get, byHandle, isEmMemoria, isInactive, isSocio,
         publicServices, roster, membersOf, subMembersOf, bundledServices,
         hiddenServiceTitles, slugify,
         serviceBySlug, serviceByTitle, solutionsUsingService, relatedServices,
