@@ -99,7 +99,7 @@
         {
             handle: "alice", type: "person", nome: "Alice",
             role: "Movimento", tags: ["parceiro"],
-            pic: null, bio: "",
+            pic: "/alice/alice.png", bio: "",
             servicos: ["Pensamento Islâmico", "Dança e Expressão Corporal"],
             essaysTitle: "Ensaios · Pensamento Islâmico",
             essays: [
