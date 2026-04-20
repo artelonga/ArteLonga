@@ -670,7 +670,8 @@
                         { mes: "abril", value: 1000 },
                         { mes: "maio", value: 5000 },
                         { mes: "junho", value: 10000 }
-                    ]
+                    ],
+                    solucoes: ["hedix-solution"]
                 }
             ],
             projetos: [
