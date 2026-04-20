@@ -660,6 +660,12 @@
                     unitValue: 100,
                     unidades: 10,
                     responsavel: "yuri"
+                },
+                {
+                    label: "Serviços",
+                    detail: "90 h × R$ 100/h · outros sócios (no trimestre)",
+                    unitValue: 100,
+                    unidades: 90
                 }
             ],
             // Pro-bono · não conta como receita mas é parte da atuação

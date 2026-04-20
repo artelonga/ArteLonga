@@ -23,6 +23,12 @@ Each release links to a *why* (the pain or opportunity it addresses) so a reader
 ### Fixed
 - **`.socio-mark` invisível em `/parceiros/`**. Causa: o span ficava como terceiro filho de `.row` (flex, `justify-content: space-between`) — o asterisco ia pro meio da linha, longe do nome. Correção: mover o span pra dentro do `<a class="name">`. Cache-buster `?v=20260506` em `/parceiros/` (renderer.js, data.js).
 
+### Changed (recursos)
+- **Serviços · outros sócios** — nova linha em Projetos: *"90 h × R$ 100/h · outros sócios (no trimestre)"* = R$ 9.000. Fecha o gap entre Potencial e Meta de Q2 (ambos agora em R$ 75.000). Campo `responsavel` tornou-se opcional no render de projetos — se ausente, a atribuição "por X" não é mostrada (o detail carrega "outros sócios").
+- **Alinhamento visual** em `/recursos/`. A antiga seção "Meta vs Potencial" (2 cards) virou **"Alinhamento"** (3 cards lado a lado): **Custos · Q2** · **Meta · Q2** · **Potencial · Q2**. Os três em pé de igualdade — todos R$ 75.000 quando a conta fecha. Resolve a dissonância de escalas (custos era mensal, meta/potencial eram Q2).
+- **Total de Gastos** ganhou linha secundária *"× 3 · Q2"* logo abaixo do Total mensal, com a mesma moldura de borda dupla. Permite leitura direta Custos-Q2 sem precisar multiplicar de cabeça.
+- Cache-buster `?v=20260506` em `/recursos/` (data.js, renderer.js, pages.css — novos `.fin-total-secondary` e `.fin-goal-grid-3`).
+
 ## [0.11.0] — 2026-04-19
 
 **Why**. Duas frentes convergindo. **(1) Narrativa**: Co ganhou identidade própria ("Rede Social Web") distinta do slogan abstrato da Arte Longa ("Rede do Futuro"), e a Arte Longa passou a se posicionar por uma pergunta — *"Por que precisamos de uma Rede do Futuro?" → Comunidade.* A descrição do Co virou uma cadência em C: *Comunidade. Consciência Coletiva. Colaborar. Compartilhar. Comunicar. Coinventar.* **(2) Ergonomia**: o `/parceiros/` estava distraindo — cartões expandindo inline empurravam o layout inteiro. Migramos para popover flutuante, cartão menor, e serviços atrás de um botão "Ver Serviços" (revelação progressiva em vez de ruído de base). Mesma cura no `/servicos/` para o drawer de filhos do guarda-chuva (Inteligência e Tecnologia). Bônus: atribuição de autoria (Bia na Reparação Histórica) virou padrão reutilizável para citações.

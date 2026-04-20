@@ -893,12 +893,15 @@
 
         const projetosHtml = f.receita.projetos.map(p => {
             const total = p.unitValue * p.unidades;
+            const byHtml = p.responsavel
+                ? ` · por <a href="/${esc(p.responsavel)}/">${esc(nomeOf(p.responsavel))}</a>`
+                : "";
             return `<li class="fin-item">
                 <div class="fin-head">
                     <div class="fin-label">${esc(p.label)}</div>
                     <div class="fin-value">${fmt(total)}</div>
                 </div>
-                <div class="fin-detail">${esc(p.detail)} · por <a href="/${esc(p.responsavel)}/">${esc(nomeOf(p.responsavel))}</a></div>
+                <div class="fin-detail">${esc(p.detail)}${byHtml}</div>
                 ${solucoesLinks(p.solucoes)}
             </li>`;
         }).join("");
@@ -928,6 +931,10 @@
                 <div class="fin-total">
                     <span class="fin-total-label">Total mensal</span>
                     <span class="fin-total-value">${fmt(totalCustos)}</span>
+                </div>
+                <div class="fin-total-secondary">
+                    <span>× 3 · ${esc(f.quarter)}</span>
+                    <span>${fmt(totalCustos * 3)}</span>
                 </div>
 
                 <!-- ──── RECEITA RECORRENTE ──── -->
@@ -963,18 +970,23 @@
                 <p class="intro-short">Na Arte Longa nem tudo é receita. O trabalho pro-bono é parte do impacto social, ambiental e cultural.</p>
                 <ul class="fin-list">${proBonoHtml}</ul>
 
-                <!-- ──── META ──── -->
-                <div class="section-header"><h2>Meta vs Potencial</h2><span class="label">${esc(f.quarter)}</span></div>
-                <div class="fin-goal-grid">
+                <!-- ──── ALINHAMENTO ──── -->
+                <div class="section-header"><h2>Alinhamento</h2><span class="label">${esc(f.quarter)}</span></div>
+                <div class="fin-goal-grid fin-goal-grid-3">
                     <div class="fin-goal">
-                        <div class="fin-goal-label">Meta de receita · ${esc(f.quarter)}</div>
+                        <div class="fin-goal-label">Custos · ${esc(f.quarter)}</div>
+                        <div class="fin-goal-value">${short(totalCustos * 3)}</div>
+                        <div class="fin-goal-note">${short(totalCustos)}/mês × 3</div>
+                    </div>
+                    <div class="fin-goal">
+                        <div class="fin-goal-label">Meta · ${esc(f.quarter)}</div>
                         <div class="fin-goal-value">${short(f.metaQ2)}</div>
-                        <div class="fin-goal-note">objetivo trimestral</div>
+                        <div class="fin-goal-note">receita objetivo</div>
                     </div>
                     <div class="fin-goal highlighted">
-                        <div class="fin-goal-label">Potencial estimado</div>
+                        <div class="fin-goal-label">Potencial · ${esc(f.quarter)}</div>
                         <div class="fin-goal-value">${short(totalReceitaQ2)}</div>
-                        <div class="fin-goal-note">${percentMeta}% da meta · gap ${gap > 0 ? short(gap) : 'nenhum'}</div>
+                        <div class="fin-goal-note">${percentMeta}% da meta · gap ${gap > 0 ? short(gap) : 'zero'}</div>
                     </div>
                 </div>
 

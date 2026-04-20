@@ -611,10 +611,31 @@
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    padding: 3vh 0;
-    margin-bottom: 4vh;
+    padding: 3vh 0 1.5vh;
     border-top: 2px solid #0a0a0a;
+}
+.fin-total-secondary {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0 0 2vh;
+    margin-bottom: 4vh;
     border-bottom: 2px solid #0a0a0a;
+    font-size: 0.8rem;
+    color: #666;
+    letter-spacing: 0.04em;
+    font-variant-numeric: tabular-nums;
+}
+.fin-total-secondary span:first-child {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-weight: 500;
+    color: #888;
+    font-size: 0.68rem;
+}
+.fin-total-secondary span:last-child {
+    font-weight: 700;
+    color: #0a0a0a;
 }
 .fin-total-label {
     font-size: 0.7rem;
@@ -637,8 +658,12 @@
     gap: 2rem;
     margin-bottom: 4vh;
 }
+.fin-goal-grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+}
 .fin-goal {
-    padding: 3vh 2rem;
+    padding: 3vh 1.4rem;
     border: 1px solid #eee;
 }
 .fin-goal-label {
@@ -751,7 +776,8 @@
 }
 
 @media (max-width: 640px) {
-    .fin-goal-grid { grid-template-columns: 1fr; }
+    .fin-goal-grid,
+    .fin-goal-grid-3 { grid-template-columns: 1fr; }
 }
 
 /* SOLUCOES ------------------------------------------------------------- */
