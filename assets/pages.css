@@ -98,8 +98,20 @@
     transition: opacity 0.2s;
 }
 .roster a.name:hover { opacity: 0.45; }
-.roster li.muted a.name { color: #c5c5c5; font-style: italic; font-weight: 500; }
-.roster li.muted .role { color: #d5d5d5; font-style: italic; }
+
+/* em-memória: honra ao legado — italic, dessaturado.
+   Uso restrito a `entity.emMemoria`. Não aplicar em "em breve"
+   (que sugere vinda, não despedida). */
+.roster li.em-memoria a.name { color: #c5c5c5; font-style: italic; font-weight: 500; }
+.roster li.em-memoria .role { color: #d5d5d5; font-style: italic; }
+
+/* em-breve: chega em breve, energia futura. Peso normal,
+   sem italic — preserva a presença da pessoa na rede. O próprio
+   texto "em breve" no role basta como sinal. */
+.roster li.em-breve .role {
+    color: #888;
+    font-weight: 500;
+}
 
 /* Marcador de sócio — asterisco discreto ao lado do nome.
    Visual minimal: cor dessaturada, peso leve, tamanho relativo menor.

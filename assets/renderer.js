@@ -301,6 +301,8 @@
 
             const li = [
                 entity.muted ? "muted" : "",
+                entity.emMemoria ? "em-memoria" : "",
+                entity.emBreve ? "em-breve" : "",
                 entity.sectionBreak ? "section-break" : ""
             ].filter(Boolean).join(" ");
 

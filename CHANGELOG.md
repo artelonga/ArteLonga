@@ -27,7 +27,11 @@ Each release links to a *why* (the pain or opportunity it addresses) so a reader
 - **Serviços · outros sócios** — nova linha em Projetos: *"90 h × R$ 100/h · outros sócios (no trimestre)"* = R$ 9.000. Fecha o gap entre Potencial e Meta de Q2 (ambos agora em R$ 75.000). Campo `responsavel` tornou-se opcional no render de projetos — se ausente, a atribuição "por X" não é mostrada (o detail carrega "outros sócios").
 - **Alinhamento visual** em `/recursos/`. A antiga seção "Meta vs Potencial" (2 cards) virou **"Alinhamento"** (3 cards lado a lado): **Custos · Q2** · **Meta · Q2** · **Potencial · Q2**. Os três em pé de igualdade — todos R$ 75.000 quando a conta fecha. Resolve a dissonância de escalas (custos era mensal, meta/potencial eram Q2).
 - **Total de Gastos** ganhou linha secundária *"× 3 · Q2"* logo abaixo do Total mensal, com a mesma moldura de borda dupla. Permite leitura direta Custos-Q2 sem precisar multiplicar de cabeça.
+- **Exemplos de solução corrigidos**. Website estático → `artelonga` (único site estático no portfólio). Website dinâmico → `co` + `quilomboaraucaria-solution` (Quilombo é plataforma dinâmica, não estática). Antes os exemplos estavam invertidos.
 - Cache-buster `?v=20260506` em `/recursos/` (data.js, renderer.js, pages.css — novos `.fin-total-secondary` e `.fin-goal-grid-3`).
+
+### Fixed (parceiros)
+- **Aime parecia "em memória"**. `muted: true` aplicava italic-cinza ao nome, mesma linguagem visual de entidades falecidas. Split de classes: `.em-memoria` (italic, dessaturado, honra o legado) e `.em-breve` (peso normal, cor preservada — apenas role em cinza médio). `.muted` agora é só comportamental (suprime see-more e hint). Cache-buster `?v=20260507` em `/parceiros/` e `/recursos/` (renderer.js, pages.css, data.js).
 
 ## [0.11.0] — 2026-04-19
 

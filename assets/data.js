@@ -637,7 +637,7 @@
                     unitValue: 5000,
                     unidades: 3,
                     responsavel: "yuri",
-                    solucoes: ["quilomboaraucaria-solution"]
+                    solucoes: ["artelonga"]
                 },
                 {
                     label: "Website dinâmico",
@@ -645,7 +645,7 @@
                     unitValue: 15000,
                     unidades: 1,
                     responsavel: "yuri",
-                    solucoes: ["artelonga", "co"]
+                    solucoes: ["co", "quilomboaraucaria-solution"]
                 },
                 {
                     label: "Interpretação e Tradução",
