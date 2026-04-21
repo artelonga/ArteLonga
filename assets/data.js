@@ -257,50 +257,26 @@
     ];
 
     // ─── SERVICES ────────────────────────────────────────────────────────────
-    // Hidden: personal/family relations that aren't public services
-    const hiddenServiceTitles = new Set(["Filha da Bruna", "Filho da Aime", "Pai do Yuri", "Mãe do Yuri"]);
-
-    // CNAE mapping — nosso léxico → léxico oficial (Receita Federal).
-    // Baseado no CNPJ 56.975.561/0001-60 (Arte Longa).
-    const cnaeMap = {
-        "Alfabetização":                            [{ c: "8599-6/99", d: "Outras atividades de ensino não especificadas anteriormente" }],
-        "Alimentação e Bebidas":                    [{ c: "5620-1/02", d: "Serviços de alimentação para eventos e recepções — bufê" }],
-        "Artes Visuais":                            [{ c: "9002-7/02", d: "Restauração de obras-de-arte" }],
-        "Comunicação Visual":                       [{ c: "7410-2/03", d: "Design de produto" }, { c: "7319-0/04", d: "Consultoria em publicidade" }],
-        "Consultoria em Moda":                      [{ c: "7319-0/04", d: "Consultoria em publicidade" }],
-        "Consultoria em TI":                        [{ c: "6204-0/00", d: "Consultoria em tecnologia da informação" }],
-        "Criação de Conteúdo":                      [{ c: "5911-1/99", d: "Produção cinematográfica, de vídeos e TV" }, { c: "5912-0/99", d: "Pós-produção audiovisual" }],
-        "Design":                                   [{ c: "7410-2/03", d: "Design de produto" }],
-        "Desenvolvimento Web":                      [{ c: "6201-5/02", d: "Web design" }, { c: "6202-3/00", d: "Desenvolvimento e licenciamento de software customizável" }],
-        "Ensino, Formação e Liderança":             [{ c: "8599-6/99", d: "Outras atividades de ensino" }, { c: "8599-6/03", d: "Treinamento em informática" }],
-        "Escrita, Interpretação e Tradução":        [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }, { c: "5811-5/00", d: "Edição de livros" }],
-        "Experiência de Usuário (UI/UX)":           [{ c: "7410-2/03", d: "Design de produto" }, { c: "6201-5/02", d: "Web design" }],
-        "Fotografia":                               [{ c: "7420-0/01", d: "Atividades de produção de fotografias" }, { c: "7420-0/04", d: "Filmagem de festas e eventos" }],
-        "Gestão Executiva":                         [{ c: "7319-0/04", d: "Consultoria em publicidade (gestão de rede)" }],
-        "Grafite":                                  [{ c: "9002-7/02", d: "Restauração de obras-de-arte (correlato)" }],
-        "Inteligência e Tecnologia":                [{ c: "6204-0/00", d: "Consultoria em tecnologia da informação" }, { c: "6319-4/00", d: "Portais, provedores de conteúdo e serviços de informação na internet" }],
-        "Desenvolvimento de Software":              [{ c: "6202-3/00", d: "Desenvolvimento e licenciamento de software customizável" }],
-        "Desenvolvimento de API":                   [{ c: "6202-3/00", d: "Desenvolvimento e licenciamento de software customizável" }],
-        "Nuvem":                                    [{ c: "6204-0/00", d: "Consultoria em TI" }, { c: "6319-4/00", d: "Provedores de conteúdo e serviços de informação na internet" }],
-        "Computação":                               [{ c: "6204-0/00", d: "Consultoria em TI" }],
-        "Dados e Armazenamento":                    [{ c: "6204-0/00", d: "Consultoria em TI" }, { c: "6319-4/00", d: "Provedores de serviços de informação na internet" }],
-        "Hardware":                                 [{ c: "6204-0/00", d: "Consultoria em TI" }],
-        "Sistemas Operacionais":                    [{ c: "6204-0/00", d: "Consultoria em TI" }],
-        "Redes":                                    [{ c: "6204-0/00", d: "Consultoria em TI" }],
-        "Tráfego e Crescimento":                    [{ c: "7319-0/04", d: "Consultoria em publicidade" }, { c: "6319-4/00", d: "Portais, provedores de conteúdo e serviços de informação na internet" }],
-        "Conexões":                                 [{ c: "7319-0/04", d: "Consultoria em publicidade · articulação de rede" }],
-        "Marketing Digital":                        [{ c: "7319-0/04", d: "Consultoria em publicidade" }],
-        "Meditação":                                [{ c: "8599-6/99", d: "Outras atividades de ensino (correlato)" }],
-        "Stylist, Moda e Passarela":                                   [{ c: "7319-0/04", d: "Consultoria em publicidade" }],
-        "Murais e Fachadas":                        [{ c: "7410-2/03", d: "Design de produto" }, { c: "7319-0/01", d: "Criação de estandes para feiras e exposições" }],
-        "Poeta":                                    [{ c: "5811-5/00", d: "Edição de livros" }],
-        "Privacidade e Segurança":          [{ c: "6204-0/00", d: "Consultoria em tecnologia da informação" }],
-        "Produção Musical":                         [{ c: "9001-9/02", d: "Produção musical" }, { c: "5920-1/00", d: "Atividades de gravação de som e de edição de música" }],
-        "Raízes do futuro":                         [{ c: "8599-6/99", d: "Outras atividades de ensino (projeto educacional)" }],
-        "Rede de Talentos":                         [{ c: "7319-0/04", d: "Consultoria em publicidade" }],
-        "Reforço Escolar":                          [{ c: "8599-6/99", d: "Outras atividades de ensino" }],
-        "Tortas Salgadas da Veh":                   [{ c: "5620-1/02", d: "Serviços de alimentação — bufê" }]
-    };
+    // serviceCatalog é a FONTE ÚNICA de cada serviço. Antes existiam 4 estruturas
+    // separadas (cnaeMap + extraServices + serviceOverrides + hiddenServiceTitles)
+    // e a info de cada serviço vivia espalhada por chaves de string. Refactor B:
+    // toda metadata fica aqui; `responsavel[]` continua auto-derivado de
+    // people/communities (humano escreve `servicos: ["Título"]`, sistema valida).
+    //
+    // Campos:
+    //   titulo:             identificador (string Pt-BR usada nos arrays .servicos)
+    //   parent:             título do serviço-pai (sub-serviços agrupam sob ele)
+    //   cnae:               [{ c, d }] — código + descrição CNAE oficial
+    //   descNossa:          copy próprio do que entregamos (≠ descrição CNAE genérica)
+    //   attachments:        [{ label, url, kind }] — PDFs, projetos, links
+    //   tags:               futuro — base pra taxonomia (Commit C)
+    //   hidden:             true = não aparece em /servicos/ (relações pessoais/familiares)
+    //   implicitResponsavel:handles que ganham responsabilidade pelo serviço mesmo
+    //                        sem escrever o título em `.servicos` (ex: Yuri cobre toda
+    //                        a árvore de I&T sem precisar listar cada sub-serviço).
+    //
+    // Validação: deriveServices() emite console.warn se person/community.servicos
+    // referencia título inexistente aqui — typos viram erro explícito, não silêncio.
 
     function slugify(s) {
         return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
@@ -309,53 +285,117 @@
             .replace(/(^-|-$)/g, "");
     }
 
-    // Extra services no catálogo. Sub-serviços têm `parent` = título do serviço-pai.
-    // Parents são buscáveis na raiz mas renderizam com hover-expand dos filhos em /servicos/.
-    const extraServices = [
-        // Sub-serviços de "Inteligência e Tecnologia" (Yuri, R$ 100/h)
-        { titulo: "Desenvolvimento de API",      responsavel: ["yuri"], parent: "Inteligência e Tecnologia" },
-        { titulo: "Desenvolvimento de Software", responsavel: ["yuri"], parent: "Inteligência e Tecnologia" },
-        { titulo: "Desenvolvimento Web",         responsavel: ["yuri"], parent: "Inteligência e Tecnologia" },
-        { titulo: "Nuvem",                       responsavel: ["yuri"], parent: "Inteligência e Tecnologia" },
-        { titulo: "Computação",                  responsavel: ["yuri"], parent: "Inteligência e Tecnologia" },
-        { titulo: "Dados e Armazenamento",       responsavel: ["yuri"], parent: "Inteligência e Tecnologia" },
-        { titulo: "Hardware",                    responsavel: ["yuri"], parent: "Inteligência e Tecnologia" },
-        { titulo: "Sistemas Operacionais",       responsavel: ["yuri"], parent: "Inteligência e Tecnologia" },
-        { titulo: "Redes",                       responsavel: ["yuri"], parent: "Inteligência e Tecnologia" },
-        { titulo: "Tráfego e Crescimento",       responsavel: ["yuri"], parent: "Inteligência e Tecnologia" }
-    ];
+    const serviceCatalog = [
+        // ── Sub-serviços de "Inteligência e Tecnologia" (Yuri cobre a árvore) ──
+        { titulo: "Desenvolvimento de API",      parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], cnae: [{ c: "6202-3/00", d: "Desenvolvimento e licenciamento de software customizável" }] },
+        { titulo: "Desenvolvimento de Software", parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], cnae: [{ c: "6202-3/00", d: "Desenvolvimento e licenciamento de software customizável" }] },
+        { titulo: "Desenvolvimento Web",         parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], cnae: [{ c: "6201-5/02", d: "Web design" }, { c: "6202-3/00", d: "Desenvolvimento e licenciamento de software customizável" }] },
+        { titulo: "Nuvem",                       parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], cnae: [{ c: "6204-0/00", d: "Consultoria em TI" }, { c: "6319-4/00", d: "Provedores de conteúdo e serviços de informação na internet" }] },
+        { titulo: "Computação",                  parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], cnae: [{ c: "6204-0/00", d: "Consultoria em TI" }] },
+        { titulo: "Dados e Armazenamento",       parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], cnae: [{ c: "6204-0/00", d: "Consultoria em TI" }, { c: "6319-4/00", d: "Provedores de serviços de informação na internet" }] },
+        { titulo: "Hardware",                    parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], cnae: [{ c: "6204-0/00", d: "Consultoria em TI" }] },
+        { titulo: "Sistemas Operacionais",       parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], cnae: [{ c: "6204-0/00", d: "Consultoria em TI" }] },
+        { titulo: "Redes",                       parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], cnae: [{ c: "6204-0/00", d: "Consultoria em TI" }] },
+        { titulo: "Tráfego e Crescimento",       parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade" }, { c: "6319-4/00", d: "Portais, provedores de conteúdo e serviços de informação na internet" }] },
 
-    // Per-service overrides (summaries, attachments). Keyed by service title.
-    const serviceOverrides = {
-        "Raízes do futuro": {
-            summary: "Projeto educacional do Quilombo Araucária. Formação, cultura e pertencimento enraizados na terra — para plantar as próximas gerações.",
+        // ── Serviços com CNAE ────────────────────────────────────────────────
+        { titulo: "Alfabetização",                       cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino não especificadas anteriormente" }] },
+        { titulo: "Alimentação e Bebidas",               cnae: [{ c: "5620-1/02", d: "Serviços de alimentação para eventos e recepções — bufê" }] },
+        { titulo: "Artes Visuais",                       cnae: [{ c: "9002-7/02", d: "Restauração de obras-de-arte" }] },
+        { titulo: "Comunicação Visual",                  cnae: [{ c: "7410-2/03", d: "Design de produto" }, { c: "7319-0/04", d: "Consultoria em publicidade" }] },
+        { titulo: "Conexões",                            cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade · articulação de rede" }] },
+        { titulo: "Consultoria em Moda",                 cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade" }] },
+        { titulo: "Consultoria em TI",                   cnae: [{ c: "6204-0/00", d: "Consultoria em tecnologia da informação" }] },
+        { titulo: "Criação de Conteúdo",                 cnae: [{ c: "5911-1/99", d: "Produção cinematográfica, de vídeos e TV" }, { c: "5912-0/99", d: "Pós-produção audiovisual" }] },
+        { titulo: "Design",                              cnae: [{ c: "7410-2/03", d: "Design de produto" }] },
+        { titulo: "Ensino, Formação e Liderança",        cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino" }, { c: "8599-6/03", d: "Treinamento em informática" }] },
+        { titulo: "Escrita, Interpretação e Tradução",   cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }, { c: "5811-5/00", d: "Edição de livros" }] },
+        { titulo: "Experiência de Usuário (UI/UX)",      cnae: [{ c: "7410-2/03", d: "Design de produto" }, { c: "6201-5/02", d: "Web design" }] },
+        { titulo: "Fotografia",                          cnae: [{ c: "7420-0/01", d: "Atividades de produção de fotografias" }, { c: "7420-0/04", d: "Filmagem de festas e eventos" }] },
+        { titulo: "Gestão Executiva",                    cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade (gestão de rede)" }] },
+        { titulo: "Grafite",                             cnae: [{ c: "9002-7/02", d: "Restauração de obras-de-arte (correlato)" }] },
+        { titulo: "Inteligência e Tecnologia",           cnae: [{ c: "6204-0/00", d: "Consultoria em tecnologia da informação" }, { c: "6319-4/00", d: "Portais, provedores de conteúdo e serviços de informação na internet" }] },
+        { titulo: "Marketing Digital",                   cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade" }] },
+        { titulo: "Meditação",                           cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino (correlato)" }] },
+        { titulo: "Murais e Fachadas",                   cnae: [{ c: "7410-2/03", d: "Design de produto" }, { c: "7319-0/01", d: "Criação de estandes para feiras e exposições" }] },
+        { titulo: "Poeta",                               cnae: [{ c: "5811-5/00", d: "Edição de livros" }] },
+        { titulo: "Privacidade e Segurança",             cnae: [{ c: "6204-0/00", d: "Consultoria em tecnologia da informação" }] },
+        { titulo: "Produção Musical",                    cnae: [{ c: "9001-9/02", d: "Produção musical" }, { c: "5920-1/00", d: "Atividades de gravação de som e de edição de música" }] },
+        { titulo: "Rede de Talentos",                    cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade" }] },
+        { titulo: "Reforço Escolar",                     cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino" }] },
+        { titulo: "Stylist, Moda e Passarela",           cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade" }] },
+        { titulo: "Tortas Salgadas da Veh",              cnae: [{ c: "5620-1/02", d: "Serviços de alimentação — bufê" }] },
+
+        // ── Serviços sem CNAE (21) — preencher em Commit 3 ───────────────────
+        { titulo: "Acompanhamento Nutricional" },
+        { titulo: "Atriz" },
+        { titulo: "Autocuidado" },
+        { titulo: "Cantora" },
+        { titulo: "Consultoria Jurídica" },
+        { titulo: "Cuidado com o Idoso" },
+        { titulo: "Dança e Expressão Corporal" },
+        { titulo: "Distribuição de Frutas" },
+        { titulo: "Drywall e Bioconstrução" },
+        { titulo: "Futuro" },
+        { titulo: "Gestão Administrativa" },
+        { titulo: "Gestão Contábil" },
+        { titulo: "Gestão Financeira" },
+        { titulo: "Gestão Fiscal" },
+        { titulo: "Gestão Operacional" },
+        { titulo: "Inteligência de Previsão" },
+        { titulo: "Market Making Preditivo" },
+        { titulo: "Mentoria Espiritual" },
+        { titulo: "Pensamento Islâmico" },
+        { titulo: "Saúde Mental" },
+        { titulo: "Tradução de Inglês" },
+
+        // ── Hidden — relações pessoais/familiares, não comerciais ────────────
+        { titulo: "Filha da Bruna",   hidden: true },
+        { titulo: "Filho da Aime",    hidden: true },
+        { titulo: "Pai do Yuri",      hidden: true },
+        { titulo: "Mãe do Yuri",      hidden: true },
+
+        // ── Órfão histórico — "Raízes do futuro" é missão, não serviço ───────
+        // (mantido até Commit 3 mover pra missions.servicos[])
+        {
+            titulo: "Raízes do futuro",
+            cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino (projeto educacional)" }],
+            descNossa: "Projeto educacional do Quilombo Araucária. Formação, cultura e pertencimento enraizados na terra — para plantar as próximas gerações.",
             attachments: [
                 { label: "Projeto — Raízes do Futuro", url: "/servicos/raizes-do-futuro/projeto.pdf", kind: "pdf" }
             ]
         }
-    };
+    ];
 
-    // Auto-derive catalog from entity.servicos (each entity contributes its services).
-    // True missions (goal-oriented communities) live in /comunidades/<h>/missoes/*.md
-    // and are separate from this catalog.
+    // Deriva o catálogo exposto a partir de serviceCatalog + .servicos de people/communities.
+    // Canonical = serviceCatalog. Responsáveis = auto-derivados. Typos em
+    // person/community.servicos geram console.warn (antes ficavam órfãos silenciosos).
     function deriveServices() {
         const byTitle = new Map();
+        // Seed from canonical catalog (inclui implicitResponsavel)
+        for (const def of serviceCatalog) {
+            byTitle.set(def.titulo, {
+                ...def,
+                slug: slugify(def.titulo),
+                responsavel: def.implicitResponsavel ? [...def.implicitResponsavel] : [],
+                cnae: def.cnae || null
+            });
+        }
+        // Auto-derive responsáveis a partir de people/communities.servicos
         const all = [...people, ...communities];
         for (const e of all) {
-            for (const m of (e.servicos || [])) {
-                if (!byTitle.has(m)) byTitle.set(m, { titulo: m, responsavel: [] });
-                byTitle.get(m).responsavel.push(e.handle);
+            for (const titulo of (e.servicos || [])) {
+                if (!byTitle.has(titulo)) {
+                    console.warn(`[AL] Serviço "${titulo}" usado por ${e.handle} não está em serviceCatalog — adicionando entry temporária`);
+                    byTitle.set(titulo, { titulo, slug: slugify(titulo), responsavel: [], cnae: null });
+                }
+                const existing = byTitle.get(titulo);
+                if (!existing.responsavel.includes(e.handle)) {
+                    existing.responsavel.push(e.handle);
+                }
             }
         }
-        for (const ex of extraServices) {
-            if (!byTitle.has(ex.titulo)) byTitle.set(ex.titulo, { titulo: ex.titulo, responsavel: [...ex.responsavel], parent: ex.parent });
-            else {
-                const existing = byTitle.get(ex.titulo);
-                for (const r of ex.responsavel) if (!existing.responsavel.includes(r)) existing.responsavel.push(r);
-                if (ex.parent && !existing.parent) existing.parent = ex.parent;
-            }
-        }
-        // Attach children arrays to parents (symmetric lookup)
+        // Symmetric lookup: children arrays anexados ao parent
         const result = Array.from(byTitle.values());
         for (const s of result) {
             s.children = result.filter(x => x.parent === s.titulo).map(x => x.titulo);
@@ -363,13 +403,6 @@
         return result.sort((a, b) => a.titulo.localeCompare(b.titulo, "pt-BR"));
     }
     const services = deriveServices();
-    // Attach slugs + cnae + overrides to each service
-    services.forEach(s => {
-        s.slug = slugify(s.titulo);
-        s.cnae = cnaeMap[s.titulo] || null;
-        const ov = serviceOverrides[s.titulo];
-        if (ov) Object.assign(s, ov);
-    });
 
     // ─── SOLUTIONS ───────────────────────────────────────────────────────────
     const solutions = [
@@ -502,7 +535,7 @@
 
     function publicServices() {
         return services.filter(s => {
-            if (hiddenServiceTitles.has(s.titulo)) return false;
+            if (s.hidden) return false;
             if (s.responsavel.some(h => isInactive(h))) return false;
             return true;
         });
@@ -774,7 +807,7 @@
         people, communities, services, solutions, missions, rosterOrder, finances, manifesto,
         get, byHandle, isEmMemoria, isInactive, isSocio,
         publicServices, roster, membersOf, subMembersOf, bundledServices,
-        hiddenServiceTitles, slugify,
+        serviceCatalog, slugify,
         serviceBySlug, serviceByTitle, solutionsUsingService, relatedServices,
         missionBySlug, topLevelMissions, missionsOfCommunity, subMissionsOf
     };

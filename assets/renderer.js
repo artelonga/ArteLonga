@@ -805,8 +805,10 @@
             ).join("")}</ul>`
             : "";
 
-        const summaryHtml = s.summary
-            ? `<p class="service-summary">${esc(s.summary)}</p>`
+        // Prefere descNossa (texto próprio); cai pra summary (compat legado).
+        const descText = s.descNossa || s.summary;
+        const summaryHtml = descText
+            ? `<p class="service-summary">${esc(descText)}</p>`
             : "";
 
         const attachmentsHtml = (s.attachments && s.attachments.length)

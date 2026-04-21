@@ -9,6 +9,17 @@ Each release links to a *why* (the pain or opportunity it addresses) so a reader
 
 ## [Unreleased]
 
+### Changed (catalogo · refactor estrutural · fonte única)
+- **`serviceCatalog`** agora é a **fonte única** de definição de cada serviço. Consolida 4 estruturas que antes viviam separadas: `cnaeMap` (CNAE + descrição) + `extraServices` (sub-serviços) + `serviceOverrides` (summary/attachments) + `hiddenServiceTitles` (relações pessoais). Cada entry tem: `titulo, parent?, cnae?, descNossa?, attachments?, tags?, hidden?, implicitResponsavel?`.
+- **`deriveServices()`** reescrita: seeda a partir de `serviceCatalog`, auto-deriva `responsavel[]` de `people`/`communities`, emite **`console.warn`** se alguma entity referencia um título inexistente — typos viram erro explícito em vez de ficar órfão silencioso. Deduplica responsáveis.
+- **`implicitResponsavel`** no catálogo: preserva o padrão "Yuri cobre toda a árvore de Inteligência e Tecnologia sem listar cada sub-serviço". Antes vinha via `extraServices.responsavel`; agora é um campo do próprio catálogo.
+- **`summary` → `descNossa`**: renomeado pro novo nome semântico ("nossa descrição", distinta da descrição CNAE oficial). Render de `/servicos/<slug>/` aceita ambos (compat durante transição).
+- **AL global**: `hiddenServiceTitles` removido; `serviceCatalog` exposto (útil pra ferramentas de debug/audit).
+- Comportamento externo **sem mudança**: 62 entries no catálogo, 53 em `publicServices()`, todas as URLs de serviço continuam iguais, soluções e perfis renderizam idêntico.
+- **Camada 1 da dívida** (fragmentação em 4 estruturas): resolvida.
+- **Próximos commits**: (2) ponte missão ↔ serviço, (3) correções de CNAE + descNossa preenchidos + Atriz/Cantora/Poeta → hidden + remoção do órfão "Raízes do futuro" do catálogo.
+- Cache-buster `?v=20260513` em `/servicos/`, `/solucoes/`, `/parceiros/`, `/recursos/`.
+
 ### Added (analytics · Fase 1 frontend)
 - **`assets/analytics.js`** — beacon self-hosted, carregado em todas as 99 páginas com `<script defer>`. Captura: `page_view` · `scroll_depth` (25/50/75/100) · `click_section` (parceiros, serviços, soluções, etc.) · `click_profile` · `click_outbound` · `click_email` · `click_whatsapp` · `click_tel` · `click_pdf` · `click_cta` (ver mais, ver serviços) · `page_end` (duração de visita).
 - **Privacidade** por design: sem cookies, sem fingerprint. Session ID efêmero em `sessionStorage` (some ao fechar aba). IP nunca sai do navegador — quando backend entrar, será hasheado lá.
