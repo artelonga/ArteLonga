@@ -428,7 +428,7 @@
 .service-resp a { color: #0a0a0a; font-weight: 600; text-decoration: none; transition: opacity 0.2s; }
 .service-resp a:hover { opacity: 0.5; }
 
-.service-cnae-list, .service-sols-list, .service-related {
+.service-cnae-list, .service-sols-list, .service-missoes-list, .service-related {
     list-style: none;
     margin-bottom: 3vh;
 }
@@ -470,6 +470,30 @@
 .service-sols-list a:hover { padding-left: 0.4rem; }
 .service-sols-list strong { font-size: 1.05rem; font-weight: 700; color: #0a0a0a; }
 .service-sols-list .sol-tagline {
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #888;
+}
+
+/* Em missões — mesmo visual de soluções (coerência de leitura) */
+.service-missoes-list li {
+    padding: 1rem 0;
+    border-bottom: 1px solid #eee;
+}
+.service-missoes-list li:last-child { border-bottom: none; }
+.service-missoes-list a {
+    color: inherit;
+    text-decoration: none;
+    display: flex;
+    gap: 1rem;
+    align-items: baseline;
+    flex-wrap: wrap;
+    transition: padding-left 0.2s;
+}
+.service-missoes-list a:hover { padding-left: 0.4rem; }
+.service-missoes-list strong { font-size: 1.05rem; font-weight: 700; color: #0a0a0a; }
+.service-missoes-list .sol-tagline {
     font-size: 0.72rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -1017,6 +1041,47 @@
     text-decoration: none;
 }
 .missao-envolvidos a:hover { opacity: 0.5; }
+
+/* Serviços que realizam a missão — pílulas compactas dentro do card */
+.missao-servicos {
+    margin-top: 0.8rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+.missao-servicos-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #999;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+.missao-servicos-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 0.6rem;
+    padding: 0;
+    margin: 0;
+}
+.missao-servicos-list li {
+    font-size: 0.76rem;
+}
+.missao-servicos-list li:not(:last-child)::after {
+    content: " ·";
+    color: #ccc;
+    margin-left: 0.3em;
+}
+.missao-servicos-list a {
+    color: #0a0a0a;
+    text-decoration: none;
+    border-bottom: 1px dotted #bbb;
+    padding-bottom: 1px;
+    transition: border-color 0.2s, color 0.2s;
+}
+.missao-servicos-list a:hover { color: #555; border-bottom-color: #555; }
 
 .missao-attach {
     list-style: none;

@@ -476,6 +476,8 @@
     // Renderizadas em /solucoes/ em uma seção dedicada — não entram no catálogo de serviços.
     const missions = [
         // Quilombo Araucária · todas as missões sob a mesma comunidade (top-level irmãs)
+        // Campo `servicos[]`: títulos do serviceCatalog que realizam a missão.
+        // Validado em deriveServices(): typo vira console.warn.
         {
             handle: "raizes-do-futuro", type: "mission",
             nome: "Raízes do Futuro",
@@ -483,6 +485,7 @@
             comunidade: "quilomboaraucaria",
             objetivo: "Regeneração do solo e da comunidade via agrofloresta, horta e compostagem — o futuro planta raízes agora.",
             tags: ["terra", "sustentabilidade", "educacao"],
+            servicos: ["Ensino, Formação e Liderança", "Drywall e Bioconstrução"],
             attachments: [
                 { label: "Projeto — Raízes do Futuro", url: "/missoes/raizes-do-futuro/projeto.pdf", kind: "pdf" }
             ]
@@ -493,7 +496,8 @@
             subtitle: "Escola de samba · futebol feminino e masculino para famílias de baixa renda",
             comunidade: "quilomboaraucaria",
             objetivo: "Cultura e Esporte Vivos.",
-            tags: ["cultura", "esporte", "social"]
+            tags: ["cultura", "esporte", "social"],
+            servicos: ["Produção Musical", "Artes Visuais", "Dança e Expressão Corporal"]
         },
         {
             handle: "reparacao-historica", type: "mission",
@@ -503,14 +507,25 @@
             objetivo: "\u201CA reparação à população negra e dos povos originários é urgente, é necessária, é fundamental.\u201D",
             objetivoAutor: "bia",
             tags: ["cultura", "justica"],
-            envolvidos: ["rogerio", "alzira"]
+            envolvidos: ["rogerio", "alzira"],
+            servicos: ["Mentoria Espiritual", "Ensino, Formação e Liderança"]
         },
         {
             handle: "eventos-espacos-saberes", type: "mission",
             nome: "Eventos e Espaços de Saberes",
             comunidade: "quilomboaraucaria",
             objetivo: "Encontros, aulas e espaços presenciais que transmitem os saberes da rede.",
-            tags: ["educacao", "cultura", "eventos"]
+            tags: ["educacao", "cultura", "eventos"],
+            servicos: [
+                "Ensino, Formação e Liderança",
+                "Alfabetização",
+                "Reforço Escolar",
+                "Meditação",
+                "Pensamento Islâmico",
+                "Mentoria Espiritual",
+                "Dança e Expressão Corporal",
+                "Alimentação e Bebidas"
+            ]
         }
     ];
 
@@ -761,6 +776,19 @@
     function topLevelMissions() { return missions.filter(m => !m.parentMission); }
     function missionsOfCommunity(handle) { return missions.filter(m => m.comunidade === handle && !m.parentMission); }
     function subMissionsOf(missionHandle) { return missions.filter(m => m.parentMission === missionHandle); }
+    // Reverse index: quais missões usam este serviço?
+    function missionsUsingService(titulo) {
+        return missions.filter(m => (m.servicos || []).includes(titulo));
+    }
+
+    // Validação cruzada: todo mission.servicos[title] precisa existir no serviceCatalog.
+    for (const m of missions) {
+        for (const titulo of (m.servicos || [])) {
+            if (!services.find(s => s.titulo === titulo)) {
+                console.warn(`[AL] Missão "${m.handle}" referencia serviço "${titulo}" inexistente no serviceCatalog`);
+            }
+        }
+    }
 
     // ─── MANIFESTO (Missão · Visão · Valores) ────────────────────────────────
     // Referência externa segue o padrão { obra, data, autor (handle), url }.
@@ -809,6 +837,6 @@
         publicServices, roster, membersOf, subMembersOf, bundledServices,
         serviceCatalog, slugify,
         serviceBySlug, serviceByTitle, solutionsUsingService, relatedServices,
-        missionBySlug, topLevelMissions, missionsOfCommunity, subMissionsOf
+        missionBySlug, topLevelMissions, missionsOfCommunity, subMissionsOf, missionsUsingService
     };
 })(window);

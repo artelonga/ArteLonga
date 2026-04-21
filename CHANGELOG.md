@@ -9,6 +9,19 @@ Each release links to a *why* (the pain or opportunity it addresses) so a reader
 
 ## [Unreleased]
 
+### Added (catalogo · ponte missão ↔ serviço · Commit 2/3)
+- **`mission.servicos: string[]`** — campo opcional em cada missão lista os serviços do catálogo que a realizam. Popula nas 4 missões existentes:
+  - *Raízes do Futuro* → Ensino, Formação e Liderança · Drywall e Bioconstrução
+  - *GRES Amazônia* → Produção Musical · Artes Visuais · Dança e Expressão Corporal
+  - *Reparação Histórica* → Mentoria Espiritual · Ensino, Formação e Liderança
+  - *Eventos e Espaços de Saberes* → 8 serviços (ensino, meditação, alimentação, etc.)
+- **`AL.missionsUsingService(titulo)`** — reverse index: retorna missões que usam um serviço dado.
+- **Validação cruzada** em data.js: `console.warn` se `mission.servicos` referenciar título inexistente no `serviceCatalog`.
+- **Render de missão** (`/solucoes/`) ganha bloco "Realizada por" logo após o objetivo — pílulas clicáveis para cada serviço.
+- **Render de serviço** (`/servicos/<slug>/`) ganha seção "Em missões" (ao lado de "Em soluções") com link direto pra `/solucoes/#<mission-handle>`. Só aparece se houver missões que usam esse serviço.
+- **Camada 3 da dívida** (missões em silo) resolvida. Navegação agora flui nos dois sentidos: missão → serviços que a realizam · serviço → missões em que participa.
+- Cache-buster `?v=20260514` em `/servicos/`, `/solucoes/` e 56 páginas de serviço detalhadas.
+
 ### Changed (catalogo · refactor estrutural · fonte única)
 - **`serviceCatalog`** agora é a **fonte única** de definição de cada serviço. Consolida 4 estruturas que antes viviam separadas: `cnaeMap` (CNAE + descrição) + `extraServices` (sub-serviços) + `serviceOverrides` (summary/attachments) + `hiddenServiceTitles` (relações pessoais). Cada entry tem: `titulo, parent?, cnae?, descNossa?, attachments?, tags?, hidden?, implicitResponsavel?`.
 - **`deriveServices()`** reescrita: seeda a partir de `serviceCatalog`, auto-deriva `responsavel[]` de `people`/`communities`, emite **`console.warn`** se alguma entity referencia um título inexistente — typos viram erro explícito em vez de ficar órfão silencioso. Deduplica responsáveis.

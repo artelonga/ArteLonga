@@ -467,12 +467,25 @@
                 return p ? `<a href="/${esc(h)}/">${esc(p.nome)}</a>` : esc(h);
               }).join(", ")}</div>`
             : "";
+        // Serviços que realizam a missão — link direto pra página de cada serviço
+        const servicos = m.servicos && m.servicos.length
+            ? `<div class="missao-servicos">
+                 <span class="missao-servicos-label">Realizada por</span>
+                 <ul class="missao-servicos-list">${m.servicos.map(titulo => {
+                    const s = AL.serviceByTitle(titulo);
+                    return s
+                        ? `<li><a href="/servicos/${esc(s.slug)}/">${esc(titulo)}</a></li>`
+                        : `<li>${esc(titulo)}</li>`;
+                 }).join("")}</ul>
+               </div>`
+            : "";
         return `<li class="missao-card depth-${depth}">
             <div class="missao-head">
                 <span class="missao-nome">${esc(m.nome)}</span>
                 ${sub}
             </div>
             ${m.objetivo ? `<p class="missao-objetivo">${esc(m.objetivo)}${m.objetivoAutor ? ` <cite class="missao-autor">— <a href="/${esc(m.objetivoAutor)}/">${esc((AL.get(m.objetivoAutor) || {}).nome || m.objetivoAutor)}</a></cite>` : ""}</p>` : ""}
+            ${servicos}
             ${envolvidos}
             ${attach}
             ${children}
@@ -797,6 +810,16 @@
             }).join("")}</ul>`
             : `<p class="empty-line">Ainda não entra em nenhuma solução padrão — pode compor uma custom.</p>`;
 
+        // Missions that use this service (reverse index)
+        const missoesDoServico = AL.missionsUsingService(s.titulo);
+        const missoesHtml = missoesDoServico.length
+            ? `<ul class="service-missoes-list">${missoesDoServico.map(m => {
+                const c = AL.get(m.comunidade);
+                const subline = c ? `<span class="sol-tagline">comunidade · ${esc(c.nome)}</span>` : "";
+                return `<li><a href="/solucoes/#${esc(m.handle)}"><strong>${esc(m.nome)}</strong> ${subline}</a></li>`;
+              }).join("")}</ul>`
+            : "";
+
         // Related services (co-occurring in solutions)
         const related = AL.relatedServices(s.titulo);
         const relHtml = related.length
@@ -838,6 +861,8 @@
                 <div class="section-header"><h2>Em soluções</h2><span class="label">combina com outras</span></div>
                 <p class="intro-short">Este serviço compõe as seguintes soluções da rede. Também pode ser combinado sob encomenda.</p>
                 ${solsHtml}
+
+                ${missoesDoServico.length ? `<div class="section-header"><h2>Em missões</h2><span class="label">realiza objetivos de</span></div>${missoesHtml}` : ""}
 
                 ${related.length ? `<div class="section-header"><h2>Frequentemente combinado com</h2><span class="label">serviços irmãos</span></div>${relHtml}` : ""}
 
