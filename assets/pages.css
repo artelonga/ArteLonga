@@ -452,16 +452,6 @@
     color: #333;
     line-height: 1.5;
 }
-.cnae-novo-note {
-    margin-top: 1.2vh;
-    padding: 1vh 1.2rem;
-    background: #fffaf0;
-    border-left: 3px solid #d4a015;
-    font-size: 0.78rem;
-    color: #7a5a10;
-    line-height: 1.5;
-    letter-spacing: 0.02em;
-}
 
 .service-sols-list li {
     padding: 1rem 0;

@@ -793,12 +793,10 @@
             return `<a href="${url}"${attr}>${esc(e.nome)}</a>`;
         }).join(", ");
 
-        // CNAE — quando cnaeNovo, sinaliza que ainda não consta no CNPJ
-        // (roadmap público: classificação ideal a formalizar na Receita).
         const cnaeHtml = s.cnae && s.cnae.length
             ? `<ul class="service-cnae-list">${s.cnae.map(x =>
                 `<li><span class="cnae-code">${esc(x.c)}</span><span class="cnae-desc">${esc(x.d)}</span></li>`
-            ).join("")}</ul>${s.cnaeNovo ? `<p class="cnae-novo-note">⚠ Classificação ideal — a formalizar no CNPJ via Receita Federal.</p>` : ""}`
+            ).join("")}</ul>`
             : `<p class="empty-line">CNAE não mapeado. Consulte <a href="/sobre/#cnae">/sobre</a> para a lista completa.</p>`;
 
         // Solutions that bundle this service
