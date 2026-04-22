@@ -9,6 +9,51 @@ Each release links to a *why* (the pain or opportunity it addresses) so a reader
 
 ## [Unreleased]
 
+### Changed (catalogo · CNAE completo + gaps + cleanup · Commit 3/3)
+
+**CNAE — 6 correções** (CNAEs ideais já existentes, aplicados):
+- `Grafite` · `Artes Visuais`: `9002-7/02 Restauração` → `9002-7/01 Artistas plásticos e escritores` (street art ≠ restauro)
+- `Meditação`: `8599-6/99 Ensino` → `8690-9/99 Atenção à saúde humana` (bem-estar ≠ ensino)
+- `Gestão Executiva` · `Conexões`: `7319-0/04 Publicidade` → `7020-4/00 Consultoria em gestão empresarial`
+- `Rede de Talentos`: `7319-0/04 Publicidade` → `7810-8/00 Seleção e agenciamento de mão-de-obra`
+
+**CNAE — 14 serviços ganharam classificação** (antes sem CNAE):
+Acompanhamento Nutricional, Autocuidado, Consultoria Jurídica, Cuidado com o Idoso, Drywall e Bioconstrução, Gestão Administrativa/Contábil/Financeira/Fiscal/Operacional, Inteligência de Previsão, Market Making Preditivo, Saúde Mental — todos classificados dentro do sistema IBGE.
+
+**3 serviços ganharam CNAE do CNPJ já existente** (sem ação burocrática):
+- Dança e Expressão Corporal → `8592-9/01 Ensino de dança` (já no CNPJ)
+- Mentoria Espiritual → `8599-6/99 Outras atividades de ensino` (já)
+- Pensamento Islâmico → `8592-9/99 Ensino de arte/cultura` + `8599-6/99` (já)
+- Tradução de Inglês → `7490-1/01` herda do serviço-pai (já)
+
+**Campo novo `cnaeNovo: true`**: marca os 22 serviços cujo CNAE ainda **não está no CNPJ 56.975.561/0001-60** e precisa ser adicionado na Receita Federal. Visível na página do serviço como nota destacada *"Classificação ideal — a formalizar no CNPJ via Receita Federal."* Roadmap fiscal público da empresa.
+
+**6 serviços novos** (gaps de missões):
+- `Agrofloresta` (`0161-0/01`) · `Compostagem` (`3821-1/00`) · `Educação Ambiental` (`8599-6/99`) — Quilombo Araucária, realizam Raízes do Futuro
+- `Produção de Desfile` (`9001-9/03`) · `Futebol e Esporte` (`9319-1/01`) — Quilombo Araucária, realizam GRES Amazônia
+- `Produção de Eventos` (`8230-0/02`) — Bruna, realiza Eventos e Espaços de Saberes
+
+**Hidden** (profissões pessoais / placeholders, não serviços comerciais):
+- Atriz · Cantora · Poeta (em memória/aposentado)
+- Distribuição de Frutas (Carlinhos, em memória — marcado hidden; reverter se quiser manter como legado público)
+- Futuro · Filha da Bruna · Filho da Aime · Mãe do Yuri · Pai do Yuri
+
+**Órfão removido**: `Raízes do futuro` saiu do `serviceCatalog` — era missão infiltrada. A missão homônima continua em `missions[]` e agora referencia seus próprios serviços (Agrofloresta, Compostagem, Educação Ambiental).
+
+**Missões atualizadas**: Raízes do Futuro, GRES Amazônia e Eventos e Espaços de Saberes incorporam os 6 serviços novos em `mission.servicos`.
+
+**Render**: página do serviço (`/servicos/<slug>/`) ganha nota amarela destacada quando `cnaeNovo: true`.
+
+**Contagens**:
+- Total no catálogo: 67 (+5 vs commit 2: 6 novos − 1 órfão removido)
+- `publicServices()`: 58 (+5)
+- Serviços com CNAE: 58 de 67 (era 40 de 62 no início da refactor — 87% cobertura agora vs 65%)
+- Serviços com `cnaeNovo: true`: 22 (roadmap pra Receita Federal)
+
+**Camada 2 da dívida** (CNAE genérico/errado + órfãos) resolvida. Commit 3/3 fecha a refactor B.
+
+Cache-buster `?v=20260515` em /servicos (60 páginas + 6 novas), /solucoes, /parceiros, /recursos.
+
 ### Added (catalogo · ponte missão ↔ serviço · Commit 2/3)
 - **`mission.servicos: string[]`** — campo opcional em cada missão lista os serviços do catálogo que a realizam. Popula nas 4 missões existentes:
   - *Raízes do Futuro* → Ensino, Formação e Liderança · Drywall e Bioconstrução

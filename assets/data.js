@@ -48,7 +48,7 @@
             pic: "/bruna/bruna.jpeg",
             bioCurta: "Sou uma pessoa prática, criativa e muito orientada a resolver problemas. Minha trajetória começou com produção de eventos, até chegar no nicho da comédia stand-up, sempre curiosa sobre tudo, aprendi diversas áreas da produção e também da comunicação, o que me deu jogo de cintura e a capacidade de me conectar com diferentes públicos de forma leve e autêntica.",
             bio: "Sou uma pessoa prática, criativa e muito orientada a resolver problemas. Minha trajetória começou com produção de eventos, até chegar no nicho da comédia stand-up, sempre curiosa sobre tudo, aprendi diversas áreas da produção e também da comunicação, o que me deu jogo de cintura e a capacidade de me conectar com diferentes públicos de forma leve e autêntica.\n\nMas antes de ser profissional, também me tornei mãe de uma criança linda albina, o que trouxe ainda mais responsabilidade, sensibilidade e força para tudo que faço. Essa vivência impacta diretamente a forma como enxergo o mundo e, consequentemente, como me posiciono profissionalmente. Com o tempo, fui evoluindo e direcionando minhas habilidades para o marketing e social media, hoje atuando com foco em projetos como a Arte Longa. Gosto de transformar ideias em algo concreto, construir presença digital e pensar estrategicamente na comunicação, sempre buscando resultado sem perder a identidade.\n\nAprendo rápido, sou curiosa e não tenho medo de testar, ajustar e melhorar no processo. Sei me virar, faço acontecer e acredito que dá pra levar o trabalho a sério sem deixar de ser leve, humana e engraçadinha.",
-            servicos: ["Comunicação Visual", "Criação de Conteúdo", "Marketing Digital"],
+            servicos: ["Comunicação Visual", "Criação de Conteúdo", "Marketing Digital", "Produção de Eventos"],
             subMembers: ["alicia"]
         },
         {
@@ -210,8 +210,10 @@
             bio: "Espaço de resistência ambiental, cultural e social.",
             externalUrl: "https://quilomboaraucaria.org",
             site: "https://quilomboaraucaria.org",
-            // QA não oferece serviços comerciais — seus projetos aparecem em Missões (/solucoes/)
-            servicos: [],
+            // QA oferece serviços que realizam suas próprias missões — agrofloresta,
+            // compostagem, educação ambiental, produção de desfile da escola de
+            // samba, futebol. Complementam os serviços individuais dos membros.
+            servicos: ["Agrofloresta", "Compostagem", "Educação Ambiental", "Produção de Desfile", "Futebol e Esporte"],
             // Todos os membros de QA (incluindo os fundadores que também são top-roster).
             // A renderização esconde os já visíveis no roster principal atrás de "ver mais",
             // e coloca os em memória ao final.
@@ -285,6 +287,9 @@
             .replace(/(^-|-$)/g, "");
     }
 
+    // Marcador `cnaeNovo: true` sinaliza CNAE proposto que ainda não consta do
+    // CNPJ 56.975.561/0001-60 e precisa ser adicionado via Receita Federal.
+    // Roadmap público da empresa — render pode exibir badge "a formalizar".
     const serviceCatalog = [
         // ── Sub-serviços de "Inteligência e Tecnologia" (Yuri cobre a árvore) ──
         { titulo: "Desenvolvimento de API",      parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], cnae: [{ c: "6202-3/00", d: "Desenvolvimento e licenciamento de software customizável" }] },
@@ -298,73 +303,76 @@
         { titulo: "Redes",                       parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], cnae: [{ c: "6204-0/00", d: "Consultoria em TI" }] },
         { titulo: "Tráfego e Crescimento",       parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade" }, { c: "6319-4/00", d: "Portais, provedores de conteúdo e serviços de informação na internet" }] },
 
-        // ── Serviços com CNAE ────────────────────────────────────────────────
+        // ── Serviços com CNAE já formalizado no CNPJ ─────────────────────────
         { titulo: "Alfabetização",                       cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino não especificadas anteriormente" }] },
         { titulo: "Alimentação e Bebidas",               cnae: [{ c: "5620-1/02", d: "Serviços de alimentação para eventos e recepções — bufê" }] },
-        { titulo: "Artes Visuais",                       cnae: [{ c: "9002-7/02", d: "Restauração de obras-de-arte" }] },
         { titulo: "Comunicação Visual",                  cnae: [{ c: "7410-2/03", d: "Design de produto" }, { c: "7319-0/04", d: "Consultoria em publicidade" }] },
-        { titulo: "Conexões",                            cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade · articulação de rede" }] },
         { titulo: "Consultoria em Moda",                 cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade" }] },
         { titulo: "Consultoria em TI",                   cnae: [{ c: "6204-0/00", d: "Consultoria em tecnologia da informação" }] },
         { titulo: "Criação de Conteúdo",                 cnae: [{ c: "5911-1/99", d: "Produção cinematográfica, de vídeos e TV" }, { c: "5912-0/99", d: "Pós-produção audiovisual" }] },
+        { titulo: "Dança e Expressão Corporal",          cnae: [{ c: "8592-9/01", d: "Ensino de dança" }] },
         { titulo: "Design",                              cnae: [{ c: "7410-2/03", d: "Design de produto" }] },
         { titulo: "Ensino, Formação e Liderança",        cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino" }, { c: "8599-6/03", d: "Treinamento em informática" }] },
         { titulo: "Escrita, Interpretação e Tradução",   cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }, { c: "5811-5/00", d: "Edição de livros" }] },
         { titulo: "Experiência de Usuário (UI/UX)",      cnae: [{ c: "7410-2/03", d: "Design de produto" }, { c: "6201-5/02", d: "Web design" }] },
         { titulo: "Fotografia",                          cnae: [{ c: "7420-0/01", d: "Atividades de produção de fotografias" }, { c: "7420-0/04", d: "Filmagem de festas e eventos" }] },
-        { titulo: "Gestão Executiva",                    cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade (gestão de rede)" }] },
-        { titulo: "Grafite",                             cnae: [{ c: "9002-7/02", d: "Restauração de obras-de-arte (correlato)" }] },
         { titulo: "Inteligência e Tecnologia",           cnae: [{ c: "6204-0/00", d: "Consultoria em tecnologia da informação" }, { c: "6319-4/00", d: "Portais, provedores de conteúdo e serviços de informação na internet" }] },
         { titulo: "Marketing Digital",                   cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade" }] },
-        { titulo: "Meditação",                           cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino (correlato)" }] },
+        { titulo: "Mentoria Espiritual",                 cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino" }] },
         { titulo: "Murais e Fachadas",                   cnae: [{ c: "7410-2/03", d: "Design de produto" }, { c: "7319-0/01", d: "Criação de estandes para feiras e exposições" }] },
-        { titulo: "Poeta",                               cnae: [{ c: "5811-5/00", d: "Edição de livros" }] },
+        { titulo: "Pensamento Islâmico",                 cnae: [{ c: "8592-9/99", d: "Ensino de arte e cultura não especificado anteriormente" }, { c: "8599-6/99", d: "Outras atividades de ensino" }] },
         { titulo: "Privacidade e Segurança",             cnae: [{ c: "6204-0/00", d: "Consultoria em tecnologia da informação" }] },
         { titulo: "Produção Musical",                    cnae: [{ c: "9001-9/02", d: "Produção musical" }, { c: "5920-1/00", d: "Atividades de gravação de som e de edição de música" }] },
-        { titulo: "Rede de Talentos",                    cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade" }] },
         { titulo: "Reforço Escolar",                     cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino" }] },
         { titulo: "Stylist, Moda e Passarela",           cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade" }] },
         { titulo: "Tortas Salgadas da Veh",              cnae: [{ c: "5620-1/02", d: "Serviços de alimentação — bufê" }] },
+        { titulo: "Tradução de Inglês",                  cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
 
-        // ── Serviços sem CNAE (21) — preencher em Commit 3 ───────────────────
-        { titulo: "Acompanhamento Nutricional" },
-        { titulo: "Atriz" },
-        { titulo: "Autocuidado" },
-        { titulo: "Cantora" },
-        { titulo: "Consultoria Jurídica" },
-        { titulo: "Cuidado com o Idoso" },
-        { titulo: "Dança e Expressão Corporal" },
-        { titulo: "Distribuição de Frutas" },
-        { titulo: "Drywall e Bioconstrução" },
-        { titulo: "Futuro" },
-        { titulo: "Gestão Administrativa" },
-        { titulo: "Gestão Contábil" },
-        { titulo: "Gestão Financeira" },
-        { titulo: "Gestão Fiscal" },
-        { titulo: "Gestão Operacional" },
-        { titulo: "Inteligência de Previsão" },
-        { titulo: "Market Making Preditivo" },
-        { titulo: "Mentoria Espiritual" },
-        { titulo: "Pensamento Islâmico" },
-        { titulo: "Saúde Mental" },
-        { titulo: "Tradução de Inglês" },
+        // ── Gaps de missões (serviços novos criados pra fechar ponte) ────────
+        { titulo: "Educação Ambiental",                  cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino" }] },
+        { titulo: "Produção de Desfile",                 cnae: [{ c: "9001-9/03", d: "Produção de espetáculos de dança" }] },
+        { titulo: "Futebol e Esporte",                   cnae: [{ c: "9319-1/01", d: "Produção e promoção de eventos esportivos" }] },
 
-        // ── Hidden — relações pessoais/familiares, não comerciais ────────────
-        { titulo: "Filha da Bruna",   hidden: true },
-        { titulo: "Filho da Aime",    hidden: true },
-        { titulo: "Pai do Yuri",      hidden: true },
-        { titulo: "Mãe do Yuri",      hidden: true },
+        // ── Correções (CNAE a formalizar — hoje no CNPJ estava errado/ausente)
+        { titulo: "Artes Visuais",                       cnaeNovo: true, cnae: [{ c: "9002-7/01", d: "Atividades de artistas plásticos, jornalistas independentes e escritores" }] },
+        { titulo: "Conexões",                            cnaeNovo: true, cnae: [{ c: "7020-4/00", d: "Atividades de consultoria em gestão empresarial" }] },
+        { titulo: "Gestão Executiva",                    cnaeNovo: true, cnae: [{ c: "7020-4/00", d: "Atividades de consultoria em gestão empresarial" }] },
+        { titulo: "Grafite",                             cnaeNovo: true, cnae: [{ c: "9002-7/01", d: "Atividades de artistas plásticos, jornalistas independentes e escritores" }] },
+        { titulo: "Meditação",                           cnaeNovo: true, cnae: [{ c: "8690-9/99", d: "Outras atividades de atenção à saúde humana" }] },
+        { titulo: "Rede de Talentos",                    cnaeNovo: true, cnae: [{ c: "7810-8/00", d: "Seleção e agenciamento de mão-de-obra" }] },
 
-        // ── Órfão histórico — "Raízes do futuro" é missão, não serviço ───────
-        // (mantido até Commit 3 mover pra missions.servicos[])
-        {
-            titulo: "Raízes do futuro",
-            cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino (projeto educacional)" }],
-            descNossa: "Projeto educacional do Quilombo Araucária. Formação, cultura e pertencimento enraizados na terra — para plantar as próximas gerações.",
-            attachments: [
-                { label: "Projeto — Raízes do Futuro", url: "/servicos/raizes-do-futuro/projeto.pdf", kind: "pdf" }
-            ]
-        }
+        // ── Novos CNAEs a formalizar (antes sem classificação) ───────────────
+        { titulo: "Acompanhamento Nutricional",          cnaeNovo: true, cnae: [{ c: "8650-0/02", d: "Atividades de profissionais da nutrição" }] },
+        { titulo: "Autocuidado",                         cnaeNovo: true, cnae: [{ c: "8690-9/99", d: "Outras atividades de atenção à saúde humana" }] },
+        { titulo: "Consultoria Jurídica",                cnaeNovo: true, cnae: [{ c: "6911-7/01", d: "Serviços advocatícios" }] },
+        { titulo: "Cuidado com o Idoso",                 cnaeNovo: true, cnae: [{ c: "8712-3/00", d: "Serviços de assistência à saúde prestados a pacientes fora de unidades de saúde" }] },
+        { titulo: "Drywall e Bioconstrução",             cnaeNovo: true, cnae: [{ c: "4330-4/02", d: "Instalação de portas, janelas, tetos, divisórias e armários" }, { c: "4399-1/99", d: "Outros serviços especializados para construção" }] },
+        { titulo: "Gestão Administrativa",               cnaeNovo: true, cnae: [{ c: "8211-3/00", d: "Serviços combinados de escritório e apoio administrativo" }] },
+        { titulo: "Gestão Contábil",                     cnaeNovo: true, cnae: [{ c: "6920-6/01", d: "Atividades de contabilidade" }] },
+        { titulo: "Gestão Financeira",                   cnaeNovo: true, cnae: [{ c: "7020-4/00", d: "Atividades de consultoria em gestão empresarial" }] },
+        { titulo: "Gestão Fiscal",                       cnaeNovo: true, cnae: [{ c: "6920-6/01", d: "Atividades de contabilidade" }] },
+        { titulo: "Gestão Operacional",                  cnaeNovo: true, cnae: [{ c: "7020-4/00", d: "Atividades de consultoria em gestão empresarial" }] },
+        { titulo: "Inteligência de Previsão",            cnaeNovo: true, cnae: [{ c: "7320-3/00", d: "Pesquisa de mercado e de opinião pública" }, { c: "6311-9/00", d: "Tratamento de dados, provedores de serviços de aplicação e serviços de hospedagem" }] },
+        { titulo: "Market Making Preditivo",             cnaeNovo: true, cnae: [{ c: "6619-3/99", d: "Outras atividades auxiliares dos serviços financeiros" }] },
+        { titulo: "Saúde Mental",                        cnaeNovo: true, cnae: [{ c: "8650-0/03", d: "Atividades de psicologia e psicanálise" }] },
+
+        // ── Gaps com CNAE a formalizar ───────────────────────────────────────
+        { titulo: "Agrofloresta",                        cnaeNovo: true, cnae: [{ c: "0161-0/01", d: "Serviço de preparação de terreno, cultivo e colheita" }] },
+        { titulo: "Compostagem",                         cnaeNovo: true, cnae: [{ c: "3821-1/00", d: "Tratamento e disposição de resíduos não-perigosos" }] },
+        { titulo: "Produção de Eventos",                 cnaeNovo: true, cnae: [{ c: "8230-0/02", d: "Atividades de organização de feiras, congressos, exposições e festas" }] },
+
+        // ── Hidden — profissões pessoais de entes em-memória/aposentados,
+        // relações familiares e placeholders de menores. Não são serviços
+        // comerciais da rede. Filtrados de /servicos/ via publicServices().
+        { titulo: "Atriz",                 hidden: true },
+        { titulo: "Cantora",               hidden: true },
+        { titulo: "Distribuição de Frutas",hidden: true },
+        { titulo: "Filha da Bruna",        hidden: true },
+        { titulo: "Filho da Aime",         hidden: true },
+        { titulo: "Futuro",                hidden: true },
+        { titulo: "Mãe do Yuri",           hidden: true },
+        { titulo: "Pai do Yuri",           hidden: true },
+        { titulo: "Poeta",                 hidden: true }
     ];
 
     // Deriva o catálogo exposto a partir de serviceCatalog + .servicos de people/communities.
@@ -485,7 +493,7 @@
             comunidade: "quilomboaraucaria",
             objetivo: "Regeneração do solo e da comunidade via agrofloresta, horta e compostagem — o futuro planta raízes agora.",
             tags: ["terra", "sustentabilidade", "educacao"],
-            servicos: ["Ensino, Formação e Liderança", "Drywall e Bioconstrução"],
+            servicos: ["Agrofloresta", "Compostagem", "Educação Ambiental", "Ensino, Formação e Liderança", "Drywall e Bioconstrução"],
             attachments: [
                 { label: "Projeto — Raízes do Futuro", url: "/missoes/raizes-do-futuro/projeto.pdf", kind: "pdf" }
             ]
@@ -497,7 +505,7 @@
             comunidade: "quilomboaraucaria",
             objetivo: "Cultura e Esporte Vivos.",
             tags: ["cultura", "esporte", "social"],
-            servicos: ["Produção Musical", "Artes Visuais", "Dança e Expressão Corporal"]
+            servicos: ["Produção de Desfile", "Futebol e Esporte", "Produção Musical", "Artes Visuais", "Dança e Expressão Corporal"]
         },
         {
             handle: "reparacao-historica", type: "mission",
@@ -517,6 +525,7 @@
             objetivo: "Encontros, aulas e espaços presenciais que transmitem os saberes da rede.",
             tags: ["educacao", "cultura", "eventos"],
             servicos: [
+                "Produção de Eventos",
                 "Ensino, Formação e Liderança",
                 "Alfabetização",
                 "Reforço Escolar",
