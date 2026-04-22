@@ -198,6 +198,13 @@
             servicos: [],
             communities: []
         }
+    
+        {
+            handle: "retro-burger", type: "business", nome: "Retro Burger",
+            role: "Alimentação", tags: ["parceiro", "alimentacao"],
+            pic: null, bio: "Hambúrgueres artesanais com sabor retrô.",
+            servicos: ["Hambúrgueres Artesanais", "Alimentos e Bebidas"]
+        },
     ];
 
     // ─── COMMUNITIES ─────────────────────────────────────────────────────────
