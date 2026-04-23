@@ -197,14 +197,17 @@
             bio: "Autor da encíclica [Rerum Novarum](https://www.vatican.va/content/leo-xiii/pt/encyclicals/documents/hf_l-xiii_enc_15051891_rerum-novarum.html) (15 de maio de 1891) — marco da doutrina social, defendendo a dignidade do trabalho, o justo salário e a associação livre dos trabalhadores.",
             servicos: [],
             communities: []
-        }
-    
-        {
-            handle: "retro-burger", type: "business", nome: "Retro Burger",
-            role: "Alimentação", tags: ["parceiro", "alimentacao"],
-            pic: null, bio: "Hambúrgueres artesanais com sabor retrô.",
-            servicos: ["Hambúrgueres Artesanais", "Alimentos e Bebidas"]
         },
+
+        // ─── BUSINESSES (parceiros pessoa jurídica) ──────────────────────────
+        {
+            handle: "retro-umarizal", type: "business", nome: "Retro Umarizal Burger & Chopp",
+            role: "Alimentação", tags: ["parceiro", "alimentacao"],
+            pic: null,
+            externalUrl: "/retro-umarizal/",
+            bio: "Hambúrgueres artesanais no Umarizal.\n\n[Ver cardápio completo →](/retro-umarizal/menu/)",
+            servicos: ["Hambúrguer Artesanal", "Alimentação e Bebidas"]
+        }
     ];
 
     // ─── COMMUNITIES ─────────────────────────────────────────────────────────
@@ -313,6 +316,7 @@
         // ── Serviços com CNAE já formalizado no CNPJ ─────────────────────────
         { titulo: "Alfabetização",                       cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino não especificadas anteriormente" }] },
         { titulo: "Alimentação e Bebidas",               cnae: [{ c: "5620-1/02", d: "Serviços de alimentação para eventos e recepções — bufê" }] },
+        { titulo: "Hambúrguer Artesanal",                cnaeNovo: true, cnae: [{ c: "5611-2/01", d: "Restaurantes e similares" }, { c: "5620-1/04", d: "Fornecimento de alimentos preparados preponderantemente para consumo domiciliar" }] },
         { titulo: "Comunicação Visual",                  cnae: [{ c: "7410-2/03", d: "Design de produto" }, { c: "7319-0/04", d: "Consultoria em publicidade" }] },
         { titulo: "Consultoria em Moda",                 cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade" }] },
         { titulo: "Consultoria em TI",                   cnae: [{ c: "6204-0/00", d: "Consultoria em tecnologia da informação" }] },
@@ -578,7 +582,8 @@
         "yuri", "igo", "joseantonio", "mono", "bruna",
         "luke", "marina", "karina", "kayra", "aime",
         "sylvia", "raquel", "alice", "ramona", "rogerio", "alzira", "miguel",
-        "quilomboaraucaria", "hfsassociados", "hedix"
+        "quilomboaraucaria", "hfsassociados", "hedix",
+        "retro-umarizal"
     ];
     function roster() {
         // referenceOnly entities (citadas em Valores, mas fora do catálogo público)
