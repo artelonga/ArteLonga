@@ -159,7 +159,14 @@
         { handle: "quinho", type: "person", nome: "Quinho", role: "", tags: ["parceiro"], pic: null, bio: "", servicos: ["Artes Visuais", "Grafite", "Murais e Fachadas"], communities: ["quilomboaraucaria"] },
         { handle: "tiao", type: "person", nome: "Tião", role: "", tags: ["parceiro"], pic: null, bio: "", servicos: ["Drywall e Bioconstrução"], communities: ["quilomboaraucaria"] },
         { handle: "veh", type: "person", nome: "Veh", role: "", tags: ["parceiro"], pic: null, bio: "", servicos: ["Alimentação e Bebidas", "Tortas Salgadas da Veh"], communities: ["quilomboaraucaria"] },
-        { handle: "joao", type: "person", nome: "João", role: "", tags: ["parceiro"], pic: null, bio: "", servicos: ["Saúde Mental"], communities: ["quilomboaraucaria"] },
+        {
+            handle: "joao", type: "person", nome: "João",
+            role: "Psicologia Clínica", tags: ["parceiro"],
+            pic: null,
+            bio: "Psicólogo clínico com abordagem em psicanálise e psicologia junguiana, atuando no atendimento de crianças, adolescentes, adultos, idosos e casais. É pós-graduado em Psicologia Social e Ciências Humanas, desenvolvendo um trabalho fundamentado na escuta clínica, com foco na elaboração do sofrimento psíquico, no fortalecimento da autonomia e na promoção do bem-estar mental.\n\nPossui experiência no acolhimento de pessoas em situação de vulnerabilidade social e dependência química, além de integrar o grupo de masculinidades da Fecaf. Realiza atendimentos nas modalidades online e presencial.",
+            servicos: ["Psicologia Clínica", "Saúde Mental", "Psicoterapia Psicanalítica", "Psicologia Analítica (Junguiana)", "Psicologia Social e Comunitária"],
+            communities: ["quilomboaraucaria"]
+        },
         {
             handle: "carlinhos", type: "person", nome: "Carlinhos",
             role: "Distribuição de Frutas",
@@ -366,6 +373,10 @@
         { titulo: "Inteligência de Previsão",            cnaeNovo: true, cnae: [{ c: "7320-3/00", d: "Pesquisa de mercado e de opinião pública" }, { c: "6311-9/00", d: "Tratamento de dados, provedores de serviços de aplicação e serviços de hospedagem" }] },
         { titulo: "Market Making Preditivo",             cnaeNovo: true, cnae: [{ c: "6619-3/99", d: "Outras atividades auxiliares dos serviços financeiros" }] },
         { titulo: "Saúde Mental",                        cnaeNovo: true, cnae: [{ c: "8650-0/03", d: "Atividades de psicologia e psicanálise" }] },
+        { titulo: "Psicologia Clínica",                  cnaeNovo: true, cnae: [{ c: "8650-0/03", d: "Atividades de psicologia e psicanálise" }] },
+        { titulo: "Psicoterapia Psicanalítica",          cnaeNovo: true, cnae: [{ c: "8650-0/03", d: "Atividades de psicologia e psicanálise" }] },
+        { titulo: "Psicologia Analítica (Junguiana)",    cnaeNovo: true, cnae: [{ c: "8650-0/03", d: "Atividades de psicologia e psicanálise" }] },
+        { titulo: "Psicologia Social e Comunitária",     cnaeNovo: true, cnae: [{ c: "8650-0/03", d: "Atividades de psicologia e psicanálise" }] },
 
         // ── Gaps com CNAE a formalizar ───────────────────────────────────────
         { titulo: "Agrofloresta",                        cnaeNovo: true, cnae: [{ c: "0161-0/01", d: "Serviço de preparação de terreno, cultivo e colheita" }] },
