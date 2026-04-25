@@ -595,7 +595,7 @@
     const rosterOrder = [
         "yuri", "igo", "joseantonio", "mono", "bruna",
         "luke", "marina", "karina", "kayra", "aime",
-        "sylvia", "raquel", "alice", "ramona", "rogerio", "alzira", "miguel",
+        "sylvia", "raquel", "alice", "ramona", "rogerio", "alzira", "miguel", "joao",
         "quilomboaraucaria", "hfsassociados", "hedix",
         "retro-umarizal"
     ];
