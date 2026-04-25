@@ -123,13 +123,15 @@
             handle: "rogerio", type: "person", nome: "Rogério",
             role: "Xeramoi", tags: ["parceiro"],
             pic: null, bio: "",
-            servicos: ["Mentoria Espiritual"]
+            servicos: ["Mentoria Espiritual"],
+            communities: ["quilomboaraucaria"]
         },
         {
             handle: "alzira", type: "person", nome: "Alzira",
             role: "Xejaryi", tags: ["parceiro"],
             pic: null, bio: "",
-            servicos: ["Mentoria Espiritual"]
+            servicos: ["Mentoria Espiritual"],
+            communities: ["quilomboaraucaria"]
         },
         {
             handle: "miguel", type: "person", nome: "Miguel",
@@ -138,6 +140,14 @@
             bioCurta: "18 anos. Apaixonado por resolver problemas, robótica, negócios e contribuir para a evolução das pessoas. Mira no MS&E da Stanford University.",
             bio: "Olá! Me chamo Miguel, tenho 18 anos.\n\nGosto muito de resolver problemas, robótica, negócios, desenvolver ideias, conversar, e contribuir para a evolução das pessoas (genuinamente, não só para ficar bonito no papel).\n\nLuto diariamente para superar a minha inevitável temporalidade deixando coisas boas por onde passo, quero deixar uma marca muito maior do que eu mesmo nesse mundo quando partir.\n\nMinha principal meta no momento é ingressar na Stanford University para cursar MS&E.\n\nSe quiser conversar, me chama aqui: mkbrito06@gmail.com\n\nObrigado :)",
             servicos: []
+        },
+        {
+            handle: "joao", type: "person", nome: "João",
+            role: "Psicologia Clínica", tags: ["parceiro"],
+            pic: null,
+            bio: "Psicólogo clínico com abordagem em psicanálise e psicologia junguiana, atuando no atendimento de crianças, adolescentes, adultos, idosos e casais. É pós-graduado em Psicologia Social e Ciências Humanas, desenvolvendo um trabalho fundamentado na escuta clínica, com foco na elaboração do sofrimento psíquico, no fortalecimento da autonomia e na promoção do bem-estar mental.\n\nPossui experiência no acolhimento de pessoas em situação de vulnerabilidade social e dependência química, além de integrar o grupo de masculinidades da Fecaf. Realiza atendimentos nas modalidades online e presencial.",
+            servicos: ["Psicologia Clínica", "Saúde Mental", "Psicoterapia Psicanalítica", "Psicologia Analítica (Junguiana)", "Psicologia Social e Comunitária"],
+            communities: ["quilomboaraucaria"]
         },
 
         // sub-members (shown under a parent profile, not on top-level roster)
@@ -159,14 +169,6 @@
         { handle: "quinho", type: "person", nome: "Quinho", role: "", tags: ["parceiro"], pic: null, bio: "", servicos: ["Artes Visuais", "Grafite", "Murais e Fachadas"], communities: ["quilomboaraucaria"] },
         { handle: "tiao", type: "person", nome: "Tião", role: "", tags: ["parceiro"], pic: null, bio: "", servicos: ["Drywall e Bioconstrução"], communities: ["quilomboaraucaria"] },
         { handle: "veh", type: "person", nome: "Veh", role: "", tags: ["parceiro"], pic: null, bio: "", servicos: ["Alimentação e Bebidas", "Tortas Salgadas da Veh"], communities: ["quilomboaraucaria"] },
-        {
-            handle: "joao", type: "person", nome: "João",
-            role: "Psicologia Clínica", tags: ["parceiro"],
-            pic: null,
-            bio: "Psicólogo clínico com abordagem em psicanálise e psicologia junguiana, atuando no atendimento de crianças, adolescentes, adultos, idosos e casais. É pós-graduado em Psicologia Social e Ciências Humanas, desenvolvendo um trabalho fundamentado na escuta clínica, com foco na elaboração do sofrimento psíquico, no fortalecimento da autonomia e na promoção do bem-estar mental.\n\nPossui experiência no acolhimento de pessoas em situação de vulnerabilidade social e dependência química, além de integrar o grupo de masculinidades da Fecaf. Realiza atendimentos nas modalidades online e presencial.",
-            servicos: ["Psicologia Clínica", "Saúde Mental", "Psicoterapia Psicanalítica", "Psicologia Analítica (Junguiana)", "Psicologia Social e Comunitária"],
-            communities: ["quilomboaraucaria"]
-        },
         {
             handle: "carlinhos", type: "person", nome: "Carlinhos",
             role: "Distribuição de Frutas",
@@ -236,9 +238,10 @@
             // e coloca os em memória ao final.
             // Ordem: alive-unique primeiro, em memória em seguida; fundadores (que
             // também estão no roster principal) ficam atrás de "ver mais".
-            membros: ["antony", "bia", "joao", "ken", "quinho", "tiao", "veh",
+            membros: ["antony", "bia", "ken", "quinho", "tiao", "veh",
                       "carlinhos", "mara-brandao",
-                      "yuri", "igo", "joseantonio", "mono", "bruna"],
+                      "yuri", "igo", "joseantonio", "mono", "bruna",
+                      "rogerio", "alzira", "joao"],
             // Parceria Arte Longa — pro-bono. Exibido em /quilomboaraucaria/.
             parcerias: [
                 {
