@@ -85,10 +85,11 @@
             subMembers: ["john"]
         },
         {
-            handle: "sylvia", type: "person", nome: "Sylvia",
-            role: "Consciência", tags: ["parceiro"],
-            pic: null, bio: "",
-            servicos: ["Meditação", "Autocuidado", "Dança e Expressão Corporal"]
+            handle: "sylvia", type: "person", nome: "Syl Saghira",
+            role: "Cientista-artista", tags: ["parceiro"],
+            pic: null,
+            bio: "Syl é formada em Ciências Biológicas, com foco em Ciências Ambientais, e construiu uma trajetória que integra ciência, arte e sociedade. Especializou-se em Fisiologia do Exercício enquanto dirigia a Cia de Dança Âmar, dedicada às danças árabes.\n\nAo longo de sua carreira, desenvolveu atuação em comunicação científica e engajamento público, trabalhando com diferentes formatos de divulgação e construção de narrativas acessíveis para aproximar a ciência da sociedade.\n\nDurante a pandemia, atuou como voluntária em testagem de COVID-19 e, em seguida, concluiu mestrado em genética. Nesse período, viveu de forma nômade pelo Brasil, buscando uma vida mais simples e conectada à natureza, incluindo dois anos em Ubatuba, onde aprofundou sua relação com o território e o meio ambiente.\n\nAtualmente, é doutoranda na área de ética e inovação social, investigando formas de aplicar a ciência com impacto social. Também é professora de yoga, integrando práticas de mindfulness e consciência corporal às suas atividades.\n\nNos intervalos, dedica-se ao desenho botânico e à meditação.",
+            servicos: ["Comunicação Científica", "Yoga", "Desenho Botânico", "Dança e Expressão Corporal", "Meditação", "Autocuidado"]
         },
         {
             handle: "raquel", type: "person", nome: "Raquel",
@@ -365,8 +366,10 @@
         // ── Novos CNAEs a formalizar (antes sem classificação) ───────────────
         { titulo: "Acompanhamento Nutricional",          cnaeNovo: true, cnae: [{ c: "8650-0/02", d: "Atividades de profissionais da nutrição" }] },
         { titulo: "Autocuidado",                         cnaeNovo: true, cnae: [{ c: "8690-9/99", d: "Outras atividades de atenção à saúde humana" }] },
+        { titulo: "Comunicação Científica",              cnaeNovo: true, cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino" }, { c: "5811-5/00", d: "Edição de livros" }] },
         { titulo: "Consultoria Jurídica",                cnaeNovo: true, cnae: [{ c: "6911-7/01", d: "Serviços advocatícios" }] },
         { titulo: "Cuidado com o Idoso",                 cnaeNovo: true, cnae: [{ c: "8712-3/00", d: "Serviços de assistência à saúde prestados a pacientes fora de unidades de saúde" }] },
+        { titulo: "Desenho Botânico",                    cnaeNovo: true, cnae: [{ c: "9002-7/01", d: "Atividades de artistas plásticos, jornalistas independentes e escritores" }] },
         { titulo: "Drywall e Bioconstrução",             cnaeNovo: true, cnae: [{ c: "4330-4/02", d: "Instalação de portas, janelas, tetos, divisórias e armários" }, { c: "4399-1/99", d: "Outros serviços especializados para construção" }] },
         { titulo: "Gestão Administrativa",               cnaeNovo: true, cnae: [{ c: "8211-3/00", d: "Serviços combinados de escritório e apoio administrativo" }] },
         { titulo: "Gestão Contábil",                     cnaeNovo: true, cnae: [{ c: "6920-6/01", d: "Atividades de contabilidade" }] },
@@ -380,6 +383,7 @@
         { titulo: "Psicoterapia Psicanalítica",          cnaeNovo: true, cnae: [{ c: "8650-0/03", d: "Atividades de psicologia e psicanálise" }] },
         { titulo: "Psicologia Analítica (Junguiana)",    cnaeNovo: true, cnae: [{ c: "8650-0/03", d: "Atividades de psicologia e psicanálise" }] },
         { titulo: "Psicologia Social e Comunitária",     cnaeNovo: true, cnae: [{ c: "8650-0/03", d: "Atividades de psicologia e psicanálise" }] },
+        { titulo: "Yoga",                                cnaeNovo: true, cnae: [{ c: "9313-1/00", d: "Atividades de condicionamento físico" }, { c: "8690-9/99", d: "Outras atividades de atenção à saúde humana" }] },
 
         // ── Gaps com CNAE a formalizar ───────────────────────────────────────
         { titulo: "Agrofloresta",                        cnaeNovo: true, cnae: [{ c: "0161-0/01", d: "Serviço de preparação de terreno, cultivo e colheita" }] },
