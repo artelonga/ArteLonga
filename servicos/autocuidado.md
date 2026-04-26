@@ -3,7 +3,7 @@ type: servico
 titulo: Autocuidado
 slug: autocuidado
 funcao: ""
-responsavel: sylvia, raquel
+responsavel: syl, raquel
 descricao: ""
 tags: []
 publicado: true

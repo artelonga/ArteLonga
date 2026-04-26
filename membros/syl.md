@@ -2,7 +2,7 @@
 nome: Syl Saghira
 papel: parceiro
 tags: [parceiro]
-usuario: sylvia
+usuario: syl
 reivindicado: false
 bio: ""
 foto_url: ""

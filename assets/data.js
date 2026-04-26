@@ -85,7 +85,7 @@
             subMembers: ["john"]
         },
         {
-            handle: "sylvia", type: "person", nome: "Syl Saghira",
+            handle: "syl", type: "person", nome: "Syl Saghira",
             role: "Cientista-artista", tags: ["parceiro"],
             pic: null,
             bio: "Syl é formada em Ciências Biológicas, com foco em Ciências Ambientais, e construiu uma trajetória que integra ciência, arte e sociedade. Especializou-se em Fisiologia do Exercício enquanto dirigia a Cia de Dança Âmar, dedicada às danças árabes.\n\nAo longo de sua carreira, desenvolveu atuação em comunicação científica e engajamento público, trabalhando com diferentes formatos de divulgação e construção de narrativas acessíveis para aproximar a ciência da sociedade.\n\nDurante a pandemia, atuou como voluntária em testagem de COVID-19 e, em seguida, concluiu mestrado em genética. Nesse período, viveu de forma nômade pelo Brasil, buscando uma vida mais simples e conectada à natureza, incluindo dois anos em Ubatuba, onde aprofundou sua relação com o território e o meio ambiente.\n\nAtualmente, é doutoranda na área de ética e inovação social, investigando formas de aplicar a ciência com impacto social. Também é professora de yoga, integrando práticas de mindfulness e consciência corporal às suas atividades.\n\nNos intervalos, dedica-se ao desenho botânico e à meditação.",
@@ -599,7 +599,7 @@
     const rosterOrder = [
         "yuri", "igo", "joseantonio", "mono", "bruna",
         "luke", "marina", "karina", "kayra", "aime",
-        "sylvia", "raquel", "alice", "ramona", "rogerio", "alzira", "miguel", "joao",
+        "syl", "raquel", "alice", "ramona", "rogerio", "alzira", "miguel", "joao",
         "quilomboaraucaria", "hfsassociados", "hedix",
         "retro-umarizal"
     ];

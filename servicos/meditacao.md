@@ -3,7 +3,7 @@ type: servico
 titulo: Meditação
 slug: meditacao
 funcao: Consciência
-responsavel: sylvia
+responsavel: syl
 descricao: ""
 tags: []
 publicado: true
