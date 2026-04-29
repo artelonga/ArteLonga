@@ -892,50 +892,65 @@
 .universo-row:last-child { border-bottom: none; }
 .universo-link {
     display: grid;
-    grid-template-columns: 1fr auto auto auto;
-    gap: 1.5rem;
-    align-items: baseline;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+        "nome arrow"
+        "obj  arrow"
+        "meta arrow";
+    column-gap: 1.5rem;
+    row-gap: 0.2rem;
     padding: 1.4rem 0;
     text-decoration: none;
     color: #0a0a0a;
+    align-items: center;
     transition: opacity 0.15s ease;
 }
 .universo-link:hover { opacity: 0.55; }
 .universo-nome {
+    grid-area: nome;
     font-size: 1.25rem;
     font-weight: 700;
     letter-spacing: -0.01em;
 }
 .universo-objetivo {
+    grid-area: obj;
     font-size: 0.78rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: #888;
 }
-.universo-status {
+.universo-meta {
+    grid-area: meta;
     font-size: 0.72rem;
-    letter-spacing: 0.04em;
     color: #bbb;
-    font-style: italic;
+    letter-spacing: 0.02em;
 }
 .universo-arrow {
+    grid-area: arrow;
     font-size: 0.85rem;
     color: #bbb;
+    align-self: center;
 }
-@media (max-width: 600px) {
-    .universo-link {
-        grid-template-columns: 1fr auto;
-        grid-template-areas:
-            "nome arrow"
-            "obj  obj"
-            "status status";
-        gap: 0.3rem 1rem;
-    }
-    .universo-nome   { grid-area: nome; }
-    .universo-arrow  { grid-area: arrow; }
-    .universo-objetivo { grid-area: obj; }
-    .universo-status { grid-area: status; }
+
+/* Hub navigation block (Arte Longa profile, etc.) */
+.home-links-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 0.5rem 1.5rem;
 }
+.home-links-list li {
+    padding: 0.55rem 0;
+    border-bottom: 1px solid #f4f4f4;
+}
+.home-links-list a {
+    color: #222;
+    text-decoration: none;
+    font-size: 1rem;
+}
+.home-links-list a:hover { color: #c0392b; }
 
 /* Universos diagram */
 .universos-diagram-section {

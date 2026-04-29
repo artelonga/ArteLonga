@@ -612,19 +612,19 @@
 
     // ─── PAGE: SOLUCOES ──────────────────────────────────────────────────────
     function renderSolucoes() {
-        // Catálogo enxuto: nome + objetivo (palavra-chave) + status.
-        // Descrição longa vive no perfil próprio do Universo.
+        // Catálogo enxuto: nome / objetivo / urlLabel (domínio ou status).
+        // Layout vertical: as três linhas empilhadas à esquerda, seta à direita.
         const renderRow = (s) => {
             const internal = s.internalLink !== false && (s.url || "").startsWith("/");
             const urlAttrs = internal ? "" : ` target="_blank" rel="noopener"`;
-            const status = s.lifecycle === "futuro"
-                ? `<span class="universo-status">${esc(s.urlLabel || "em breve")}</span>`
+            const meta = s.urlLabel
+                ? `<span class="universo-meta">${esc(s.urlLabel)}</span>`
                 : "";
             return `<li class="universo-row">
                 <a class="universo-link" href="${esc(s.url)}"${urlAttrs}>
                     <span class="universo-nome">${esc(s.nome)}</span>
                     <span class="universo-objetivo">${esc(s.tagline)}</span>
-                    ${status}
+                    ${meta}
                     <span class="universo-arrow">→</span>
                 </a>
             </li>`;
@@ -866,6 +866,18 @@
             </section>`;
         }
 
+        // Hub-style navigation: solutions like Arte Longa expõem links para
+        // Sobre / Parceiros / Serviços / Soluções diretamente no perfil.
+        let homeLinksHtml = "";
+        if (p.homeLinks && p.homeLinks.length) {
+            homeLinksHtml = `<section class="section home-links-section">
+                <h2>Navegação</h2>
+                <ul class="home-links-list">${p.homeLinks.map(l =>
+                    `<li><a href="${esc(l.href)}">${esc(l.label)}</a></li>`
+                ).join("")}</ul>
+            </section>`;
+        }
+
         const underageNote = p.underage
             ? `<div class="em-memoria-note"><em>perfil sob responsabilidade parental</em></div>`
             : "";
@@ -932,6 +944,7 @@
                 ${emBreveNote}
                 ${emMemoriaNote}
                 ${underageNote}
+                ${homeLinksHtml}
                 ${missoesHtml}
                 ${citacoesHtml}
                 ${essaysHtml}

@@ -471,7 +471,15 @@
             internalLink: true,
             externalUrl: "https://artelonga.com.br",
             lema: "Conectando pessoas.",
-            desc: "Site estático que cobre hospedagem web, gestão de conteúdo e bancos de dados em grafo. Um jeito natural de conectar pessoas e seus legados.",
+            desc: "Conectando pessoas.",
+            // Hub: como o perfil é o "home" do Universo, oferece atalhos para as
+            // áreas principais. O resto (stack, serviços, etc.) já vive em /servicos/.
+            homeLinks: [
+                { label: "Sobre",     href: "/sobre/" },
+                { label: "Parceiros", href: "/parceiros/" },
+                { label: "Serviços",  href: "/servicos/" },
+                { label: "Soluções",  href: "/solucoes/" }
+            ],
             lifecycle: "active",
             universo: true,
             bundledServices: "*", // all services
@@ -578,9 +586,11 @@
         {
             handle: "hedix-solution", type: "solution", nome: "Hedix",
             tagline: "Mercados de Previsão",
-            url: "https://hedix.com.br/", urlLabel: "hedix.com.br",
+            url: "/hedix-solution/", urlLabel: "hedix.com.br",
+            internalLink: true,
+            externalUrl: "https://hedix.com.br/",
             lema: "Liquidez e formação de preço em mercados de previsão.",
-            desc: "Plataforma de market making preditivo. Provê liquidez, forma preço e agrega sinal em mercados de previsão — onde o mercado é o oráculo.",
+            desc: "Formação de mercado e inteligência preditiva. Provê liquidez, forma preço e agrega sinal em mercados de previsão — onde a multidão é o oráculo.",
             lifecycle: "active",
             universo: false,
             comunidade: "hedix",
