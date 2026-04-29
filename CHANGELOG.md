@@ -9,6 +9,27 @@ Each release links to a *why* (the pain or opportunity it addresses) so a reader
 
 ## [Unreleased]
 
+### Changed (yuri · revisão da bio + ShowAll mode em /parceiros/)
+
+**Bio do Yuri** — pequenas reescritas e quebras:
+- Reordenação: "O eu não se faz de reconhecimento ou recompensa. Não é sobre mim." promovida a parágrafo próprio, antes de "Nao chamavam-se".
+- Quebras de linha dentro da estrofe "Nao chamavam-se" — uma linha por unidade (japoneses ou nordestinos / africanos ou indígenas / Eram gente, como a gente / Sem nome).
+- "e o ioruba" → "èdè Yorùbá" (Òrìşà èdè Yorùbá — termo originário, não a versão portuguesa).
+- "Para de tentar traduzir o que só se pode sentir com presença e atenção ao experienciar" → "Sem tentar traduzir o que so presenca e atencao te permitem sentir,".
+- Última estrofe quebrada: "Chuva é tupã mandando descansar, autocuidado nhane noite" + parágrafo final isolado **"Jaxy pyau"** (frase de fecho).
+- "todos que inspiram" virou hyperlink → `/parceiros/#ShowAll`.
+
+**`/parceiros/#ShowAll`** — novo modo no roster de parceiros:
+- Lista plana de todas as pessoas (`AL.people` exceto `referenceOnly`), ordenada alfabeticamente em pt-BR.
+- Inclui: parceiros de nível superior, sub-membros (Alicia, John, Kiyoshi, Soninha) e membros de comunidades (Antony, Bia, Ken, Quinho, Tião, Veh, Carlinhos · em memória, Mara Brandão · em memória).
+- Apenas nomes — sem papéis, serviços, foto ou hierarquia. 31 nomes hoje.
+- Link "← voltar para a rede com papéis" leva ao modo padrão.
+- Roteamento via `location.hash`: `renderParceiros` ouve `hashchange` (handler idempotente), trocando entre os dois modos sem reload.
+
+**CSS**: `.roster-all` (grid auto-fill min 200px), `.show-all-intro`, `.show-all-toggle`.
+
+Cache-buster `?v=20260430` em `data.js` + `renderer.js` + `components.css` (118 páginas).
+
 ### Added (analytics · self-hosted telemetry + A/B framework + em-breve modal)
 
 **Reescrita de `assets/analytics.js`** (de scaffold inicial para coleta+experimentação completa):

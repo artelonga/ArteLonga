@@ -291,8 +291,36 @@
         `;
     }
 
+    // ─── PAGE: PARCEIROS — ShowAll mode (flat, all people, names only) ───────
+    // Acessada via /parceiros/#ShowAll. Inclui em-memória, sub-membros e
+    // membros de comunidades. Sem papéis, sem serviços, sem hierarquia.
+    function renderParceirosShowAll() {
+        const all = AL.people
+            .filter(p => !p.referenceOnly)
+            .sort((a, b) => (a.nome || "").localeCompare(b.nome || "", "pt-BR"));
+        const items = all.map(p => `<li><a href="/${esc(p.handle)}/">${esc(p.nome)}</a></li>`).join("");
+        document.body.innerHTML = `
+            ${siteHeader()}
+            <main class="main">
+                <h1 class="statement">Todos</h1>
+                <p class="show-all-intro">Sem papéis, sem hierarquia. Cada nome um caminho.</p>
+                <ul class="roster-all">${items}</ul>
+                <p class="show-all-toggle"><a href="/parceiros/">← voltar para a rede com papéis</a></p>
+            </main>
+        `;
+    }
+
     // ─── PAGE: PARCEIROS ─────────────────────────────────────────────────────
     function renderParceiros() {
+        // Hash-based routing: /parceiros/#ShowAll → flat view
+        if (location.hash && location.hash.toLowerCase() === "#showall") {
+            renderParceirosShowAll();
+            window.addEventListener("hashchange", renderParceiros); // idempotent
+            return;
+        }
+        // Re-route on hash change (idempotent: same fn ref)
+        window.addEventListener("hashchange", renderParceiros);
+
         const roster = AL.roster();
 
         const rows = roster.map(entity => {
