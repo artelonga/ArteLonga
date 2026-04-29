@@ -509,7 +509,7 @@
             tagline: "Conexão na Internet",
             url: "/co/", urlLabel: "lançamento · 1 de maio de 2026",
             internalLink: true,
-            externalUrl: "https://co-artelonga-uat.fly.dev/",
+            externalUrl: "https://co.artelonga.com.br/",
             lema: "Organize seus Universos paralelos.",
             desc: "Aplicação web para organização e navegação entre seus Universos.",
             lifecycle: "futuro",
