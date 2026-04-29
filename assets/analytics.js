@@ -5,11 +5,13 @@
  *   See docs/analytics-api.md for the wire contract.
  *
  * Privacy:
- *   - Respects DNT, explicit opt-out (window.AL_optout = true OR localStorage.al_optout = "1"),
- *     and navigator.webdriver (skip automated browsers).
- *   - No cookies, no fingerprinting.
- *   - Visitor ID (al_vid): random UUID in localStorage. Stable across sessions for return-visit
- *     analytics and stable A/B variant assignment. Erased on opt-out.
+ *   - Respects DNT, explicit opt-out (window.AL_optout = true OR localStorage.al_optout = "1"
+ *     OR cookie al_optout=1), and navigator.webdriver (skip automated browsers).
+ *   - One first-party cookie scoped to .artelonga.com.br for cross-subdomain identity threading
+ *     (carries the same al_vid as localStorage). No third-party tracking, no fingerprinting.
+ *   - Visitor ID (al_vid): random UUID in localStorage AND in a domain-scoped cookie so the
+ *     identity is shared between artelonga.com.br and co.artelonga.com.br. Stable across
+ *     sessions for return-visit analytics and stable A/B variant assignment. Erased on opt-out.
  *   - Session ID (al_sid): random UUID in sessionStorage, scoped to the tab session.
  *   - IP not collected client-side; backend hashes with secret salt before storing.
  *
@@ -72,6 +74,44 @@
     const UTM_KEY    = "al_utm";
     const OPTOUT_KEY = "al_optout";
 
+    // Top-level sections used to classify same-origin clicks.
+    const SECTIONS = new Set([
+        "parceiros", "servicos", "solucoes", "comunidades",
+        "sobre", "recursos", "proximos-passos", "jardim", "eventos"
+    ]);
+
+    // Shared-domain cookie for cross-subdomain identity (artelonga.com.br ↔ co.artelonga.com.br).
+    const SHARED_DOMAIN     = ".artelonga.com.br";
+    const SHARED_DOMAIN_RX  = /(?:^|\.)artelonga\.com\.br$/i;
+    const APP_HOST_RX       = SHARED_DOMAIN_RX;
+    const COOKIE_VID_MAX_AGE = 60 * 60 * 24 * 365 * 2; // 2y
+    const COOKIE_OPT_MAX_AGE = 60 * 60 * 24 * 365 * 5; // 5y
+    function canSetSharedCookie() {
+        return SHARED_DOMAIN_RX.test(location.hostname || "");
+    }
+    function readCookie(name) {
+        const esc = name.replace(/[^a-zA-Z0-9_-]/g, "\\$&");
+        const m = (document.cookie || "").match(new RegExp("(?:^|; )" + esc + "=([^;]*)"));
+        if (!m) return null;
+        try { return decodeURIComponent(m[1]); } catch { return null; }
+    }
+    function writeSharedCookie(name, value, maxAge) {
+        if (!canSetSharedCookie()) return;
+        const parts = [
+            name + "=" + encodeURIComponent(value),
+            "Path=/",
+            "Domain=" + SHARED_DOMAIN,
+            "SameSite=Lax",
+            "Max-Age=" + maxAge
+        ];
+        if (location.protocol === "https:") parts.push("Secure");
+        try { document.cookie = parts.join("; "); } catch {}
+    }
+    function deleteSharedCookie(name) {
+        if (!canSetSharedCookie()) return;
+        try { document.cookie = name + "=; Path=/; Domain=" + SHARED_DOMAIN + "; Max-Age=0"; } catch {}
+    }
+
     // Migration: drop pre-v1 queue (different shape).
     try { localStorage.removeItem("al_evq"); } catch {}
 
@@ -83,6 +123,7 @@
     function isOptedOut() {
         if (window.AL_optout === true) return true;
         try { if (localStorage.getItem(OPTOUT_KEY) === "1") return true; } catch {}
+        if (readCookie(OPTOUT_KEY) === "1") return true;
         return dnt();
     }
     function isAutomated() {
@@ -98,10 +139,12 @@
             info: function () { return { optedOut: true, reason: isAutomated() ? "automated" : "opted-out" }; },
             optIn: function () {
                 try { localStorage.removeItem(OPTOUT_KEY); } catch {}
+                deleteSharedCookie(OPTOUT_KEY);
                 location.reload();
             },
             optOut: function () {
                 try { localStorage.setItem(OPTOUT_KEY, "1"); } catch {}
+                writeSharedCookie(OPTOUT_KEY, "1", COOKIE_OPT_MAX_AGE);
             }
         };
         return;
@@ -116,9 +159,14 @@
     try { sid = sessionStorage.getItem(SID_KEY); } catch {}
     if (!sid) { sid = uuid(); try { sessionStorage.setItem(SID_KEY, sid); } catch {} }
 
-    let vid = null;
-    try { vid = localStorage.getItem(VID_KEY); } catch {}
-    if (!vid) { vid = uuid(); try { localStorage.setItem(VID_KEY, vid); } catch {} }
+    // Visitor ID: prefer the shared-domain cookie so identity is unified across
+    // artelonga.com.br ↔ co.artelonga.com.br. Fall back to localStorage, then mint a new one.
+    // Always write both so subsequent visits to the other subdomain see the same vid.
+    let vid = readCookie(VID_KEY);
+    if (!vid) { try { vid = localStorage.getItem(VID_KEY); } catch {} }
+    if (!vid) vid = uuid();
+    try { localStorage.setItem(VID_KEY, vid); } catch {}
+    writeSharedCookie(VID_KEY, vid, COOKIE_VID_MAX_AGE);
 
     // ─── PATH / UTM ──────────────────────────────────────────────────────────
     function normalizePath(p) {
@@ -307,17 +355,24 @@
         if (!href || href.startsWith("#")) return;
 
         const isAbs = /^https?:\/\//.test(href);
-        const isOutbound = isAbs && !href.includes(location.hostname);
+        let host = "";
+        if (isAbs) { try { host = new URL(href, location.href).hostname; } catch {} }
+        const sameHost   = isAbs && host === location.hostname;
+        const isApp      = isAbs && !sameHost && APP_HOST_RX.test(host);
+        const isOutbound = isAbs && !sameHost && !isApp;
 
         if (href.startsWith("mailto:"))                                track("click_email",    { href });
         else if (href.startsWith("tel:"))                              track("click_tel",      { href });
         else if (href.includes("wa.me") || href.includes("api.whatsapp.com")) track("click_whatsapp", { href });
         else if (/\.pdf(\?|#|$)/i.test(href))                          track("click_pdf",      { href });
+        else if (isApp) {
+            const sub = host.replace(/\.?artelonga\.com\.br$/i, "") || "main";
+            track("click_app", { app: sub, href });
+        }
         else if (isOutbound)                                           track("click_outbound", { href });
         else if (href.startsWith("/")) {
             const seg = href.split("/").filter(Boolean)[0];
-            const sections = new Set(["parceiros", "servicos", "solucoes", "comunidades", "sobre", "recursos", "proximos-passos", "jardim", "eventos"]);
-            if (sections.has(seg)) track("click_section", { section: seg, href });
+            if (SECTIONS.has(seg)) track("click_section", { section: seg, href });
             else if (seg)          track("click_profile", { handle: seg });
         }
     }, true);
@@ -398,15 +453,18 @@
         },
         optOut: function () {
             try { localStorage.setItem(OPTOUT_KEY, "1"); } catch {}
+            writeSharedCookie(OPTOUT_KEY, "1", COOKIE_OPT_MAX_AGE);
             try {
                 sessionStorage.removeItem(SID_KEY);
                 localStorage.removeItem(VID_KEY);
                 localStorage.removeItem(Q_KEY);
                 sessionStorage.removeItem(UTM_KEY);
             } catch {}
+            deleteSharedCookie(VID_KEY);
         },
         optIn: function () {
             try { localStorage.removeItem(OPTOUT_KEY); } catch {}
+            deleteSharedCookie(OPTOUT_KEY);
             location.reload();
         }
     };

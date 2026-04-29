@@ -14,8 +14,9 @@ This file is the source of truth for the schema and HTTP contract. Bump
 
 ### `POST /events` — public ingest
 
-CORS: allow origin `https://artelonga.com.br` (and dev origins). No credentials.
-Body limit: 64 KiB. Rate limit: per IP, e.g. 60 req/min (sliding window).
+CORS: allow origins `https://artelonga.com.br` and `https://co.artelonga.com.br`
+(plus dev origins). No credentials. Body limit: 64 KiB. Rate limit: per IP, e.g.
+60 req/min (sliding window).
 
 Request body:
 
@@ -49,7 +50,7 @@ the rest of `co`'s admin surface). Suggested first endpoints:
 ```ts
 type Event = {
   s: 1,                        // schema version
-  site: "artelonga",           // tenant; expand later if more sites use the collector
+  site: "artelonga" | "co",    // surface that emitted the event; same vid may appear under multiple sites
   name: string,                // event name, ≤ 64 chars (see taxonomy below)
   sid: string,                 // session ID (UUID, per tab session)
   vid: string,                 // visitor ID (UUID, persists in localStorage)
@@ -90,7 +91,8 @@ as `SHA-256(salt || client_ip)` where `salt` is a long-lived secret in env.
 | `click_tel`             | `tel:` click                                  | `{ href }`                                                             |
 | `click_whatsapp`        | wa.me / api.whatsapp.com click                | `{ href }`                                                             |
 | `click_pdf`             | `.pdf` link click                             | `{ href }`                                                             |
-| `click_outbound`        | external `https?://...` click                 | `{ href }`                                                             |
+| `click_app`             | click on a different `*.artelonga.com.br` host (same product, other surface) | `{ app, href }` — `app` is the subdomain (`co`, `co-dev`, …), or `main` for apex |
+| `click_outbound`        | external `https?://...` click (different host, not in-network)    | `{ href }`                                         |
 | `click_cta`             | `<button>` / `.see-more` / `.ver-servicos-btn` | `{ kind, label }`                                                     |
 | `experiment_exposure`   | first time a variant is read in the session   | `{ exp, variant }`                                                     |
 | `modal_em_breve`        | "em breve" modal opens (e.g., wiki-link)      | `{ title }`                                                            |
@@ -104,14 +106,37 @@ Any future event name is fine — the backend stores it as-is. Reserve the prefi
 
 ## 4. Privacy
 
-- **No cookies.** Identifiers live in localStorage / sessionStorage.
-- **Visitor opt-out**: the client sets `localStorage.al_optout = "1"` and stops
-  emitting. The backend never sees these clients.
+- **One first-party cookie, scoped to `.artelonga.com.br`.** Carries the same
+  `al_vid` that lives in localStorage so identity threads across
+  `artelonga.com.br` and `co.artelonga.com.br`. `SameSite=Lax`, `Secure`,
+  `Max-Age=2y`. Not sent to any third party (no cross-site tracking, no ads,
+  no fingerprinting). Outside the apex domain (e.g. localhost) the cookie is
+  not set and the client falls back to localStorage-only.
+- **Visitor opt-out**: the client sets `localStorage.al_optout = "1"` *and*
+  the cookie `al_optout=1` on the apex domain so opt-out propagates across
+  subdomains. Backend never sees these clients.
 - **DNT**: `navigator.doNotTrack === "1"` short-circuits the client.
 - **Webdriver**: `navigator.webdriver` short-circuits (Lighthouse, Cypress, etc.).
 - **IP**: hashed with secret salt server-side; raw IP never persisted.
 - **Retention**: recommend ≤ 90 days raw; aggregate older data (counts per
   `(name, path, day)`) and drop the row-level table beyond that.
+
+### Cross-subdomain identity
+
+Because both surfaces share the registrable domain `artelonga.com.br`, a single
+`vid` carries through marketing → app. On every page load the client:
+
+1. Reads the `al_vid` cookie from `.artelonga.com.br` first.
+2. If absent, reads `localStorage.al_vid`.
+3. If both absent, mints a UUID.
+4. Writes the resulting `vid` to **both** localStorage and the cookie, so the
+   first visit to any subdomain seeds the other.
+
+This means the *first* same-day visit to either subdomain after rollout will
+appear as a "new" visitor; subsequent cross-subdomain hops unify on the same
+`vid`. Visits before rollout cannot be retroactively unified — the backend can
+optionally join old per-origin `vid`s heuristically via `(ip_hash, ua_brand)`
+proximity if needed for one-off analyses.
 
 ---
 
