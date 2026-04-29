@@ -1,22 +1,31 @@
 # Analytics API — wire contract
 
-Spec for the `POST /events` endpoint that the static site (this repo) talks to.
-The endpoint lives in **`artelonga/co`** (Rust/Axum). Until it's deployed, events
-queue locally in the visitor's `localStorage` (cap 1000) and ship retroactively
-once the endpoint is set in `assets/analytics.js` (`ENDPOINT`).
+Spec for the marketing-batch event endpoint that the static site (this repo)
+talks to. The endpoint lives in **`artelonga/co`** at
+`POST /api/v1/telemetry/events`. Until it's deployed, events queue locally
+in the visitor's `localStorage` (cap 1000) and ship retroactively once the
+endpoint is set in `assets/analytics.js` (`ENDPOINT`).
 
-This file is the source of truth for the schema and HTTP contract. Bump
-`SCHEMA_VERSION` in both this doc and `analytics.js` together.
+This file is the source of truth for the marketing-batch schema and HTTP
+contract. Bump `SCHEMA_VERSION` in both this doc and `analytics.js` together.
+
+> **Status (2026-04-29):** the translator handler exists in `artelonga/co`
+> (`co-web/src/telemetry.rs::marketing_events_handler`) but is not yet
+> deployed. Co's pages also have a separate, narrower client (`telemetry.js`,
+> `POST /api/v1/telemetry/event`, single-event shape) — both endpoints write
+> to the same `telemetry_events` table. The marketing client is the canonical
+> schema; Co's internal one will be retired or merged in a follow-up.
 
 ---
 
 ## 1. Endpoints
 
-### `POST /events` — public ingest
+### `POST /api/v1/telemetry/events` — public ingest (marketing batch)
 
 CORS: allow origins `https://artelonga.com.br` and `https://co.artelonga.com.br`
-(plus dev origins). No credentials. Body limit: 64 KiB. Rate limit: per IP, e.g.
-60 req/min (sliding window).
+(plus dev origins). No credentials. Body limit: 64 KiB. Max batch size: 200
+events. Rate limit: per IP, e.g. 60 req/min (sliding window) — not enforced
+yet by the handler; rely on the platform's edge limits until added.
 
 Request body:
 
@@ -209,13 +218,18 @@ CREATE INDEX events_path_ts     ON events(path, ts);
 
 ## 7. Switching it on
 
-1. In `co`: implement `POST /events` per this spec, deploy, verify with
-   `curl -X POST $URL/events -d '{"schema":1,"batch":[{...}]}' -H 'content-type: application/json'`.
-2. In this repo: set `ENDPOINT` in `assets/analytics.js` to the production URL,
-   bump cache-buster on every HTML page (`?v=YYYYMMDD` for `analytics.js`),
-   commit, deploy.
+1. In `co`: deploy the existing `marketing_events_handler` route (already
+   wired at `/api/v1/telemetry/events`). Verify with
+   `curl -X POST https://co.artelonga.com.br/api/v1/telemetry/events \
+   -H 'content-type: application/json' \
+   -d '{"schema":1,"batch":[{"s":1,"site":"artelonga","name":"page_view","sid":"x","vid":"y"}]}'`
+   — should return `204`.
+2. In this repo: set `ENDPOINT` in `assets/analytics.js` to
+   `https://co.artelonga.com.br/api/v1/telemetry/events`, bump the cache-buster
+   on every HTML page (`?v=YYYYMMDD` for `analytics.js`), commit, deploy.
 3. Verify in prod: open the site, then in devtools console run
-   `AL_analytics.info()` (queue should drain) and check the backend table.
+   `AL_analytics.info()` (queue should drain) and check the `telemetry_events`
+   table in `co`.
 
 ---
 
