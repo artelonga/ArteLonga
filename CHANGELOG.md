@@ -9,6 +9,20 @@ Each release links to a *why* (the pain or opportunity it addresses) so a reader
 
 ## [Unreleased]
 
+### Changed (yuri descrição inicial · jacdias · ShowAll agrupado · UX editorial)
+
+- **Yuri**: nova descrição inicial em `bioCurta` + primeiro parágrafo da `bio` ("Filho de Kiyoshi e Soninha e fascinado por todos que me inspiram. Como neurocientista, busco compreender a consiencia. Como ser humano, busco compreender os saberes ancestrais. Trabalho com desenvolvimento de tecnologia sustentavel."). Card teaser deixa de ser a primeira linha do poema e passa a ser a descrição prosa.
+- **José Antônio**: bio ganha link para [jacdias.com.br](https://jacdias.com.br/) após a menção ao livro *Esperança — uma utopia possível*.
+- **`/parceiros/#ShowAll` agrupado**: ao invés de uma lista plana única, agora três blocos com cabeçalho:
+  1. **Parceiros** (top-level rosterOrder · 18)
+  2. **Família e próximos** (sub-membros via `parentHandle` · 4: Alicia, John, Kiyoshi, Soninha)
+  3. **Quilombo Araucária** (membros únicos da comunidade · 8: Antony, Bia, Ken, Quinho, Tião, Veh, Carlinhos, Mara Brandão) — cabeçalho linka para `/quilomboaraucaria/`. Membros que já aparecem em "Parceiros" são filtrados para evitar duplicação.
+- **Intro do ShowAll**: substituída por **`{n} caminhos…`** dinâmico (30 hoje), em uppercase tracked.
+- **Link de retorno**: "← voltar para a rede com papéis" → "← papéis e serviços".
+- **UX editorial nos links da bio**: `.profile-bio a` e `blockquote.profile-bio-quote a` ganham underline pontilhado fino, herdando a cor do texto. Em hover, o pontilhado vira sólido. Links na bio (incluindo "todos que inspiram", a citação Rerum Novarum e o jacdias.com.br) ficam discretos, alinhados ao tom editorial — sem o azul vivo padrão do browser.
+
+Cache-buster `?v=20260501` em `data.js` + `renderer.js` + `components.css`.
+
 ### Changed (yuri · revisão da bio + ShowAll mode em /parceiros/)
 
 **Bio do Yuri** — pequenas reescritas e quebras:

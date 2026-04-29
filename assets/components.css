@@ -152,36 +152,76 @@ blockquote.profile-bio-quote {
 }
 blockquote.profile-bio-quote em { font-style: normal; }
 
-/* Parceiros · ShowAll mode (flat, names only) */
+/* Parceiros · ShowAll mode (grouped by category, names only) */
 .show-all-intro {
-    color: #777;
-    font-size: 0.95rem;
-    margin: 1vh 0 4vh;
+    color: #999;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin: 1vh 0 5vh;
 }
-.roster-all {
+.show-all-group { margin: 0 0 5vh; }
+.show-all-group-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #999;
+    margin: 0 0 1.5rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid #eee;
+}
+.show-all-group-title a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px dotted #ccc;
+    padding-bottom: 1px;
+}
+.show-all-group-title a:hover { color: #222; border-bottom-color: #888; }
+.roster-all-group {
     list-style: none;
-    margin: 4vh 0;
+    margin: 0;
     padding: 0;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 0.25rem 1.5rem;
 }
-.roster-all li {
+.roster-all-group li {
     padding: 0.55rem 0;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #f4f4f4;
 }
-.roster-all li a {
+.roster-all-group li a {
     color: #222;
     text-decoration: none;
     font-size: 1rem;
 }
-.roster-all li a:hover { color: #c0392b; }
+.roster-all-group li a:hover { color: #c0392b; }
 .show-all-toggle {
-    margin-top: 4vh;
-    font-size: 0.9rem;
+    margin-top: 5vh;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
 }
 .show-all-toggle a { color: #999; text-decoration: none; }
-.show-all-toggle a:hover { color: #222; text-decoration: underline; }
+.show-all-toggle a:hover { color: #222; }
+
+/* Bio links — editorial, subtle (dotted underline that solidifies on hover).
+   Applies to every <a> inside the bio prose, including [text](url) inline links. */
+.profile-bio a,
+blockquote.profile-bio-quote a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: #ccc;
+    text-decoration-style: dotted;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition: text-decoration-color 0.15s ease, text-decoration-style 0.15s ease;
+}
+.profile-bio a:hover,
+blockquote.profile-bio-quote a:hover {
+    text-decoration-style: solid;
+    text-decoration-color: #888;
+}
 
 /* Citações section (structured citations on a profile) */
 .citacoes-section .citacao {
