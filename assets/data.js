@@ -14,9 +14,25 @@
         {
             handle: "yuri", type: "person", nome: "Yuri",
             role: "Sementes", tags: ["fundador", "parceiro"],
-            pic: "/yuri/yuri.jpg",
+            pic: "/yuri/yuri.jpg?v=20260428",
             birthDate: "1993-06-24T12:30:00-03:00",
-            bio: "",
+            bioTitle: "Terra",
+            bio: "Não haviam nomes quando nossos ancestrais pisaram na Terra\n\nNao chamavam-se japoneses ou nordestinos, africanos ou indígenas. Eram gente, como a gente. Sem nome\n\nO eu não se faz de reconhecimento ou recompensa. Não é sobre mim.\nO eu são todos que inspiram\nE avaxi ete'i\n\nPerdi a planilha orçamentária,\nTropecei no Quilombo Araucária e encontrei Zé Pilintra,\nEle sábio, eu ainda com trinta\nCompartilhou comigo coragem pra recomeçar\n\nA missão é cuidar da Terra\nSenão todo mundo vai embora, só a vovó que vai poder ficar\nA tecnologia é pedal que acelera,\nEntão seja ciente e começa com Yvyrupa\n\nFaça junto, compartilha a colheita, Yvyrupa nhande tekoa,\nGuarda ka'a porã e seus guardiões guarani Mbyá\nProteção no àiyé, caminha sem medo Olódùmarè, Òrìşà e o ioruba\nSegredo, coração sujo e ubuntu pra um dia desvendar\n\nNão se esquece de respirar agora\nA palavra não importa, a justiça abre a porta e os parente vem pro arraiá,\nXeramoi passou o petynga,\nXejaryi com sabedoria sabia que eu dormia com medo de acordar\n\nMe botou pra dormir no opy ouvindo jui no calor do tata\nSonhei que eu era eu mesmo\nFoi aí que eu senti o que era existir\nE acordei querendo trabalhar\n\nGuanyin e o sagrado feminino, A Ana, a Soninha e todas as kunha\nJohn, Alicia, kiryngue kuery vao colocar sentido nas palavras que você inventar\nCuida do Kiyoshi porque já não é de hoje que ele vem cuidando de ti\nPara de tentar traduzir o que só se pode sentir com presença e atenção ao experienciar\n\nSem medo, por aqui eu me expresso em palavra ou em rima\nEu e todo o Universo, mbaraete, fé, nhande kuery\nNhande pytunju, a expressão de nhanderu\nChuva é tupã mandando descansar, autocuidado nhane noite Jaxy pyau",
+            citacoes: [
+                {
+                    texto: "A terceira utilidade (*d'A Economia como meio de conciliação de Classes*) será a suspensão do movimento de emigração; ninguém, com efeito, quereria trocar por uma região estrangeira a sua pátria e a sua terra natal, se nesta encontrasse os meios de levar uma vida mais tolerável.",
+                    autor: "leaoxiii",
+                    obra: "Rerum Novarum: sobre a condição dos operários",
+                    data: "1891-05-15",
+                    url: "https://www.vatican.va/content/leo-xiii/pt/encyclicals/documents/hf_l-xiii_enc_15051891_rerum-novarum.html"
+                },
+                {
+                    texto: "Pra onde você voaria se fosse livre?",
+                    autorNome: "Yuri",
+                    autorEmBreve: { title: "Capítulo 1: Gênesis" },
+                    data: "2015"
+                }
+            ],
             servicos: ["Escrita, Interpretação e Tradução", "Ensino, Formação e Liderança", "Inteligência e Tecnologia", "Gestão Executiva"],
             subMembers: ["kiyoshi", "soninha"]
         },
@@ -597,9 +613,10 @@
     // Roster = what shows on /parceiros/ (top-level people + communities in this order)
     // Order is explicit (the editorial layout).
     const rosterOrder = [
-        "yuri", "igo", "joseantonio", "mono", "bruna",
+        "yuri", "igo", "joseantonio", "mono",
         "luke", "marina", "karina", "kayra", "aime",
         "syl", "raquel", "alice", "ramona", "rogerio", "alzira", "miguel", "joao",
+        "bruna",
         "quilomboaraucaria", "hfsassociados", "hedix",
         "retro-umarizal"
     ];
@@ -674,14 +691,13 @@
             {
                 key: "socios",
                 label: "Sócios · pro labore",
-                value: 14000,
-                detail: "7 pessoas × R$ 2.000",
+                value: 12000,
+                detail: "6 pessoas × R$ 2.000",
                 breakdown: [
                     { label: "Yuri", value: 2000, handle: "yuri" },
                     { label: "Igo", value: 2000, handle: "igo" },
                     { label: "José Antônio", value: 2000, handle: "joseantonio" },
                     { label: "Mono", value: 2000, handle: "mono" },
-                    { label: "Bruna", value: 2000, handle: "bruna" },
                     { label: "Luke", value: 2000, handle: "luke" },
                     { label: "Marina", value: 2000, handle: "marina" }
                 ]

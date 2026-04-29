@@ -38,20 +38,80 @@
         return `<p class="card-bio empty">Biografia em breve.</p>`;
     }
 
-    // Inline markdown: [text](url) → anchor. Safe-escaped first, then rehydrated.
+    // Inline markdown:
+    //   [[Label]] or [[Label|Title]] → "em breve" modal trigger
+    //   [text](url)                  → anchor (external links open in new tab)
+    //   *text*                       → italic
+    // Safe-escaped first; brackets/asterisks survive esc() so the regexes still match.
     function mdInline(s) {
-        return esc(s).replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, text, url) => {
-            // url is already escaped — we need to unescape HTML entities for the href
-            const href = url.replace(/&amp;/g, "&").replace(/&#39;/g, "'").replace(/&quot;/g, '"');
-            const external = /^https?:\/\//.test(href);
-            return `<a href="${href}"${external ? ' target="_blank" rel="noopener"' : ''}>${text}</a>`;
-        });
+        return esc(s)
+            .replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (_, label, title) => {
+                const t = title || label;
+                return `<a href="#" class="al-em-breve" data-modal-title="${t}" data-modal-body="em breve">${label}</a>`;
+            })
+            .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, text, url) => {
+                // url is already escaped — we need to unescape HTML entities for the href
+                const href = url.replace(/&amp;/g, "&").replace(/&#39;/g, "'").replace(/&quot;/g, '"');
+                const external = /^https?:\/\//.test(href);
+                return `<a href="${href}"${external ? ' target="_blank" rel="noopener"' : ''}>${text}</a>`;
+            })
+            .replace(/\*([^*\n]+)\*/g, "<em>$1</em>");
     }
 
+    // ─── EM-BREVE MODAL ──────────────────────────────────────────────────────
+    // Mounted once on first click of .al-em-breve. Keeps the lazy footprint small.
+    (function initEmBreveModal() {
+        let modal = null;
+        function ensure() {
+            if (modal) return modal;
+            modal = document.createElement("div");
+            modal.className = "al-modal";
+            modal.innerHTML =
+                '<div class="al-modal-backdrop"></div>' +
+                '<div class="al-modal-card" role="dialog" aria-modal="true" aria-labelledby="al-modal-title">' +
+                  '<button class="al-modal-close" aria-label="Fechar">×</button>' +
+                  '<h3 id="al-modal-title" class="al-modal-title"></h3>' +
+                  '<p class="al-modal-body"></p>' +
+                  '<div class="al-modal-footer">em breve</div>' +
+                '</div>';
+            document.body.appendChild(modal);
+            modal.querySelector(".al-modal-backdrop").addEventListener("click", close);
+            modal.querySelector(".al-modal-close").addEventListener("click", close);
+            document.addEventListener("keydown", e => { if (e.key === "Escape") close(); });
+            return modal;
+        }
+        function open(title, body) {
+            const m = ensure();
+            m.querySelector(".al-modal-title").textContent = title;
+            m.querySelector(".al-modal-body").textContent = body;
+            m.classList.add("open");
+            const c = m.querySelector(".al-modal-close"); if (c) c.focus();
+        }
+        function close() { if (modal) modal.classList.remove("open"); }
+        document.addEventListener("click", e => {
+            const a = e.target.closest && e.target.closest("a.al-em-breve");
+            if (!a) return;
+            e.preventDefault();
+            const title = a.getAttribute("data-modal-title") || "Em breve";
+            const body  = a.getAttribute("data-modal-body")  || "em breve";
+            open(title, body);
+            if (window.AL_track) window.AL_track("modal_em_breve", { title });
+        });
+    })();
+
+    // Blocks split by blank lines. Within a block, single newlines become <br>.
+    // A block where every line starts with "> " renders as <blockquote>.
     function bioFull(entity) {
         if (!entity.bio) return `<p class="profile-bio empty">Biografia em breve.</p>`;
-        const paragraphs = entity.bio.split(/\n\s*\n/).map(s => s.trim()).filter(Boolean);
-        return paragraphs.map(p => `<p class="profile-bio">${mdInline(p)}</p>`).join("");
+        const blocks = entity.bio.split(/\n\s*\n/).map(s => s.trim()).filter(Boolean);
+        return blocks.map(block => {
+            const lines = block.split("\n");
+            if (lines.every(l => /^>\s?/.test(l))) {
+                const inner = lines.map(l => l.replace(/^>\s?/, "")).join("\n");
+                return `<blockquote class="profile-bio profile-bio-quote">${mdInline(inner).replace(/\n/g, "<br>")}</blockquote>`;
+            }
+            return `<p class="profile-bio">${mdInline(block).replace(/\n/g, "<br>")}</p>`;
+        }).join("");
     }
 
     // Inline age counter, under the role. Returns element + optional tick function.
@@ -701,6 +761,38 @@
             </section>`;
         }
 
+        // Citações estruturadas (separadas da bio livre).
+        // Schema: { texto, autor?, autorNome?, autorEmBreve?, obra?, data?, url? }
+        //   autor (handle)        → link para /<handle>/
+        //   autorEmBreve {title}  → link para modal "em breve"
+        //   autorNome             → fallback texto puro
+        let citacoesHtml = "";
+        if (p.citacoes && p.citacoes.length) {
+            const items = p.citacoes.map(c => {
+                let autorHtml = "";
+                const autorEntity = c.autor ? AL.get(c.autor) : null;
+                if (autorEntity) {
+                    autorHtml = `<a href="/${esc(autorEntity.handle)}/">${esc(autorEntity.nome)}</a>`;
+                } else if (c.autorEmBreve) {
+                    autorHtml = `<a href="#" class="al-em-breve" data-modal-title="${esc(c.autorEmBreve.title)}" data-modal-body="em breve">${esc(c.autorNome || c.autorEmBreve.title)}</a>`;
+                } else if (c.autorNome) {
+                    autorHtml = esc(c.autorNome);
+                }
+                const obraHtml = c.url
+                    ? `<a href="${esc(c.url)}" target="_blank" rel="noopener">${esc(c.obra || c.url)}</a>`
+                    : c.obra ? esc(c.obra) : "";
+                const parts = [autorHtml, obraHtml, c.data ? esc(c.data) : ""].filter(Boolean);
+                return `<blockquote class="citacao">
+                    <p class="citacao-texto">${mdInline(c.texto)}</p>
+                    <footer class="citacao-attrib">— ${parts.join(", ")}</footer>
+                </blockquote>`;
+            }).join("");
+            citacoesHtml = `<section class="section citacoes-section">
+                <h2>Citações</h2>
+                ${items}
+            </section>`;
+        }
+
         const underageNote = p.underage
             ? `<div class="em-memoria-note"><em>perfil sob responsabilidade parental</em></div>`
             : "";
@@ -760,6 +852,7 @@
                         <h1 class="profile-name">${esc(p.nome)}</h1>
                         ${p.role ? `<div class="profile-role">${esc(p.role)}</div>` : ""}
                         ${counterHtml}
+                        ${p.bioTitle ? `<h2 class="profile-bio-title">${esc(p.bioTitle)}</h2>` : ""}
                         ${bioHtmlOut}
                     </div>
                 </div>
@@ -767,6 +860,7 @@
                 ${emMemoriaNote}
                 ${underageNote}
                 ${missoesHtml}
+                ${citacoesHtml}
                 ${essaysHtml}
                 ${membrosHtml}
                 ${parceriasHtml}

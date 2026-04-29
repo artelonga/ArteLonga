@@ -133,9 +133,112 @@ body.em-memoria-profile .avatar-lg img {
     color: #999;
     margin-bottom: 0.5rem;
 }
+.profile-bio-title {
+    font-size: clamp(1.25rem, 2.2vw, 1.6rem);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 1rem 0 0.85rem;
+    color: #222;
+}
 .profile-bio { font-size: 1rem; color: #333; max-width: 55ch; }
 .profile-bio.empty { color: #c0c0c0; font-style: italic; }
 .profile-bio + .profile-bio { margin-top: 1rem; }
+blockquote.profile-bio-quote {
+    margin: 1.25rem 0 1rem;
+    padding: 0.25rem 0 0.25rem 1rem;
+    border-left: 3px solid #ddd;
+    color: #555;
+    font-style: italic;
+}
+blockquote.profile-bio-quote em { font-style: normal; }
+
+/* Citações section (structured citations on a profile) */
+.citacoes-section .citacao {
+    margin: 0 0 1.5rem;
+    padding: 0.5rem 0 0.5rem 1rem;
+    border-left: 3px solid #ddd;
+}
+.citacoes-section .citacao:last-child { margin-bottom: 0; }
+.citacao-texto {
+    margin: 0 0 0.5rem;
+    color: #333;
+    font-style: italic;
+    line-height: 1.55;
+}
+.citacao-texto em { font-style: normal; }
+.citacao-attrib {
+    color: #777;
+    font-size: 0.9rem;
+}
+.citacao-attrib a { color: inherit; }
+
+/* Wiki-style em-breve link (renders as a quiet underline; opens al-modal) */
+a.al-em-breve {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-underline-offset: 3px;
+    cursor: pointer;
+}
+a.al-em-breve:hover { color: #222; text-decoration-style: solid; }
+a.al-em-breve::after {
+    content: " ↗";
+    font-size: 0.75em;
+    color: #999;
+}
+
+/* Em-breve modal (lazy-mounted on first click) */
+.al-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+.al-modal.open { display: flex; }
+.al-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+}
+.al-modal-card {
+    position: relative;
+    background: #fff;
+    color: #222;
+    max-width: 480px;
+    width: calc(100% - 2rem);
+    padding: 2rem 2rem 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.2);
+}
+.al-modal-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.75rem;
+    background: none;
+    border: 0;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: #999;
+    cursor: pointer;
+}
+.al-modal-close:hover { color: #222; }
+.al-modal-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+}
+.al-modal-body {
+    margin: 0 0 1rem;
+    color: #555;
+}
+.al-modal-footer {
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #999;
+}
 
 .em-breve-note {
     margin-top: 3vh;

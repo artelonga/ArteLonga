@@ -9,6 +9,52 @@ Each release links to a *why* (the pain or opportunity it addresses) so a reader
 
 ## [Unreleased]
 
+### Added (analytics · self-hosted telemetry + A/B framework + em-breve modal)
+
+**Reescrita de `assets/analytics.js`** (de scaffold inicial para coleta+experimentação completa):
+
+- **Privacidade**: respeita DNT (`navigator.doNotTrack`), opt-out explícito (`localStorage.al_optout = "1"` ou `window.AL_optout = true`) e bloqueia automação (`navigator.webdriver` + UA bots como Lighthouse/Cypress/Playwright). Sem cookies, sem fingerprinting.
+- **Identidade**:
+  - `al_sid` (sessionStorage, UUID por aba) — mantido.
+  - `al_vid` (localStorage, UUID persistente) — **novo**, necessário para análise de visitantes recorrentes e atribuição estável de variantes A/B entre sessões. `optOut()` apaga ambos.
+- **Schema versioning**: cada evento carrega `s: SCHEMA_VERSION` (= 1). Política de bump documentada em `docs/analytics-api.md`.
+- **UTM first-touch**: extrai `utm_source/medium/campaign/term/content` da URL na primeira página da sessão e anexa em todos os eventos subsequentes.
+- **Path normalization**: `/yuri/index.html` → `/yuri/`, trailing slashes colapsam.
+- **Dwell time visibility-aware**: `page_end.props.active_ms` exclui tempo em que a aba ficou em background (vs. `total_ms` bruto).
+- **JS error capture**: novos eventos `js_error` e `js_promise_rejection`, capados em 20/page para evitar flood.
+- **Backoff exponencial**: falhas de envio dobram o intervalo até `MAX_BACKOFF_MS = 60s`, em vez de retry linear a cada 5s.
+- **Queue**: chave migrada de `al_evq` → `al_evq_v1` (cap 1000, FIFO drop). Old key é limpa automaticamente.
+
+**Framework A/B** (primitivo, pronto para uso):
+- `EXPERIMENTS` config no topo do arquivo. Cada experimento declara `variants` com `weight`, mais janela opcional `activeFrom` / `activeUntil`.
+- Atribuição determinística via FNV-1a hash de `vid + ":" + expId` → bucket → variante. Mesmo `vid` sempre cai na mesma variante para o mesmo experimento, atravessando sessões.
+- `window.AL_experiments.variant(expId)` retorna o id da variante (ou `null`). Primeira chamada por sessão emite `experiment_exposure`.
+- Todos os eventos seguintes carregam `experiments: { expId: variantId }`, permitindo correlação de qualquer evento de conversão com as variantes ativas via SQL no backend (ver `docs/analytics-api.md`).
+
+**Documentação**: `docs/analytics-api.md` — contrato completo de wire (`POST /events`), schema do evento, taxonomia, recomendações de schema SQLite, política de retenção, e fórmula SQL para resultados de A/B. Implementação do backend vai em `artelonga/co` (Rust/Axum).
+
+**Status atual**: `ENDPOINT = ""` ainda, então eventos acumulam em `localStorage` (cap 1000) e drenam quando o endpoint for ligado. Cliente está pronto.
+
+### Added (yuri · modal "em breve" para Capítulo 1: Gênesis)
+
+- **Wiki-link `[[Label|Title]]`**: extensão de `mdInline` em `renderer.js`. Renderiza como `<a class="al-em-breve">` com `data-modal-title` e `data-modal-body`.
+- **Modal lazy-mounted**: inicializado em `renderer.js` (cria DOM apenas no primeiro clique). Fecha por backdrop, botão `×`, ou `Esc`. Foca no `×` ao abrir (acessibilidade).
+- **Telemetria**: clique emite evento `modal_em_breve` com o título alvo (ver taxonomia em `docs/analytics-api.md`).
+- **Bio do Yuri** atualizada: última citação agora é `[[Yuri|Capítulo 1: Gênesis]], 2015` — quando a página `Capítulo 1: Gênesis` existir, basta substituir por link normal `[Yuri](/jardim/capitulo-1-genesis/)`.
+- **CSS**: `.al-em-breve` (link com sublinhado pontilhado + `↗`) e `.al-modal*` em `components.css`.
+
+Cache-buster `?v=20260428` em `analytics.js` em todas as 111 páginas. `retro-umarizal/menu/index.html` ganhou `analytics.js` (estava sem). `renderer.js` + `components.css` bumped em `/yuri/` (única página com bio que usa `[[]]` por enquanto).
+
+### Changed (yuri · perfil "Terra" + bruna sai dos sócios)
+
+- **Yuri**: bio completa adicionada com `bioTitle: "Terra"` (poema/manifesto pessoal) e citações finais (Papa Leão XIII · Rerum Novarum 1891 e auto-citação 2015). Foto `/yuri/yuri.jpg` re-versionada (`?v=20260428`).
+- **Roster**: `bruna` movida da posição 5 para o final do bloco de pessoas (após `joao`).
+- **Sócios**: `bruna` sai do breakdown de `custos.socios` em `finances` — agora 6 sócios × R$ 2.000 = R$ 12.000 (era 7 × R$ 2.000 = R$ 14.000). Total mensal de gastos cai para R$ 23.000 (de R$ 25.000). `metaMensal` mantido em R$ 25.000.
+- **Renderer (bio)**: novo campo opcional `bioTitle` renderizado entre `role` e `bio` no hero do perfil. `bioFull` ganha suporte a (a) quebras de linha simples → `<br>` (poesia/versos), (b) blocos com prefixo `> ` → `<blockquote>` e (c) `*itálico*` inline via `mdInline`. Bios existentes (todas em prosa com `\n\n`) seguem renderizando idênticas.
+- **CSS**: `.profile-bio-title` (h2 acima da bio) e `blockquote.profile-bio-quote` (borda lateral, itálico) em `components.css`.
+
+Cache-buster `?v=20260428` em `/yuri/`, `/parceiros/`, `/recursos/` (data.js + renderer.js + components.css onde tocado).
+
 ### Changed (catalogo · CNAE completo + gaps + cleanup · Commit 3/3)
 
 **CNAE — 6 correções** (CNAEs ideais já existentes, aplicados):
