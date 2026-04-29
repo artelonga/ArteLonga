@@ -645,7 +645,7 @@
         document.body.innerHTML = `
             ${siteHeader()}
             <main class="main">
-                <h1 class="page-title">Universos</h1>
+                <h1 class="page-title">Soluções</h1>
                 <div class="page-subtitle">Arte Longa</div>
 
                 ${sectionHtml("Ativos", ativos)}
