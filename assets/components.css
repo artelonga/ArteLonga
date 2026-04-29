@@ -152,7 +152,7 @@ blockquote.profile-bio-quote {
 }
 blockquote.profile-bio-quote em { font-style: normal; }
 
-/* Parceiros · ShowAll mode (grouped by category, names only) */
+/* Parceiros · ShowAll mode (flat, alfabético, sem hierarquia) */
 .show-all-intro {
     color: #999;
     font-size: 0.85rem;
@@ -160,42 +160,24 @@ blockquote.profile-bio-quote em { font-style: normal; }
     text-transform: uppercase;
     margin: 1vh 0 5vh;
 }
-.show-all-group { margin: 0 0 5vh; }
-.show-all-group-title {
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: #999;
-    margin: 0 0 1.5rem;
-    padding-bottom: 0.6rem;
-    border-bottom: 1px solid #eee;
-}
-.show-all-group-title a {
-    color: inherit;
-    text-decoration: none;
-    border-bottom: 1px dotted #ccc;
-    padding-bottom: 1px;
-}
-.show-all-group-title a:hover { color: #222; border-bottom-color: #888; }
-.roster-all-group {
+.roster-all {
     list-style: none;
-    margin: 0;
+    margin: 4vh 0;
     padding: 0;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 0.25rem 1.5rem;
 }
-.roster-all-group li {
+.roster-all li {
     padding: 0.55rem 0;
     border-bottom: 1px solid #f4f4f4;
 }
-.roster-all-group li a {
+.roster-all li a {
     color: #222;
     text-decoration: none;
     font-size: 1rem;
 }
-.roster-all-group li a:hover { color: #c0392b; }
+.roster-all li a:hover { color: #c0392b; }
 .show-all-toggle {
     margin-top: 5vh;
     font-size: 0.85rem;

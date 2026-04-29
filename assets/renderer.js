@@ -291,62 +291,22 @@
         `;
     }
 
-    // ─── PAGE: PARCEIROS — ShowAll mode (grouped by category, names only) ────
-    // Acessada via /parceiros/#ShowAll. Três categorias:
-    //   1. Parceiros (top-level rosterOrder, type: "person")
-    //   2. Família e próximos (sub-membros · parentHandle)
-    //   3. Comunidades (membros únicos por comunidade, ex.: Quilombo Araucária)
-    //      Filtra os que já aparecem em Parceiros para evitar duplicação.
+    // ─── PAGE: PARCEIROS — ShowAll mode (flat, alfabético, sem hierarquia) ───
+    // Acessada via /parceiros/#ShowAll. Lista TODAS as pessoas
+    // (AL.people exceto referenceOnly), ordem alfabética pt-BR.
+    // Sub-membros e membros de comunidades aparecem misturados — sem
+    // categorias, sem papéis, sem serviços.
     function renderParceirosShowAll() {
-        const inRoster = new Set();
-        const parceiros = [];
-        for (const h of (AL.rosterOrder || [])) {
-            const e = AL.get(h);
-            if (e && e.type === "person" && !e.referenceOnly) {
-                inRoster.add(h);
-                parceiros.push(e);
-            }
-        }
-
-        const familia = AL.people
-            .filter(p => p.parentHandle && !p.referenceOnly)
+        const all = AL.people
+            .filter(p => !p.referenceOnly)
             .sort((a, b) => (a.nome || "").localeCompare(b.nome || "", "pt-BR"));
-
-        const comunidades = (AL.communities || []).map(c => {
-            if (!c.membros || !c.membros.length) return null;
-            const members = c.membros
-                .map(h => AL.get(h))
-                .filter(m => m && m.type === "person" && !m.referenceOnly && !inRoster.has(m.handle))
-                .sort((a, b) => (a.nome || "").localeCompare(b.nome || "", "pt-BR"));
-            if (!members.length) return null;
-            return { community: c, members };
-        }).filter(Boolean);
-
-        const total = parceiros.length + familia.length
-            + comunidades.reduce((a, g) => a + g.members.length, 0);
-
-        const liNome = p => `<li><a href="/${esc(p.handle)}/">${esc(p.nome)}</a></li>`;
-        const renderGroup = (title, list, headerHref) => {
-            if (!list.length) return "";
-            const heading = headerHref
-                ? `<h2 class="show-all-group-title"><a href="${esc(headerHref)}">${esc(title)}</a></h2>`
-                : `<h2 class="show-all-group-title">${esc(title)}</h2>`;
-            return `<section class="show-all-group">${heading}<ul class="roster-all-group">${list.map(liNome).join("")}</ul></section>`;
-        };
-
-        const groupsHtml = [
-            renderGroup("Parceiros", parceiros),
-            renderGroup("Família e próximos", familia),
-            ...comunidades.map(({ community, members }) =>
-                renderGroup(community.nome, members, "/" + community.handle + "/"))
-        ].join("");
-
+        const items = all.map(p => `<li><a href="/${esc(p.handle)}/">${esc(p.nome)}</a></li>`).join("");
         document.body.innerHTML = `
             ${siteHeader()}
             <main class="main">
                 <h1 class="statement">Todos</h1>
-                <p class="show-all-intro">${total} caminhos…</p>
-                ${groupsHtml}
+                <p class="show-all-intro">${all.length} caminhos…</p>
+                <ul class="roster-all">${items}</ul>
                 <p class="show-all-toggle"><a href="/parceiros/">← papéis e serviços</a></p>
             </main>
         `;
