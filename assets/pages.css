@@ -954,6 +954,18 @@
     height: auto;
     margin: 0 auto;
 }
+/* Mesh pulse — dashes flowing along the lines, evocando conexão em tempo real */
+.universos-diagram .ud-pulse {
+    stroke-dasharray: 4 4;
+    animation: ud-pulse-flow 2.6s linear infinite;
+}
+@keyframes ud-pulse-flow {
+    from { stroke-dashoffset: 0; }
+    to   { stroke-dashoffset: -16; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .universos-diagram .ud-pulse { animation: none; }
+}
 .solucao-head {
     display: flex;
     justify-content: space-between;

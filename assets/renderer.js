@@ -665,61 +665,63 @@
         wireModal("contact-modal", '[data-cta="solucoes"]');
     }
 
-    // Diagrama do conceito de Universos paralelos: usuário → auth gate → stack
-    // de universos (só o topo visível) + auto-management interno + conectividade.
+    // Diagrama: você ↔ identidade única ↔ rede viva de Universos.
+    // Sem setas direcionais — linhas simples e mesh com pulse animado entre os
+    // nós para evocar conexão em tempo real (e não "fila" ou "paralelismo").
     function universosDiagram() {
         return `<section class="universos-diagram-section">
             <h2 class="solucoes-section-title">Arquitetura</h2>
-            <p class="intro universos-diagram-intro">Um portal único, vários Universos paralelos. Auth no centro, gestão automática e conectividade entre nós.</p>
-            <svg class="universos-diagram" viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagrama: usuário → auth → universos paralelos">
-              <defs>
-                <marker id="ud-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto">
-                  <path d="M 0 0 L 10 5 L 0 10 Z" fill="#222"/>
-                </marker>
-                <marker id="ud-arrow-light" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-                  <path d="M 0 0 L 10 5 L 0 10 Z" fill="#999"/>
-                </marker>
-              </defs>
+            <p class="intro universos-diagram-intro">Uma identidade, vários Universos conectados em tempo real.</p>
+            <svg class="universos-diagram" viewBox="0 0 720 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Você → identidade única → Universos conectados em tempo real">
 
-              <!-- USER -->
-              <g transform="translate(60,150)">
+              <!-- VOCÊ -->
+              <g transform="translate(60,170)">
                 <circle r="22" fill="#fff" stroke="#222" stroke-width="2"/>
-                <circle cy="-6" r="6" fill="#222"/>
-                <path d="M -10 6 Q 0 18 10 6" fill="none" stroke="#222" stroke-width="2"/>
-                <text y="50" text-anchor="middle" font-size="11" fill="#666" letter-spacing="0.1em">VOCÊ</text>
+                <circle cx="-7" cy="-4" r="2.2" fill="#222"/>
+                <circle cx="7"  cy="-4" r="2.2" fill="#222"/>
+                <path d="M -9 6 Q 0 15 9 6" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+                <text y="48" text-anchor="middle" font-size="11" fill="#666" letter-spacing="0.1em">VOCÊ</text>
               </g>
 
-              <line x1="92" y1="150" x2="200" y2="150" stroke="#222" stroke-width="1.5" marker-end="url(#ud-arrow)"/>
+              <!-- LINK VOCÊ ↔ IDENTIDADE (sem seta) -->
+              <line x1="84" y1="170" x2="206" y2="170" stroke="#222" stroke-width="1.5"/>
 
-              <!-- AUTH GATE -->
-              <g transform="translate(240,150)">
-                <rect x="-30" y="-30" width="60" height="60" rx="6" fill="#fff" stroke="#222" stroke-width="2"/>
-                <rect x="-12" y="-4" width="24" height="20" rx="2" fill="none" stroke="#222" stroke-width="2"/>
-                <path d="M -8 -4 V -12 Q -8 -22 0 -22 Q 8 -22 8 -12 V -4" fill="none" stroke="#222" stroke-width="2"/>
-                <text y="50" text-anchor="middle" font-size="11" fill="#666" letter-spacing="0.1em">AUTH</text>
+              <!-- IDENTIDADE — silhueta de pessoa em badge -->
+              <g transform="translate(238,170)">
+                <circle r="30" fill="#fff" stroke="#222" stroke-width="2"/>
+                <circle cy="-8" r="7.5" fill="#222"/>
+                <path d="M -13 14 C -13 4 -6 0 0 0 C 6 0 13 4 13 14 Z" fill="#222"/>
+                <text y="55" text-anchor="middle" font-size="11" fill="#666" letter-spacing="0.1em">IDENTIDADE</text>
               </g>
 
-              <line x1="270" y1="150" x2="370" y2="150" stroke="#222" stroke-width="1.5" marker-end="url(#ud-arrow)"/>
+              <!-- FAN: identidade → cada Universo (linhas neutras, sem seta) -->
+              <line x1="268" y1="170" x2="440" y2="60"  stroke="#222" stroke-width="1" opacity="0.45"/>
+              <line x1="268" y1="170" x2="520" y2="120" stroke="#222" stroke-width="1" opacity="0.45"/>
+              <line x1="268" y1="170" x2="560" y2="200" stroke="#222" stroke-width="1" opacity="0.45"/>
+              <line x1="268" y1="170" x2="520" y2="260" stroke="#222" stroke-width="1" opacity="0.45"/>
+              <line x1="268" y1="170" x2="440" y2="290" stroke="#222" stroke-width="1" opacity="0.45"/>
 
-              <!-- STACK OF UNIVERSES (offset, only top is highlighted) -->
-              <g transform="translate(420,80)">
-                <rect x="20" y="40" width="220" height="60" rx="4" fill="#f5f5f5" stroke="#ddd" stroke-width="1"/>
-                <rect x="14" y="28" width="220" height="60" rx="4" fill="#f0f0f0" stroke="#ccc" stroke-width="1"/>
-                <rect x="8"  y="16" width="220" height="60" rx="4" fill="#e8e8e8" stroke="#bbb" stroke-width="1"/>
-                <rect x="0"  y="0"  width="220" height="60" rx="4" fill="#fff"   stroke="#222" stroke-width="2"/>
-                <text x="110" y="34" text-anchor="middle" font-size="13" font-weight="600" fill="#222">Universo (visível)</text>
-                <text x="110" y="50" text-anchor="middle" font-size="11" fill="#777">os outros aguardam em paralelo</text>
-                <text x="110" y="135" text-anchor="middle" font-size="11" fill="#666" letter-spacing="0.1em">UNIVERSOS PARALELOS</text>
+              <!-- MESH (animação de pulse nas dashes — conexão em tempo real) -->
+              <g class="ud-mesh">
+                <line class="ud-pulse" x1="440" y1="60"  x2="520" y2="120" stroke="#888" stroke-width="1"/>
+                <line class="ud-pulse" x1="520" y1="120" x2="560" y2="200" stroke="#888" stroke-width="1"/>
+                <line class="ud-pulse" x1="560" y1="200" x2="520" y2="260" stroke="#888" stroke-width="1"/>
+                <line class="ud-pulse" x1="520" y1="260" x2="440" y2="290" stroke="#888" stroke-width="1"/>
+                <line class="ud-pulse" x1="440" y1="60"  x2="440" y2="290" stroke="#888" stroke-width="1"/>
+                <line class="ud-pulse" x1="440" y1="60"  x2="560" y2="200" stroke="#888" stroke-width="1"/>
+                <line class="ud-pulse" x1="440" y1="290" x2="560" y2="200" stroke="#888" stroke-width="1"/>
+                <line class="ud-pulse" x1="520" y1="120" x2="520" y2="260" stroke="#888" stroke-width="1"/>
               </g>
 
-              <!-- CONNECTIVITY (curved, between universes) -->
-              <path d="M 510 200 C 470 240, 590 240, 550 200" fill="none" stroke="#999" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#ud-arrow-light)"/>
-              <text x="530" y="265" text-anchor="middle" font-size="10" fill="#999" letter-spacing="0.08em">CONECTIVIDADE ENTRE NÓS</text>
+              <!-- UNIVERSE NODES (depois das linhas, para ficarem por cima) -->
+              <circle cx="440" cy="60"  r="22" fill="#fff" stroke="#222" stroke-width="1.5"/>
+              <circle cx="520" cy="120" r="22" fill="#fff" stroke="#222" stroke-width="1.5"/>
+              <circle cx="560" cy="200" r="22" fill="#fff" stroke="#222" stroke-width="1.5"/>
+              <circle cx="520" cy="260" r="22" fill="#fff" stroke="#222" stroke-width="1.5"/>
+              <circle cx="440" cy="290" r="22" fill="#fff" stroke="#222" stroke-width="1.5"/>
 
-              <!-- AUTO MANAGEMENT (loop) -->
-              <path d="M 240 90 C 230 70, 250 70, 240 90" fill="none" stroke="#999" stroke-width="1" stroke-dasharray="2,3"/>
-              <path d="M 240 60 Q 260 50 270 70" fill="none" stroke="#999" stroke-width="1" marker-end="url(#ud-arrow-light)"/>
-              <text x="240" y="40" text-anchor="middle" font-size="10" fill="#999" letter-spacing="0.08em">AUTO-MANAGEMENT INTERNO</text>
+              <!-- LABEL -->
+              <text x="500" y="325" text-anchor="middle" font-size="11" fill="#666" letter-spacing="0.1em">UNIVERSOS · CONEXÃO EM TEMPO REAL</text>
             </svg>
         </section>`;
     }
