@@ -785,6 +785,24 @@
 .fin-footnote a { color: #0a0a0a; font-weight: 600; text-decoration: none; }
 .fin-footnote a:hover { opacity: 0.5; }
 
+/* Closing "Próximos Passos" link, used at the bottom of /recursos/ etc. */
+.proximos-link-bottom {
+    margin-top: 4vh;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+.proximos-link-bottom a {
+    color: #0a0a0a;
+    text-decoration: none;
+    border-bottom: 1px solid #0a0a0a;
+    padding-bottom: 2px;
+    transition: color 0.15s ease, border-color 0.15s ease;
+}
+.proximos-link-bottom a:hover { color: #c0392b; border-bottom-color: #c0392b; }
+
+/* Strong inside .intro — slightly heavier numerals */
+.intro strong { color: #0a0a0a; font-weight: 700; }
+
 .fin-unit {
     font-size: 0.65em;
     font-weight: 500;

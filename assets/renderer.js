@@ -1162,57 +1162,12 @@
             ${siteHeader()}
             <main class="main">
                 <h1 class="page-title">Recursos</h1>
-                <div class="page-subtitle">Arte Longa · modelo de negócio</div>
+                <div class="page-subtitle">Arte Longa · ${esc(f.quarter)}</div>
 
-                <p class="intro">Como a rede se sustenta. Gastos recorrentes, receita potencial e metas de ${esc(f.quarter)}. Página pública, atualizada à medida que avançamos.</p>
+                <p class="intro">Como a rede se sustenta. Em ${esc(f.quarter)} projetamos <strong>${fmt(totalReceitaQ2)}</strong> de receita — suficiente para cobrir os <strong>${fmt(totalCustos * 3)}</strong> de custos operacionais e dedicar o trimestre a teste, validação e melhoria. Esta página é pública e atualizada em tempo real.</p>
 
-                <!-- ──── GASTOS ──── -->
-                <div class="section-header"><h2>Gastos recorrentes</h2><span class="label">mensal</span></div>
-                <ul class="fin-list">${custosHtml}</ul>
-                <div class="fin-total">
-                    <span class="fin-total-label">Total mensal</span>
-                    <span class="fin-total-value">${fmt(totalCustos)}</span>
-                </div>
-                <div class="fin-total-secondary">
-                    <span>× 3 · ${esc(f.quarter)}</span>
-                    <span>${fmt(totalCustos * 3)}</span>
-                </div>
-
-                <!-- ──── RECEITA RECORRENTE ──── -->
-                <div class="section-header"><h2>Receita · recorrente mensal</h2><span class="label">baseline</span></div>
-                <ul class="fin-list">${recorrenteHtml}</ul>
-                <div class="fin-subtotal">
-                    <span>Subtotal recorrente · mensal</span>
-                    <span>${fmt(recorrenteMensalTotal)}</span>
-                </div>
-                <div class="fin-subtotal">
-                    <span>Subtotal recorrente · ${esc(f.quarter)} (× 3)</span>
-                    <span>${fmt(recorrenteQ2)}</span>
-                </div>
-
-                <!-- ──── RECEITA RAMPA ──── -->
-                <div class="section-header"><h2>Receita · rampa</h2><span class="label">crescimento mensal</span></div>
-                <ul class="fin-list">${rampaHtml}</ul>
-                <div class="fin-subtotal">
-                    <span>Subtotal rampa · ${esc(f.quarter)}</span>
-                    <span>${fmt(rampaQ2)}</span>
-                </div>
-
-                <!-- ──── RECEITA PROJETOS ──── -->
-                <div class="section-header"><h2>Receita · projetos</h2><span class="label">one-off no trimestre</span></div>
-                <ul class="fin-list">${projetosHtml}</ul>
-                <div class="fin-subtotal">
-                    <span>Subtotal projetos · ${esc(f.quarter)}</span>
-                    <span>${fmt(projetosQ2)}</span>
-                </div>
-
-                <!-- ──── PRO-BONO ──── -->
-                <div class="section-header"><h2>Pro-bono</h2><span class="label">não entra na receita</span></div>
-                <p class="intro-short">Na Arte Longa nem tudo é receita. O trabalho pro-bono é parte do impacto social, ambiental e cultural.</p>
-                <ul class="fin-list">${proBonoHtml}</ul>
-
-                <!-- ──── ALINHAMENTO ──── -->
-                <div class="section-header"><h2>Alinhamento</h2><span class="label">${esc(f.quarter)}</span></div>
+                <!-- ──── RESUMO (executivo, no topo) ──── -->
+                <div class="section-header"><h2>Resumo</h2><span class="label">${esc(f.quarter)}</span></div>
                 <div class="fin-goal-grid fin-goal-grid-3">
                     <div class="fin-goal">
                         <div class="fin-goal-label">Custos · ${esc(f.quarter)}</div>
@@ -1225,7 +1180,7 @@
                         <div class="fin-goal-note">receita objetivo</div>
                     </div>
                     <div class="fin-goal highlighted">
-                        <div class="fin-goal-label">Potencial · ${esc(f.quarter)}</div>
+                        <div class="fin-goal-label">Receita projetada</div>
                         <div class="fin-goal-value">${short(totalReceitaQ2)}</div>
                         <div class="fin-goal-note">${percentMeta}% da meta · gap ${gap > 0 ? short(gap) : 'zero'}</div>
                     </div>
@@ -1235,11 +1190,64 @@
                     <div class="sum-line"><span>Recorrente × 3</span><span>${fmt(recorrenteQ2)}</span></div>
                     <div class="sum-line"><span>Rampa (Hedix MM)</span><span>${fmt(rampaQ2)}</span></div>
                     <div class="sum-line"><span>Projetos</span><span>${fmt(projetosQ2)}</span></div>
-                    <div class="sum-line sum-total"><span>Total estimado</span><span>${fmt(totalReceitaQ2)}</span></div>
+                    <div class="sum-line sum-total"><span>Total projetado</span><span>${fmt(totalReceitaQ2)}</span></div>
                 </div>
 
+                <!-- ──── GASTOS ──── -->
+                <div class="section-header"><h2>Gastos recorrentes</h2><span class="label">o que mantemos por mês</span></div>
+                <p class="intro-short">Custo fixo da operação. Pro labore dos sócios, contabilidade, coworking e infraestrutura.</p>
+                <ul class="fin-list">${custosHtml}</ul>
+                <div class="fin-total">
+                    <span class="fin-total-label">Total mensal</span>
+                    <span class="fin-total-value">${fmt(totalCustos)}</span>
+                </div>
+                <div class="fin-total-secondary">
+                    <span>× 3 · ${esc(f.quarter)}</span>
+                    <span>${fmt(totalCustos * 3)}</span>
+                </div>
+
+                <!-- ──── RECEITA RECORRENTE ──── -->
+                <div class="section-header"><h2>Receita garantida</h2><span class="label">recorrente · mensal</span></div>
+                <p class="intro-short">Contratos fixos que entram todo mês. Baseline previsível.</p>
+                <ul class="fin-list">${recorrenteHtml}</ul>
+                <div class="fin-subtotal">
+                    <span>Subtotal recorrente · mensal</span>
+                    <span>${fmt(recorrenteMensalTotal)}</span>
+                </div>
+                <div class="fin-subtotal">
+                    <span>Subtotal recorrente · ${esc(f.quarter)} (× 3)</span>
+                    <span>${fmt(recorrenteQ2)}</span>
+                </div>
+
+                <!-- ──── RECEITA RAMPA ──── -->
+                <div class="section-header"><h2>Receita em rampa</h2><span class="label">crescimento mês a mês</span></div>
+                <p class="intro-short">Receita ramping up — começa pequena e cresce a cada mês.</p>
+                <ul class="fin-list">${rampaHtml}</ul>
+                <div class="fin-subtotal">
+                    <span>Subtotal rampa · ${esc(f.quarter)}</span>
+                    <span>${fmt(rampaQ2)}</span>
+                </div>
+
+                <!-- ──── RECEITA PROJETOS ──── -->
+                <div class="section-header"><h2>Receita pontual</h2><span class="label">projetos · one-off no trimestre</span></div>
+                <p class="intro-short">Projetos avulsos. Acontecem uma vez no trimestre.</p>
+                <ul class="fin-list">${projetosHtml}</ul>
+                <div class="fin-subtotal">
+                    <span>Subtotal projetos · ${esc(f.quarter)}</span>
+                    <span>${fmt(projetosQ2)}</span>
+                </div>
+
+                <!-- ──── PRO-BONO ──── -->
+                <div class="section-header"><h2>Pro-bono</h2><span class="label">impacto · não entra na receita</span></div>
+                <p class="intro-short">Trabalho que fazemos sem cobrar. Parte do impacto social, ambiental e cultural.</p>
+                <ul class="fin-list">${proBonoHtml}</ul>
+
                 <p class="fin-footnote">
-                    Consulte também <a href="/sobre/">Sobre</a> (dados cadastrais e CNAEs), <a href="/proximos-passos/">Próximos Passos</a> (metas) e <a href="/servicos/">Serviços</a> (catálogo completo).
+                    Consulte também <a href="/sobre/">Sobre</a> (dados cadastrais), <a href="/proximos-passos/">Próximos Passos</a> (metas) e <a href="/servicos/">Serviços</a> (catálogo).
+                </p>
+
+                <p class="proximos-link-bottom">
+                    <a href="/proximos-passos/">Próximos Passos →</a>
                 </p>
 
                 <a class="back" href="/">← voltar</a>
