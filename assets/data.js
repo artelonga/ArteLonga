@@ -17,8 +17,8 @@
             pic: "/yuri/yuri.jpg?v=20260428",
             birthDate: "1993-06-24T12:30:00-03:00",
             bioTitle: "Terra",
-            bioCurta: "Filho de Kiyoshi e Soninha e fascinado por todos que me inspiram. Como neurocientista, busco compreender a consiencia. Como ser humano, busco compreender os saberes ancestrais. Trabalho com desenvolvimento de tecnologia sustentavel.",
-            bio: "Filho de Kiyoshi e Soninha e fascinado por todos que me inspiram. Como neurocientista, busco compreender a consiencia. Como ser humano, busco compreender os saberes ancestrais. Trabalho com desenvolvimento de tecnologia sustentavel.\n\nNão haviam nomes quando nossos ancestrais pisaram na Terra\n\nO eu não se faz de reconhecimento ou recompensa. Não é sobre mim.\n\nNao chamavam-se japoneses ou nordestinos\nafricanos ou indígenas.\nEram gente, como a gente\nSem nome\n\nO eu são [todos que inspiram](/parceiros/#ShowAll)\nE avaxi ete'i\n\nPerdi a planilha orçamentária,\nTropecei no Quilombo Araucária e encontrei Zé Pilintra,\nEle sábio, eu ainda com trinta\nCompartilhou comigo coragem pra recomeçar\n\nA missão é cuidar da Terra\nSenão todo mundo vai embora, só a vovó que vai poder ficar\nA tecnologia é pedal que acelera,\nEntão seja ciente e começa com Yvyrupa\n\nFaça junto, compartilha a colheita, Yvyrupa nhande tekoa,\nGuarda ka'a porã e seus guardiões guarani Mbyá\nProteção no àiyé, caminha sem medo Olódùmarè, Òrìşà èdè Yorùbá\nSegredo, coração sujo e ubuntu pra um dia desvendar\n\nNão se esquece de respirar agora, a palavra não importa,\nA justiça abre a porta e os parente vem pro arraiá.\n\nXeramoi passou o petynga,\nXejaryi com sabedoria sabia que eu dormia com medo de acordar\n\nMe botou pra dormir no opy ouvindo jui no calor do tata\nSonhei que eu era eu mesmo\nFoi aí que eu senti o que era existir\nE acordei querendo trabalhar\n\nGuanyin e o sagrado feminino, A Ana, a Soninha e todas as kunha\nJohn, Alicia, kiryngue kuery vao colocar sentido nas palavras que você inventar\nCuida do Kiyoshi porque já não é de hoje que ele vem cuidando de ti\nSem tentar traduzir o que so presenca e atencao te permitem sentir,\n\nSem medo, por aqui eu me expresso em palavra ou em rima\nEu e todo o Universo, mbaraete, fé, nhande kuery\nNhande pytunju, a expressão de nhanderu\nChuva é tupã mandando descansar, autocuidado nhane noite\n\nJaxy pyau",
+            bioCurta: "Filho de Kiyoshi e Soninha e fascinado por todos que me inspiram. Como neurocientista, busco compreender a consciência. Como ser humano, busco compreender os saberes ancestrais. Trabalho com desenvolvimento de tecnologia sustentável.",
+            bio: "Filho de Kiyoshi e Soninha e fascinado por [todos que me inspiram](/parceiros/#todos)\nComo neurocientista, busco compreender a consciência\nComo ser humano, busco compreender os saberes ancestrais\nTrabalho com desenvolvimento de [tecnologia sustentável](/solucoes/)\n\nNão haviam nomes quando nossos ancestrais pisaram na Terra\n\nO eu não se faz de reconhecimento ou recompensa. Não é sobre mim.\n\nNao chamavam-se japoneses ou nordestinos\nafricanos ou indígenas.\nEram gente, como a gente\nSem nome\n\nO eu são [todos que inspiram](/parceiros/#todos)\nE avaxi ete'i\n\nPerdi a planilha orçamentária,\nTropecei no Quilombo Araucária e encontrei Zé Pilintra,\nEle sábio, eu ainda com trinta\nCompartilhou comigo coragem pra recomeçar\n\nA missão é cuidar da Terra\nSenão todo mundo vai embora, só a vovó que vai poder ficar\nA tecnologia é pedal que acelera,\nEntão seja ciente e começa com Yvyrupa\n\nFaça junto, compartilha a colheita, Yvyrupa nhande tekoa,\nGuarda ka'a porã e seus guardiões guarani Mbyá\nProteção no àiyé, caminha sem medo Olódùmarè, Òrìşà èdè Yorùbá\nSegredo, coração sujo e ubuntu pra um dia desvendar\n\nNão se esquece de respirar agora, a palavra não importa,\nA justiça abre a porta e os parente vem pro arraiá.\n\nXeramoi passou o petynga,\nXejaryi com sabedoria sabia que eu dormia com medo de acordar\n\nMe botou pra dormir no opy ouvindo jui no calor do tata\nSonhei que eu era eu mesmo\nFoi aí que eu senti o que era existir\nE acordei querendo trabalhar\n\nGuanyin e o sagrado feminino, A Ana, a Soninha e todas as kunha\nJohn, Alicia, kiryngue kuery vao colocar sentido nas palavras que você inventar\nCuida do Kiyoshi porque já não é de hoje que ele vem cuidando de ti\nSem tentar traduzir o que so presenca e atencao te permitem sentir,\n\nSem medo, por aqui eu me expresso em palavra ou em rima\nEu e todo o Universo, mbaraete, fé, nhande kuery\nNhande pytunju, a expressão de nhanderu\nChuva é tupã mandando descansar, autocuidado nhane noite\n\nJaxy pyau",
             citacoes: [
                 {
                     texto: "A terceira utilidade (*d'A Economia como meio de conciliação de Classes*) será a suspensão do movimento de emigração; ninguém, com efeito, quereria trocar por uma região estrangeira a sua pátria e a sua terra natal, se nesta encontrasse os meios de levar uma vida mais tolerável.",
@@ -458,14 +458,18 @@
     }
     const services = deriveServices();
 
-    // ─── SOLUTIONS ───────────────────────────────────────────────────────────
+    // ─── SOLUTIONS / UNIVERSOS ───────────────────────────────────────────────
+    // Toda solução tem `lifecycle: "active" | "futuro"` (filtra em /solucoes/)
+    // e `universo: true|false` (separa Universos de produtos/parcerias).
     const solutions = [
         {
             handle: "artelonga", type: "solution", nome: "Arte Longa",
-            tagline: "Redes do Futuro",
+            tagline: "Universo · Conexão entre pessoas",
             url: "https://artelonga.com.br", urlLabel: "artelonga.com.br",
             lema: "A Rede — Conectando Pessoas.",
-            desc: "Um jeito natural de conectar pessoas e seus legados. Em vida, em memória, em futuro.",
+            desc: "Site estático cobrindo web hosting, content management e graph databases. Um jeito natural de conectar pessoas e seus legados.",
+            lifecycle: "active",
+            universo: true,
             bundledServices: "*", // all services
             platforms: [
                 { name: "Web", status: "done", statusText: "disponível" },
@@ -473,37 +477,72 @@
             ]
         },
         {
+            handle: "quilomboaraucaria-solution", type: "solution", nome: "Quilombo Araucária",
+            tagline: "Universo · Conexão entre todas as pessoas e a Terra",
+            url: "https://quilomboaraucaria.org", urlLabel: "quilomboaraucaria.org",
+            desc: "Site dinâmico cobrindo auth, privacidade e segurança. Espaço vivo de resistência ambiental, cultural e social — natureza, ancestralidade e tecnologia em comunhão.",
+            lifecycle: "active",
+            universo: true,
+            bundledServices: ["Desenvolvimento Web", "Privacidade e Segurança", "Artes Visuais", "Grafite", "Murais e Fachadas"],
+            platforms: [
+                { name: "Web", status: "done", statusText: "disponível" },
+                { name: "Mobile / App", status: "wip", statusText: "Q2 2026 · em desenvolvimento" }
+            ]
+        },
+        {
             handle: "co", type: "solution", nome: "Co",
-            tagline: "Rede Social Web",
-            url: "https://co-artelonga-uat.fly.dev/", urlLabel: "co-artelonga-uat.fly.dev",
-            lema: "Conectando Pessoas na Web.",
-            desc: "Comunidade. Consciência Coletiva. Colaborar. Compartilhar. Comunicar. Coinventar.",
+            tagline: "Universe-organization web application",
+            url: "https://co-artelonga-uat.fly.dev/", urlLabel: "lançamento · 1 de maio de 2026",
+            lema: "Organize seus Universos paralelos.",
+            desc: "Aplicação web para organização e navegação entre seus Universos. Comunidade, consciência coletiva, colaboração — tudo num só portal.",
+            lifecycle: "futuro",
+            universo: true,
+            releaseDate: "2026-05-01",
             // Co: Yuri fez tudo (Inteligência e Tecnologia — collapsível), Luke contribuiu Design.
             // Igo e Mono também apoiaram (Gestão Operacional, Privacidade e Segurança).
             bundledServices: ["Inteligência e Tecnologia", "Design", "Gestão Executiva", "Gestão Operacional", "Privacidade e Segurança"],
             platforms: [
-                { name: "Web", status: "done", statusText: "disponível" },
-                { name: "Mobile / App", status: "wip", statusText: "Q2 2026 · em desenvolvimento" }
+                { name: "Web", status: "wip", statusText: "1 de maio de 2026" },
+                { name: "Mobile / App", status: "wip", statusText: "Q2 2026" }
             ]
         },
         {
-            handle: "quilomboaraucaria-solution", type: "solution", nome: "Quilombo Araucária",
-            tagline: "Natureza Viva, Futuro Ancestral",
-            url: "https://quilomboaraucaria.org", urlLabel: "quilomboaraucaria.org",
-            desc: "Espaço de resistência ambiental, cultural e social.",
-            bundledServices: ["Desenvolvimento Web", "Artes Visuais", "Grafite", "Murais e Fachadas"],
+            handle: "co-dev", type: "solution", nome: "Co Dev",
+            tagline: "Open Source · framework de desenvolvimento multi-plataforma",
+            url: "/solucoes/#co-dev", urlLabel: "em breve",
+            internalLink: true,
+            lema: "Escalabilidade desde o primeiro commit.",
+            desc: "Framework open source de desenvolvimento multi-plataforma criado in-house para escalabilidade. Cobre privacidade e segurança, desenvolvimento de API e auth.",
+            lifecycle: "futuro",
+            universo: true,
+            bundledServices: ["Desenvolvimento de API", "Privacidade e Segurança", "Inteligência e Tecnologia"],
             platforms: [
-                { name: "Web", status: "done", statusText: "disponível" },
-                { name: "Mobile / App", status: "wip", statusText: "Q2 2026 · em desenvolvimento" }
+                { name: "Web", status: "wip", statusText: "em desenvolvimento" }
+            ]
+        },
+        {
+            handle: "qa-dev", type: "solution", nome: "QA Dev",
+            tagline: "Open Source · template de site dinâmico para aprendizado",
+            url: "/solucoes/#qa-dev", urlLabel: "em breve",
+            internalLink: true,
+            lema: "Aprenda construindo.",
+            desc: "Exemplo open source derivado do template de site dinâmico do Quilombo Araucária, voltado para aprendizado. Cobre desenvolvimento web, mobile, Native OS, privacidade e segurança.",
+            lifecycle: "futuro",
+            universo: true,
+            bundledServices: ["Desenvolvimento Web", "Desenvolvimento de Software", "Privacidade e Segurança", "Inteligência e Tecnologia"],
+            platforms: [
+                { name: "Web", status: "wip", statusText: "em desenvolvimento" }
             ]
         },
         {
             handle: "yggdrasil", type: "solution", nome: "Yggdrasil",
-            tagline: "Rede Social para Jogos",
+            tagline: "Open Source · game engine envolvendo Godot",
             url: "/yggdrasil/", urlLabel: "lançamento · junho 2026",
             internalLink: true,
-            lema: "Desenvolvimento de jogos.",
-            desc: "Sem limites para a expressão da criatividade. Uma rede social onde criadores, jogadores e mundos convergem.",
+            lema: "Desenvolvimento de jogos sem limites.",
+            desc: "Engine de jogos open source construída em torno do Godot. Sem limites para a expressão da criatividade — onde criadores, jogadores e mundos convergem.",
+            lifecycle: "futuro",
+            universo: true,
             // Yggdrasil: Luke faz Design solo. Yuri cobre o resto (Inteligência e Tecnologia — collapsível) + Produção Musical (Antony).
             bundledServices: ["Inteligência e Tecnologia", "Design", "Produção Musical"],
             platforms: [
@@ -512,11 +551,29 @@
             ]
         },
         {
+            handle: "shandara", type: "solution", nome: "Shandara",
+            tagline: "Universo de RPG autoral",
+            url: "/solucoes/#shandara", urlLabel: "em construção",
+            internalLink: true,
+            lema: "Mundo modular para experiências interativas.",
+            desc: "Universo de fantasia original, profundo e expansível, projetado para ser a base de experiências interativas e narrativas, com foco em diversidade cultural e sistemas próprios de mundo.",
+            descLong: "Shandara é um mundo de fantasia criado para ser a base de experiências interativas, especialmente RPGs, mas também pode ser usado em jogos digitais, histórias e plataformas online.\n\nO que torna Shandara diferente de outros mundos de fantasia é que ele é estruturado em torno de seis forças primordiais que regem tudo: vida, matéria, tempo, transformação e energia. Essas forças moldam não apenas o ambiente, mas também as culturas, criaturas e conflitos do mundo.\n\nO mundo é habitado por várias espécies únicas, cada uma com sua própria identidade cultural, organização social e conexão com as forças fundamentais. Em vez de serem apenas variações de “raças clássicas”, cada povo de Shandara tem sua própria história, filosofia e papel ativo nos conflitos globais.\n\nO cenário também é marcado por um grande evento histórico — uma guerra que dividiu o mundo e alterou o equilíbrio entre magia, natureza e civilização — criando um ambiente cheio de tensões políticas, mistérios antigos e oportunidades narrativas.\n\nAlém disso, Shandara foi pensado desde o início como um universo modular, ou seja:\n\n• Pode ser usado como base para campanhas de RPG\n• Pode ser adaptado para plataformas digitais\n• Pode servir como template para criação de novas experiências\n\nIsso permite que ele funcione não apenas como uma história, mas como um ecossistema expansível, onde novos conteúdos, mecânicas e tecnologias podem ser integrados ao longo do tempo.",
+            lifecycle: "futuro",
+            universo: true,
+            bundledServices: ["Design", "Inteligência e Tecnologia"],
+            platforms: [
+                { name: "Mesa de RPG", status: "wip", statusText: "em construção" },
+                { name: "Plataforma digital", status: "wip", statusText: "futuro" }
+            ]
+        },
+        {
             handle: "hedix-solution", type: "solution", nome: "Hedix",
             tagline: "Market Making em Mercados de Previsão",
             url: "https://hedix.com.br/", urlLabel: "hedix.com.br",
             lema: "Liquidez e formação de preço em mercados de previsão.",
             desc: "Plataforma de market making preditivo. Provê liquidez, forma preço e agrega sinal em prediction markets — onde o mercado é o oráculo.",
+            lifecycle: "active",
+            universo: false,
             comunidade: "hedix",
             bundledServices: ["Market Making Preditivo", "Inteligência de Previsão", "Desenvolvimento de API"],
             platforms: [

@@ -312,7 +312,8 @@
     // ─── PAGE: PARCEIROS ─────────────────────────────────────────────────────
     function renderParceiros() {
         // Hash-based routing: /parceiros/#ShowAll → flat view
-        if (location.hash && location.hash.toLowerCase() === "#showall") {
+        const h = (location.hash || "").toLowerCase();
+        if (h === "#todos" || h === "#showall") { // #showall = legacy alias
             renderParceirosShowAll();
             window.addEventListener("hashchange", renderParceiros); // idempotent
             return;
@@ -611,13 +612,10 @@
 
     // ─── PAGE: SOLUCOES ──────────────────────────────────────────────────────
     function renderSolucoes() {
-        const cards = AL.solutions.map(s => {
+        const renderCard = (s) => {
             const urlAttrs = s.internalLink ? "" : ` target="_blank" rel="noopener"`;
             const urlArrow = s.internalLink ? "ver →" : "acessar →";
 
-            // Serviços via popover (mesmo padrão de /parceiros/).
-            // Uma solução = coleção de serviços. bundledServices="*" vai para o catálogo;
-            // lista concreta expande pais em filhos (ex.: IT → 10 sub-serviços do Yuri).
             const isCatalog = s.bundledServices === "*";
             const rawTitles = isCatalog ? [] : (s.bundledServices || []);
             const expanded = rawTitles.length ? expandTitlesForPopover(rawTitles) : [];
@@ -636,14 +634,14 @@
                    </div>`
                 : "";
 
-            // respostaChave pode vir sozinha (só a palavra-chave em destaque) ou
-            // acompanhada de uma pergunta (framing socrático). lema é a linha de
-            // posicionamento curta ("A Rede — Conectando Pessoas"); desc dá o
-            // texto evocativo. As três vivem juntas sem repetição.
             const pergunta = s.respostaChave
                 ? `<div class="solucao-pergunta${s.pergunta ? "" : " resposta-solo"}">${s.pergunta ? `<span class="q">${esc(s.pergunta)}</span> ` : ""}<strong class="a">${esc(s.respostaChave)}</strong></div>`
                 : "";
             const lema = s.lema ? `<div class="solucao-lema">${esc(s.lema)}</div>` : "";
+            // descLong: parágrafos extras (ex.: Shandara), renderizados após desc.
+            const descLong = s.descLong
+                ? s.descLong.split(/\n\s*\n/).map(p => `<p class="solucao-desc-long">${esc(p)}</p>`).join("")
+                : "";
             return `<li class="solucao" id="${esc(s.handle)}">
                 <div class="solucao-head">
                     <a class="solucao-nome" href="${esc(s.url)}"${urlAttrs}>${esc(s.nome)} <span class="arrow">${urlArrow}</span></a>
@@ -653,18 +651,36 @@
                 ${pergunta}
                 ${lema}
                 <p class="solucao-desc">${esc(s.desc)}</p>
+                ${descLong}
                 <ul class="platforms solucao-platforms">${s.platforms.map(platformItem).join("")}</ul>
                 <div class="solucao-actions">${svcBtn}${svcPopover}</div>
             </li>`;
-        }).join("");
+        };
+
+        // Três blocos: Universos ativos, Universos futuros (Futuro), Parcerias e produtos.
+        const universosAtivos  = AL.solutions.filter(s => s.universo  && s.lifecycle === "active");
+        const universosFuturos = AL.solutions.filter(s => s.universo  && s.lifecycle === "futuro");
+        const parcerias        = AL.solutions.filter(s => !s.universo);
+
+        const sectionHtml = (title, hint, list, extraClass) => list.length
+            ? `<section class="solucoes-section ${extraClass || ""}">
+                <h2 class="solucoes-section-title">${esc(title)}${hint ? ` <span class="solucoes-section-hint">${esc(hint)}</span>` : ""}</h2>
+                <ul class="solucoes-list">${list.map(renderCard).join("")}</ul>
+              </section>`
+            : "";
 
         document.body.innerHTML = `
             ${siteHeader()}
             <main class="main">
                 <h1 class="page-title">Soluções</h1>
-                <div class="page-subtitle">Arte Longa · Produtos</div>
-                <p class="intro">Soluções são conjuntos de serviços.</p>
-                <ul class="solucoes-list">${cards}</ul>
+                <div class="page-subtitle">Arte Longa · Universos</div>
+                <p class="intro">Cada Universo é um conjunto vivo de serviços — um caminho próprio.</p>
+
+                ${sectionHtml("Universos ativos", "em produção", universosAtivos)}
+                ${sectionHtml("Futuro", "Universos em desenvolvimento", universosFuturos, "solucoes-futuro")}
+                ${sectionHtml("Parcerias e produtos", "", parcerias)}
+
+                ${universosDiagram()}
 
                 ${renderMissionsSection()}
 
@@ -681,6 +697,65 @@
 
         wirePopover(".solucao");
         wireModal("contact-modal", '[data-cta="solucoes"]');
+    }
+
+    // Diagrama do conceito de Universos paralelos: usuário → auth gate → stack
+    // de universos (só o topo visível) + auto-management interno + conectividade.
+    function universosDiagram() {
+        return `<section class="universos-diagram-section">
+            <h2 class="solucoes-section-title">Arquitetura</h2>
+            <p class="intro universos-diagram-intro">Um portal único, vários Universos paralelos. Auth no centro, gestão automática e conectividade entre nós.</p>
+            <svg class="universos-diagram" viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagrama: usuário → auth → universos paralelos">
+              <defs>
+                <marker id="ud-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+                  <path d="M 0 0 L 10 5 L 0 10 Z" fill="#222"/>
+                </marker>
+                <marker id="ud-arrow-light" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                  <path d="M 0 0 L 10 5 L 0 10 Z" fill="#999"/>
+                </marker>
+              </defs>
+
+              <!-- USER -->
+              <g transform="translate(60,150)">
+                <circle r="22" fill="#fff" stroke="#222" stroke-width="2"/>
+                <circle cy="-6" r="6" fill="#222"/>
+                <path d="M -10 6 Q 0 18 10 6" fill="none" stroke="#222" stroke-width="2"/>
+                <text y="50" text-anchor="middle" font-size="11" fill="#666" letter-spacing="0.1em">VOCÊ</text>
+              </g>
+
+              <line x1="92" y1="150" x2="200" y2="150" stroke="#222" stroke-width="1.5" marker-end="url(#ud-arrow)"/>
+
+              <!-- AUTH GATE -->
+              <g transform="translate(240,150)">
+                <rect x="-30" y="-30" width="60" height="60" rx="6" fill="#fff" stroke="#222" stroke-width="2"/>
+                <rect x="-12" y="-4" width="24" height="20" rx="2" fill="none" stroke="#222" stroke-width="2"/>
+                <path d="M -8 -4 V -12 Q -8 -22 0 -22 Q 8 -22 8 -12 V -4" fill="none" stroke="#222" stroke-width="2"/>
+                <text y="50" text-anchor="middle" font-size="11" fill="#666" letter-spacing="0.1em">AUTH</text>
+              </g>
+
+              <line x1="270" y1="150" x2="370" y2="150" stroke="#222" stroke-width="1.5" marker-end="url(#ud-arrow)"/>
+
+              <!-- STACK OF UNIVERSES (offset, only top is highlighted) -->
+              <g transform="translate(420,80)">
+                <rect x="20" y="40" width="220" height="60" rx="4" fill="#f5f5f5" stroke="#ddd" stroke-width="1"/>
+                <rect x="14" y="28" width="220" height="60" rx="4" fill="#f0f0f0" stroke="#ccc" stroke-width="1"/>
+                <rect x="8"  y="16" width="220" height="60" rx="4" fill="#e8e8e8" stroke="#bbb" stroke-width="1"/>
+                <rect x="0"  y="0"  width="220" height="60" rx="4" fill="#fff"   stroke="#222" stroke-width="2"/>
+                <text x="110" y="34" text-anchor="middle" font-size="13" font-weight="600" fill="#222">Universo (visível)</text>
+                <text x="110" y="50" text-anchor="middle" font-size="11" fill="#777">os outros aguardam em paralelo</text>
+                <text x="110" y="135" text-anchor="middle" font-size="11" fill="#666" letter-spacing="0.1em">UNIVERSOS PARALELOS</text>
+              </g>
+
+              <!-- CONNECTIVITY (curved, between universes) -->
+              <path d="M 510 200 C 470 240, 590 240, 550 200" fill="none" stroke="#999" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#ud-arrow-light)"/>
+              <text x="530" y="265" text-anchor="middle" font-size="10" fill="#999" letter-spacing="0.08em">CONECTIVIDADE ENTRE NÓS</text>
+
+              <!-- AUTO MANAGEMENT (loop) -->
+              <path d="M 240 90 C 230 70, 250 70, 240 90" fill="none" stroke="#999" stroke-width="1" stroke-dasharray="2,3"/>
+              <path d="M 240 60 Q 260 50 270 70" fill="none" stroke="#999" stroke-width="1" marker-end="url(#ud-arrow-light)"/>
+              <text x="240" y="40" text-anchor="middle" font-size="10" fill="#999" letter-spacing="0.08em">AUTO-MANAGEMENT INTERNO</text>
+            </svg>
+        </section>`;
     }
 
     // Popover "Ver serviços" — clicar toggla; clique fora ou Esc fecha.

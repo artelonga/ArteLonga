@@ -876,9 +876,60 @@
     margin-bottom: 5vh;
     max-width: 60ch;
 }
-.solucoes-list { list-style: none; }
+.solucoes-list { list-style: none; padding: 0; }
 .solucao { padding: 4vh 0; border-bottom: 1px solid #eee; }
 .solucao:last-child { border-bottom: none; }
+
+/* Sections within /solucoes/ (Universos ativos · Futuro · Parcerias) */
+.solucoes-section { margin: 0 0 6vh; }
+.solucoes-section-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #999;
+    margin: 0 0 1vh;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid #eee;
+}
+.solucoes-section-hint {
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: #bbb;
+    margin-left: 0.5rem;
+}
+.solucoes-futuro .solucao {
+    /* Subtle "in development" feel: lighter borders, slight muting */
+    opacity: 0.95;
+}
+.solucoes-futuro .solucao-nome { color: #222; }
+
+/* Long description (Shandara etc.) — paragraphs after main desc */
+.solucao-desc-long {
+    font-size: 0.88rem;
+    color: #555;
+    line-height: 1.65;
+    margin: 0 0 1rem;
+    max-width: 70ch;
+}
+
+/* Universos diagram */
+.universos-diagram-section {
+    margin: 8vh 0 6vh;
+    padding-top: 4vh;
+    border-top: 1px solid #eee;
+}
+.universos-diagram-intro {
+    margin-bottom: 3vh;
+    font-size: 0.95rem;
+}
+.universos-diagram {
+    display: block;
+    width: 100%;
+    max-width: 720px;
+    height: auto;
+    margin: 0 auto;
+}
 .solucao-head {
     display: flex;
     justify-content: space-between;
