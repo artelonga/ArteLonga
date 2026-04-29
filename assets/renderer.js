@@ -47,7 +47,7 @@
         return esc(s)
             .replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (_, label, title) => {
                 const t = title || label;
-                return `<a href="#" class="al-em-breve" data-modal-title="${t}" data-modal-body="em breve">${label}</a>`;
+                return `<a href="#" class="al-em-breve" data-modal-title="${t}">${label}</a>`;
             })
             .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, text, url) => {
                 // url is already escaped — we need to unescape HTML entities for the href
@@ -71,7 +71,6 @@
                 '<div class="al-modal-card" role="dialog" aria-modal="true" aria-labelledby="al-modal-title">' +
                   '<button class="al-modal-close" aria-label="Fechar">×</button>' +
                   '<h3 id="al-modal-title" class="al-modal-title"></h3>' +
-                  '<p class="al-modal-body"></p>' +
                   '<div class="al-modal-footer">em breve</div>' +
                 '</div>';
             document.body.appendChild(modal);
@@ -80,10 +79,9 @@
             document.addEventListener("keydown", e => { if (e.key === "Escape") close(); });
             return modal;
         }
-        function open(title, body) {
+        function open(title) {
             const m = ensure();
             m.querySelector(".al-modal-title").textContent = title;
-            m.querySelector(".al-modal-body").textContent = body;
             m.classList.add("open");
             const c = m.querySelector(".al-modal-close"); if (c) c.focus();
         }
@@ -93,8 +91,7 @@
             if (!a) return;
             e.preventDefault();
             const title = a.getAttribute("data-modal-title") || "Em breve";
-            const body  = a.getAttribute("data-modal-body")  || "em breve";
-            open(title, body);
+            open(title);
             if (window.AL_track) window.AL_track("modal_em_breve", { title });
         });
     })();

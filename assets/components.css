@@ -280,11 +280,7 @@ a.al-em-breve::after {
 .al-modal-title {
     font-size: 1.25rem;
     font-weight: 700;
-    margin: 0 0 0.5rem;
-}
-.al-modal-body {
     margin: 0 0 1rem;
-    color: #555;
 }
 .al-modal-footer {
     font-size: 0.75rem;
