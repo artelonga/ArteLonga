@@ -231,9 +231,10 @@
     }
 
     function modalContact(id, labelText) {
+        const label = labelText ? `<div class="modal-servico-nome">${esc(labelText)}</div>` : "";
         return `<div class="modal-overlay" id="${id}" role="dialog" aria-modal="true">
             <div class="modal-card" style="text-align:center;">
-                <div class="modal-servico-nome">${esc(labelText)}</div>
+                ${label}
                 <div class="modal-contact-label">Escreva para</div>
                 <div class="modal-email">${REDE_EMAIL}</div>
                 <button class="modal-close" type="button">Fechar</button>
@@ -305,6 +306,7 @@
                 <p class="show-all-intro">${all.length} caminhos…</p>
                 <ul class="roster-all">${items}</ul>
                 <p class="show-all-toggle"><a href="/parceiros/">← papéis e serviços</a></p>
+                <a class="back" href="/">← voltar</a>
             </main>
         `;
     }
@@ -415,6 +417,7 @@
                     body: "Faça parte da rede.",
                     id: "parceiros"
                 }, "Entrar →")}
+                <a class="back" href="/">← voltar</a>
             </main>
             ${modalContact("contact-modal", "Bem-vindo à rede")}
         `;
@@ -659,7 +662,7 @@
 
                 <a class="back" href="/">← voltar</a>
             </main>
-            ${modalContact("contact-modal", "Vamos construir?")}
+            ${modalContact("contact-modal", "")}
         `;
 
         wireModal("contact-modal", '[data-cta="solucoes"]');

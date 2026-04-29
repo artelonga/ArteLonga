@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sobre — Arte Longa</title>
     <link rel="stylesheet" href="/assets/site.css?v=20260503">
-    <link rel="stylesheet" href="/assets/components.css?v=20260504">
+    <link rel="stylesheet" href="/assets/components.css?v=20260508">
     <link rel="stylesheet" href="/assets/pages.css?v=20260508">
     <style>
         .page-title {
@@ -172,13 +172,16 @@
         .back {
             display: inline-block;
             margin-top: 6vh;
-            font-size: 0.65rem;
-            letter-spacing: 0.18em;
+            padding: 0.6rem 0;
+            font-size: 0.85rem;
+            letter-spacing: 0.16em;
             text-transform: uppercase;
-            color: #999;
+            color: #444;
+            font-weight: 600;
             text-decoration: none;
+            transition: color 0.15s ease;
         }
-        .back:hover { opacity: 0.5; }
+        .back:hover { color: #c0392b; opacity: 1; }
 
         @media (max-width: 640px) {
             .info-grid { grid-template-columns: 1fr; gap: 0.3rem 0; }
