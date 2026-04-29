@@ -458,16 +458,20 @@
     }
     const services = deriveServices();
 
-    // ─── SOLUTIONS / UNIVERSOS ───────────────────────────────────────────────
-    // Toda solução tem `lifecycle: "active" | "futuro"` (filtra em /solucoes/)
-    // e `universo: true|false` (separa Universos de produtos/parcerias).
+    // ─── UNIVERSOS (formerly "solutions") ────────────────────────────────────
+    // Cada Universo é um projeto: pessoas unidas por um objetivo (tagline = palavra-chave).
+    // `lifecycle: "active" | "futuro"` separa em /solucoes/. `universo: true` distingue
+    // dos produtos/parcerias. Descrições longas vivem no perfil próprio do Universo,
+    // não no catálogo.
     const solutions = [
         {
             handle: "artelonga", type: "solution", nome: "Arte Longa",
-            tagline: "Universo · Conexão entre pessoas",
-            url: "https://artelonga.com.br", urlLabel: "artelonga.com.br",
-            lema: "A Rede — Conectando Pessoas.",
-            desc: "Site estático cobrindo web hosting, content management e graph databases. Um jeito natural de conectar pessoas e seus legados.",
+            tagline: "Conexão",
+            url: "/artelonga/", urlLabel: "artelonga.com.br",
+            internalLink: true,
+            externalUrl: "https://artelonga.com.br",
+            lema: "Conectando pessoas.",
+            desc: "Site estático que cobre hospedagem web, gestão de conteúdo e bancos de dados em grafo. Um jeito natural de conectar pessoas e seus legados.",
             lifecycle: "active",
             universo: true,
             bundledServices: "*", // all services
@@ -478,9 +482,12 @@
         },
         {
             handle: "quilomboaraucaria-solution", type: "solution", nome: "Quilombo Araucária",
-            tagline: "Universo · Conexão entre todas as pessoas e a Terra",
-            url: "https://quilomboaraucaria.org", urlLabel: "quilomboaraucaria.org",
-            desc: "Site dinâmico cobrindo auth, privacidade e segurança. Espaço vivo de resistência ambiental, cultural e social — natureza, ancestralidade e tecnologia em comunhão.",
+            tagline: "Terra",
+            url: "/quilomboaraucaria/", urlLabel: "quilomboaraucaria.org",
+            internalLink: true,
+            externalUrl: "https://quilomboaraucaria.org",
+            lema: "Conexão entre pessoas e a natureza.",
+            desc: "Site dinâmico que cobre autenticação, privacidade e segurança. Resistência ambiental, cultural e social — natureza, ancestralidade e tecnologia em comunhão.",
             lifecycle: "active",
             universo: true,
             bundledServices: ["Desenvolvimento Web", "Privacidade e Segurança", "Artes Visuais", "Grafite", "Murais e Fachadas"],
@@ -491,10 +498,12 @@
         },
         {
             handle: "co", type: "solution", nome: "Co",
-            tagline: "Universe-organization web application",
-            url: "https://co-artelonga-uat.fly.dev/", urlLabel: "lançamento · 1 de maio de 2026",
+            tagline: "Conexão na Internet",
+            url: "/co/", urlLabel: "lançamento · 1 de maio de 2026",
+            internalLink: true,
+            externalUrl: "https://co-artelonga-uat.fly.dev/",
             lema: "Organize seus Universos paralelos.",
-            desc: "Aplicação web para organização e navegação entre seus Universos. Comunidade, consciência coletiva, colaboração — tudo num só portal.",
+            desc: "Aplicação web para organização e navegação entre seus Universos.",
             lifecycle: "futuro",
             universo: true,
             releaseDate: "2026-05-01",
@@ -508,11 +517,11 @@
         },
         {
             handle: "co-dev", type: "solution", nome: "Co Dev",
-            tagline: "Open Source · framework de desenvolvimento multi-plataforma",
-            url: "/solucoes/#co-dev", urlLabel: "em breve",
+            tagline: "Formação",
+            url: "/co-dev/", urlLabel: "em breve",
             internalLink: true,
             lema: "Escalabilidade desde o primeiro commit.",
-            desc: "Framework open source de desenvolvimento multi-plataforma criado in-house para escalabilidade. Cobre privacidade e segurança, desenvolvimento de API e auth.",
+            desc: "Framework open source de desenvolvimento multi-plataforma criado in-house para escalabilidade. Cobre privacidade e segurança, desenvolvimento de API e autenticação.",
             lifecycle: "futuro",
             universo: true,
             bundledServices: ["Desenvolvimento de API", "Privacidade e Segurança", "Inteligência e Tecnologia"],
@@ -522,11 +531,11 @@
         },
         {
             handle: "qa-dev", type: "solution", nome: "QA Dev",
-            tagline: "Open Source · template de site dinâmico para aprendizado",
-            url: "/solucoes/#qa-dev", urlLabel: "em breve",
+            tagline: "Tecnologia",
+            url: "/qa-dev/", urlLabel: "em breve",
             internalLink: true,
             lema: "Aprenda construindo.",
-            desc: "Exemplo open source derivado do template de site dinâmico do Quilombo Araucária, voltado para aprendizado. Cobre desenvolvimento web, mobile, Native OS, privacidade e segurança.",
+            desc: "Exemplo open source derivado do template de site dinâmico do Quilombo Araucária, voltado para aprendizado. Cobre desenvolvimento web, mobile, sistemas operacionais nativos, privacidade e segurança.",
             lifecycle: "futuro",
             universo: true,
             bundledServices: ["Desenvolvimento Web", "Desenvolvimento de Software", "Privacidade e Segurança", "Inteligência e Tecnologia"],
@@ -536,11 +545,11 @@
         },
         {
             handle: "yggdrasil", type: "solution", nome: "Yggdrasil",
-            tagline: "Open Source · game engine envolvendo Godot",
+            tagline: "Experiência",
             url: "/yggdrasil/", urlLabel: "lançamento · junho 2026",
             internalLink: true,
             lema: "Desenvolvimento de jogos sem limites.",
-            desc: "Engine de jogos open source construída em torno do Godot. Sem limites para a expressão da criatividade — onde criadores, jogadores e mundos convergem.",
+            desc: "Engine de jogos open source construída em torno do Godot. Onde criadores, jogadores e mundos convergem.",
             lifecycle: "futuro",
             universo: true,
             // Yggdrasil: Luke faz Design solo. Yuri cobre o resto (Inteligência e Tecnologia — collapsível) + Produção Musical (Antony).
@@ -552,8 +561,8 @@
         },
         {
             handle: "shandara", type: "solution", nome: "Shandara",
-            tagline: "Universo de RPG autoral",
-            url: "/solucoes/#shandara", urlLabel: "em construção",
+            tagline: "Imersão",
+            url: "/shandara/", urlLabel: "em construção",
             internalLink: true,
             lema: "Mundo modular para experiências interativas.",
             desc: "Universo de fantasia original, profundo e expansível, projetado para ser a base de experiências interativas e narrativas, com foco em diversidade cultural e sistemas próprios de mundo.",
@@ -568,10 +577,10 @@
         },
         {
             handle: "hedix-solution", type: "solution", nome: "Hedix",
-            tagline: "Market Making em Mercados de Previsão",
+            tagline: "Mercados de Previsão",
             url: "https://hedix.com.br/", urlLabel: "hedix.com.br",
             lema: "Liquidez e formação de preço em mercados de previsão.",
-            desc: "Plataforma de market making preditivo. Provê liquidez, forma preço e agrega sinal em prediction markets — onde o mercado é o oráculo.",
+            desc: "Plataforma de market making preditivo. Provê liquidez, forma preço e agrega sinal em mercados de previsão — onde o mercado é o oráculo.",
             lifecycle: "active",
             universo: false,
             comunidade: "hedix",

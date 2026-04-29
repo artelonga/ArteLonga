@@ -612,80 +612,47 @@
 
     // ─── PAGE: SOLUCOES ──────────────────────────────────────────────────────
     function renderSolucoes() {
-        const renderCard = (s) => {
-            const urlAttrs = s.internalLink ? "" : ` target="_blank" rel="noopener"`;
-            const urlArrow = s.internalLink ? "ver →" : "acessar →";
-
-            const isCatalog = s.bundledServices === "*";
-            const rawTitles = isCatalog ? [] : (s.bundledServices || []);
-            const expanded = rawTitles.length ? expandTitlesForPopover(rawTitles) : [];
-            const hasServicos = isCatalog || expanded.length > 0;
-            const svcCount = isCatalog ? "catálogo" : expanded.length;
-            const svcBtn = hasServicos
-                ? `<button type="button" class="ver-servicos-btn" aria-expanded="false">Ver serviços (${svcCount}) →</button>`
+        // Catálogo enxuto: nome + objetivo (palavra-chave) + status.
+        // Descrição longa vive no perfil próprio do Universo.
+        const renderRow = (s) => {
+            const internal = s.internalLink !== false && (s.url || "").startsWith("/");
+            const urlAttrs = internal ? "" : ` target="_blank" rel="noopener"`;
+            const status = s.lifecycle === "futuro"
+                ? `<span class="universo-status">${esc(s.urlLabel || "em breve")}</span>`
                 : "";
-            const svcListHtml = isCatalog
-                ? `<li><a href="/servicos/">Catálogo completo →</a></li>`
-                : renderPopoverList(expanded);
-            const svcPopover = hasServicos
-                ? `<div class="servicos-popover" role="dialog" aria-label="Serviços de ${esc(s.nome)}">
-                    <div class="servicos-popover-head">Serviços · ${esc(s.nome)}</div>
-                    <ul class="servicos-popover-list">${svcListHtml}</ul>
-                   </div>`
-                : "";
-
-            const pergunta = s.respostaChave
-                ? `<div class="solucao-pergunta${s.pergunta ? "" : " resposta-solo"}">${s.pergunta ? `<span class="q">${esc(s.pergunta)}</span> ` : ""}<strong class="a">${esc(s.respostaChave)}</strong></div>`
-                : "";
-            const lema = s.lema ? `<div class="solucao-lema">${esc(s.lema)}</div>` : "";
-            // descLong: parágrafos extras (ex.: Shandara), renderizados após desc.
-            const descLong = s.descLong
-                ? s.descLong.split(/\n\s*\n/).map(p => `<p class="solucao-desc-long">${esc(p)}</p>`).join("")
-                : "";
-            return `<li class="solucao" id="${esc(s.handle)}">
-                <div class="solucao-head">
-                    <a class="solucao-nome" href="${esc(s.url)}"${urlAttrs}>${esc(s.nome)} <span class="arrow">${urlArrow}</span></a>
-                    <span class="solucao-tagline">${esc(s.tagline)}</span>
-                </div>
-                <span class="solucao-url">${esc(s.urlLabel)}</span>
-                ${pergunta}
-                ${lema}
-                <p class="solucao-desc">${esc(s.desc)}</p>
-                ${descLong}
-                <ul class="platforms solucao-platforms">${s.platforms.map(platformItem).join("")}</ul>
-                <div class="solucao-actions">${svcBtn}${svcPopover}</div>
+            return `<li class="universo-row">
+                <a class="universo-link" href="${esc(s.url)}"${urlAttrs}>
+                    <span class="universo-nome">${esc(s.nome)}</span>
+                    <span class="universo-objetivo">${esc(s.tagline)}</span>
+                    ${status}
+                    <span class="universo-arrow">→</span>
+                </a>
             </li>`;
         };
 
-        // Três blocos: Universos ativos, Universos futuros (Futuro), Parcerias e produtos.
-        const universosAtivos  = AL.solutions.filter(s => s.universo  && s.lifecycle === "active");
-        const universosFuturos = AL.solutions.filter(s => s.universo  && s.lifecycle === "futuro");
-        const parcerias        = AL.solutions.filter(s => !s.universo);
+        const ativos   = AL.solutions.filter(s => s.universo && s.lifecycle === "active");
+        const futuros  = AL.solutions.filter(s => s.universo && s.lifecycle === "futuro");
+        const parcerias = AL.solutions.filter(s => !s.universo);
 
-        const sectionHtml = (title, hint, list, extraClass) => list.length
-            ? `<section class="solucoes-section ${extraClass || ""}">
-                <h2 class="solucoes-section-title">${esc(title)}${hint ? ` <span class="solucoes-section-hint">${esc(hint)}</span>` : ""}</h2>
-                <ul class="solucoes-list">${list.map(renderCard).join("")}</ul>
-              </section>`
+        const sectionHtml = (title, list) => list.length
+            ? `<div class="section-header"><h2>${esc(title)}</h2></div>
+               <ul class="universos-catalog">${list.map(renderRow).join("")}</ul>`
             : "";
 
         document.body.innerHTML = `
             ${siteHeader()}
             <main class="main">
-                <h1 class="page-title">Soluções</h1>
-                <div class="page-subtitle">Arte Longa · Universos</div>
-                <p class="intro">Cada Universo é um conjunto vivo de serviços — um caminho próprio.</p>
+                <h1 class="page-title">Universos</h1>
+                <div class="page-subtitle">Arte Longa</div>
 
-                ${sectionHtml("Universos ativos", "em produção", universosAtivos)}
-                ${sectionHtml("Futuro", "Universos em desenvolvimento", universosFuturos, "solucoes-futuro")}
-                ${sectionHtml("Parcerias e produtos", "", parcerias)}
+                ${sectionHtml("Ativos", ativos)}
+                ${sectionHtml("Futuro", futuros)}
+                ${sectionHtml("Parcerias", parcerias)}
 
                 ${universosDiagram()}
 
-                ${renderMissionsSection()}
-
                 ${ctaLead({
-                    title: "Construa uma solução",
+                    title: "Construa um Universo",
                     body: "Da ideia ao lançamento.",
                     id: "solucoes"
                 }, "Compartilhe →")}
@@ -695,7 +662,6 @@
             ${modalContact("contact-modal", "Vamos construir?")}
         `;
 
-        wirePopover(".solucao");
         wireModal("contact-modal", '[data-cta="solucoes"]');
     }
 
@@ -796,12 +762,15 @@
         let p = AL.get(handle);
         if (!p) { document.body.innerHTML = `<main class="main"><p>Perfil não encontrado.</p></main>`; return; }
 
-        // Solutions (e.g. Yggdrasil) rendered as profiles: remap fields to profile shape
+        // Solutions (e.g. Yggdrasil) rendered as profiles: remap fields to profile shape.
+        // Bio combina desc + descLong (Shandara, etc.) — descLong vive só no perfil.
         if (p.type === "solution") {
+            const fullBio = (p.desc || "") + (p.descLong ? "\n\n" + p.descLong : "");
             p = {
                 ...p,
                 role: p.tagline,
-                bio: p.desc,
+                bio: fullBio,
+                site: p.externalUrl || (typeof p.url === "string" && /^https?:\/\//.test(p.url) ? p.url : null),
                 servicos: p.bundledServices === "*" ? [] : p.bundledServices,
                 emBreve: p.platforms && p.platforms.every(pl => pl.status === "wip")
             };
