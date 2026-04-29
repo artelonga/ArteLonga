@@ -452,7 +452,7 @@
         <a class="back" href="/">← voltar</a>
     </main>
 
-    <script src="/assets/data.js?v=20260511"></script>
+    <script src="/assets/data.js?v=20260512"></script>
     <script>
     (function () {
         if (!window.AL || !AL.manifesto) return;
@@ -474,9 +474,10 @@
         }
 
         function valorLi(v) {
-            const textoHtml = v.texto ? `<div class="valor-texto">${esc(v.texto)}</div>` : "";
+            const tituloHtml = v.titulo ? `<div class="valor-titulo">${esc(v.titulo)}</div>` : "";
+            const textoHtml  = v.texto  ? `<div class="valor-texto">${esc(v.texto)}</div>`   : "";
             return `<li>
-                <div class="valor-titulo">${esc(v.titulo)}</div>
+                ${tituloHtml}
                 ${textoHtml}
                 ${refHtml(v.referencia)}
             </li>`;

@@ -939,7 +939,7 @@
         },
         valores: [
             {
-                titulo: "Desenvolvimento sustentável",
+                titulo: "",
                 texto: "Contribuir para a Agenda 2030 dos Objetivos de Desenvolvimento Sustentável.",
                 referencia: {
                     obra: "Objetivos de Desenvolvimento Sustentável",
