@@ -125,6 +125,53 @@
         }
         .transparency-note strong { color: #0a0a0a; font-weight: 700; }
 
+        /* História — single short prose paragraph */
+        .historia-text {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #333;
+            max-width: 62ch;
+            margin-bottom: 2vh;
+        }
+
+        /* Oportunidade — call-to-action block, mais visível que prosa comum */
+        .oportunidade-block {
+            margin-top: 2vh;
+            padding: 4vh 2rem;
+            background: #fafafa;
+            border-left: 3px solid #0a0a0a;
+        }
+        .oportunidade-text {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: #333;
+            max-width: 62ch;
+            margin-bottom: 2vh;
+        }
+        .oportunidade-text:last-of-type { margin-bottom: 0; }
+        .oportunidade-text strong { color: #0a0a0a; font-weight: 700; }
+        .oportunidade-cta {
+            margin-top: 3vh;
+            padding-top: 2vh;
+            border-top: 1px solid #e4e4e4;
+            font-size: 0.78rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: #666;
+            font-weight: 600;
+        }
+        .oportunidade-cta a {
+            color: #0a0a0a;
+            text-decoration: none;
+            border-bottom: 1px solid #0a0a0a;
+            padding-bottom: 1px;
+            margin-left: 0.4em;
+            letter-spacing: 0.04em;
+            text-transform: none;
+            font-weight: 500;
+        }
+        .oportunidade-cta a:hover { color: #c0392b; border-bottom-color: #c0392b; }
+
         /* Manifesto — Missão · Visão · Valores */
         .manifesto-item { margin-bottom: 3vh; }
         .manifesto-item h3 {
@@ -208,9 +255,11 @@
 
         <ul class="sub-nav">
             <li><a href="#manifesto" class="active">Manifesto</a></li>
+            <li><a href="#historia">História</a></li>
             <li><a href="#empresa">Empresa</a></li>
             <li><a href="#contato">Contato</a></li>
             <li><a href="#cnae">CNAE</a></li>
+            <li><a href="#oportunidade">Oportunidade</a></li>
             <li><a href="/proximos-passos/">Próximos Passos</a></li>
         </ul>
 
@@ -219,9 +268,16 @@
         </div>
         <div id="manifesto-body"></div>
 
+        <div class="section-header" id="historia">
+            <h2>História</h2>
+        </div>
+        <p class="historia-text">
+            Arte Longa foi fundada com o sonho de acompanhar microempreendedores e trabalhadores informais durante a construção de seus legados. Hoje, a experiência dos parceiros é compartilhada com quem chega, e assim continuamos estreitando nossos laços e escrevendo nossas histórias.
+        </p>
+
         <div class="section-header" id="empresa">
             <h2>Empresa</h2>
-            
+
         </div>
 
         <div class="info-grid">
@@ -313,6 +369,27 @@
             <li><div class="cnae-code">9529-1/05</div><div class="cnae-desc">Reparação de artigos do mobiliário</div></li>
             <li><div class="cnae-code">9602-5/01</div><div class="cnae-desc">Cabeleireiros, manicure e pedicure</div></li>
         </ul>
+
+        <div class="section-header" id="oportunidade">
+            <h2>Oportunidade</h2>
+            <span class="label">investir no sonho coletivo</span>
+        </div>
+
+        <div class="oportunidade-block">
+            <p class="oportunidade-text">
+                Investir na Arte Longa é um <strong>empréstimo conversível em participação</strong>. Você compra pelo preço atual e, no fim do trimestre, decide com a gente: ou convertemos a dívida em participação societária, ou recompramos a sua parte corrigida por <strong>100% do CDI</strong>. Risco zero, potencial de retorno claro.
+            </p>
+            <p class="oportunidade-text">
+                A transparência é parte do trato — você acompanha operações e valuation em tempo real num <strong>dashboard exclusivo para parceiros</strong>. E ainda recebe <strong>acesso privilegiado a serviços e soluções</strong>: tarifas reduzidas, disponibilidade aumentada e entrega prioritária.
+            </p>
+            <p class="oportunidade-text">
+                Com o crescimento atual, projetamos R$ 75.000 em receita no trimestre — suficiente para cobrir custos operacionais e dedicar o período inteiro a teste, validação e melhoria, preparando expansão a partir do Q3. Seu aporte acelera essa conversão de caixa. O desejo é mostrar crescimento de valuation para que faça sentido você ficar de vez na família.
+            </p>
+            <p class="oportunidade-cta">
+                Conversar →
+                <a href="mailto:rede@artelonga.com.br?subject=Oportunidade%20%C2%B7%20Investir%20na%20Arte%20Longa">rede@artelonga.com.br</a>
+            </p>
+        </div>
 
         <a class="back" href="/">← voltar</a>
     </main>
