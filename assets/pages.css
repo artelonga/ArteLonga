@@ -630,6 +630,50 @@
     .essay-formats { grid-area: formats; }
 }
 
+/* POEMAS (lista no perfil) -------------------------------------------- */
+.poemas-list { list-style: none; }
+.poemas-list li {
+    padding: 0.55rem 0;
+    border-bottom: 1px solid #f4f4f4;
+    font-size: 0.95rem;
+}
+.poemas-list li:last-child { border-bottom: none; }
+.poemas-list a {
+    color: #0a0a0a;
+    text-decoration: none;
+    border-bottom: 1px dotted #bbb;
+    padding-bottom: 1px;
+}
+.poemas-list a:hover { color: #555; border-bottom-color: #555; }
+
+/* POEMA (página) ------------------------------------------------------ */
+.poem-page { max-width: 640px; }
+.poem-title {
+    font-size: 1.8rem;
+    letter-spacing: 0.04em;
+    text-align: center;
+    margin: 2vh 0 0.5rem;
+}
+.poem-author {
+    text-align: center;
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 3vh;
+    letter-spacing: 0.06em;
+}
+.poem-author a { color: #555; text-decoration: none; border-bottom: 1px dotted #bbb; }
+.poem-author a:hover { color: #0a0a0a; }
+.poem-body {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #1a1a1a;
+}
+.poem-stanza {
+    margin: 0 0 1.6rem;
+    white-space: normal;
+}
+.poem-stanza:last-child { margin-bottom: 2rem; }
+
 /* RECURSOS ------------------------------------------------------------- */
 .fin-list { list-style: none; margin-bottom: 3vh; }
 .fin-item {

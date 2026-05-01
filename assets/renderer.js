@@ -837,6 +837,20 @@
             </section>`;
         }
 
+        // Poemas autorais — listados por autor (AL.poemsByAuthor).
+        // Link aponta para /<autor>/<slug>/, página renderizada por renderPoem.
+        let poemasHtml = "";
+        const authorPoems = (AL.poemsByAuthor && AL.poemsByAuthor(p.handle)) || [];
+        if (authorPoems.length) {
+            const items = authorPoems.map(pm =>
+                `<li><a href="/${esc(p.handle)}/${esc(pm.slug)}/">${esc(pm.titulo)} →</a></li>`
+            ).join("");
+            poemasHtml = `<section class="section poemas-section">
+                <h2>Poemas</h2>
+                <ul class="poemas-list">${items}</ul>
+            </section>`;
+        }
+
         // Citações estruturadas (separadas da bio livre).
         // Schema: { texto, autor?, autorNome?, autorEmBreve?, obra?, data?, url? }
         //   autor (handle)        → link para /<handle>/
@@ -950,6 +964,7 @@
                 ${homeLinksHtml}
                 ${missoesHtml}
                 ${citacoesHtml}
+                ${poemasHtml}
                 ${essaysHtml}
                 ${membrosHtml}
                 ${parceriasHtml}
@@ -1054,6 +1069,31 @@
                 </div>
 
                 <a class="back" href="/servicos/">← voltar ao portfólio</a>
+            </main>
+        `;
+    }
+
+    // ─── PAGE: POEM ──────────────────────────────────────────────────────────
+    function renderPoem(slug) {
+        const poem = AL.poemBySlug(slug);
+        if (!poem) { document.body.innerHTML = `<main class="main"><p>Poema não encontrado.</p><a class="back" href="/">← voltar</a></main>`; return; }
+        const author = poem.autor ? AL.get(poem.autor) : null;
+        document.title = `${poem.titulo}${author ? " — " + author.nome : ""} — Arte Longa`;
+        const stanzasHtml = poem.stanzas.map(stz =>
+            `<p class="poem-stanza">${stz.map(esc).join("<br>")}</p>`
+        ).join("");
+        const authorLine = author
+            ? `<div class="poem-author">por <a href="/${esc(author.handle)}/">${esc(author.nome)}</a></div>`
+            : "";
+        const backHref = author ? `/${esc(author.handle)}/` : "/";
+        const backLabel = author ? `← voltar a ${esc(author.nome)}` : "← voltar";
+        document.body.innerHTML = `
+            ${siteHeader()}
+            <main class="main poem-page">
+                <h1 class="poem-title">${esc(poem.titulo)}</h1>
+                ${authorLine}
+                <div class="poem-body">${stanzasHtml}</div>
+                <a class="back" href="${backHref}">${backLabel}</a>
             </main>
         `;
     }
@@ -1263,7 +1303,8 @@
         solucoes: renderSolucoes,
         recursos: renderRecursos,
         profile: () => renderProfile(document.body.dataset.handle),
-        service: () => renderService(document.body.dataset.slug)
+        service: () => renderService(document.body.dataset.slug),
+        poem: () => renderPoem(document.body.dataset.slug)
     };
 
     document.addEventListener("DOMContentLoaded", () => {
