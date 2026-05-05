@@ -178,6 +178,77 @@
 }
 .market-all a:hover { color: #c0392b; border-bottom-color: #c0392b; }
 
+/* CTA secundário · prestador de serviço.
+   Discreto, abaixo do catálogo, sem competir com a busca/cards. */
+.prestador-cta {
+    margin: 6vh 0 4vh;
+    padding: 5vh 2rem;
+    background: #fafafa;
+    border-left: 3px solid #0a0a0a;
+    border-radius: 2px;
+}
+.prestador-h2 {
+    font-size: clamp(1.4rem, 3vw, 1.9rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #0a0a0a;
+    margin-bottom: 0.6vh;
+}
+.prestador-tag {
+    font-size: 0.95rem;
+    color: #555;
+    margin-bottom: 3vh;
+    max-width: 50ch;
+}
+.prestador-opts {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0.6rem;
+    margin: 0 0 3vh;
+}
+.prestador-opt {
+    display: block;
+    padding: 2.2vh 1.2rem;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    color: #0a0a0a;
+    text-decoration: none;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.prestador-opt:hover { border-color: #0a0a0a; transform: translateY(-1px); }
+.prestador-opt-titulo {
+    display: block;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.4vh;
+}
+.prestador-opt-sub {
+    display: block;
+    font-size: 0.78rem;
+    color: #888;
+    letter-spacing: 0.04em;
+}
+.prestador-call {
+    margin: 0;
+}
+.prestador-cta-btn {
+    display: inline-block;
+    font-size: 0.82rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 1.5vh 1.6rem;
+    background: #0a0a0a;
+    color: #fff;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: background 0.15s ease;
+}
+.prestador-cta-btn:hover { background: #c0392b; }
+
 /* Site footer (Quem está por trás) — global */
 .site-footer {
     margin-top: 8vh;
