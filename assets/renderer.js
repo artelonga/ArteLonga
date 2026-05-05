@@ -1216,6 +1216,24 @@
         const ctaLabel = s.isPortfolio ? "Pedir orçamento" : "Falar conosco";
         const subject = encodeURIComponent(`${s.isPortfolio ? "Orçamento" : "Sobre o serviço"} · ${s.titulo}`);
 
+        // Exemplos públicos por serviço. Vazio = sem exemplo (mostra "Em breve").
+        // Quilombo Araucária aparece nos serviços que efetivamente sustentaram
+        // sua presença digital. Criação de Conteúdo aponta pra /relatos/ porque
+        // é onde a produção editorial vive.
+        const EXEMPLOS = {
+            "Desenvolvimento Web":     [{ name: "Quilombo Araucária", url: "/quilomboaraucaria/" }],
+            "Design":                  [{ name: "Quilombo Araucária", url: "/quilomboaraucaria/" }],
+            "Desenvolvimento de API":  [{ name: "Quilombo Araucária", url: "/quilomboaraucaria/" }],
+            "Privacidade e Segurança": [{ name: "Quilombo Araucária", url: "/quilomboaraucaria/" }],
+            "Criação de Conteúdo":     [{ name: "Quilombo Araucária", url: "/relatos/" }]
+        };
+        const exemplos = EXEMPLOS[s.titulo] || [];
+        const exemplosHtml = exemplos.length
+            ? `<ul class="svc-exemplos">${exemplos.map(e =>
+                `<li><a href="${esc(e.url)}">${esc(e.name)} →</a></li>`
+              ).join("")}</ul>`
+            : `<p class="svc-exemplos-empty">Em breve.</p>`;
+
         document.body.innerHTML = `
             ${siteHeader()}
             <main class="main">
@@ -1227,10 +1245,12 @@
                 ${summaryHtml}
                 ${attachmentsHtml}
 
-                <div class="section-header"><h2>${ctaLabel}</h2><span class="label">contato direto</span></div>
                 <p class="svc-cta">
                     <a class="svc-cta-btn" href="mailto:${REDE_EMAIL}?subject=${subject}">${ctaLabel} →</a>
                 </p>
+
+                <div class="section-header"><h2>Exemplos</h2><span class="label">trabalhos da rede</span></div>
+                ${exemplosHtml}
 
                 ${related.length ? `<div class="section-header"><h2>Veja também</h2><span class="label">serviços relacionados</span></div>${relHtml}` : ""}
 
