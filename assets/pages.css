@@ -629,13 +629,54 @@
     letter-spacing: -0.03em;
     line-height: 1.05;
     color: #0a0a0a;
-    margin-bottom: 2vh;
+    margin-bottom: 1.4vh;
 }
+.svc-badge {
+    display: inline-block;
+    font-size: 0.62rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #c0392b;
+    border: 1px solid #c0392b;
+    padding: 0.3em 0.7em;
+    margin-bottom: 1.6vh;
+    border-radius: 2px;
+}
+.svc-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 0.6rem;
+    align-items: baseline;
+    font-size: 0.95rem;
+    margin-bottom: 1.6vh;
+    color: #333;
+}
+.svc-meta-chunk { font-weight: 600; }
+.svc-meta-price { color: #0a0a0a; font-variant-numeric: tabular-nums; }
+.svc-meta-sep { color: #c0c0c0; }
+.svc-cta {
+    margin: 2vh 0 3vh;
+}
+.svc-cta-btn {
+    display: inline-block;
+    font-size: 0.85rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 1.5vh 1.6rem;
+    background: #0a0a0a;
+    color: #fff;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: background 0.15s ease;
+}
+.svc-cta-btn:hover { background: #c0392b; }
 .service-resp {
     font-size: 0.95rem;
     color: #555;
     letter-spacing: 0.02em;
-    margin-bottom: 5vh;
+    margin-bottom: 4vh;
 }
 .service-resp a { color: #0a0a0a; font-weight: 600; text-decoration: none; transition: opacity 0.2s; }
 .service-resp a:hover { opacity: 0.5; }

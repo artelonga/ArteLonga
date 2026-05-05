@@ -1158,13 +1158,17 @@
     }
 
     // ─── PAGE: SERVICE DETAIL ────────────────────────────────────────────────
+    // Página do serviço — product-oriented. Mostra só o que ajuda o cliente
+    // a decidir: o que é, pra quem, faixa de preço, quem fornece, como pedir.
+    // CNAE/missões/soluções saíram (informação de backoffice). Portfolio só
+    // ganha destaque quando a entrada é concretamente serviço × pessoa.
     function renderService(slug) {
         const s = AL.serviceBySlug(slug);
         if (!s) { document.body.innerHTML = `<main class="main"><p>Serviço não encontrado.</p><a class="back" href="/servicos/">← voltar</a></main>`; return; }
 
         document.title = `${s.nome || s.titulo} — Serviços — Arte Longa`;
 
-        // Responsáveis (people + communities)
+        // Responsáveis (people + communities) — quem fornece o serviço.
         const respEntities = s.responsavel.map(h => AL.get(h)).filter(Boolean);
         const respLinks = respEntities.map(e => {
             const url = e.externalUrl || `/${e.handle}/`;
@@ -1172,33 +1176,19 @@
             return `<a href="${url}"${attr}>${esc(e.nome)}</a>`;
         }).join(", ");
 
-        const cnaeHtml = s.cnae && s.cnae.length
-            ? `<ul class="service-cnae-list">${s.cnae.map(x =>
-                `<li><span class="cnae-code">${esc(x.c)}</span><span class="cnae-desc">${esc(x.d)}</span></li>`
-            ).join("")}</ul>`
-            : `<p class="empty-line">CNAE não mapeado. Consulte <a href="/sobre/#cnae">/sobre</a> para a lista completa.</p>`;
-
-        // Solutions that bundle this service
-        const sols = AL.solutionsUsingService(s.titulo);
-        const solsHtml = sols.length
-            ? `<ul class="service-sols-list">${sols.map(sol => {
-                const url = sol.internalLink ? sol.url : sol.url;
-                const attr = sol.internalLink ? "" : ` target="_blank" rel="noopener"`;
-                return `<li><a href="${esc(url)}"${attr}><strong>${esc(sol.nome)}</strong> <span class="sol-tagline">${esc(sol.tagline)}</span></a></li>`;
-            }).join("")}</ul>`
-            : `<p class="empty-line">Ainda não entra em nenhuma solução padrão — pode compor uma custom.</p>`;
-
-        // Missions that use this service (reverse index)
-        const missoesDoServico = AL.missionsUsingService(s.titulo);
-        const missoesHtml = missoesDoServico.length
-            ? `<ul class="service-missoes-list">${missoesDoServico.map(m => {
-                const c = AL.get(m.comunidade);
-                const subline = c ? `<span class="sol-tagline">comunidade · ${esc(c.nome)}</span>` : "";
-                return `<li><a href="/solucoes/#${esc(m.handle)}"><strong>${esc(m.nome)}</strong> ${subline}</a></li>`;
-              }).join("")}</ul>`
+        // Meta: pra quem · faixa de preço (só renderiza o que existe).
+        const metaParts = [];
+        if (s.paraQuem)   metaParts.push(`<span class="svc-meta-chunk">${esc(s.paraQuem)}</span>`);
+        if (s.faixaPreco) metaParts.push(`<span class="svc-meta-chunk svc-meta-price">${esc(s.faixaPreco)}</span>`);
+        const metaHtml = metaParts.length
+            ? `<div class="svc-meta">${metaParts.join(`<span class="svc-meta-sep">·</span>`)}</div>`
             : "";
 
-        // Related services (co-occurring in solutions)
+        const portfolioBadge = s.isPortfolio
+            ? `<div class="svc-badge">Portfolio</div>`
+            : "";
+
+        // Related services (co-occurring) — útil pra explorar adjacentes.
         const related = AL.relatedServices(s.titulo);
         const relHtml = related.length
             ? `<ul class="service-related">${related.map(r =>
@@ -1206,7 +1196,7 @@
             ).join("")}</ul>`
             : "";
 
-        // Prefere descNossa (texto próprio); cai pra summary (compat legado).
+        // Descrição própria (cai pra summary legado).
         const descText = s.descNossa || s.summary;
         const summaryHtml = descText
             ? `<p class="service-summary">${esc(descText)}</p>`
@@ -1223,33 +1213,28 @@
                ).join("")}</ul>`
             : "";
 
+        const ctaLabel = s.isPortfolio ? "Pedir orçamento" : "Falar conosco";
+        const subject = encodeURIComponent(`${s.isPortfolio ? "Orçamento" : "Sobre o serviço"} · ${s.titulo}`);
+
         document.body.innerHTML = `
             ${siteHeader()}
             <main class="main">
-                <div class="service-crumb"><a href="/servicos/">← Serviços</a></div>
-                <div class="service-label">Serviço</div>
+                <div class="service-crumb"><a href="/servicos/">← Catálogo</a></div>
+                ${portfolioBadge}
                 <h1 class="service-title">${esc(s.titulo)}</h1>
-                <div class="service-resp">Responsável: ${respLinks}</div>
+                ${metaHtml}
+                <div class="service-resp">Por ${respLinks}</div>
                 ${summaryHtml}
                 ${attachmentsHtml}
 
-                <div class="section-header"><h2>CNAE</h2><span class="label">classificação oficial</span></div>
-                ${cnaeHtml}
+                <div class="section-header"><h2>${ctaLabel}</h2><span class="label">contato direto</span></div>
+                <p class="svc-cta">
+                    <a class="svc-cta-btn" href="mailto:${REDE_EMAIL}?subject=${subject}">${ctaLabel} →</a>
+                </p>
 
-                <div class="section-header"><h2>Em soluções</h2><span class="label">combina com outras</span></div>
-                <p class="intro-short">Este serviço compõe as seguintes soluções da rede. Também pode ser combinado sob encomenda.</p>
-                ${solsHtml}
+                ${related.length ? `<div class="section-header"><h2>Veja também</h2><span class="label">serviços relacionados</span></div>${relHtml}` : ""}
 
-                ${missoesDoServico.length ? `<div class="section-header"><h2>Em missões</h2><span class="label">realiza objetivos de</span></div>${missoesHtml}` : ""}
-
-                ${related.length ? `<div class="section-header"><h2>Frequentemente combinado com</h2><span class="label">serviços irmãos</span></div>${relHtml}` : ""}
-
-                <div class="section-header"><h2>Orçamento</h2><span class="label">contato direto</span></div>
-                <div class="service-contact">
-                    <div class="modal-email">${REDE_EMAIL}</div>
-                </div>
-
-                <a class="back" href="/servicos/">← voltar ao portfólio</a>
+                <a class="back" href="/servicos/">← voltar ao catálogo</a>
             </main>
             ${siteFooter()}
         `;
