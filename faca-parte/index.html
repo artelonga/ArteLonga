@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faça parte da rede — Arte Longa</title>
+    <link rel="stylesheet" href="/assets/site.css?v=20260503">
+    <link rel="stylesheet" href="/assets/components.css?v=20260508">
+    <link rel="stylesheet" href="/assets/pages.css?v=20260527">
+    <style>
+        .fp-hero { margin-bottom: 5vh; padding-top: 4vh; }
+        .fp-h1 {
+            font-size: clamp(2.4rem, 6vw, 4.5rem);
+            font-weight: 800;
+            letter-spacing: -0.035em;
+            line-height: 1;
+            color: #0a0a0a;
+            margin-bottom: 1.4vh;
+        }
+        .fp-tagline {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            line-height: 1.4;
+            color: #444;
+            max-width: 44ch;
+            font-weight: 500;
+            margin-bottom: 1vh;
+        }
+        .fp-loc {
+            font-size: 0.72rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: #999;
+            font-weight: 700;
+        }
+
+        .fp-section {
+            margin: 6vh 0 3vh;
+        }
+        .fp-section h2 {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            color: #0a0a0a;
+            border-top: 2px solid #0a0a0a;
+            padding-top: 1.5vh;
+            margin-bottom: 2.5vh;
+        }
+        .fp-text {
+            font-size: 1rem;
+            line-height: 1.65;
+            color: #333;
+            max-width: 62ch;
+            margin-bottom: 2vh;
+        }
+        .fp-text strong { color: #0a0a0a; font-weight: 700; }
+
+        /* Mock-card mostrando a experiência customizável */
+        .fp-mock-wrap {
+            background: #fafafa;
+            border-left: 3px solid #0a0a0a;
+            padding: 3vh 1.6rem;
+            margin: 2vh 0;
+            max-width: 640px;
+        }
+        .fp-mock-label {
+            font-size: 0.6rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: #999;
+            font-weight: 700;
+            margin-bottom: 1.6vh;
+        }
+        .fp-mock-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 2px;
+            padding: 2.4vh 1.4rem;
+        }
+        .fp-mock-head {
+            display: flex;
+            gap: 0.6rem;
+            align-items: baseline;
+            flex-wrap: wrap;
+            margin-bottom: 1vh;
+        }
+        .fp-mock-name {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #0a0a0a;
+        }
+        .fp-mock-role {
+            font-size: 0.7rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: #888;
+            font-weight: 600;
+        }
+        .fp-mock-tagline {
+            font-size: 0.92rem;
+            color: #444;
+            line-height: 1.45;
+            margin-bottom: 1.8vh;
+            max-width: 50ch;
+        }
+        .fp-mock-actions {
+            display: flex;
+            gap: 0.6rem 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .fp-mock-wa {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4em;
+            font-size: 0.8rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            font-weight: 700;
+            padding: 1.2vh 1.2rem;
+            background: #25D366;
+            color: #fff;
+            border-radius: 2px;
+            text-decoration: none;
+        }
+        .fp-mock-ig {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4em;
+            font-size: 0.82rem;
+            color: #555;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .fp-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 2vh 0;
+        }
+        .fp-tile {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            padding: 3vh 1.4rem;
+            border-radius: 2px;
+        }
+        .fp-tile-num {
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 0.78rem;
+            color: #c0392b;
+            font-weight: 700;
+            margin-bottom: 0.6vh;
+        }
+        .fp-tile-titulo {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #0a0a0a;
+            margin-bottom: 1vh;
+        }
+        .fp-tile-desc {
+            font-size: 0.88rem;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .fp-opts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 0.6rem;
+            margin: 2vh 0;
+        }
+        .fp-opt {
+            display: block;
+            padding: 2.2vh 1.2rem;
+            background: #fff;
+            border: 1px solid #d4d4d4;
+            border-radius: 2px;
+            color: #0a0a0a;
+            text-decoration: none;
+            transition: border-color 0.15s ease, transform 0.15s ease;
+        }
+        .fp-opt:hover { border-color: #0a0a0a; transform: translateY(-1px); }
+        .fp-opt-titulo {
+            display: block;
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.4vh;
+        }
+        .fp-opt-sub {
+            display: block;
+            font-size: 0.78rem;
+            color: #888;
+        }
+
+        .fp-cta {
+            margin: 4vh 0 2vh;
+        }
+        .fp-cta-btn {
+            display: inline-block;
+            font-size: 0.82rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            font-weight: 700;
+            padding: 1.5vh 1.8rem;
+            background: #0a0a0a;
+            color: #fff;
+            border-radius: 2px;
+            text-decoration: none;
+            transition: background 0.15s ease;
+        }
+        .fp-cta-btn:hover { background: #c0392b; }
+
+        .back {
+            display: inline-block;
+            margin-top: 5vh;
+            padding: 0.6rem 0;
+            font-size: 0.85rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: #444;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .back:hover { color: #c0392b; }
+    </style>
+    <script defer src="/assets/analytics.js?v=20260429"></script>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="site-header-inner">
+            <a class="site-brand" href="/">
+                <img src="/logo-al.png" alt="Arte Longa">
+            </a>
+            <span class="site-tagline">semeando sonhos</span>
+        </div>
+    </header>
+
+    <main class="main">
+        <section class="fp-hero">
+            <h1 class="fp-h1">Tempo para se expressar.</h1>
+            <p class="fp-tagline">Te acompanhamos do primeiro contrato à aposentadoria.</p>
+            <p class="fp-loc">Para prestadores de serviço · São Paulo · Jardim Umarizal</p>
+        </section>
+
+        <section class="fp-section">
+            <h2>Sua marca, seu canal</h2>
+            <p class="fp-text">
+                Quando você é parceiro, seu serviço aparece com <strong>seu nome, sua tagline, seu canal direto</strong>. Arte Longa dá a vitrine; o cliente fala com você. Sem intermediação artificial, sem aprisionamento, sem fricção.
+            </p>
+            <div class="fp-mock-wrap">
+                <div class="fp-mock-label">Exemplo · Como você aparece</div>
+                <div class="fp-mock-card">
+                    <div class="fp-mock-head">
+                        <span class="fp-mock-name">João</span>
+                        <span class="fp-mock-role">Psicologia Clínica</span>
+                    </div>
+                    <p class="fp-mock-tagline">Psicoterapia online e presencial: Inicie seu atendimento ⤵️</p>
+                    <div class="fp-mock-actions">
+                        <a class="fp-mock-wa" href="https://wa.me/5511983717331" target="_blank" rel="noopener">
+                            WhatsApp +55 11 98371-7331
+                        </a>
+                        <a class="fp-mock-ig" href="https://instagram.com/TerraPsicoterapia" target="_blank" rel="noopener">
+                            @TerraPsicoterapia
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <p class="fp-text">
+                <strong>Você define</strong>: WhatsApp, Instagram, link da agenda, página externa. Pode mudar a qualquer momento. O cliente sai do site direto pra sua mão.
+            </p>
+        </section>
+
+        <section class="fp-section">
+            <h2>Preço · você decide</h2>
+            <div class="fp-grid">
+                <div class="fp-tile">
+                    <div class="fp-tile-num">01</div>
+                    <div class="fp-tile-titulo">Sob consulta</div>
+                    <div class="fp-tile-desc">Cliente entra em contato com você. Você define o preço pelo seu canal direto. Default da rede — bom pra quando o serviço varia muito (psicologia, gastronomia, agro, audiovisual…).</div>
+                </div>
+                <div class="fp-tile">
+                    <div class="fp-tile-num">02</div>
+                    <div class="fp-tile-titulo">Linha Arte Longa · R$ 1.000</div>
+                    <div class="fp-tile-desc">Tarifa única e transparente para serviços-pacote da Arte Longa (tech, design, comunicação, marketing). Cliente vê o preço fechado no card antes de clicar.</div>
+                </div>
+            </div>
+            <p class="fp-text">
+                Os dois modos convivem. Cada serviço seu pode ter sua estratégia — e mudar conforme você quiser.
+            </p>
+        </section>
+
+        <section class="fp-section">
+            <h2>Como entrar</h2>
+            <p class="fp-text">
+                Dois caminhos. Qual descreve você?
+            </p>
+            <div class="fp-opts">
+                <a class="fp-opt" href="mailto:rede@artelonga.com.br?subject=Fa%C3%A7o%20parte%20da%20rede%20%C2%B7%20Possuo%20CNPJ">
+                    <span class="fp-opt-titulo">Possuo CNPJ</span>
+                    <span class="fp-opt-sub">MEI · ME · etc.</span>
+                </a>
+                <a class="fp-opt" href="mailto:rede@artelonga.com.br?subject=Fa%C3%A7o%20parte%20da%20rede%20%C2%B7%20Preciso%20de%20um%20CNPJ">
+                    <span class="fp-opt-titulo">Preciso de um CNPJ</span>
+                    <span class="fp-opt-sub">A gente te orienta</span>
+                </a>
+            </div>
+        </section>
+
+        <p class="fp-cta">
+            <a class="fp-cta-btn" href="mailto:rede@artelonga.com.br?subject=Fa%C3%A7o%20parte%20da%20rede">Faça parte da rede →</a>
+        </p>
+
+        <a class="back" href="/">← voltar</a>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-footer-inner">
+            <span class="site-footer-lbl">Quem está por trás</span>
+            <a href="/parceiros/">Parceiros</a>
+            <span class="sep">·</span>
+            <a href="/sobre/">Sobre</a>
+            <span class="sep">·</span>
+            <a href="/proximos-passos/">Próximos passos</a>
+        </div>
+    </footer>
+
+</body>
+</html>

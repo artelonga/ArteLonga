@@ -775,6 +775,73 @@
     transition: background 0.15s ease;
 }
 .svc-cta-btn:hover { background: #c0392b; }
+.svc-cta-icon { vertical-align: middle; margin-right: 0.4em; }
+.svc-cta-wa {
+    background: #25D366;
+    color: #fff;
+}
+.svc-cta-wa:hover { background: #1da851; }
+
+/* Card de provedor: o cliente fala direto com quem entrega o serviço.
+   Quando a pessoa tem canal próprio (WhatsApp/IG/tagline), eles aparecem
+   aqui; senão cai no contato genérico da Arte Longa. */
+.provedores {
+    display: grid;
+    gap: 1rem;
+    margin: 2vh 0 3vh;
+}
+.provedor-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    padding: 3vh 1.4rem;
+    background: #fff;
+}
+.provedor-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    margin-bottom: 1vh;
+}
+.provedor-nome {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #0a0a0a;
+    text-decoration: none;
+    letter-spacing: -0.01em;
+}
+.provedor-nome:hover { color: #c0392b; }
+.provedor-role {
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #888;
+    font-weight: 600;
+}
+.provedor-tagline {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #444;
+    margin-bottom: 2vh;
+    max-width: 50ch;
+}
+.provedor-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 1.2rem;
+    align-items: center;
+}
+.provedor-ig {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    font-size: 0.85rem;
+    color: #555;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.15s ease;
+}
+.provedor-ig:hover { color: #0a0a0a; }
 
 .svc-exemplos {
     list-style: none;
