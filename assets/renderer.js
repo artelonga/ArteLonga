@@ -353,11 +353,14 @@
             .filter(c => c.items.length);
 
         // Card: título + linha "pra quem · faixa de preço" (se presente).
+        // faixaPreco é calculado em runtime via AL.computeFaixaPreco — combina
+        // hoursLow/hoursHigh do serviço com hourlyRate dos responsáveis.
         // Portfolio (isPortfolio: true) ganha marca discreta.
         const card = s => {
             const parts = [];
-            if (s.paraQuem)   parts.push(esc(s.paraQuem));
-            if (s.faixaPreco) parts.push(esc(s.faixaPreco));
+            if (s.paraQuem) parts.push(esc(s.paraQuem));
+            const faixa = AL.computeFaixaPreco(s);
+            if (faixa) parts.push(esc(faixa));
             const meta = parts.length
                 ? `<div class="market-card-meta">${parts.join(" <span class='dot'>·</span> ")}</div>`
                 : "";
@@ -410,6 +413,29 @@
                 </p>
 
                 <p class="market-all"><a href="/servicos/">Catálogo completo →</a></p>
+
+                <!-- CTA secundário · prestador de serviço. Discreto, abaixo do catálogo. -->
+                <section class="prestador-cta">
+                    <h2 class="prestador-h2">Tempo para se expressar.</h2>
+                    <p class="prestador-tag">Te acompanhamos do primeiro contrato à aposentadoria.</p>
+                    <ul class="prestador-opts" role="list">
+                        <li>
+                            <a class="prestador-opt" href="mailto:${REDE_EMAIL}?subject=Fa%C3%A7o%20parte%20da%20rede%20%C2%B7%20Possuo%20CNPJ">
+                                <span class="prestador-opt-titulo">Possuo CNPJ</span>
+                                <span class="prestador-opt-sub">MEI · ME · etc.</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="prestador-opt" href="mailto:${REDE_EMAIL}?subject=Fa%C3%A7o%20parte%20da%20rede%20%C2%B7%20Preciso%20de%20um%20CNPJ">
+                                <span class="prestador-opt-titulo">Preciso de um CNPJ</span>
+                                <span class="prestador-opt-sub">A gente te orienta</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <p class="prestador-call">
+                        <a class="prestador-cta-btn" href="mailto:${REDE_EMAIL}?subject=Fa%C3%A7o%20parte%20da%20rede">Faça parte da rede →</a>
+                    </p>
+                </section>
             </main>
             ${siteFooter()}
         `;
@@ -1177,9 +1203,12 @@
         }).join(", ");
 
         // Meta: pra quem · faixa de preço (só renderiza o que existe).
+        // faixaPreco vem do AL.computeFaixaPreco — hours × rate por padrão,
+        // com override quando o serviço explicita s.faixaPreco.
         const metaParts = [];
-        if (s.paraQuem)   metaParts.push(`<span class="svc-meta-chunk">${esc(s.paraQuem)}</span>`);
-        if (s.faixaPreco) metaParts.push(`<span class="svc-meta-chunk svc-meta-price">${esc(s.faixaPreco)}</span>`);
+        if (s.paraQuem) metaParts.push(`<span class="svc-meta-chunk">${esc(s.paraQuem)}</span>`);
+        const faixa = AL.computeFaixaPreco(s);
+        if (faixa) metaParts.push(`<span class="svc-meta-chunk svc-meta-price">${esc(faixa)}</span>`);
         const metaHtml = metaParts.length
             ? `<div class="svc-meta">${metaParts.join(`<span class="svc-meta-sep">·</span>`)}</div>`
             : "";
