@@ -324,12 +324,16 @@
     //                        sem escrever o título em `.servicos` (ex: Yuri cobre toda
     //                        a árvore de I&T sem precisar listar cada sub-serviço).
     //   paraQuem:           string curta (2-3 palavras) — pra quem o serviço é.
-    //                        Exibido nos cards e no detalhe do serviço.
-    //   faixaPreco:         string curta (2-3 palavras) — faixa de preço comunicável.
-    //                        Ex.: "A partir de R$ 80", "Sob consulta", "R$ 80–250".
-    //   isPortfolio:        true = serviço é uma intersecção concreta serviço × pessoa
-    //                        (ex.: "Tortas Salgadas da Veh"). Renderiza com CTA de
-    //                        orçamento direto. Default = false → CTA genérico de contato.
+    //   hoursLow/hoursHigh: estimativa em horas (números). Pode ser fracionário
+    //                        pra produtos (ex.: torta = 0.8-2h, palavra = 0.003-0.005h).
+    //                        Sem isso, o serviço não exibe preço.
+    //   unit:               unidade do preço — "sessão", "aula", "consulta",
+    //                        "oficina", "torta", "unidade", "pessoa", "palavra",
+    //                        "diária", "treino", "grupo", "hora". Vai como sufixo
+    //                        do total ("R\$ 100/sessão"). Default = nada.
+    //   recurring:          true = serviço mensal recorrente. Sufixo "/mês".
+    //   isPortfolio:        true = intersecção pessoa × serviço concreta
+    //                        (ex.: "Tortas Salgadas da Veh"). CTA = "Pedir orçamento".
     //
     // Validação: deriveServices() emite console.warn se person/community.servicos
     // referencia título inexistente aqui — typos viram erro explícito, não silêncio.
@@ -359,8 +363,8 @@
 
         // ── Serviços com CNAE já formalizado no CNPJ ─────────────────────────
         { titulo: "Alfabetização",                       paraQuem: "Crianças · adultos", hoursLow: 1, hoursHigh: 2, unit: "aula", cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino não especificadas anteriormente" }] },
-        { titulo: "Alimentação e Bebidas",               paraQuem: "Eventos · empresas", faixaPreco: "A partir de R$ 35/pessoa", cnae: [{ c: "5620-1/02", d: "Serviços de alimentação para eventos e recepções — bufê" }] },
-        { titulo: "Hambúrguer Artesanal", isPortfolio: true, paraQuem: "Bairro · delivery", faixaPreco: "A partir de R$ 25", cnaeNovo: true, cnae: [{ c: "5611-2/01", d: "Restaurantes e similares" }, { c: "5620-1/04", d: "Fornecimento de alimentos preparados preponderantemente para consumo domiciliar" }] },
+        { titulo: "Alimentação e Bebidas",               paraQuem: "Eventos · empresas", hoursLow: 0.35, hoursHigh: 1, unit: "pessoa", cnae: [{ c: "5620-1/02", d: "Serviços de alimentação para eventos e recepções — bufê" }] },
+        { titulo: "Hambúrguer Artesanal", isPortfolio: true, paraQuem: "Bairro · delivery", hoursLow: 0.25, hoursHigh: 0.6, unit: "unidade", cnaeNovo: true, cnae: [{ c: "5611-2/01", d: "Restaurantes e similares" }, { c: "5620-1/04", d: "Fornecimento de alimentos preparados preponderantemente para consumo domiciliar" }] },
         { titulo: "Comunicação Visual",                  paraQuem: "Eventos · marcas", hoursLow: 8, hoursHigh: 30, cnae: [{ c: "7410-2/03", d: "Design de produto" }, { c: "7319-0/04", d: "Consultoria em publicidade" }] },
         { titulo: "Consultoria em Moda",                 paraQuem: "Marcas · pessoas", hoursLow: 4, hoursHigh: 20, cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade" }] },
         { titulo: "Consultoria em TI",                   paraQuem: "Pequenas empresas · ONGs", hoursLow: 4, hoursHigh: 40, cnae: [{ c: "6204-0/00", d: "Consultoria em tecnologia da informação" }] },
@@ -380,8 +384,8 @@
         { titulo: "Produção Musical",                    paraQuem: "Artistas · marcas", hoursLow: 8, hoursHigh: 20, cnae: [{ c: "9001-9/02", d: "Produção musical" }, { c: "5920-1/00", d: "Atividades de gravação de som e de edição de música" }] },
         { titulo: "Reforço Escolar",                     paraQuem: "Crianças · adolescentes", hoursLow: 1, hoursHigh: 2, unit: "aula", cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino" }] },
         { titulo: "Stylist, Moda e Passarela",           paraQuem: "Marcas · eventos", hoursLow: 4, hoursHigh: 20, cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade" }] },
-        { titulo: "Tortas Salgadas da Veh", isPortfolio: true, paraQuem: "Eventos · empresas", faixaPreco: "A partir de R$ 80", cnae: [{ c: "5620-1/02", d: "Serviços de alimentação — bufê" }] },
-        { titulo: "Tradução de Inglês",                  paraQuem: "Empresas · autores", faixaPreco: "A partir de R$ 0,30/palavra", cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
+        { titulo: "Tortas Salgadas da Veh", isPortfolio: true, paraQuem: "Eventos · empresas", hoursLow: 0.8, hoursHigh: 2, unit: "torta", cnae: [{ c: "5620-1/02", d: "Serviços de alimentação — bufê" }] },
+        { titulo: "Tradução de Inglês",                  paraQuem: "Empresas · autores", hoursLow: 0.003, hoursHigh: 0.005, unit: "palavra", cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
 
         // ── Gaps de missões (serviços novos criados pra fechar ponte) ────────
         { titulo: "Educação Ambiental",                  paraQuem: "Escolas · ONGs", hoursLow: 2, hoursHigh: 8, unit: "oficina", cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino" }] },
@@ -389,7 +393,7 @@
         { titulo: "Futebol e Esporte",                   paraQuem: "Crianças · juvenis", hoursLow: 1, hoursHigh: 2, unit: "treino", cnae: [{ c: "9319-1/01", d: "Produção e promoção de eventos esportivos" }] },
 
         // ── Correções (CNAE a formalizar — hoje no CNPJ estava errado/ausente)
-        { titulo: "Artes Visuais",                       paraQuem: "Coleções · ativações", faixaPreco: "Sob consulta", cnaeNovo: true, cnae: [{ c: "9002-7/01", d: "Atividades de artistas plásticos, jornalistas independentes e escritores" }] },
+        { titulo: "Artes Visuais",                       paraQuem: "Coleções · ativações", hoursLow: 10, hoursHigh: 200, cnaeNovo: true, cnae: [{ c: "9002-7/01", d: "Atividades de artistas plásticos, jornalistas independentes e escritores" }] },
         { titulo: "Conexões",                            paraQuem: "Empreendedores · rede", cnaeNovo: true, cnae: [{ c: "7020-4/00", d: "Atividades de consultoria em gestão empresarial" }] },
         { titulo: "Gestão Executiva",                    paraQuem: "Pequenas empresas", hoursLow: 20, hoursHigh: 80, recurring: true, cnaeNovo: true, cnae: [{ c: "7020-4/00", d: "Atividades de consultoria em gestão empresarial" }] },
         { titulo: "Grafite",                             paraQuem: "Eventos · ativações", hoursLow: 8, hoursHigh: 40, cnaeNovo: true, cnae: [{ c: "9002-7/01", d: "Atividades de artistas plásticos, jornalistas independentes e escritores" }] },
@@ -403,14 +407,14 @@
         { titulo: "Consultoria Jurídica",                paraQuem: "Pequenas empresas · pessoas", hoursLow: 1, hoursHigh: 1, unit: "hora", cnaeNovo: true, cnae: [{ c: "6911-7/01", d: "Serviços advocatícios" }] },
         { titulo: "Cuidado com o Idoso",                 paraQuem: "Famílias · idosos", hoursLow: 4, hoursHigh: 12, unit: "diária", cnaeNovo: true, cnae: [{ c: "8712-3/00", d: "Serviços de assistência à saúde prestados a pacientes fora de unidades de saúde" }] },
         { titulo: "Desenho Botânico",                    paraQuem: "Editoras · coleções", hoursLow: 8, hoursHigh: 40, cnaeNovo: true, cnae: [{ c: "9002-7/01", d: "Atividades de artistas plásticos, jornalistas independentes e escritores" }] },
-        { titulo: "Drywall e Bioconstrução",             paraQuem: "Casa · obra", faixaPreco: "Sob consulta", cnaeNovo: true, cnae: [{ c: "4330-4/02", d: "Instalação de portas, janelas, tetos, divisórias e armários" }, { c: "4399-1/99", d: "Outros serviços especializados para construção" }] },
+        { titulo: "Drywall e Bioconstrução",             paraQuem: "Casa · obra", hoursLow: 20, hoursHigh: 500, cnaeNovo: true, cnae: [{ c: "4330-4/02", d: "Instalação de portas, janelas, tetos, divisórias e armários" }, { c: "4399-1/99", d: "Outros serviços especializados para construção" }] },
         { titulo: "Gestão Administrativa",               paraQuem: "Pequenas empresas", hoursLow: 20, hoursHigh: 80, recurring: true, cnaeNovo: true, cnae: [{ c: "8211-3/00", d: "Serviços combinados de escritório e apoio administrativo" }] },
         { titulo: "Gestão Contábil",                     paraQuem: "Pequenas empresas · MEI", hoursLow: 5, hoursHigh: 20, recurring: true, cnaeNovo: true, cnae: [{ c: "6920-6/01", d: "Atividades de contabilidade" }] },
         { titulo: "Gestão Financeira",                   paraQuem: "Pequenas empresas", hoursLow: 8, hoursHigh: 40, recurring: true, cnaeNovo: true, cnae: [{ c: "7020-4/00", d: "Atividades de consultoria em gestão empresarial" }] },
         { titulo: "Gestão Fiscal",                       paraQuem: "Pequenas empresas · MEI", hoursLow: 5, hoursHigh: 20, recurring: true, cnaeNovo: true, cnae: [{ c: "6920-6/01", d: "Atividades de contabilidade" }] },
         { titulo: "Gestão Operacional",                  paraQuem: "Pequenas empresas", hoursLow: 20, hoursHigh: 80, recurring: true, cnaeNovo: true, cnae: [{ c: "7020-4/00", d: "Atividades de consultoria em gestão empresarial" }] },
-        { titulo: "Inteligência de Previsão",            paraQuem: "Empresas · fundos", faixaPreco: "Sob consulta", cnaeNovo: true, cnae: [{ c: "7320-3/00", d: "Pesquisa de mercado e de opinião pública" }, { c: "6311-9/00", d: "Tratamento de dados, provedores de serviços de aplicação e serviços de hospedagem" }] },
-        { titulo: "Market Making Preditivo",             paraQuem: "Mercados · plataformas", faixaPreco: "Sob consulta", cnaeNovo: true, cnae: [{ c: "6619-3/99", d: "Outras atividades auxiliares dos serviços financeiros" }] },
+        { titulo: "Inteligência de Previsão",            paraQuem: "Empresas · fundos", hoursLow: 40, hoursHigh: 400, cnaeNovo: true, cnae: [{ c: "7320-3/00", d: "Pesquisa de mercado e de opinião pública" }, { c: "6311-9/00", d: "Tratamento de dados, provedores de serviços de aplicação e serviços de hospedagem" }] },
+        { titulo: "Market Making Preditivo",             paraQuem: "Mercados · plataformas", hoursLow: 40, hoursHigh: 400, cnaeNovo: true, cnae: [{ c: "6619-3/99", d: "Outras atividades auxiliares dos serviços financeiros" }] },
         // ── Sub-serviços de "Saúde Mental" (Raquel cobre a árvore) ──
         { titulo: "Saúde Mental",                        paraQuem: "Adultos · adolescentes", hoursLow: 1, hoursHigh: 1, unit: "sessão", cnaeNovo: true, cnae: [{ c: "8650-0/03", d: "Atividades de psicologia e psicanálise" }] },
         { titulo: "Psicologia Clínica",                  parent: "Saúde Mental", paraQuem: "Adultos", hoursLow: 1, hoursHigh: 1, unit: "sessão", cnaeNovo: true, cnae: [{ c: "8650-0/03", d: "Atividades de psicologia e psicanálise" }] },
@@ -420,7 +424,7 @@
         { titulo: "Yoga",                                paraQuem: "Iniciantes · turmas", hoursLow: 1, hoursHigh: 1, unit: "aula", cnaeNovo: true, cnae: [{ c: "9313-1/00", d: "Atividades de condicionamento físico" }, { c: "8690-9/99", d: "Outras atividades de atenção à saúde humana" }] },
 
         // ── Gaps com CNAE a formalizar ───────────────────────────────────────
-        { titulo: "Agrofloresta",                        paraQuem: "Sítios · escolas", faixaPreco: "Sob consulta", cnaeNovo: true, cnae: [{ c: "0161-0/01", d: "Serviço de preparação de terreno, cultivo e colheita" }] },
+        { titulo: "Agrofloresta",                        paraQuem: "Sítios · escolas", hoursLow: 40, hoursHigh: 400, cnaeNovo: true, cnae: [{ c: "0161-0/01", d: "Serviço de preparação de terreno, cultivo e colheita" }] },
         { titulo: "Compostagem",                         paraQuem: "Casa · condomínios", hoursLow: 8, hoursHigh: 30, cnaeNovo: true, cnae: [{ c: "3821-1/00", d: "Tratamento e disposição de resíduos não-perigosos" }] },
         { titulo: "Produção de Eventos",                 paraQuem: "Marcas · empresas", hoursLow: 30, hoursHigh: 150, cnaeNovo: true, cnae: [{ c: "8230-0/02", d: "Atividades de organização de feiras, congressos, exposições e festas" }] },
 
@@ -722,14 +726,27 @@
         });
     }
 
-    // Calcula a faixa de preço a partir de horas × taxa.
-    // Ordem: faixaPreco (override) > horas × rate > null (não exibe).
+    // Pricing 100% derivado de horas × taxa — sem mistério, sem override.
+    // Retorna { preco, formula } pra render exibir os dois lados da conta:
+    //   preco   = "R$ 4.000 – R$ 20.000/mês"   (resultado bruto)
+    //   formula = "40-200h × R$ 100/h"          (matemática por trás)
+    // Render mostra preço grande + formula pequena = transparência total.
     function rateOf(handle) {
         const e = get(handle);
         return (e && typeof e.hourlyRate === "number") ? e.hourlyRate : DEFAULT_HOURLY_RATE;
     }
+    function fmtBR(n) {
+        // Centavos só quando < 1 (ex: R$ 0,30/palavra). Resto em inteiro.
+        const opts = n < 1
+            ? { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+            : { maximumFractionDigits: 0 };
+        return "R$ " + n.toLocaleString("pt-BR", opts);
+    }
+    function fmtHours(n) {
+        // Mantém fracionário pra unidades sub-hora (palavra, torta).
+        return Number.isInteger(n) ? `${n}` : `${n}`.replace(".", ",");
+    }
     function computeFaixaPreco(s) {
-        if (s.faixaPreco) return s.faixaPreco;
         if (!s.hoursLow || !s.hoursHigh) return null;
         const ativos = (s.responsavel || []).filter(h => !isInactive(h));
         const rates = ativos.length ? ativos.map(rateOf) : [DEFAULT_HOURLY_RATE];
@@ -737,11 +754,23 @@
         const maxRate = Math.max(...rates);
         const low  = s.hoursLow  * minRate;
         const high = s.hoursHigh * maxRate;
-        const fmt = n => "R$ " + n.toLocaleString("pt-BR");
-        const unit = s.unit ? `/${s.unit}` : "";
-        const recur = s.recurring ? "/mês" : unit;
-        if (low === high) return `${fmt(low)}${recur}`;
-        return `${fmt(low)} – ${fmt(high)}${recur}`;
+
+        const unitSuffix = s.recurring ? "/mês" : (s.unit ? `/${s.unit}` : "");
+        const isPerUnit = !!s.unit && !s.recurring && s.unit !== "hora";
+        const hoursPart = (s.hoursLow === s.hoursHigh)
+            ? `${fmtHours(s.hoursLow)}h`
+            : `${fmtHours(s.hoursLow)}–${fmtHours(s.hoursHigh)}h`;
+        const ratePart = (minRate === maxRate)
+            ? `${fmtBR(minRate)}/h`
+            : `${fmtBR(minRate)}–${fmtBR(maxRate)}/h`;
+
+        const preco = (low === high)
+            ? `${fmtBR(low)}${unitSuffix}`
+            : `${fmtBR(low)} – ${fmtBR(high)}${unitSuffix}`;
+        const formula = isPerUnit
+            ? `${hoursPart} por ${s.unit} × ${ratePart}`
+            : `${hoursPart} × ${ratePart}`;
+        return { preco, formula };
     }
 
     // Roster = what shows on /parceiros/ (top-level people + communities in this order)
