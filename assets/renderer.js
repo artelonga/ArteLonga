@@ -1254,37 +1254,38 @@
         }
         function provedorCard(p) {
             const url = p.externalUrl || `/${p.handle}/`;
-            const c = p.contacts;
+            const c = p.contacts || {};
             const role = p.role ? `<div class="provedor-role">${esc(p.role)}</div>` : "";
-            if (c) {
+            const tag = c.tagline ? `<p class="provedor-tagline">${esc(c.tagline)}</p>` : "";
+
+            // Compõe ações disponíveis: WhatsApp se existe, Instagram se existe,
+            // sempre cai em fallback de email se não houver canal direto.
+            const actions = [];
+            if (c.whatsapp) {
                 const waUrl = `https://wa.me/${esc(c.whatsapp)}?text=${encodeURIComponent("Olá " + p.nome + ", vim pelo serviço " + s.titulo + ".")}`;
-                const igUrl = `https://instagram.com/${esc(c.instagram)}`;
-                const tag = c.tagline ? `<p class="provedor-tagline">${esc(c.tagline)}</p>` : "";
-                return `<div class="provedor-card">
-                    <div class="provedor-head">
-                        <a class="provedor-nome" href="${url}">${esc(p.nome)}</a>
-                        ${role}
-                    </div>
-                    ${tag}
-                    <div class="provedor-actions">
-                        <a class="svc-cta-btn svc-cta-wa" href="${waUrl}" target="_blank" rel="noopener">
-                            ${svgWhatsApp()}<span>WhatsApp ${esc(c.whatsappDisplay)}</span>
-                        </a>
-                        <a class="provedor-ig" href="${igUrl}" target="_blank" rel="noopener">
-                            ${svgInstagram()}<span>@${esc(c.instagram)}</span>
-                        </a>
-                    </div>
-                </div>`;
+                const display = c.whatsappDisplay ? esc(c.whatsappDisplay) : "WhatsApp";
+                actions.push(`<a class="svc-cta-btn svc-cta-wa" href="${waUrl}" target="_blank" rel="noopener">
+                    ${svgWhatsApp()}<span>WhatsApp ${display}</span>
+                </a>`);
             }
-            // Fallback: contato genérico Arte Longa.
+            if (c.instagram) {
+                const igUrl = `https://instagram.com/${esc(c.instagram)}`;
+                actions.push(`<a class="provedor-ig" href="${igUrl}" target="_blank" rel="noopener">
+                    ${svgInstagram()}<span>@${esc(c.instagram)}</span>
+                </a>`);
+            }
+            if (!c.whatsapp) {
+                // Sem WhatsApp = botão de email pré-preenchido.
+                actions.unshift(`<a class="svc-cta-btn" href="mailto:${REDE_EMAIL}?subject=${subject}%20-%20${encodeURIComponent(p.nome)}">${ctaLabelGeneric} →</a>`);
+            }
+
             return `<div class="provedor-card">
                 <div class="provedor-head">
                     <a class="provedor-nome" href="${url}">${esc(p.nome)}</a>
                     ${role}
                 </div>
-                <div class="provedor-actions">
-                    <a class="svc-cta-btn" href="mailto:${REDE_EMAIL}?subject=${subject}%20-%20${encodeURIComponent(p.nome)}">${ctaLabelGeneric} →</a>
-                </div>
+                ${tag}
+                <div class="provedor-actions">${actions.join("")}</div>
             </div>`;
         }
         const respAtivos = respEntities.filter(p => !AL.isInactive(p.handle));

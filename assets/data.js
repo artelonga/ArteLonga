@@ -201,7 +201,7 @@
         { handle: "ken", type: "person", nome: "Ken", role: "", tags: ["parceiro"], pic: null, bio: "", servicos: ["Alimentação e Bebidas"], communities: ["quilomboaraucaria"] },
         { handle: "quinho", type: "person", nome: "Quinho", role: "", tags: ["parceiro"], pic: null, bio: "", servicos: ["Artes Visuais", "Grafite", "Murais e Fachadas"], communities: ["quilomboaraucaria"] },
         { handle: "tiao", type: "person", nome: "Tião", role: "", tags: ["parceiro"], pic: null, bio: "", servicos: ["Drywall e Bioconstrução"], communities: ["quilomboaraucaria"] },
-        { handle: "veh", type: "person", nome: "Veh", role: "", tags: ["parceiro"], pic: null, bio: "", servicos: ["Alimentação e Bebidas", "Tortas Salgadas da Veh"], communities: ["quilomboaraucaria"] },
+        { handle: "veh", type: "person", nome: "Veh", role: "", tags: ["parceiro"], pic: null, bio: "", servicos: ["Alimentação e Bebidas", "Tortas Salgadas da Veh"], communities: ["quilomboaraucaria"], contacts: { tagline: "Tortas salgadas artesanais. Faça seu pedido ⤵️" } },
         {
             handle: "carlinhos", type: "person", nome: "Carlinhos",
             role: "Distribuição de Frutas",
@@ -756,6 +756,12 @@
             return { preco: "Sob consulta", formula: null, consult: true };
         }
         const ativos = (s.responsavel || []).filter(h => !isInactive(h));
+        // Regra: só sócios têm preço calculado pela rede (hours × R\$ 100/h).
+        // Qualquer não-sócio na lista → Sob consulta. Eles definem o próprio
+        // preço pelo canal direto (contacts: WhatsApp/Instagram/tagline).
+        if (ativos.length && ativos.some(h => !isSocio(h))) {
+            return { preco: "Sob consulta", formula: null, consult: true };
+        }
         const rates = ativos.length ? ativos.map(rateOf) : [DEFAULT_HOURLY_RATE];
         const minRate = Math.min(...rates);
         const maxRate = Math.max(...rates);
