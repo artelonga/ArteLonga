@@ -265,28 +265,52 @@
     }
 
     // ─── PAGE: HOME ──────────────────────────────────────────────────────────
+    // Marketplace landing: 5s para o contratante entender e buscar.
+    // Foco em catálogo (cliente é a ponta de quem contrata). Prestadores
+    // de serviço (parceiros) ficam no rodapé — sem competir pela atenção.
     function renderHome() {
+        const servicos = AL.publicServices();
+        const handleToNome = Object.fromEntries(AL.people.concat(AL.communities).map(e => [e.handle, e.nome]));
+        const respNames = handles => handles.map(h => handleToNome[h] || h).join(", ");
+        const topo = servicos.filter(s => !s.parent);
+
+        const card = s => `
+            <li class="market-card">
+                <a href="/servicos/${esc(s.slug)}/" class="market-card-link">
+                    <div class="market-card-titulo">${esc(s.titulo)}</div>
+                    <div class="market-card-resp">${esc(respNames(s.responsavel))}</div>
+                </a>
+            </li>`;
+
         document.body.innerHTML = `
             ${siteHeader()}
-            <main class="main">
-                <div class="home-wrap">
-                    <div class="home-hero">
-                        <h1 class="home-title">Arte Longa</h1>
-                        <div class="home-subtitle">semeando sonhos</div>
-                    </div>
-                    <ul class="home-menu">
-                        <li><a href="/parceiros/">Parceiros <span class="arrow">ver →</span></a></li>
-                        <li><a href="/servicos/">Serviços <span class="arrow">ver →</span></a></li>
-                        <li><a href="/solucoes/">Soluções <span class="arrow">ver →</span></a></li>
-                    </ul>
-                    <div class="home-meta">
-                        <a href="/sobre/">Sobre</a>
-                        <span class="sep">·</span>
-                        <a href="/proximos-passos/">Próximos Passos</a>
-                    </div>
-                </div>
+            <main class="main market-main">
+                <section class="market-hero">
+                    <h1 class="market-h1">Contrate serviços</h1>
+                    <p class="market-loc">São Paulo · Jardim Umarizal</p>
+                    <form class="market-search" action="/servicos/" method="get" role="search">
+                        <input type="search" name="q" id="market-q" placeholder="O que você precisa?" autocomplete="off" aria-label="Buscar serviço">
+                        <button type="submit" class="market-search-btn">Buscar →</button>
+                    </form>
+                </section>
+
+                <ul class="market-grid">${topo.map(card).join("")}</ul>
+
+                <p class="market-all"><a href="/servicos/">Catálogo completo →</a></p>
+
+                <footer class="market-foot">
+                    <span class="market-foot-lbl">Quem está por trás</span>
+                    <a href="/parceiros/">Parceiros</a>
+                    <span class="sep">·</span>
+                    <a href="/sobre/">Sobre</a>
+                    <span class="sep">·</span>
+                    <a href="/proximos-passos/">Próximos Passos</a>
+                </footer>
             </main>
         `;
+
+        const input = document.getElementById("market-q");
+        if (input) input.focus();
     }
 
     // ─── PAGE: PARCEIROS — ShowAll mode (flat, alfabético, sem hierarquia) ───
@@ -461,11 +485,9 @@
             ${siteHeader()}
             <main class="main">
                 <h1 class="page-title">Serviços</h1>
-                <div class="page-subtitle">Arte Longa · catálogo</div>
+                <div class="page-subtitle">Arte Longa · catálogo · São Paulo · Jardim Umarizal</div>
 
-                <p class="intro">Serviços são compostos em <a href="/solucoes/">Soluções</a>.</p>
-
-                <div class="section-header"><h2>Portfólio</h2><span class="label">clique para abrir · hover revela sub-serviços</span></div>
+                <div class="section-header"><h2>Catálogo</h2><span class="label">clique para abrir · hover revela sub-serviços</span></div>
                 <div class="controls"><input type="search" id="search" placeholder="Buscar serviço…" autocomplete="off"></div>
                 <div class="count" id="count"></div>
                 <ul class="portfolio-list" id="portfolio-list"></ul>

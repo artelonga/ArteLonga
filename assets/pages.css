@@ -1,6 +1,140 @@
 /* Arte Longa · page-specific styles. */
 
-/* HOME ----------------------------------------------------------------- */
+/* HOME · MARKETPLACE -------------------------------------------------- */
+/* Layout enxuto: hero + busca + grid de serviços + rodapé discreto.
+   Foco no contratante; prestadores ficam no rodapé. */
+.market-main { padding-top: 4vh; }
+
+.market-hero {
+    margin-bottom: 5vh;
+    text-align: left;
+}
+.market-h1 {
+    font-size: clamp(2.4rem, 6vw, 4.5rem);
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 1;
+    color: #0a0a0a;
+    margin-bottom: 1.4vh;
+}
+.market-loc {
+    font-size: 0.78rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #999;
+    margin-bottom: 4vh;
+    font-weight: 600;
+}
+
+.market-search {
+    display: flex;
+    gap: 0.6rem;
+    max-width: 640px;
+    margin-bottom: 1vh;
+}
+.market-search input[type="search"] {
+    flex: 1;
+    font-size: 1.05rem;
+    padding: 1.4vh 1rem;
+    border: 1.5px solid #0a0a0a;
+    border-radius: 2px;
+    background: #fff;
+    color: #0a0a0a;
+    font-family: inherit;
+    transition: box-shadow 0.15s ease;
+}
+.market-search input[type="search"]:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(10,10,10,0.08);
+}
+.market-search-btn {
+    font-family: inherit;
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 1.4vh 1.4rem;
+    background: #0a0a0a;
+    color: #fff;
+    border: 1.5px solid #0a0a0a;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+.market-search-btn:hover { background: #c0392b; border-color: #c0392b; }
+
+.market-grid {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 0.6rem;
+    margin: 4vh 0 2vh;
+}
+.market-card {
+    border: 1px solid #eaeaea;
+    border-radius: 2px;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.market-card:hover { border-color: #0a0a0a; transform: translateY(-1px); }
+.market-card-link {
+    display: block;
+    padding: 2.2vh 1.1rem;
+    color: #0a0a0a;
+    text-decoration: none;
+}
+.market-card-titulo {
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    margin-bottom: 0.6vh;
+}
+.market-card-resp {
+    font-size: 0.74rem;
+    letter-spacing: 0.06em;
+    color: #888;
+    line-height: 1.4;
+}
+
+.market-all {
+    margin: 3vh 0 6vh;
+    font-size: 0.92rem;
+    font-weight: 600;
+}
+.market-all a {
+    color: #0a0a0a;
+    text-decoration: none;
+    border-bottom: 1px solid #0a0a0a;
+    padding-bottom: 2px;
+}
+.market-all a:hover { color: #c0392b; border-bottom-color: #c0392b; }
+
+.market-foot {
+    margin-top: 6vh;
+    padding-top: 3vh;
+    border-top: 1px solid #eaeaea;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #999;
+    font-weight: 600;
+}
+.market-foot-lbl { color: #bbb; margin-right: 0.4rem; }
+.market-foot a { color: #555; text-decoration: none; transition: color 0.15s ease; }
+.market-foot a:hover { color: #0a0a0a; }
+.market-foot .sep { color: #ddd; }
+
+@media (max-width: 640px) {
+    .market-search { flex-direction: column; }
+    .market-search-btn { width: 100%; }
+    .market-grid { grid-template-columns: 1fr; }
+}
+
+/* HOME · LEGACY (kept for /sobre/ and other pages that reuse the menu styling) */
 .home-wrap {
     min-height: calc(100vh - 14vh);
     display: flex;
