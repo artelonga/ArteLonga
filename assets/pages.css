@@ -153,6 +153,11 @@
     letter-spacing: -0.005em;
     margin-bottom: 0.2vh;
 }
+.market-card-price.is-consult {
+    font-style: italic;
+    font-weight: 600;
+    color: #555;
+}
 .market-card-formula {
     font-size: 0.72rem;
     color: #888;

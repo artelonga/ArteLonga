@@ -352,17 +352,21 @@
             .map(c => ({ ...c, items: c.titles.map(t => byTitulo.get(t)).filter(Boolean) }))
             .filter(c => c.items.length);
 
-        // Card: título · paraQuem · preço (linha grande) · fórmula (linha pequena
-        // mostrando horas × taxa) · responsáveis. Tudo derivado de horas — sem
-        // mistério, matemática na cara.
+        // Card: título · paraQuem · preço · fórmula · responsáveis.
+        // Três modos: flatFee (R$ 1.000), hours×rate (com fórmula), Sob consulta
+        // (sem fórmula — clique vira orçamento). Matemática na cara quando aplicável.
         const card = s => {
             const faixa = AL.computeFaixaPreco(s);
             const metaHtml = s.paraQuem
                 ? `<div class="market-card-meta">${esc(s.paraQuem)}</div>`
                 : "";
+            const priceCls = faixa && faixa.consult ? "market-card-price is-consult" : "market-card-price";
             const precoHtml = faixa
-                ? `<div class="market-card-price">${esc(faixa.preco)}</div>
-                   <div class="market-card-formula">${esc(faixa.formula)}</div>`
+                ? `<div class="${priceCls}">${esc(faixa.preco)}</div>${
+                    faixa.formula
+                        ? `<div class="market-card-formula">${esc(faixa.formula)}</div>`
+                        : ""
+                  }`
                 : "";
             const cls = s.isPortfolio ? "market-card is-portfolio" : "market-card";
             return `
@@ -1213,7 +1217,7 @@
         const metaHtml = metaParts.length
             ? `<div class="svc-meta">${metaParts.join(`<span class="svc-meta-sep">·</span>`)}</div>`
             : "";
-        const formulaHtml = faixa
+        const formulaHtml = (faixa && faixa.formula)
             ? `<div class="svc-formula">${esc(faixa.formula)}</div>`
             : "";
 
