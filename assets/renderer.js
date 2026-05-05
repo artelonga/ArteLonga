@@ -264,53 +264,208 @@
         </header>`;
     }
 
+    // Site footer — "Quem está por trás", visível em todas as páginas renderizadas.
+    function siteFooter() {
+        return `<footer class="site-footer">
+            <div class="site-footer-inner">
+                <span class="site-footer-lbl">Quem está por trás</span>
+                <a href="/parceiros/">Parceiros</a>
+                <span class="sep">·</span>
+                <a href="/sobre/">Sobre</a>
+                <span class="sep">·</span>
+                <a href="/proximos-passos/">Próximos passos</a>
+            </div>
+        </footer>`;
+    }
+
+    // Supercategorias — agrupamento de descoberta para o catálogo.
+    // Match é por título exato; serviços ausentes em publicServices() são
+    // simplesmente ignorados (a categoria some se ficar vazia).
+    const SUPERCATS = [
+        { id: "eventos",    label: "Eventos",     titles: [
+            "Filmagem de Festas e Eventos", "Fotografia", "Produção Musical",
+            "Alimentação e Bebidas", "Hambúrguer Artesanal",
+            "Atriz", "Cantora", "Modelo", "Dança e Expressão Corporal",
+            "Artes Visuais", "Criação de Conteúdo", "Comunicação Visual",
+            "Produção de Desfile"
+        ]},
+        { id: "digital",    label: "Digital",     titles: [
+            "Inteligência e Tecnologia", "Desenvolvimento Web",
+            "Desenvolvimento de Software", "Desenvolvimento de API",
+            "Privacidade e Segurança Digital", "Comunicação Visual",
+            "Marketing Digital", "Tráfego e Crescimento", "Design",
+            "Experiência de Usuário", "Criação de Conteúdo",
+            "Consultoria em TI", "Nuvem", "Computação",
+            "Dados e Armazenamento", "Hardware", "Sistemas Operacionais", "Redes"
+        ]},
+        { id: "educacao",   label: "Educação",    titles: [
+            "Alfabetização", "Reforço Escolar", "Ensino, Formação e Liderança",
+            "Mentoria Espiritual", "Educação Ambiental"
+        ]},
+        { id: "bem-estar",  label: "Bem-estar",   titles: [
+            "Acompanhamento Nutricional", "Saúde Mental",
+            "Terapia Comportamental", "Meditação", "Autocuidado",
+            "Cuidado com o Idoso"
+        ]},
+        { id: "casa",       label: "Casa",        titles: [
+            "Drywall e Bioconstrução", "Murais e Fachadas", "Grafite",
+            "Agrofloresta", "Compostagem"
+        ]},
+        { id: "negocios",   label: "Negócios",    titles: [
+            "Gestão Administrativa", "Gestão Contábil", "Gestão Executiva",
+            "Gestão Financeira", "Gestão Fiscal", "Gestão Operacional",
+            "Consultoria Jurídica", "Consultoria em Moda",
+            "Rede de Parcerias", "Rede de Talentos", "Conexões",
+            "Inteligência de Previsão", "Market Making Preditivo"
+        ]},
+        { id: "alimentacao", label: "Alimentação", titles: [
+            "Alimentação e Bebidas", "Hambúrguer Artesanal",
+            "Tortas Salgadas da Veh"
+        ]},
+        { id: "audiovisual", label: "Audiovisual", titles: [
+            "Fotografia", "Produção Musical", "Filmagem de Festas e Eventos",
+            "Escrita, Interpretação e Tradução", "Atriz", "Cantora",
+            "Modelo", "Criação de Conteúdo", "Poeta"
+        ]}
+    ];
+
     // ─── PAGE: HOME ──────────────────────────────────────────────────────────
-    // Marketplace landing: 5s para o contratante entender e buscar.
-    // Foco em catálogo (cliente é a ponta de quem contrata). Prestadores
-    // de serviço (parceiros) ficam no rodapé — sem competir pela atenção.
+    // Marketplace landing focada no contratante. 5s pra entender o que o
+    // site faz; busca dinâmica/fuzzy abre o catálogo enquanto digita;
+    // supercategorias dão atalhos. Prestadores ficam no rodapé.
     function renderHome() {
         const servicos = AL.publicServices();
         const handleToNome = Object.fromEntries(AL.people.concat(AL.communities).map(e => [e.handle, e.nome]));
         const respNames = handles => handles.map(h => handleToNome[h] || h).join(", ");
         const topo = servicos.filter(s => !s.parent);
 
-        const card = s => `
-            <li class="market-card">
+        // Pré-computa o índice de busca: cada serviço com texto normalizado
+        // pra match fuzzy (substring + token-AND).
+        const byTitulo = new Map(servicos.map(s => [s.titulo, s]));
+        const indexed = servicos.map(s => ({
+            s,
+            blob: norm([s.titulo, s.parent || "", respNames(s.responsavel)].join(" "))
+        }));
+
+        // Filtra supercats com pelo menos 1 serviço existente no catálogo.
+        const cats = SUPERCATS
+            .map(c => ({ ...c, items: c.titles.map(t => byTitulo.get(t)).filter(Boolean) }))
+            .filter(c => c.items.length);
+
+        // Card: título + linha "pra quem · faixa de preço" (se presente).
+        // Portfolio (isPortfolio: true) ganha marca discreta.
+        const card = s => {
+            const parts = [];
+            if (s.paraQuem)   parts.push(esc(s.paraQuem));
+            if (s.faixaPreco) parts.push(esc(s.faixaPreco));
+            const meta = parts.length
+                ? `<div class="market-card-meta">${parts.join(" <span class='dot'>·</span> ")}</div>`
+                : "";
+            const cls = s.isPortfolio ? "market-card is-portfolio" : "market-card";
+            return `
+            <li class="${cls}">
                 <a href="/servicos/${esc(s.slug)}/" class="market-card-link">
                     <div class="market-card-titulo">${esc(s.titulo)}</div>
+                    ${meta}
                     <div class="market-card-resp">${esc(respNames(s.responsavel))}</div>
                 </a>
             </li>`;
+        };
+
+        const chip = c => `
+            <button type="button" class="sup-chip" data-cat="${esc(c.id)}" aria-pressed="false">
+                ${esc(c.label)} <span class="sup-count">${c.items.length}</span>
+            </button>`;
 
         document.body.innerHTML = `
             ${siteHeader()}
             <main class="main market-main">
                 <section class="market-hero">
-                    <h1 class="market-h1">Contrate serviços</h1>
+                    <h1 class="market-h1">Serviços</h1>
+                    <p class="market-tagline">Desenvolvemos a solução pro seu problema.</p>
                     <p class="market-loc">São Paulo · Jardim Umarizal</p>
-                    <form class="market-search" action="/servicos/" method="get" role="search">
-                        <input type="search" name="q" id="market-q" placeholder="O que você precisa?" autocomplete="off" aria-label="Buscar serviço">
-                        <button type="submit" class="market-search-btn">Buscar →</button>
+
+                    <form class="market-search" role="search" autocomplete="off"
+                          onsubmit="event.preventDefault(); return false;">
+                        <input type="search" name="q" id="market-q"
+                               placeholder="Descreva o que precisa…"
+                               autocomplete="off"
+                               aria-label="Descreva o que precisa">
                     </form>
+                    <p class="market-hint" id="market-hint">Filtre por categoria ou comece a digitar.</p>
                 </section>
 
-                <ul class="market-grid">${topo.map(card).join("")}</ul>
+                <div class="sup-cats" id="sup-cats">
+                    <button type="button" class="sup-chip is-active" data-cat="" aria-pressed="true">
+                        Todos <span class="sup-count">${topo.length}</span>
+                    </button>
+                    ${cats.map(chip).join("")}
+                </div>
+
+                <div class="market-count" id="market-count"></div>
+                <ul class="market-grid" id="market-grid"></ul>
+
+                <p class="market-empty" id="market-empty" hidden>
+                    Não encontrou? <a href="mailto:${REDE_EMAIL}?subject=Preciso%20de%20um%20servi%C3%A7o">Conte pra gente →</a>
+                </p>
 
                 <p class="market-all"><a href="/servicos/">Catálogo completo →</a></p>
-
-                <footer class="market-foot">
-                    <span class="market-foot-lbl">Quem está por trás</span>
-                    <a href="/parceiros/">Parceiros</a>
-                    <span class="sep">·</span>
-                    <a href="/sobre/">Sobre</a>
-                    <span class="sep">·</span>
-                    <a href="/proximos-passos/">Próximos Passos</a>
-                </footer>
             </main>
+            ${siteFooter()}
         `;
 
-        const input = document.getElementById("market-q");
-        if (input) input.focus();
+        const input    = document.getElementById("market-q");
+        const grid     = document.getElementById("market-grid");
+        const count    = document.getElementById("market-count");
+        const empty    = document.getElementById("market-empty");
+        const chipsBox = document.getElementById("sup-cats");
+
+        let activeCat = "";
+
+        function applyFilter() {
+            const q = norm(input.value.trim());
+            const tokens = q ? q.split(/\s+/).filter(Boolean) : [];
+
+            // Busca fuzzy = todas as palavras precisam estar no blob.
+            // Sem busca: respeita supercat ativa e mostra só top-level.
+            let list;
+            if (tokens.length) {
+                list = indexed.filter(({ blob }) => tokens.every(t => blob.includes(t))).map(x => x.s);
+            } else if (activeCat) {
+                const cat = cats.find(c => c.id === activeCat);
+                list = cat ? cat.items : [];
+            } else {
+                list = topo;
+            }
+
+            grid.innerHTML = list.map(card).join("");
+            count.textContent = tokens.length
+                ? `${list.length} resultado${list.length === 1 ? "" : "s"} para "${input.value.trim()}"`
+                : (activeCat
+                    ? `${list.length} em ${cats.find(c => c.id === activeCat).label}`
+                    : `${list.length} serviços`);
+            empty.hidden = list.length !== 0;
+        }
+
+        input.addEventListener("input", applyFilter);
+        chipsBox.addEventListener("click", e => {
+            const btn = e.target.closest(".sup-chip");
+            if (!btn) return;
+            chipsBox.querySelectorAll(".sup-chip").forEach(b => {
+                b.classList.remove("is-active");
+                b.setAttribute("aria-pressed", "false");
+            });
+            btn.classList.add("is-active");
+            btn.setAttribute("aria-pressed", "true");
+            activeCat = btn.dataset.cat || "";
+            input.value = "";
+            applyFilter();
+            input.focus();
+        });
+
+        // Estado inicial.
+        applyFilter();
+        input.focus();
     }
 
     // ─── PAGE: PARCEIROS — ShowAll mode (flat, alfabético, sem hierarquia) ───
@@ -332,6 +487,7 @@
                 <p class="show-all-toggle"><a href="/parceiros/">← papéis e serviços</a></p>
                 <a class="back" href="/">← voltar</a>
             </main>
+            ${siteFooter()}
         `;
     }
 
@@ -443,6 +599,7 @@
                 }, "Entrar →")}
                 <a class="back" href="/">← voltar</a>
             </main>
+            ${siteFooter()}
             ${modalContact("contact-modal", "Bem-vindo à rede")}
         `;
 
@@ -500,6 +657,7 @@
 
                 <a class="back" href="/">← voltar</a>
             </main>
+            ${siteFooter()}
             ${modalContact("lead-modal", "Anuncie com a Arte Longa")}
         `;
 
@@ -994,6 +1152,7 @@
                 ${contactHtml}
                 <a class="back" href="/">← voltar</a>
             </main>
+            ${siteFooter()}
         `;
         if (tickFn) tickFn();
     }
@@ -1092,6 +1251,7 @@
 
                 <a class="back" href="/servicos/">← voltar ao portfólio</a>
             </main>
+            ${siteFooter()}
         `;
     }
 
@@ -1117,6 +1277,7 @@
                 <div class="poem-body">${stanzasHtml}</div>
                 <a class="back" href="${backHref}">${backLabel}</a>
             </main>
+            ${siteFooter()}
         `;
     }
 
@@ -1314,6 +1475,7 @@
 
                 <a class="back" href="/">← voltar</a>
             </main>
+            ${siteFooter()}
         `;
     }
 

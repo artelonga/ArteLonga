@@ -314,6 +314,13 @@
     //   implicitResponsavel:handles que ganham responsabilidade pelo serviço mesmo
     //                        sem escrever o título em `.servicos` (ex: Yuri cobre toda
     //                        a árvore de I&T sem precisar listar cada sub-serviço).
+    //   paraQuem:           string curta (2-3 palavras) — pra quem o serviço é.
+    //                        Exibido nos cards e no detalhe do serviço.
+    //   faixaPreco:         string curta (2-3 palavras) — faixa de preço comunicável.
+    //                        Ex.: "A partir de R$ 80", "Sob consulta", "R$ 80–250".
+    //   isPortfolio:        true = serviço é uma intersecção concreta serviço × pessoa
+    //                        (ex.: "Tortas Salgadas da Veh"). Renderiza com CTA de
+    //                        orçamento direto. Default = false → CTA genérico de contato.
     //
     // Validação: deriveServices() emite console.warn se person/community.servicos
     // referencia título inexistente aqui — typos viram erro explícito, não silêncio.
@@ -332,7 +339,7 @@
         // ── Sub-serviços de "Inteligência e Tecnologia" (Yuri cobre a árvore) ──
         { titulo: "Desenvolvimento de API",      parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], cnae: [{ c: "6202-3/00", d: "Desenvolvimento e licenciamento de software customizável" }] },
         { titulo: "Desenvolvimento de Software", parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], cnae: [{ c: "6202-3/00", d: "Desenvolvimento e licenciamento de software customizável" }] },
-        { titulo: "Desenvolvimento Web",         parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], cnae: [{ c: "6201-5/02", d: "Web design" }, { c: "6202-3/00", d: "Desenvolvimento e licenciamento de software customizável" }] },
+        { titulo: "Desenvolvimento Web",         parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Empresas · estúdios", faixaPreco: "Sob consulta", cnae: [{ c: "6201-5/02", d: "Web design" }, { c: "6202-3/00", d: "Desenvolvimento e licenciamento de software customizável" }] },
         { titulo: "Nuvem",                       parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], cnae: [{ c: "6204-0/00", d: "Consultoria em TI" }, { c: "6319-4/00", d: "Provedores de conteúdo e serviços de informação na internet" }] },
         { titulo: "Computação",                  parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], cnae: [{ c: "6204-0/00", d: "Consultoria em TI" }] },
         { titulo: "Dados e Armazenamento",       parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], cnae: [{ c: "6204-0/00", d: "Consultoria em TI" }, { c: "6319-4/00", d: "Provedores de serviços de informação na internet" }] },
@@ -344,17 +351,17 @@
         // ── Serviços com CNAE já formalizado no CNPJ ─────────────────────────
         { titulo: "Alfabetização",                       cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino não especificadas anteriormente" }] },
         { titulo: "Alimentação e Bebidas",               cnae: [{ c: "5620-1/02", d: "Serviços de alimentação para eventos e recepções — bufê" }] },
-        { titulo: "Hambúrguer Artesanal",                cnaeNovo: true, cnae: [{ c: "5611-2/01", d: "Restaurantes e similares" }, { c: "5620-1/04", d: "Fornecimento de alimentos preparados preponderantemente para consumo domiciliar" }] },
+        { titulo: "Hambúrguer Artesanal", isPortfolio: true, paraQuem: "Bairro · delivery", faixaPreco: "A partir de R$ 25", cnaeNovo: true, cnae: [{ c: "5611-2/01", d: "Restaurantes e similares" }, { c: "5620-1/04", d: "Fornecimento de alimentos preparados preponderantemente para consumo domiciliar" }] },
         { titulo: "Comunicação Visual",                  cnae: [{ c: "7410-2/03", d: "Design de produto" }, { c: "7319-0/04", d: "Consultoria em publicidade" }] },
         { titulo: "Consultoria em Moda",                 cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade" }] },
         { titulo: "Consultoria em TI",                   cnae: [{ c: "6204-0/00", d: "Consultoria em tecnologia da informação" }] },
         { titulo: "Criação de Conteúdo",                 cnae: [{ c: "5911-1/99", d: "Produção cinematográfica, de vídeos e TV" }, { c: "5912-0/99", d: "Pós-produção audiovisual" }] },
         { titulo: "Dança e Expressão Corporal",          cnae: [{ c: "8592-9/01", d: "Ensino de dança" }] },
-        { titulo: "Design",                              cnae: [{ c: "7410-2/03", d: "Design de produto" }] },
+        { titulo: "Design",                              paraQuem: "Marcas · produtos", faixaPreco: "Sob consulta", cnae: [{ c: "7410-2/03", d: "Design de produto" }] },
         { titulo: "Ensino, Formação e Liderança",        cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino" }, { c: "8599-6/03", d: "Treinamento em informática" }] },
         { titulo: "Escrita, Interpretação e Tradução",   cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }, { c: "5811-5/00", d: "Edição de livros" }] },
         { titulo: "Experiência de Usuário (UI/UX)",      cnae: [{ c: "7410-2/03", d: "Design de produto" }, { c: "6201-5/02", d: "Web design" }] },
-        { titulo: "Fotografia",                          cnae: [{ c: "7420-0/01", d: "Atividades de produção de fotografias" }, { c: "7420-0/04", d: "Filmagem de festas e eventos" }] },
+        { titulo: "Fotografia",                          paraQuem: "Eventos · ensaios", faixaPreco: "A partir de R$ 600", cnae: [{ c: "7420-0/01", d: "Atividades de produção de fotografias" }, { c: "7420-0/04", d: "Filmagem de festas e eventos" }] },
         { titulo: "Inteligência e Tecnologia",           cnae: [{ c: "6204-0/00", d: "Consultoria em tecnologia da informação" }, { c: "6319-4/00", d: "Portais, provedores de conteúdo e serviços de informação na internet" }] },
         { titulo: "Marketing Digital",                   cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade" }] },
         { titulo: "Mentoria Espiritual",                 cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino" }] },
@@ -364,7 +371,7 @@
         { titulo: "Produção Musical",                    cnae: [{ c: "9001-9/02", d: "Produção musical" }, { c: "5920-1/00", d: "Atividades de gravação de som e de edição de música" }] },
         { titulo: "Reforço Escolar",                     cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino" }] },
         { titulo: "Stylist, Moda e Passarela",           cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade" }] },
-        { titulo: "Tortas Salgadas da Veh",              cnae: [{ c: "5620-1/02", d: "Serviços de alimentação — bufê" }] },
+        { titulo: "Tortas Salgadas da Veh", isPortfolio: true, paraQuem: "Eventos · empresas", faixaPreco: "A partir de R$ 80", cnae: [{ c: "5620-1/02", d: "Serviços de alimentação — bufê" }] },
         { titulo: "Tradução de Inglês",                  cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
 
         // ── Gaps de missões (serviços novos criados pra fechar ponte) ────────
@@ -557,14 +564,32 @@
             url: "/yggdrasil/", urlLabel: "lançamento · junho 2026",
             internalLink: true,
             lema: "Desenvolvimento de jogos sem limites.",
-            desc: "Engine de jogos open source construída em torno do Godot. Onde criadores, jogadores e mundos convergem.",
+            desc: "Engine de jogos completa, open source, construída em torno do Godot. Do arcade 2D aos mundos 3D — onde criadores, jogadores e universos convergem.",
+            descLong: "Yggdrasil nasce como engine de jogos de verdade: ferramentas de criação, runtime, multiplayer e distribuição na mesma plataforma open source. A interface jogável da Arte Longa deixa de ser uma camada decorativa e passa a ser um motor de jogos completo.\n\nLançamento · arcade 2D pronto para jogar\n\nNa estreia (junho de 2026), a Yggdrasil já vem com uma biblioteca de jogos arcade 2D — Snake, Tetris, Space Invaders, Pong e variações — jogáveis direto no navegador e no app. Servem como vitrine, sandbox para novos criadores e referência viva de como construir jogos sobre a engine.\n\nRoadmap · mundos 3D no horizonte\n\nA fundação 3D já vive no Godot. O passo seguinte é abrir esse caminho aos criadores: cenários 3D, espaços persistentes e mundos compartilhados. A meta é que a Yggdrasil leve do pixel ao polígono sem trocar de ferramenta — um único universo de criação, do arcade clássico ao mundo aberto.",
             lifecycle: "futuro",
             universo: true,
             // Yggdrasil: Luke faz Design solo. Yuri cobre o resto (Inteligência e Tecnologia — collapsível) + Produção Musical (Antony).
             bundledServices: ["Inteligência e Tecnologia", "Design", "Produção Musical"],
             platforms: [
-                { name: "Web", status: "wip", statusText: "junho 2026" },
-                { name: "Mobile / App", status: "wip", statusText: "junho 2026" }
+                { name: "Web · arcade 2D", status: "wip", statusText: "junho 2026" },
+                { name: "Mobile / App · arcade 2D", status: "wip", statusText: "junho 2026" },
+                { name: "Mundos 3D", status: "wip", statusText: "no horizonte" }
+            ]
+        },
+        {
+            handle: "agora", type: "solution", nome: "Ágora",
+            tagline: "Coletivo",
+            url: "/agora/", urlLabel: "em breve",
+            internalLink: true,
+            lema: "Escritório digital dos parceiros Arte Longa.",
+            desc: "Coworking digital para os parceiros Arte Longa: salas, presença, agendas e ferramentas compartilhadas em um só lugar. O dia a dia da rede acontece aqui.",
+            descLong: "A Ágora é o escritório digital da rede Arte Longa — um espaço comum onde os parceiros se encontram, conversam, planejam e tocam projetos lado a lado, mesmo distantes geograficamente.\n\nEm breve · o que a Ágora reúne\n\nSalas de trabalho persistentes, presença leve entre parceiros, agendas integradas, quadros compartilhados e atalhos para os outros Universos da rede (Co, Yggdrasil, Quilombo Araucária). O coworking físico vira coworking digital sem perder o senso de coletivo.\n\nPara quem é\n\nParceiros Arte Longa, suas comunidades e missões. A Ágora é o tecido que liga gestão, criação e operação no dia a dia da rede.",
+            lifecycle: "futuro",
+            universo: true,
+            bundledServices: ["Inteligência e Tecnologia", "Design", "Gestão Operacional", "Gestão Executiva", "Conexões"],
+            platforms: [
+                { name: "Web", status: "wip", statusText: "em breve" },
+                { name: "Mobile / App", status: "wip", statusText: "em breve" }
             ]
         },
         {
