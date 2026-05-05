@@ -672,6 +672,31 @@
     transition: background 0.15s ease;
 }
 .svc-cta-btn:hover { background: #c0392b; }
+
+.svc-exemplos {
+    list-style: none;
+    margin: 1vh 0 3vh;
+}
+.svc-exemplos li {
+    padding: 1.6vh 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+.svc-exemplos li:last-child { border-bottom: none; }
+.svc-exemplos a {
+    color: #0a0a0a;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: opacity 0.15s ease;
+}
+.svc-exemplos a:hover { opacity: 0.55; }
+.svc-exemplos-empty {
+    margin: 1vh 0 3vh;
+    padding: 1.6vh 0;
+    font-size: 0.88rem;
+    color: #999;
+    font-style: italic;
+}
 .service-resp {
     font-size: 0.95rem;
     color: #555;
