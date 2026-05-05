@@ -352,24 +352,25 @@
             .map(c => ({ ...c, items: c.titles.map(t => byTitulo.get(t)).filter(Boolean) }))
             .filter(c => c.items.length);
 
-        // Card: título + linha "pra quem · faixa de preço" (se presente).
-        // faixaPreco é calculado em runtime via AL.computeFaixaPreco — combina
-        // hoursLow/hoursHigh do serviço com hourlyRate dos responsáveis.
-        // Portfolio (isPortfolio: true) ganha marca discreta.
+        // Card: título · paraQuem · preço (linha grande) · fórmula (linha pequena
+        // mostrando horas × taxa) · responsáveis. Tudo derivado de horas — sem
+        // mistério, matemática na cara.
         const card = s => {
-            const parts = [];
-            if (s.paraQuem) parts.push(esc(s.paraQuem));
             const faixa = AL.computeFaixaPreco(s);
-            if (faixa) parts.push(esc(faixa));
-            const meta = parts.length
-                ? `<div class="market-card-meta">${parts.join(" <span class='dot'>·</span> ")}</div>`
+            const metaHtml = s.paraQuem
+                ? `<div class="market-card-meta">${esc(s.paraQuem)}</div>`
+                : "";
+            const precoHtml = faixa
+                ? `<div class="market-card-price">${esc(faixa.preco)}</div>
+                   <div class="market-card-formula">${esc(faixa.formula)}</div>`
                 : "";
             const cls = s.isPortfolio ? "market-card is-portfolio" : "market-card";
             return `
             <li class="${cls}">
                 <a href="/servicos/${esc(s.slug)}/" class="market-card-link">
                     <div class="market-card-titulo">${esc(s.titulo)}</div>
-                    ${meta}
+                    ${metaHtml}
+                    ${precoHtml}
                     <div class="market-card-resp">${esc(respNames(s.responsavel))}</div>
                 </a>
             </li>`;
@@ -1202,15 +1203,18 @@
             return `<a href="${url}"${attr}>${esc(e.nome)}</a>`;
         }).join(", ");
 
-        // Meta: pra quem · faixa de preço (só renderiza o que existe).
-        // faixaPreco vem do AL.computeFaixaPreco — hours × rate por padrão,
-        // com override quando o serviço explicita s.faixaPreco.
+        // Meta: pra quem · preço · fórmula (horas × taxa). Tudo derivado de
+        // horas — sem override de string. Renderer mostra os dois lados da
+        // conta de modo painfully explícito.
+        const faixa = AL.computeFaixaPreco(s);
         const metaParts = [];
         if (s.paraQuem) metaParts.push(`<span class="svc-meta-chunk">${esc(s.paraQuem)}</span>`);
-        const faixa = AL.computeFaixaPreco(s);
-        if (faixa) metaParts.push(`<span class="svc-meta-chunk svc-meta-price">${esc(faixa)}</span>`);
+        if (faixa)      metaParts.push(`<span class="svc-meta-chunk svc-meta-price">${esc(faixa.preco)}</span>`);
         const metaHtml = metaParts.length
             ? `<div class="svc-meta">${metaParts.join(`<span class="svc-meta-sep">·</span>`)}</div>`
+            : "";
+        const formulaHtml = faixa
+            ? `<div class="svc-formula">${esc(faixa.formula)}</div>`
             : "";
 
         const portfolioBadge = s.isPortfolio
@@ -1270,6 +1274,7 @@
                 ${portfolioBadge}
                 <h1 class="service-title">${esc(s.titulo)}</h1>
                 ${metaHtml}
+                ${formulaHtml}
                 <div class="service-resp">Por ${respLinks}</div>
                 ${summaryHtml}
                 ${attachmentsHtml}

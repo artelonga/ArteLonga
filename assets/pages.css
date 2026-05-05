@@ -141,9 +141,26 @@
     font-size: 0.78rem;
     color: #444;
     line-height: 1.4;
-    margin-bottom: 0.5vh;
+    margin-bottom: 0.6vh;
 }
 .market-card-meta .dot { color: #c0c0c0; padding: 0 0.15em; }
+.market-card-price {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #0a0a0a;
+    line-height: 1.3;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.005em;
+    margin-bottom: 0.2vh;
+}
+.market-card-formula {
+    font-size: 0.72rem;
+    color: #888;
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+    margin-bottom: 0.6vh;
+    line-height: 1.4;
+}
 .market-card-resp {
     font-size: 0.7rem;
     letter-spacing: 0.04em;
@@ -726,6 +743,16 @@
 .svc-meta-chunk { font-weight: 600; }
 .svc-meta-price { color: #0a0a0a; font-variant-numeric: tabular-nums; }
 .svc-meta-sep { color: #c0c0c0; }
+
+/* Fórmula: horas × taxa. Mono pra reforçar que é matemática literal. */
+.svc-formula {
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
+    font-size: 0.85rem;
+    color: #888;
+    font-variant-numeric: tabular-nums;
+    margin-bottom: 2.4vh;
+    letter-spacing: 0.005em;
+}
 .svc-cta {
     margin: 2vh 0 3vh;
 }
