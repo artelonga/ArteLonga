@@ -6,7 +6,7 @@
     <title>Sobre — Arte Longa</title>
     <link rel="stylesheet" href="/assets/site.css?v=20260503">
     <link rel="stylesheet" href="/assets/components.css?v=20260508">
-    <link rel="stylesheet" href="/assets/pages.css?v=20260520">
+    <link rel="stylesheet" href="/assets/pages.css?v=20260523">
     <style>
         .page-title {
             font-size: clamp(2rem, 4vw, 3rem);
@@ -88,43 +88,6 @@
         }
         .info-value.mono { font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace; }
 
-        .cnae-list {
-            list-style: none;
-        }
-        .cnae-list li {
-            padding: 0.85vh 0;
-            border-bottom: 1px solid #f4f4f4;
-            display: grid;
-            grid-template-columns: 110px 1fr;
-            gap: 1.2rem;
-            align-items: baseline;
-        }
-        .cnae-list li:last-child { border-bottom: none; }
-        .cnae-code {
-            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
-            font-size: 0.78rem;
-            color: #888;
-            font-variant-numeric: tabular-nums;
-        }
-        .cnae-desc {
-            font-size: 0.88rem;
-            color: #333;
-            line-height: 1.5;
-        }
-        .cnae-principal .cnae-code,
-        .cnae-principal .cnae-desc { color: #0a0a0a; font-weight: 600; }
-
-        .transparency-note {
-            margin-top: 6vh;
-            padding: 3vh 2rem;
-            background: #fafafa;
-            font-size: 0.82rem;
-            line-height: 1.6;
-            color: #555;
-            border-left: 3px solid #0a0a0a;
-        }
-        .transparency-note strong { color: #0a0a0a; font-weight: 700; }
-
         /* História — single short prose paragraph */
         .historia-text {
             font-size: 1rem;
@@ -133,106 +96,6 @@
             max-width: 62ch;
             margin-bottom: 2vh;
         }
-
-        /* Oportunidade — call-to-action block, mais visível que prosa comum */
-        .oportunidade-block {
-            margin-top: 2vh;
-            padding: 4vh 2rem;
-            background: #fafafa;
-            border-left: 3px solid #0a0a0a;
-        }
-        .oportunidade-text {
-            font-size: 0.95rem;
-            line-height: 1.7;
-            color: #333;
-            max-width: 62ch;
-            margin-bottom: 2vh;
-        }
-        .oportunidade-text:last-of-type { margin-bottom: 0; }
-        .oportunidade-text strong { color: #0a0a0a; font-weight: 700; }
-        .oportunidade-text a {
-            color: inherit;
-            text-decoration: underline;
-            text-decoration-color: #aaa;
-            text-decoration-style: dotted;
-            text-underline-offset: 3px;
-            font-weight: 600;
-        }
-        .oportunidade-text a:hover { text-decoration-color: #0a0a0a; text-decoration-style: solid; }
-
-        /* Tese curta — manifesto symbolic */
-        .tese-curta {
-            margin-bottom: 3vh;
-            padding-bottom: 3vh;
-            border-bottom: 1px solid #e4e4e4;
-        }
-        .tese-curta .claim {
-            font-size: 1.1rem;
-            line-height: 1.5;
-            font-weight: 700;
-            color: #0a0a0a;
-            margin-bottom: 2vh;
-            letter-spacing: -0.01em;
-        }
-        .tese-curta .claim em {
-            font-style: normal;
-            border-bottom: 2px solid #c0392b;
-            padding-bottom: 1px;
-        }
-        .tese-eq {
-            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
-            font-size: 0.82rem;
-            line-height: 1.9;
-            color: #0a0a0a;
-            background: #fff;
-            padding: 2vh 1.2rem;
-            border: 1px solid #0a0a0a;
-        }
-        .tese-eq .op { color: #888; }
-        .tese-eq .out { color: #c0392b; font-weight: 700; }
-        .tese-eq .key { font-weight: 700; }
-        .tese-divider {
-            margin: 3vh 0;
-            font-size: 0.65rem;
-            letter-spacing: 0.22em;
-            text-transform: uppercase;
-            color: #999;
-            font-weight: 700;
-            text-align: center;
-        }
-
-        /* CNAE collapsible (dentro de Empresa) */
-        .cnae-collapsible {
-            margin: 2vh 0 0;
-            border-top: 1px solid #eee;
-            padding-top: 1.5vh;
-        }
-        .cnae-collapsible summary {
-            cursor: pointer;
-            font-size: 0.78rem;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-            color: #666;
-            font-weight: 600;
-            padding: 0.6rem 0;
-            list-style: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            user-select: none;
-        }
-        .cnae-collapsible summary::-webkit-details-marker { display: none; }
-        .cnae-collapsible summary::before {
-            content: "+";
-            display: inline-block;
-            width: 1em;
-            font-weight: 400;
-            transition: transform 0.2s ease;
-        }
-        .cnae-collapsible[open] summary::before { content: "−"; }
-        .cnae-collapsible summary:hover { color: #0a0a0a; }
-        .cnae-collapsible[open] summary { color: #0a0a0a; margin-bottom: 1.5vh; }
-        .cnae-collapsible .cnae-list { margin-top: 1vh; }
 
         /* Próximos Passos closing link */
         .proximos-link {
@@ -248,27 +111,6 @@
             transition: color 0.15s ease, border-color 0.15s ease;
         }
         .proximos-link a:hover { color: #c0392b; border-bottom-color: #c0392b; }
-        .oportunidade-cta {
-            margin-top: 3vh;
-            padding-top: 2vh;
-            border-top: 1px solid #e4e4e4;
-            font-size: 0.78rem;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-            color: #666;
-            font-weight: 600;
-        }
-        .oportunidade-cta a {
-            color: #0a0a0a;
-            text-decoration: none;
-            border-bottom: 1px solid #0a0a0a;
-            padding-bottom: 1px;
-            margin-left: 0.4em;
-            letter-spacing: 0.04em;
-            text-transform: none;
-            font-weight: 500;
-        }
-        .oportunidade-cta a:hover { color: #c0392b; border-bottom-color: #c0392b; }
 
         /* Manifesto — Missão · Visão · Valores */
         .manifesto-item { margin-bottom: 3vh; }
@@ -331,7 +173,6 @@
         @media (max-width: 640px) {
             .info-grid { grid-template-columns: 1fr; gap: 0.3rem 0; }
             .info-label { margin-top: 1.5vh; }
-            .cnae-list li { grid-template-columns: 1fr; gap: 0.2rem; }
         }
     </style>
     <script defer src="/assets/analytics.js?v=20260429"></script>
@@ -414,7 +255,7 @@
         </div>
     </footer>
 
-    <script src="/assets/data.js?v=20260513"></script>
+    <script src="/assets/data.js?v=20260523"></script>
     <script>
     (function () {
         if (!window.AL || !AL.manifesto) return;

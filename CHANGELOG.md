@@ -9,6 +9,22 @@ Each release links to a *why* (the pain or opportunity it addresses) so a reader
 
 ## [Unreleased]
 
+### Changed (pivot product-oriented · marketplace de serviços)
+
+Site reorientado de catálogo institucional para **marketplace de serviços** focado no contratante. Direção definida pelo feedback de mercado (Jack Dorsey: "reduzir elementos ao mínimo, cada um o mais perfeito"; liquidez via recorte geográfico; 5 segundos de atenção).
+
+- **Home** vira o marketplace: hero "Serviços / Desenvolvemos a solução pro seu problema / São Paulo · Jardim Umarizal" + busca dinâmica fuzzy (filtra enquanto digita) + 8 supercategorias como chips (Eventos, Digital, Educação, Bem-estar, Casa, Negócios, Alimentação, Audiovisual) + grid de cards. Sem botão de submit, sem menu de 3 abas. ICP geográfico declarado.
+- **Personas separadas**: cliente (contratante) é o destaque principal; prestadores ficam no rodapé "Quem está por trás" — sem competir pela atenção. `/parceiros/` segue acessível mas fora do funil de contratação.
+- **`/servicos/<slug>/` product-oriented**: título, "pra quem · faixa de preço", quem fornece, CTA único (Pedir orçamento ou Falar conosco) com mailto pré-preenchido, seção Exemplos e relacionados. **Saem CNAE, "Em soluções", "Em missões"** — info de backoffice.
+- **Catálogo de serviços ganha 3 campos**: `paraQuem`, `faixaPreco`, `isPortfolio`. Portfolio (intersecção serviço × pessoa, ex.: Tortas Salgadas da Veh, Hambúrguer Artesanal) ganha badge discreto + CTA de orçamento; serviços de catálogo genérico ficam com CTA de contato. Quilombo Araucária listado como exemplo em Desenvolvimento Web, Design, Desenvolvimento de API, Privacidade e Segurança e Criação de Conteúdo (este último → /relatos/).
+- **Footer global "Quem está por trás"** (Parceiros · Sobre · Próximos passos) replicado em todas as páginas — renderizadas e estáticas.
+- **Conteúdo de fundamento vai pra docs**: tese de descentralização, GPL/GNU, universos com TAM/SAM/SOM, receita 3-fontes saem do site público (`/oportunidade/` e `/proximos-passos/`) e ficam em `docs/oportunidade-tese.md` e `docs/proximos-passos-tese.md`. Auditável em version control, fora do funil do cliente.
+- **`/sobre/` simplificada**: saem Razão Social, CNPJ, Natureza Jurídica, Porte, Data de Abertura, Capital Social e a colapsável CNAE. Fica História, Manifesto, Endereço, Email. CSS morto também limpo.
+- **`/oportunidade/` drasticamente enxuta**: lead curto + termos (CDI conversível, dashboard, projeção R$75k) + contato. Sem tese, sem fluxo, sem pilares, sem universos table, sem GPL Q2.
+- **`/proximos-passos/`** sem o marco GPL Q2 (movido pra docs); transparência contábil sem mencionar CNAE.
+- **`/solucoes/`** sai do menu da home; segue acessível por URL pra não quebrar links antigos.
+- **CSS pages.css** ganha `.market-*` (hero, busca, supercats, cards, footer global) e `.svc-*` (badge, meta, CTA, exemplos). Cache busted em todas as ~115 shells estáticas: `pages.css` / `renderer.js` / `data.js` → `?v=20260523`.
+
 ### Changed (yuri descrição inicial · jacdias · ShowAll agrupado · UX editorial)
 
 - **Yuri**: nova descrição inicial em `bioCurta` + primeiro parágrafo da `bio` ("Filho de Kiyoshi e Soninha e fascinado por todos que me inspiram. Como neurocientista, busco compreender a consiencia. Como ser humano, busco compreender os saberes ancestrais. Trabalho com desenvolvimento de tecnologia sustentavel."). Card teaser deixa de ser a primeira linha do poema e passa a ser a descrição prosa.
