@@ -1,12 +1,12 @@
 /* Arte Longa · page-specific styles. */
 
 /* HOME · MARKETPLACE -------------------------------------------------- */
-/* Layout enxuto: hero + busca + grid de serviços + rodapé discreto.
-   Foco no contratante; prestadores ficam no rodapé. */
+/* Foco no contratante: hero + busca dinâmica + supercategorias + grid.
+   Prestadores ficam no rodapé (siteFooter), sem competir por atenção. */
 .market-main { padding-top: 4vh; }
 
 .market-hero {
-    margin-bottom: 5vh;
+    margin-bottom: 4vh;
     text-align: left;
 }
 .market-h1 {
@@ -15,27 +15,34 @@
     letter-spacing: -0.035em;
     line-height: 1;
     color: #0a0a0a;
-    margin-bottom: 1.4vh;
+    margin-bottom: 1.2vh;
+}
+.market-tagline {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    line-height: 1.4;
+    color: #444;
+    max-width: 36ch;
+    margin-bottom: 1.6vh;
+    font-weight: 500;
 }
 .market-loc {
-    font-size: 0.78rem;
+    font-size: 0.72rem;
     letter-spacing: 0.22em;
     text-transform: uppercase;
     color: #999;
     margin-bottom: 4vh;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .market-search {
     display: flex;
-    gap: 0.6rem;
     max-width: 640px;
     margin-bottom: 1vh;
 }
 .market-search input[type="search"] {
     flex: 1;
     font-size: 1.05rem;
-    padding: 1.4vh 1rem;
+    padding: 1.6vh 1.1rem;
     border: 1.5px solid #0a0a0a;
     border-radius: 2px;
     background: #fff;
@@ -47,28 +54,66 @@
     outline: none;
     box-shadow: 0 0 0 3px rgba(10,10,10,0.08);
 }
-.market-search-btn {
-    font-family: inherit;
+.market-hint {
     font-size: 0.78rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    font-weight: 700;
-    padding: 1.4vh 1.4rem;
+    color: #888;
+    letter-spacing: 0.04em;
+    margin-bottom: 0;
+}
+
+/* Supercategorias — chips horizontais */
+.sup-cats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin: 3vh 0 2vh;
+}
+.sup-chip {
+    font-family: inherit;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    padding: 0.9vh 1rem;
+    border: 1px solid #d4d4d4;
+    background: #fff;
+    color: #444;
+    border-radius: 999px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+}
+.sup-chip:hover { border-color: #0a0a0a; color: #0a0a0a; }
+.sup-chip.is-active {
     background: #0a0a0a;
     color: #fff;
-    border: 1.5px solid #0a0a0a;
-    border-radius: 2px;
-    cursor: pointer;
-    transition: background 0.15s ease;
+    border-color: #0a0a0a;
 }
-.market-search-btn:hover { background: #c0392b; border-color: #c0392b; }
+.sup-count {
+    font-size: 0.7rem;
+    color: #999;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+}
+.sup-chip.is-active .sup-count { color: #bbb; }
+
+.market-count {
+    font-size: 0.74rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #999;
+    font-weight: 600;
+    margin-bottom: 1.2vh;
+}
 
 .market-grid {
     list-style: none;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 0.6rem;
-    margin: 4vh 0 2vh;
+    margin: 0 0 2vh;
 }
 .market-card {
     border: 1px solid #eaeaea;
@@ -76,9 +121,12 @@
     transition: border-color 0.15s ease, transform 0.15s ease;
 }
 .market-card:hover { border-color: #0a0a0a; transform: translateY(-1px); }
+.market-card.is-portfolio { border-color: #d4d4d4; box-shadow: inset 4px 0 0 #c0392b; }
+.market-card.is-portfolio:hover { border-color: #0a0a0a; }
+
 .market-card-link {
     display: block;
-    padding: 2.2vh 1.1rem;
+    padding: 2vh 1.1rem;
     color: #0a0a0a;
     text-decoration: none;
 }
@@ -87,14 +135,35 @@
     font-weight: 700;
     letter-spacing: -0.01em;
     line-height: 1.25;
-    margin-bottom: 0.6vh;
+    margin-bottom: 0.4vh;
 }
+.market-card-meta {
+    font-size: 0.78rem;
+    color: #444;
+    line-height: 1.4;
+    margin-bottom: 0.5vh;
+}
+.market-card-meta .dot { color: #c0c0c0; padding: 0 0.15em; }
 .market-card-resp {
-    font-size: 0.74rem;
-    letter-spacing: 0.06em;
-    color: #888;
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    color: #999;
     line-height: 1.4;
 }
+
+.market-empty {
+    margin: 3vh 0;
+    font-size: 0.95rem;
+    color: #444;
+}
+.market-empty a {
+    color: #0a0a0a;
+    font-weight: 600;
+    border-bottom: 1px solid #0a0a0a;
+    text-decoration: none;
+    padding-bottom: 1px;
+}
+.market-empty a:hover { color: #c0392b; border-bottom-color: #c0392b; }
 
 .market-all {
     margin: 3vh 0 6vh;
@@ -109,10 +178,14 @@
 }
 .market-all a:hover { color: #c0392b; border-bottom-color: #c0392b; }
 
-.market-foot {
-    margin-top: 6vh;
-    padding-top: 3vh;
+/* Site footer (Quem está por trás) — global */
+.site-footer {
+    margin-top: 8vh;
+    padding: 4vh 7vw;
     border-top: 1px solid #eaeaea;
+    background: #fafafa;
+}
+.site-footer-inner {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -123,15 +196,20 @@
     color: #999;
     font-weight: 600;
 }
-.market-foot-lbl { color: #bbb; margin-right: 0.4rem; }
-.market-foot a { color: #555; text-decoration: none; transition: color 0.15s ease; }
-.market-foot a:hover { color: #0a0a0a; }
-.market-foot .sep { color: #ddd; }
+.site-footer-lbl { color: #bbb; margin-right: 0.4rem; }
+.site-footer a {
+    color: #555;
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+.site-footer a:hover { color: #0a0a0a; }
+.site-footer .sep { color: #ddd; }
 
 @media (max-width: 640px) {
-    .market-search { flex-direction: column; }
-    .market-search-btn { width: 100%; }
     .market-grid { grid-template-columns: 1fr; }
+    .sup-cats { gap: 0.3rem; }
+    .sup-chip { padding: 0.8vh 0.8rem; font-size: 0.78rem; }
+    .site-footer { padding-left: 5vw; padding-right: 5vw; }
 }
 
 /* HOME · LEGACY (kept for /sobre/ and other pages that reuse the menu styling) */

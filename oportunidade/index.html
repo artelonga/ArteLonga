@@ -6,7 +6,7 @@
     <title>Oportunidade — Arte Longa</title>
     <link rel="stylesheet" href="/assets/site.css?v=20260503">
     <link rel="stylesheet" href="/assets/components.css?v=20260508">
-    <link rel="stylesheet" href="/assets/pages.css?v=20260510">
+    <link rel="stylesheet" href="/assets/pages.css?v=20260520">
     <style>
         .page-title {
             font-size: clamp(2rem, 4vw, 3rem);
@@ -22,13 +22,23 @@
             margin-bottom: 5vh;
         }
 
+        .lead {
+            font-size: 1.1rem;
+            line-height: 1.55;
+            color: #0a0a0a;
+            font-weight: 600;
+            max-width: 40ch;
+            margin: 2vh 0 5vh;
+            letter-spacing: -0.005em;
+        }
+
         .section-header {
             display: flex;
             align-items: baseline;
             justify-content: space-between;
             border-top: 2px solid #0a0a0a;
             padding-top: 1.5vh;
-            margin: 6vh 0 3vh;
+            margin: 5vh 0 2.5vh;
         }
         .section-header:first-of-type { margin-top: 0; }
         .section-header h2 {
@@ -45,273 +55,9 @@
             text-transform: uppercase;
         }
 
-        /* Tese — manifesto curto, alto impacto */
-        .tese {
-            font-size: 1.25rem;
-            line-height: 1.55;
-            color: #0a0a0a;
-            font-weight: 600;
-            max-width: 30ch;
-            margin: 2vh 0 4vh;
-            letter-spacing: -0.01em;
-        }
-        .tese em {
-            font-style: normal;
-            border-bottom: 2px solid #0a0a0a;
-            padding-bottom: 1px;
-        }
-
-        /* Equação — claim formal */
-        .equacao {
-            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
-            font-size: 0.95rem;
-            line-height: 2;
-            background: #0a0a0a;
-            color: #f4f4f4;
-            padding: 4vh 2rem;
-            margin: 3vh 0;
-            border-radius: 2px;
-            overflow-x: auto;
-        }
-        .equacao .op { color: #888; }
-        .equacao .key { color: #fff; font-weight: 700; }
-        .equacao .out { color: #c0392b; font-weight: 700; }
-
-        /* Fluxo — diagrama horizontal de blocos */
-        .fluxo {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 0.8rem;
-            margin: 3vh 0;
-        }
-        .fluxo-step {
-            border: 1px solid #0a0a0a;
-            padding: 2vh 1rem;
-            text-align: center;
-            position: relative;
-        }
-        .fluxo-step .ico {
-            font-family: 'SF Mono', Monaco, monospace;
-            font-size: 1.5rem;
-            color: #0a0a0a;
-            display: block;
-            margin-bottom: 0.6vh;
-        }
-        .fluxo-step .lbl {
-            font-size: 0.7rem;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-            color: #0a0a0a;
-            font-weight: 700;
-            display: block;
-        }
-        .fluxo-step .sub {
-            font-size: 0.78rem;
-            color: #555;
-            margin-top: 0.4vh;
-            display: block;
-            line-height: 1.4;
-        }
-
-        /* Universos table */
-        .universos {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 2vh 0;
-            font-size: 0.88rem;
-        }
-        .universos th, .universos td {
-            text-align: left;
-            padding: 1.6vh 0.8rem;
-            border-bottom: 1px solid #eee;
-            vertical-align: top;
-        }
-        .universos th {
-            font-size: 0.65rem;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            color: #999;
-            font-weight: 700;
-            border-bottom: 2px solid #0a0a0a;
-        }
-        .universos tr:last-child td { border-bottom: none; }
-        .universos td.nome {
-            font-weight: 700;
-            color: #0a0a0a;
-            white-space: nowrap;
-        }
-        .universos td.nome a {
-            color: #0a0a0a;
-            text-decoration: none;
-            border-bottom: 1px solid #0a0a0a;
-        }
-        .universos td.nome a:hover { color: #c0392b; border-bottom-color: #c0392b; }
-        .universos td.nome .glyph {
-            font-family: 'SF Mono', Monaco, monospace;
-            font-size: 1.05rem;
-            margin-right: 0.4em;
-            color: #c0392b;
-        }
-        .universos td.publico {
-            font-size: 0.72rem;
-            color: #555;
-            line-height: 1.45;
-        }
-        .universos td.tam {
-            font-family: 'SF Mono', Monaco, monospace;
-            font-size: 0.78rem;
-            font-variant-numeric: tabular-nums;
-            color: #0a0a0a;
-            white-space: nowrap;
-        }
-        .universos td.tam span {
-            display: block;
-        }
-        .universos td.tam .l {
-            color: #999;
-            font-size: 0.62rem;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-        }
-
-        /* Pilares — 4 blocos quadrados */
-        .pilares {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 1rem;
-            margin: 3vh 0;
-        }
-        .pilar {
-            background: #fafafa;
-            padding: 3vh 1.2rem;
-            border-left: 3px solid #0a0a0a;
-        }
-        .pilar .glyph {
-            font-family: 'SF Mono', Monaco, monospace;
-            font-size: 1.4rem;
-            color: #c0392b;
-            display: block;
-            margin-bottom: 0.6vh;
-        }
-        .pilar .ttl {
-            font-size: 0.72rem;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            font-weight: 700;
-            color: #0a0a0a;
-            margin-bottom: 0.6vh;
-        }
-        .pilar .txt {
-            font-size: 0.85rem;
-            color: #444;
-            line-height: 1.5;
-        }
-
-        /* Receita: dois blocos lado a lado */
-        .receita {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1rem;
-            margin: 3vh 0;
-        }
-        .receita-bloco {
-            border: 1px solid #0a0a0a;
-            padding: 3vh 1.4rem;
-        }
-        .receita-bloco .head {
-            display: flex;
-            align-items: baseline;
-            justify-content: space-between;
-            margin-bottom: 1.5vh;
-        }
-        .receita-bloco .head .num {
-            font-family: 'SF Mono', Monaco, monospace;
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #0a0a0a;
-        }
-        .receita-bloco .head .tag {
-            font-size: 0.62rem;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            color: #999;
-            font-weight: 700;
-        }
-        .receita-bloco h3 {
-            font-size: 1rem;
-            font-weight: 700;
-            color: #0a0a0a;
-            margin-bottom: 0.8vh;
-        }
-        .receita-bloco p {
-            font-size: 0.85rem;
-            color: #444;
-            line-height: 1.55;
-        }
-        .receita-bloco .formula {
-            margin-top: 2vh;
-            padding-top: 1.5vh;
-            border-top: 1px solid #eee;
-            font-family: 'SF Mono', Monaco, monospace;
-            font-size: 0.75rem;
-            color: #555;
-        }
-        .receita-bloco .formula .out { color: #c0392b; font-weight: 700; }
-
-        /* Selo GNU */
-        .selo-gnu {
-            margin: 3vh 0;
-            padding: 4vh 2rem;
-            background: #0a0a0a;
-            color: #f4f4f4;
-            display: grid;
-            grid-template-columns: auto 1fr;
-            gap: 1.5rem;
-            align-items: center;
-        }
-        .selo-gnu .glyph {
-            font-family: 'SF Mono', Monaco, monospace;
-            font-size: 3.5rem;
-            font-weight: 700;
-            line-height: 1;
-            color: #fff;
-        }
-        .selo-gnu .body .ttl {
-            font-size: 0.68rem;
-            letter-spacing: 0.22em;
-            text-transform: uppercase;
-            color: #aaa;
-            margin-bottom: 0.6vh;
-            font-weight: 700;
-        }
-        .selo-gnu .body .lema {
-            font-size: 1.15rem;
-            line-height: 1.5;
-            font-weight: 600;
-            color: #fff;
-            margin-bottom: 1vh;
-        }
-        .selo-gnu .body .meta {
-            font-family: 'SF Mono', Monaco, monospace;
-            font-size: 0.78rem;
-            color: #c0392b;
-            font-weight: 700;
-        }
-
-        .nota {
-            font-size: 0.78rem;
-            color: #888;
-            line-height: 1.55;
-            margin-top: 2vh;
-            font-style: italic;
-        }
-
-        .termos {
-            margin: 2vh 0;
-        }
         .termos p {
             font-size: 0.95rem;
-            line-height: 1.7;
+            line-height: 1.65;
             color: #333;
             max-width: 62ch;
             margin-bottom: 2vh;
@@ -362,12 +108,6 @@
             transition: color 0.15s ease;
         }
         .back:hover { color: #c0392b; }
-
-        @media (max-width: 640px) {
-            .universos { font-size: 0.78rem; }
-            .universos th, .universos td { padding: 1.2vh 0.4rem; }
-            .selo-gnu { grid-template-columns: 1fr; gap: 1rem; text-align: center; }
-        }
     </style>
     <script defer src="/assets/analytics.js?v=20260429"></script>
 </head>
@@ -384,258 +124,55 @@
 
     <main class="main">
         <h1 class="page-title">Oportunidade</h1>
-        <div class="page-subtitle">Arte Longa · Tese de investimento</div>
+        <div class="page-subtitle">Investir na Arte Longa</div>
 
-        <p class="tese">
-            O futuro da internet é <em>descentralizado</em>.<br>
-            O futuro das redes sociais é <em>autônomo</em>.<br>
-            Estamos construindo os dois.
+        <p class="lead">
+            Empréstimo conversível em participação, com saída garantida por 100% do CDI.
+            Risco zero, potencial de retorno claro.
         </p>
 
         <div class="section-header">
-            <h2>Tese</h2>
-            <span class="label">o que e por quê</span>
-        </div>
-
-        <div class="equacao">
-<span class="key">comunidades</span> <span class="op">=</span> pessoas <span class="op">+</span> agentes IA<br>
-<span class="key">universo</span>     <span class="op">=</span> espaço único e autônomo <span class="op">·</span> <span class="key">privado ou público</span><br>
-<span class="op">              ↳</span> compartilhar e colaborar sem fricção<br>
-<span class="key">privacidade</span>  <span class="op">⇐</span> E2E <span class="op">·</span> auth do usuário <span class="op">·</span> leitura só em repouso<br>
-<span class="op">───────────────────────────────</span><br>
-<span class="key">soberania real</span> <span class="op">⇒</span> <span class="key">software livre</span> (GNU GPL)<br>
-<span class="op">∴</span> <span class="out">Co liberado como software livre — fim do Q2 2026</span>
-        </div>
-
-        <div class="fluxo">
-            <div class="fluxo-step">
-                <span class="ico">∞</span>
-                <span class="lbl">Universo</span>
-                <span class="sub">contexto persistente, soberano</span>
-            </div>
-            <div class="fluxo-step">
-                <span class="ico">⇄</span>
-                <span class="lbl">Federação</span>
-                <span class="sub">universos conversam, ninguém controla</span>
-            </div>
-            <div class="fluxo-step">
-                <span class="ico">◉</span>
-                <span class="lbl">E2E</span>
-                <span class="sub">criptografado · sua chave, seus dados</span>
-            </div>
-            <div class="fluxo-step">
-                <span class="ico">⌘</span>
-                <span class="lbl">GPL</span>
-                <span class="sub">código auditável · sem caixa-preta</span>
-            </div>
-        </div>
-
-        <div class="section-header">
-            <h2>Pilares</h2>
-            <span class="label">não-negociáveis</span>
-        </div>
-
-        <div class="pilares">
-            <div class="pilar">
-                <span class="glyph">⌘</span>
-                <div class="ttl">Software Livre</div>
-                <div class="txt">GNU GPL. Auditável, forkável, sem aprisionamento. Confiança nasce do código aberto, não da promessa de marketing.</div>
-            </div>
-            <div class="pilar">
-                <span class="glyph">◉</span>
-                <div class="ttl">Soberania de Dados</div>
-                <div class="txt">E2E ponta-a-ponta. Repouso só lê com a auth do usuário. Nem nós lemos seus dados.</div>
-            </div>
-            <div class="pilar">
-                <span class="glyph">⇄</span>
-                <div class="ttl">Descentralização</div>
-                <div class="txt">Sem servidor central, sem ponto de captura. Cada universo é autônomo e federa.</div>
-            </div>
-            <div class="pilar">
-                <span class="glyph">⚙</span>
-                <div class="ttl">Comunidade + IA</div>
-                <div class="txt">Humanos e agentes coexistem no mesmo espaço, com as mesmas regras de soberania.</div>
-            </div>
-        </div>
-
-        <div class="section-header">
-            <h2>Universos</h2>
-            <span class="label">portfolio · target · TAM/SAM/SOM</span>
-        </div>
-
-        <table class="universos">
-            <thead>
-                <tr>
-                    <th>Universo</th>
-                    <th>Público-alvo</th>
-                    <th>TAM · SAM · SOM</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td class="nome"><a href="/co/"><span class="glyph">⌘</span>Co</a></td>
-                    <td class="publico">Criadores, comunidades e redes que querem <strong>voz e mensagem em tempo real</strong> + organização federada de universos. Substituto livre integrado para Slack, Discord, WhatsApp, Notion e Drive.<br><br><strong>Academia</strong> · cada laboratório, grupo ou disciplina vira um universo. Suporte nativo para o tripé <strong>pesquisa · ensino · extensão</strong>: dados de pesquisa privados e soberanos, ensino com salas em tempo real, extensão como universo público assinável pela comunidade.</td>
-                    <td class="tam">
-                        <span class="l">TAM</span><span>R$ 80 bi · colab. global</span>
-                        <span class="l">SAM</span><span>R$ 6 bi · LatAm + comunidades pt-BR</span>
-                        <span class="l">SOM</span><span>R$ 30 mi · 5 anos</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="nome"><a href="/yggdrasil/"><span class="glyph">∞</span>Yggdrasil</a></td>
-                    <td class="publico">Criadores de jogos independentes, estúdios pequenos, jogadores que querem mundos persistentes federados. Engine open source sobre Godot.</td>
-                    <td class="tam">
-                        <span class="l">TAM</span><span>R$ 280 bi · indústria de jogos</span>
-                        <span class="l">SAM</span><span>R$ 18 bi · indie + UGC</span>
-                        <span class="l">SOM</span><span>R$ 50 mi · 5 anos</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="nome"><a href="/quilomboaraucaria/"><span class="glyph">⊕</span>Quilombo Araucária</a></td>
-                    <td class="publico">Comunidades tradicionais, povos originários, movimentos socioambientais. Plataforma de presença digital com soberania cultural e de dados.</td>
-                    <td class="tam">
-                        <span class="l">TAM</span><span>R$ 12 bi · econ. solidária global</span>
-                        <span class="l">SAM</span><span>R$ 800 mi · Brasil socioambiental</span>
-                        <span class="l">SOM</span><span>R$ 5 mi · 5 anos</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="nome"><a href="/co-dev/"><span class="glyph">⚙</span>Co Dev</a></td>
-                    <td class="publico">Desenvolvedores e equipes que precisam de framework multi-plataforma escalável desde o primeiro commit. Privacidade e auth nativos.</td>
-                    <td class="tam">
-                        <span class="l">TAM</span><span>R$ 35 bi · dev tools</span>
-                        <span class="l">SAM</span><span>R$ 2 bi · framework full-stack</span>
-                        <span class="l">SOM</span><span>R$ 8 mi · 5 anos</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="nome"><a href="/qa-dev/"><span class="glyph">◐</span>QA Dev</a></td>
-                    <td class="publico">Estudantes, bootcamps, autodidatas. Template open source para aprender construindo — web, mobile, OS nativo, privacidade.</td>
-                    <td class="tam">
-                        <span class="l">TAM</span><span>R$ 22 bi · ed-tech dev</span>
-                        <span class="l">SAM</span><span>R$ 1,5 bi · LatAm + lusofonia</span>
-                        <span class="l">SOM</span><span>R$ 4 mi · 5 anos</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="nome"><a href="/shandara/"><span class="glyph">✦</span>Shandara</a></td>
-                    <td class="publico">Mestres de RPG, narradores, criadores de mundos modulares. Universo de fantasia adaptável a mesa, jogo digital e novas mídias.</td>
-                    <td class="tam">
-                        <span class="l">TAM</span><span>R$ 9 bi · RPG + narrativa</span>
-                        <span class="l">SAM</span><span>R$ 600 mi · RPG digital pt/en</span>
-                        <span class="l">SOM</span><span>R$ 2 mi · 5 anos</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="nome"><a href="/artelonga/"><span class="glyph">○</span>O Universo</a></td>
-                    <td class="publico">Template público e assinável: a linha do tempo da Terra, da humanidade, dos saberes. Base universal sobre a qual todo outro universo se enraíza.</td>
-                    <td class="tam">
-                        <span class="l">TAM</span><span>—</span>
-                        <span class="l">SAM</span><span>aberto · público</span>
-                        <span class="l">SOM</span><span>infraestrutura</span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <p class="nota">
-            TAM/SAM/SOM são estimativas internas baseadas em relatórios públicos de mercado (Statista, IDC, Gartner) cruzados com nossa hipótese de captura. Refinados a cada trimestre conforme tração real.
-        </p>
-
-        <div class="section-header">
-            <h2>Receita</h2>
-            <span class="label">como geramos caixa</span>
-        </div>
-
-        <div class="receita">
-            <div class="receita-bloco">
-                <div class="head">
-                    <span class="num">01</span>
-                    <span class="tag">rede</span>
-                </div>
-                <h3>Serviços · Rede Arte Longa</h3>
-                <p>
-                    Cada universo aloja serviços oferecidos pelos parceiros da rede — gestão de carreira, design, desenvolvimento, produção musical, mentoria, comunicação. Arte Longa intermedia, dá infraestrutura, retém percentual.
-                </p>
-                <div class="formula">
-                    receita <span class="out">=</span> Σ (serviço × parceiro) × take_rate
-                </div>
-            </div>
-            <div class="receita-bloco">
-                <div class="head">
-                    <span class="num">02</span>
-                    <span class="tag">e-commerce</span>
-                </div>
-                <h3>Produtos · digitais e físicos</h3>
-                <p>
-                    E-commerce descentralizado sobre o mesmo stack livre — bens digitais (música, livros, cursos, software) e físicos (tudo o que a rede produz). Sem captura, sem censura arbitrária, segura por desenho.
-                </p>
-                <div class="formula">
-                    receita <span class="out">=</span> Σ (produto × loja) × tarifa_infra
-                </div>
-            </div>
-            <div class="receita-bloco">
-                <div class="head">
-                    <span class="num">03</span>
-                    <span class="tag">cloud</span>
-                </div>
-                <h3>Cloud · storage + compute</h3>
-                <p>
-                    Universos rodam em algum lugar. Oferecemos hospedagem soberana — armazenamento E2E e poder de processamento — como serviço gerenciado pra quem não quer manter infra própria. Mesma stack livre, sem aprisionamento: você pode migrar a qualquer momento.
-                </p>
-                <div class="formula">
-                    receita <span class="out">=</span> (GB × mês) <span class="out">+</span> (CPU·h <span class="out">+</span> GPU·h)
-                </div>
-            </div>
-        </div>
-
-        <p class="nota">
-            As três fontes compartilham a mesma infra (Co + universos federados + E2E). Margem cresce com escala porque o software livre elimina licenciamento e o cliente é dono dos próprios dados — pode sair quando quiser, exportando suas chaves.
-        </p>
-
-        <div class="section-header">
-            <h2>Compromisso Q2</h2>
-            <span class="label">2026 · marco de credibilidade</span>
-        </div>
-
-        <div class="selo-gnu">
-            <div class="glyph">⌘</div>
-            <div class="body">
-                <div class="ttl">GNU GPL · fim do Q2 2026</div>
-                <div class="lema">Co é liberado como software livre — incluindo todos os universos-template (O Universo, Co, Yggdrasil, Shandara, Quilombo Araucária).</div>
-                <div class="meta">→ confiança auditável, não prometida</div>
-            </div>
-        </div>
-
-        <p class="nota">
-            Software livre é a única estrutura compatível com soberania de dados real. Sem código aberto, "privacidade" é promessa de marketing. Com GPL, é matemática verificável.
-        </p>
-
-        <div class="section-header">
-            <h2>Termos de Investimento</h2>
+            <h2>Termos</h2>
             <span class="label">como entrar · como sair</span>
         </div>
 
         <div class="termos">
             <p>
-                Investir na Arte Longa é um <strong>empréstimo conversível em participação</strong>. Você compra pelo preço atual e, no fim do trimestre, decide com a gente: ou convertemos a dívida em participação societária, ou recompramos a sua parte corrigida por <strong>100% do CDI</strong>. Risco zero, potencial de retorno claro.
+                Você compra pelo preço atual. No fim do trimestre, decide com a gente:
+                <strong>convertemos</strong> a dívida em participação societária <strong>ou</strong>
+                recompramos sua parte corrigida por <strong>100% do CDI</strong>.
             </p>
             <p>
-                A transparência é parte do trato — você acompanha operações e valuation em tempo real num <strong>dashboard exclusivo para parceiros</strong>. E ainda recebe <strong>acesso privilegiado a serviços e soluções</strong>: tarifas reduzidas, disponibilidade aumentada, entrega prioritária e <strong>acesso antecipado a soluções em ambientes de teste</strong>.
+                Transparência é parte do trato — você acompanha operações e valuation
+                em <strong>dashboard exclusivo para parceiros</strong>. E ganha
+                <strong>acesso privilegiado a serviços e soluções</strong>: tarifas reduzidas,
+                disponibilidade aumentada, entrega prioritária e acesso antecipado a soluções
+                em ambientes de teste.
             </p>
             <p>
-                Com o crescimento atual, projetamos <a href="/recursos/">R$ 75.000</a> em receita no trimestre — suficiente para cobrir custos operacionais e dedicar o período inteiro a teste, validação e melhoria, preparando expansão a partir do Q3. Seu aporte acelera essa conversão de caixa. O desejo é mostrar crescimento de valuation para que faça sentido você ficar de vez na família.
+                Projeção do trimestre: <a href="/recursos/">R$ 75.000</a> em receita —
+                cobre operação e libera o período pra teste, validação e melhoria,
+                preparando expansão a partir do Q3. Seu aporte acelera a conversão de caixa.
             </p>
         </div>
 
         <p class="cta">
             Conversar →
-            <a href="mailto:rede@artelonga.com.br?subject=Oportunidade%20%C2%B7%20Tese%20Arte%20Longa">rede@artelonga.com.br</a>
+            <a href="mailto:rede@artelonga.com.br?subject=Oportunidade%20%C2%B7%20Arte%20Longa">rede@artelonga.com.br</a>
         </p>
 
         <a class="back" href="/">← voltar</a>
     </main>
 
-    <script src="/assets/data.js?v=20260513"></script>
+    <footer class="site-footer">
+        <div class="site-footer-inner">
+            <span class="site-footer-lbl">Quem está por trás</span>
+            <a href="/parceiros/">Parceiros</a>
+            <span class="sep">·</span>
+            <a href="/sobre/">Sobre</a>
+            <span class="sep">·</span>
+            <a href="/proximos-passos/">Próximos passos</a>
+        </div>
+    </footer>
 </body>
 </html>
