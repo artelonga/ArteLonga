@@ -419,26 +419,12 @@
 
                 <p class="market-all"><a href="/servicos/">Catálogo completo →</a></p>
 
-                <!-- CTA secundário · prestador de serviço. Discreto, abaixo do catálogo. -->
+                <!-- CTA secundário · prestador de serviço. Linka pra landing dedicada. -->
                 <section class="prestador-cta">
                     <h2 class="prestador-h2">Tempo para se expressar.</h2>
                     <p class="prestador-tag">Te acompanhamos do primeiro contrato à aposentadoria.</p>
-                    <ul class="prestador-opts" role="list">
-                        <li>
-                            <a class="prestador-opt" href="mailto:${REDE_EMAIL}?subject=Fa%C3%A7o%20parte%20da%20rede%20%C2%B7%20Possuo%20CNPJ">
-                                <span class="prestador-opt-titulo">Possuo CNPJ</span>
-                                <span class="prestador-opt-sub">MEI · ME · etc.</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="prestador-opt" href="mailto:${REDE_EMAIL}?subject=Fa%C3%A7o%20parte%20da%20rede%20%C2%B7%20Preciso%20de%20um%20CNPJ">
-                                <span class="prestador-opt-titulo">Preciso de um CNPJ</span>
-                                <span class="prestador-opt-sub">A gente te orienta</span>
-                            </a>
-                        </li>
-                    </ul>
                     <p class="prestador-call">
-                        <a class="prestador-cta-btn" href="mailto:${REDE_EMAIL}?subject=Fa%C3%A7o%20parte%20da%20rede">Faça parte da rede →</a>
+                        <a class="prestador-cta-btn" href="/faca-parte/">Faça parte da rede →</a>
                     </p>
                 </section>
             </main>
@@ -1250,8 +1236,63 @@
                ).join("")}</ul>`
             : "";
 
-        const ctaLabel = s.isPortfolio ? "Pedir orçamento" : "Falar conosco";
+        const ctaLabelGeneric = s.isPortfolio ? "Pedir orçamento" : "Falar conosco";
         const subject = encodeURIComponent(`${s.isPortfolio ? "Orçamento" : "Sobre o serviço"} · ${s.titulo}`);
+
+        // Card por responsável — quando o prestador tem canal próprio
+        // (WhatsApp/Instagram/tagline), o cliente fala direto com ele.
+        // Sem canal próprio: cai no contato genérico da Arte Longa.
+        function svgWhatsApp() {
+            return `<svg class="svc-cta-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                <path fill="currentColor" d="M20.52 3.48A11.94 11.94 0 0 0 12.06 0C5.5 0 .15 5.34.15 11.91c0 2.1.55 4.15 1.6 5.96L0 24l6.27-1.65a11.9 11.9 0 0 0 5.79 1.5h.01c6.56 0 11.91-5.34 11.91-11.91 0-3.18-1.24-6.17-3.46-8.46zM12.06 21.7h-.01a9.8 9.8 0 0 1-5-1.37l-.36-.21-3.72.98 1-3.62-.24-.37a9.78 9.78 0 1 1 18.13-5.2c0 5.4-4.4 9.79-9.8 9.79zm5.36-7.32c-.29-.15-1.74-.86-2-.96-.27-.1-.46-.15-.66.15-.19.29-.76.96-.93 1.16-.17.19-.34.22-.63.07-.29-.15-1.24-.46-2.36-1.46-.87-.78-1.46-1.74-1.63-2.03-.17-.29-.02-.45.13-.6.13-.13.29-.34.43-.51.15-.17.19-.29.29-.48.1-.19.05-.36-.02-.51-.07-.15-.66-1.6-.91-2.18-.24-.57-.48-.49-.66-.5h-.56c-.19 0-.5.07-.77.36-.27.29-1.02 1-1.02 2.43 0 1.43 1.05 2.81 1.2 3 .15.19 2.07 3.16 5.01 4.43.7.3 1.25.48 1.68.62.7.22 1.34.19 1.85.12.56-.08 1.74-.71 1.99-1.4.24-.69.24-1.27.17-1.4-.07-.13-.27-.21-.56-.36z"/>
+            </svg>`;
+        }
+        function svgInstagram() {
+            return `<svg class="svc-cta-icon" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+                <path fill="currentColor" d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.05.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.05.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.42-.36-1.05-.41-2.23-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.05-.36 2.23-.41 1.27-.06 1.65-.07 4.85-.07M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63c-.79.3-1.46.71-2.13 1.38S.93 3.35.63 4.14C.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.3.79.71 1.46 1.38 2.13.67.67 1.34 1.08 2.13 1.38.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56.79-.3 1.46-.71 2.13-1.38.67-.67 1.08-1.34 1.38-2.13.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91-.3-.79-.71-1.46-1.38-2.13C21.32 1.32 20.65.91 19.86.61c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0zm0 5.84a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32zm0 10.16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.4-11.85a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88z"/>
+            </svg>`;
+        }
+        function provedorCard(p) {
+            const url = p.externalUrl || `/${p.handle}/`;
+            const c = p.contacts;
+            const role = p.role ? `<div class="provedor-role">${esc(p.role)}</div>` : "";
+            if (c) {
+                const waUrl = `https://wa.me/${esc(c.whatsapp)}?text=${encodeURIComponent("Olá " + p.nome + ", vim pelo serviço " + s.titulo + ".")}`;
+                const igUrl = `https://instagram.com/${esc(c.instagram)}`;
+                const tag = c.tagline ? `<p class="provedor-tagline">${esc(c.tagline)}</p>` : "";
+                return `<div class="provedor-card">
+                    <div class="provedor-head">
+                        <a class="provedor-nome" href="${url}">${esc(p.nome)}</a>
+                        ${role}
+                    </div>
+                    ${tag}
+                    <div class="provedor-actions">
+                        <a class="svc-cta-btn svc-cta-wa" href="${waUrl}" target="_blank" rel="noopener">
+                            ${svgWhatsApp()}<span>WhatsApp ${esc(c.whatsappDisplay)}</span>
+                        </a>
+                        <a class="provedor-ig" href="${igUrl}" target="_blank" rel="noopener">
+                            ${svgInstagram()}<span>@${esc(c.instagram)}</span>
+                        </a>
+                    </div>
+                </div>`;
+            }
+            // Fallback: contato genérico Arte Longa.
+            return `<div class="provedor-card">
+                <div class="provedor-head">
+                    <a class="provedor-nome" href="${url}">${esc(p.nome)}</a>
+                    ${role}
+                </div>
+                <div class="provedor-actions">
+                    <a class="svc-cta-btn" href="mailto:${REDE_EMAIL}?subject=${subject}%20-%20${encodeURIComponent(p.nome)}">${ctaLabelGeneric} →</a>
+                </div>
+            </div>`;
+        }
+        const respAtivos = respEntities.filter(p => !AL.isInactive(p.handle));
+        const provedoresHtml = respAtivos.length
+            ? `<div class="provedores">${respAtivos.map(provedorCard).join("")}</div>`
+            : `<p class="svc-cta">
+                <a class="svc-cta-btn" href="mailto:${REDE_EMAIL}?subject=${subject}">${ctaLabelGeneric} →</a>
+               </p>`;
 
         // Exemplos públicos por serviço. Vazio = sem exemplo (mostra "Em breve").
         // Quilombo Araucária aparece nos serviços que efetivamente sustentaram
@@ -1283,9 +1324,7 @@
                 ${summaryHtml}
                 ${attachmentsHtml}
 
-                <p class="svc-cta">
-                    <a class="svc-cta-btn" href="mailto:${REDE_EMAIL}?subject=${subject}">${ctaLabel} →</a>
-                </p>
+                ${provedoresHtml}
 
                 <div class="section-header"><h2>Exemplos</h2><span class="label">trabalhos da rede</span></div>
                 ${exemplosHtml}
