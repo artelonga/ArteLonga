@@ -352,22 +352,30 @@
             .map(c => ({ ...c, items: c.titles.map(t => byTitulo.get(t)).filter(Boolean) }))
             .filter(c => c.items.length);
 
-        // Card: título · paraQuem · preço · fórmula · responsáveis.
-        // Três modos: flatFee (R$ 1.000), hours×rate (com fórmula), Sob consulta
-        // (sem fórmula — clique vira orçamento). Matemática na cara quando aplicável.
+        // Card: título · paraQuem · preço/planos · fórmula · responsáveis.
+        // Modos: planos (lista de pacotes de tempo), hours×rate (preço único +
+        // fórmula), ou Sob consulta. Renderer escolhe automaticamente.
         const card = s => {
             const faixa = AL.computeFaixaPreco(s);
             const metaHtml = s.paraQuem
                 ? `<div class="market-card-meta">${esc(s.paraQuem)}</div>`
                 : "";
-            const priceCls = faixa && faixa.consult ? "market-card-price is-consult" : "market-card-price";
-            const precoHtml = faixa
-                ? `<div class="${priceCls}">${esc(faixa.preco)}</div>${
+            let precoHtml = "";
+            if (faixa.planos) {
+                precoHtml = `<ul class="market-card-planos">${
+                    faixa.planos.map(p => `<li>
+                        <span class="plano-label">${esc(p.label)}</span>
+                        <span class="plano-preco">${esc(p.preco)}</span>
+                    </li>`).join("")
+                }</ul>`;
+            } else if (faixa.preco) {
+                const priceCls = faixa.consult ? "market-card-price is-consult" : "market-card-price";
+                precoHtml = `<div class="${priceCls}">${esc(faixa.preco)}</div>${
                     faixa.formula
                         ? `<div class="market-card-formula">${esc(faixa.formula)}</div>`
                         : ""
-                  }`
-                : "";
+                }`;
+            }
             const cls = s.isPortfolio ? "market-card is-portfolio" : "market-card";
             return `
             <li class="${cls}">
@@ -1193,18 +1201,28 @@
             return `<a href="${url}"${attr}>${esc(e.nome)}</a>`;
         }).join(", ");
 
-        // Meta: pra quem · preço · fórmula (horas × taxa). Tudo derivado de
-        // horas — sem override de string. Renderer mostra os dois lados da
-        // conta de modo painfully explícito.
+        // Meta: pra quem · (preço único OU planos múltiplos). Tudo derivado de
+        // horas — sem override de string. Renderer mostra a conta na cara.
         const faixa = AL.computeFaixaPreco(s);
         const metaParts = [];
         if (s.paraQuem) metaParts.push(`<span class="svc-meta-chunk">${esc(s.paraQuem)}</span>`);
-        if (faixa)      metaParts.push(`<span class="svc-meta-chunk svc-meta-price">${esc(faixa.preco)}</span>`);
+        if (faixa.preco && !faixa.planos) {
+            metaParts.push(`<span class="svc-meta-chunk svc-meta-price">${esc(faixa.preco)}</span>`);
+        }
         const metaHtml = metaParts.length
             ? `<div class="svc-meta">${metaParts.join(`<span class="svc-meta-sep">·</span>`)}</div>`
             : "";
-        const formulaHtml = (faixa && faixa.formula)
+        const formulaHtml = (faixa.formula)
             ? `<div class="svc-formula">${esc(faixa.formula)}</div>`
+            : "";
+        const planosHtml = faixa.planos
+            ? `<ul class="svc-planos">${
+                faixa.planos.map(p => `<li>
+                    <div class="svc-plano-label">${esc(p.label)}</div>
+                    <div class="svc-plano-preco">${esc(p.preco)}</div>
+                    <div class="svc-plano-formula">${esc(p.formula)}</div>
+                </li>`).join("")
+              }</ul>`
             : "";
 
         const portfolioBadge = s.isPortfolio
@@ -1321,6 +1339,7 @@
                 <h1 class="service-title">${esc(s.titulo)}</h1>
                 ${metaHtml}
                 ${formulaHtml}
+                ${planosHtml}
                 <div class="service-resp">Por ${respLinks}</div>
                 ${summaryHtml}
                 ${attachmentsHtml}

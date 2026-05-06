@@ -340,6 +340,13 @@
     //   recurring:          true = serviço mensal recorrente. Sufixo "/mês".
     //   isPortfolio:        true = intersecção pessoa × serviço concreta
     //                        (ex.: "Tortas Salgadas da Veh"). CTA = "Pedir orçamento".
+    //   planos:             array de [{ label, hours, unit? }] — pacotes de tempo
+    //                        nomeados (ex.: "Plano semanal" = 4h, "Plano mensal" =
+    //                        16h). Cada plano é renderizado com label + preço
+    //                        computado (hours × rate dos responsáveis).
+    //                        Override: quando o serviço tem planos, eles renderizam
+    //                        no card e no detalhe — mesmo pra não-sócios. Bom pra
+    //                        prestadores que querem publicar preços-pacote.
     //
     // Validação: deriveServices() emite console.warn se person/community.servicos
     // referencia título inexistente aqui — typos viram erro explícito, não silêncio.
@@ -422,8 +429,20 @@
         { titulo: "Inteligência de Previsão",            paraQuem: "Empresas · fundos", hoursLow: 40, hoursHigh: 400, cnaeNovo: true, cnae: [{ c: "7320-3/00", d: "Pesquisa de mercado e de opinião pública" }, { c: "6311-9/00", d: "Tratamento de dados, provedores de serviços de aplicação e serviços de hospedagem" }] },
         { titulo: "Market Making Preditivo",             paraQuem: "Mercados · plataformas", hoursLow: 40, hoursHigh: 400, cnaeNovo: true, cnae: [{ c: "6619-3/99", d: "Outras atividades auxiliares dos serviços financeiros" }] },
         // ── Sub-serviços de "Saúde Mental" (Raquel cobre a árvore) ──
-        { titulo: "Saúde Mental",                        paraQuem: "Adultos · adolescentes", hoursLow: 1, hoursHigh: 1, unit: "sessão", cnaeNovo: true, cnae: [{ c: "8650-0/03", d: "Atividades de psicologia e psicanálise" }] },
-        { titulo: "Psicologia Clínica",                  parent: "Saúde Mental", paraQuem: "Adultos", hoursLow: 1, hoursHigh: 1, unit: "sessão", cnaeNovo: true, cnae: [{ c: "8650-0/03", d: "Atividades de psicologia e psicanálise" }] },
+        { titulo: "Saúde Mental",                        paraQuem: "Adultos · adolescentes",
+          planos: [
+              { label: "Sessão avulsa", hours: 1 },
+              { label: "Plano semanal · 4 sessões/mês", hours: 4 },
+              { label: "Plano intensivo · 8 sessões/mês", hours: 8 }
+          ],
+          cnaeNovo: true, cnae: [{ c: "8650-0/03", d: "Atividades de psicologia e psicanálise" }] },
+        { titulo: "Psicologia Clínica",                  parent: "Saúde Mental", paraQuem: "Adultos",
+          planos: [
+              { label: "Sessão avulsa", hours: 1 },
+              { label: "Plano semanal · 4 sessões/mês", hours: 4 },
+              { label: "Plano intensivo · 8 sessões/mês", hours: 8 }
+          ],
+          cnaeNovo: true, cnae: [{ c: "8650-0/03", d: "Atividades de psicologia e psicanálise" }] },
         { titulo: "Psicoterapia Psicanalítica",          parent: "Saúde Mental", paraQuem: "Adultos", hoursLow: 1, hoursHigh: 1, unit: "sessão", cnaeNovo: true, cnae: [{ c: "8650-0/03", d: "Atividades de psicologia e psicanálise" }] },
         { titulo: "Psicologia Analítica (Junguiana)",    parent: "Saúde Mental", paraQuem: "Adultos", hoursLow: 1, hoursHigh: 1, unit: "sessão", cnaeNovo: true, cnae: [{ c: "8650-0/03", d: "Atividades de psicologia e psicanálise" }] },
         { titulo: "Psicologia Social e Comunitária",     parent: "Saúde Mental", paraQuem: "Grupos · ONGs", hoursLow: 2, hoursHigh: 8, unit: "grupo", cnaeNovo: true, cnae: [{ c: "8650-0/03", d: "Atividades de psicologia e psicanálise" }] },
@@ -752,38 +771,55 @@
         return Number.isInteger(n) ? `${n}` : `${n}`.replace(".", ",");
     }
     function computeFaixaPreco(s) {
-        if (!s.hoursLow || !s.hoursHigh) {
-            return { preco: "Sob consulta", formula: null, consult: true };
-        }
         const ativos = (s.responsavel || []).filter(h => !isInactive(h));
-        // Regra: só sócios têm preço calculado pela rede (hours × R\$ 100/h).
-        // Qualquer não-sócio na lista → Sob consulta. Eles definem o próprio
-        // preço pelo canal direto (contacts: WhatsApp/Instagram/tagline).
-        if (ativos.length && ativos.some(h => !isSocio(h))) {
-            return { preco: "Sob consulta", formula: null, consult: true };
-        }
         const rates = ativos.length ? ativos.map(rateOf) : [DEFAULT_HOURLY_RATE];
         const minRate = Math.min(...rates);
         const maxRate = Math.max(...rates);
+
+        const ratePart = (minRate === maxRate)
+            ? `${fmtBR(minRate)}/h`
+            : `${fmtBR(minRate)}–${fmtBR(maxRate)}/h`;
+
+        // Modo planos — array de pacotes de tempo nomeados. Override de tudo,
+        // mesmo pra não-sócios (se eles publicam planos, é porque têm preço fechado).
+        if (s.planos && s.planos.length) {
+            const planos = s.planos.map(p => {
+                const low  = p.hours * minRate;
+                const high = p.hours * maxRate;
+                const unitSuffix = p.unit ? `/${p.unit}` : "";
+                const hoursPart = `${fmtHours(p.hours)}h`;
+                const preco = (low === high)
+                    ? `${fmtBR(low)}${unitSuffix}`
+                    : `${fmtBR(low)} – ${fmtBR(high)}${unitSuffix}`;
+                const formula = `${hoursPart} × ${ratePart}`;
+                return { label: p.label, preco, formula };
+            });
+            return { planos, preco: null, formula: null, consult: false };
+        }
+
+        // Sem horas → Sob consulta.
+        if (!s.hoursLow || !s.hoursHigh) {
+            return { planos: null, preco: "Sob consulta", formula: null, consult: true };
+        }
+        // Só sócios têm preço calculado pela rede; qualquer não-sócio → Sob consulta.
+        if (ativos.length && ativos.some(h => !isSocio(h))) {
+            return { planos: null, preco: "Sob consulta", formula: null, consult: true };
+        }
+
         const low  = s.hoursLow  * minRate;
         const high = s.hoursHigh * maxRate;
-
         const unitSuffix = s.recurring ? "/mês" : (s.unit ? `/${s.unit}` : "");
         const isPerUnit = !!s.unit && !s.recurring && s.unit !== "hora";
         const hoursPart = (s.hoursLow === s.hoursHigh)
             ? `${fmtHours(s.hoursLow)}h`
             : `${fmtHours(s.hoursLow)}–${fmtHours(s.hoursHigh)}h`;
-        const ratePart = (minRate === maxRate)
-            ? `${fmtBR(minRate)}/h`
-            : `${fmtBR(minRate)}–${fmtBR(maxRate)}/h`;
-
         const preco = (low === high)
             ? `${fmtBR(low)}${unitSuffix}`
             : `${fmtBR(low)} – ${fmtBR(high)}${unitSuffix}`;
         const formula = isPerUnit
             ? `${hoursPart} por ${s.unit} × ${ratePart}`
             : `${hoursPart} × ${ratePart}`;
-        return { preco, formula, consult: false };
+        return { planos: null, preco, formula, consult: false };
     }
 
     // Roster = what shows on /parceiros/ (top-level people + communities in this order)
