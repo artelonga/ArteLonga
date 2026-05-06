@@ -34,42 +34,58 @@
     font-weight: 700;
 }
 
-/* Filtro de localização — input livre com sugestões via datalist.
-   Serviços digitais (data.digital === true) ignoram o filtro. */
+/* Filtro de localização — 3 inputs inline (Estado · Cidade · Bairro)
+   com datalist limitado ao DB. Default em cinza claro indicando que é
+   editável; ao focar/digitar vira preto. Serviços digital: true ignoram. */
+.market-loc {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    margin: 1.6vh 0 0.6vh;
+    font-size: 0.95rem;
+    color: #444;
+}
+.market-loc-prefix {
+    font-size: 0.78rem;
+    color: #999;
+    letter-spacing: 0.04em;
+}
+.market-loc-sep { color: #c0c0c0; padding: 0 0.05em; }
 .market-loc-input {
-    max-width: 640px;
-    margin: 1.6vh 0 0;
-}
-.market-loc-input .market-loc-label {
-    display: block;
-    font-size: 0.62rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: #666;
-    font-weight: 700;
-    margin-bottom: 0.6vh;
-}
-.market-loc-input input[type="text"] {
-    width: 100%;
     font-family: inherit;
     font-size: 0.95rem;
-    padding: 1.2vh 0.9rem;
-    border: 1px solid #d4d4d4;
-    border-radius: 2px;
-    background: #fff;
+    padding: 0.6vh 0.5rem;
+    border: 1px solid transparent;
+    border-bottom: 1px solid #d4d4d4;
+    background: transparent;
     color: #0a0a0a;
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    width: auto;
+    min-width: 3ch;
+    max-width: 22ch;
+    transition: border-color 0.15s ease, color 0.15s ease;
+    border-radius: 0;
 }
-.market-loc-input input[type="text"]:focus {
+.market-loc-input.is-default { color: #aaa; border-bottom-color: #e4e4e4; }
+.market-loc-input:focus {
     outline: none;
-    border-color: #0a0a0a;
-    box-shadow: 0 0 0 3px rgba(10,10,10,0.08);
+    color: #0a0a0a;
+    border-bottom-color: #0a0a0a;
 }
+/* Auto-size aproximado por field */
+#loc-estado { width: 4ch; }
+#loc-cidade { width: 13ch; }
+#loc-bairro { width: 18ch; }
 .market-loc-help {
     font-size: 0.7rem;
     color: #888;
-    margin-top: 0.5vh;
+    margin-top: 0.4vh;
+    margin-bottom: 2vh;
     letter-spacing: 0.04em;
+}
+@media (max-width: 480px) {
+    .market-loc { gap: 0.3rem; font-size: 0.88rem; }
+    #loc-estado, #loc-cidade, #loc-bairro { width: auto; max-width: none; }
 }
 
 .market-search {
