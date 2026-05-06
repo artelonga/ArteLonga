@@ -423,7 +423,7 @@
         { titulo: "Grafite",                             paraQuem: "Eventos · ativações", hoursLow: 8, hoursHigh: 40, cnaeNovo: true, cnae: [{ c: "9002-7/01", d: "Atividades de artistas plásticos, jornalistas independentes e escritores" }] },
         { titulo: "Meditação",                           paraQuem: "Iniciantes · grupos",
           planos: [
-              { label: "Sob demanda", hours: 1 },
+              { hours: 1 },
               { label: "Semanal" },
               { label: "Mensal" }
           ],
@@ -433,7 +433,7 @@
         // ── Novos CNAEs a formalizar (antes sem classificação) ───────────────
         { titulo: "Acompanhamento Nutricional",          paraQuem: "Adultos · esportistas",
           planos: [
-              { label: "Sob demanda", hours: 1 },
+              { hours: 1 },
               { label: "Semanal" },
               { label: "Mensal" }
           ],
@@ -444,7 +444,7 @@
         { titulo: "Consultoria Jurídica",                paraQuem: "Pequenas empresas · pessoas", hoursLow: 1, hoursHigh: 1, unit: "hora", cnaeNovo: true, cnae: [{ c: "6911-7/01", d: "Serviços advocatícios" }] },
         { titulo: "Cuidado com o Idoso",                 paraQuem: "Famílias · idosos",
           planos: [
-              { label: "Sob demanda", hours: 6 },
+              { hours: 6 },
               { label: "Semanal" },
               { label: "Mensal" }
           ],
@@ -466,7 +466,7 @@
         { titulo: "Psicologia Social e Comunitária",     parent: "Saúde Mental", paraQuem: "Grupos · ONGs", hoursLow: 2, hoursHigh: 8, unit: "grupo", cnaeNovo: true, cnae: [{ c: "8650-0/03", d: "Atividades de psicologia e psicanálise" }] },
         { titulo: "Yoga",                                paraQuem: "Iniciantes · turmas",
           planos: [
-              { label: "Sob demanda", hours: 1 },
+              { hours: 1 },
               { label: "Semanal" },
               { label: "Mensal" }
           ],
@@ -805,24 +805,26 @@
             : `${fmtBR(minRate)}–${fmtBR(maxRate)}/h`;
 
         // Modo planos. Padrão da rede:
-        //   { label: "Sob demanda", hours: N } → computado: N × rate (engajamento atômico)
-        //   { label: "Semanal" }                → "Sob consulta" (volume varia, fala-se direto)
-        //   { label: "Mensal"  }                → "Sob consulta"
-        // Regra geral: plano com `hours` → computado; sem `hours` → Sob consulta.
+        //   { hours: N }              → label "Nh", preço hours × rate (flat fee)
+        //   { label: "Semanal" }      → "Sob demanda" (volume varia, fala-se direto)
+        //   { label: "Mensal"  }      → "Sob demanda"
+        //   { label: "Sob demanda" }  → "Sob demanda"
+        // Regra geral: plano com `hours` → label horária + preço computado;
+        // sem `hours` → label livre + preço "Sob demanda".
         if (s.planos && s.planos.length) {
             const planos = s.planos.map(p => {
                 if (typeof p.hours === "number") {
+                    const hoursPart = `${fmtHours(p.hours)}h`;
                     const low  = p.hours * minRate;
                     const high = p.hours * maxRate;
                     const unitSuffix = p.unit ? `/${p.unit}` : "";
-                    const hoursPart = `${fmtHours(p.hours)}h`;
                     const preco = (low === high)
                         ? `${fmtBR(low)}${unitSuffix}`
                         : `${fmtBR(low)} – ${fmtBR(high)}${unitSuffix}`;
                     const formula = `${hoursPart} × ${ratePart}`;
-                    return { label: p.label, preco, formula, consult: false };
+                    return { label: p.label || hoursPart, preco, formula, consult: false };
                 }
-                return { label: p.label, preco: "Sob consulta", formula: null, consult: true };
+                return { label: p.label, preco: "Sob demanda", formula: null, consult: true };
             });
             return { planos, preco: null, formula: null, consult: false };
         }
