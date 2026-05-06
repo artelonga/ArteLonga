@@ -277,6 +277,83 @@
         </footer>`;
     }
 
+    // Mapeamento de anglicismos → PT pra busca. Quando o usuário digita
+    // "cloud", expandimos pra também buscar "nuvem". Bidirecional opcional
+    // (raramente útil). Match case-insensitive sem acento (já normalizado
+    // antes da consulta).
+    const ANGLICISM_MAP = {
+        "cloud": ["nuvem"],
+        "web": ["site", "página", "pagina", "internet"],
+        "software": ["sistema", "programa"],
+        "data": ["dados"],
+        "database": ["banco", "dados"],
+        "storage": ["armazenamento"],
+        "network": ["rede", "redes"],
+        "hardware": ["máquina", "maquina", "computador"],
+        "security": ["segurança", "seguranca"],
+        "privacy": ["privacidade"],
+        "design": ["design"],
+        "marketing": ["marketing"],
+        "branding": ["marca"],
+        "ux": ["experiência", "experiencia", "usuário", "usuario"],
+        "ui": ["interface"],
+        "api": ["api", "integração", "integracao"],
+        "dev": ["desenvolvimento", "desenvolvedor"],
+        "developer": ["desenvolvedor", "desenvolvimento"],
+        "code": ["código", "codigo", "desenvolvimento"],
+        "frontend": ["front", "interface", "web"],
+        "backend": ["back", "api", "servidor"],
+        "fullstack": ["desenvolvimento"],
+        "saas": ["software", "sistema", "nuvem"],
+        "ai": ["inteligência", "inteligencia", "ia"],
+        "ml": ["inteligência", "inteligencia", "ia"],
+        "analytics": ["análise", "analise", "dados"],
+        "audit": ["auditoria"],
+        "audit": ["auditoria"],
+        "consulting": ["consultoria"],
+        "automation": ["automação", "automacao"],
+        "drone": ["drone", "piloto"],
+        "photography": ["fotografia", "foto"],
+        "video": ["vídeo", "video", "filmagem"],
+        "music": ["música", "musica", "produção"],
+        "event": ["evento", "festa"],
+        "wedding": ["casamento", "evento"],
+        "burger": ["hambúrguer", "hamburguer"],
+        "food": ["alimentação", "alimentacao", "comida"],
+        "yoga": ["yoga"],
+        "meditation": ["meditação", "meditacao"],
+        "therapy": ["terapia", "psicologia"],
+        "counseling": ["psicologia", "terapia"],
+        "psychology": ["psicologia"],
+        "nutrition": ["nutrição", "nutricao", "nutricional"],
+        "elder": ["idoso", "cuidado"],
+        "elderly": ["idoso", "cuidado"],
+        "school": ["ensino", "escolar"],
+        "tutoring": ["reforço", "reforco", "ensino"],
+        "education": ["educação", "educacao", "ensino"],
+        "translate": ["tradução", "traducao"],
+        "translation": ["tradução", "traducao"],
+        "writing": ["escrita"],
+        "content": ["conteúdo", "conteudo"],
+        "fashion": ["moda", "stylist"],
+        "stylist": ["stylist", "moda"],
+        "drywall": ["drywall", "construção", "construcao"],
+        "construction": ["construção", "construcao"],
+        "agriculture": ["agro", "agrofloresta"],
+        "compost": ["compostagem"],
+        "art": ["arte", "artes"],
+        "graffiti": ["grafite"],
+        "mural": ["mural", "fachada"]
+    };
+    function expandQuery(tokens) {
+        const out = new Set(tokens);
+        for (const t of tokens) {
+            const synonyms = ANGLICISM_MAP[t];
+            if (synonyms) synonyms.forEach(s => out.add(s));
+        }
+        return [...out];
+    }
+
     // Supercategorias — agrupamento de descoberta para o catálogo.
     // Match é por título exato; serviços ausentes em publicServices() são
     // simplesmente ignorados (a categoria some se ficar vazia).
@@ -310,6 +387,13 @@
         { id: "casa",       label: "Casa",        titles: [
             "Drywall e Bioconstrução", "Murais e Fachadas", "Grafite",
             "Agrofloresta", "Compostagem"
+        ]},
+        { id: "gestao",     label: "Gestão",      titles: [
+            "Gestão Executiva", "Gestão Operacional", "Gestão de Logística", "Gestão de Vendas",
+            "Gestão Contábil", "Gestão Fiscal", "Gestão Financeira", "Gestão Administrativa",
+            "Consultoria Jurídica", "Auditoria", "Marketing Digital", "Design",
+            "Tecnologia", "Inteligência e Tecnologia", "Inteligência de Previsão",
+            "Automação de Processos", "Conexões", "Rede de Parcerias", "Rede de Talentos"
         ]},
         { id: "negocios",   label: "Negócios",    titles: [
             "Gestão Administrativa", "Gestão Contábil", "Gestão Executiva",
@@ -421,28 +505,25 @@
                     </form>
 
                     <div class="market-loc">
-                        <span class="market-loc-prefix">Em</span>
-                        <span class="market-loc-field">
+                        <span class="market-loc-field" id="loc-estado-wrap">
                             <input type="text" id="loc-estado" class="market-loc-input is-default"
                                    value="${esc(defLoc.estado)}" autocomplete="off" spellcheck="false"
-                                   aria-label="Estado" aria-autocomplete="list" aria-controls="dd-estado"
-                                   data-field="estado">
+                                   placeholder="Estado" aria-label="Estado"
+                                   aria-autocomplete="list" aria-controls="dd-estado" data-field="estado">
                             <ul class="loc-dropdown" id="dd-estado" hidden role="listbox"></ul>
                         </span>
-                        <span class="market-loc-sep">·</span>
                         <span class="market-loc-field">
                             <input type="text" id="loc-cidade" class="market-loc-input is-default"
                                    value="${esc(defLoc.cidade)}" autocomplete="off" spellcheck="false"
-                                   aria-label="Cidade" aria-autocomplete="list" aria-controls="dd-cidade"
-                                   data-field="cidade">
+                                   placeholder="Cidade" aria-label="Cidade"
+                                   aria-autocomplete="list" aria-controls="dd-cidade" data-field="cidade">
                             <ul class="loc-dropdown" id="dd-cidade" hidden role="listbox"></ul>
                         </span>
-                        <span class="market-loc-sep">·</span>
                         <span class="market-loc-field">
                             <input type="text" id="loc-bairro" class="market-loc-input is-default"
                                    value="${esc(defLoc.bairro)}" autocomplete="off" spellcheck="false"
-                                   aria-label="Bairro" aria-autocomplete="list" aria-controls="dd-bairro"
-                                   data-field="bairro">
+                                   placeholder="Bairro" aria-label="Bairro"
+                                   aria-autocomplete="list" aria-controls="dd-bairro" data-field="bairro">
                             <ul class="loc-dropdown" id="dd-bairro" hidden role="listbox"></ul>
                         </span>
                     </div>
@@ -466,7 +547,7 @@
                     <a href="mailto:${REDE_EMAIL}?subject=Encontrar%20uma%20solu%C3%A7%C3%A3o">Entre em contato para encontrarmos uma solução →</a>
                 </p>
 
-                <p class="market-all"><a href="/servicos/">Catálogo completo →</a></p>
+                <p class="market-all"><a href="/servicos/">Rede completa →</a></p>
             </main>
             ${siteFooter()}
         `;
@@ -497,11 +578,18 @@
             const q = norm(input.value.trim());
             const tokens = q ? q.split(/\s+/).filter(Boolean) : [];
 
-            // Busca fuzzy = todas as palavras precisam estar no blob.
+            // Busca fuzzy = cada palavra precisa estar no blob (ou um sinônimo
+            // do mapeamento de anglicismos: "cloud" casa "nuvem", etc.).
             // Sem busca: respeita supercat ativa e mostra só top-level.
             let list;
             if (tokens.length) {
-                list = indexed.filter(({ blob }) => tokens.every(t => blob.includes(t))).map(x => x.s);
+                list = indexed.filter(({ blob }) =>
+                    tokens.every(t => {
+                        if (blob.includes(t)) return true;
+                        const syns = ANGLICISM_MAP[t];
+                        return syns ? syns.some(s => blob.includes(s)) : false;
+                    })
+                ).map(x => x.s);
             } else if (activeCat) {
                 const cat = cats.find(c => c.id === activeCat);
                 list = cat ? cat.items : [];
@@ -785,9 +873,9 @@
             ${siteHeader()}
             <main class="main">
                 <h1 class="page-title">Serviços</h1>
-                <div class="page-subtitle">Arte Longa · catálogo · São Paulo · Jardim Umarizal</div>
+                <div class="page-subtitle">Arte Longa · rede completa</div>
 
-                <div class="section-header"><h2>Catálogo</h2><span class="label">clique para abrir · hover revela sub-serviços</span></div>
+                <div class="section-header"><h2>Rede</h2><span class="label">clique para abrir · hover revela sub-serviços</span></div>
                 <div class="controls"><input type="search" id="search" placeholder="Buscar serviço…" autocomplete="off"></div>
                 <div class="count" id="count"></div>
                 <ul class="portfolio-list" id="portfolio-list"></ul>
@@ -1453,7 +1541,7 @@
         document.body.innerHTML = `
             ${siteHeader()}
             <main class="main">
-                <div class="service-crumb"><a href="/servicos/">← Catálogo</a></div>
+                <div class="service-crumb"><a href="/servicos/">← Rede</a></div>
                 <h1 class="service-title">${esc(s.titulo)}</h1>
                 ${metaHtml}
                 ${formulaHtml}
@@ -1469,7 +1557,7 @@
 
                 ${related.length ? `<div class="section-header"><h2>Veja também</h2><span class="label">serviços relacionados</span></div>${relHtml}` : ""}
 
-                <a class="back" href="/servicos/">← voltar ao catálogo</a>
+                <a class="back" href="/servicos/">← voltar à rede</a>
             </main>
             ${siteFooter()}
         `;
