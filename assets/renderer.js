@@ -363,10 +363,14 @@
             let precoHtml = "";
             if (faixa.planos) {
                 precoHtml = `<ul class="market-card-planos">${
-                    faixa.planos.map(p => `<li>
-                        <span class="plano-label">${esc(p.label)}</span>
-                        <span class="plano-preco">${esc(p.preco)}</span>
-                    </li>`).join("")
+                    faixa.planos.map(p => {
+                        const cls = p.consult ? "is-consult" : "";
+                        const right = p.consult ? "Falar →" : esc(p.preco);
+                        return `<li class="${cls}">
+                            <span class="plano-label">${esc(p.label)}</span>
+                            <span class="plano-preco">${right}</span>
+                        </li>`;
+                    }).join("")
                 }</ul>`;
             } else if (faixa.preco) {
                 const priceCls = faixa.consult ? "market-card-price is-consult" : "market-card-price";
@@ -1217,11 +1221,20 @@
             : "";
         const planosHtml = faixa.planos
             ? `<ul class="svc-planos">${
-                faixa.planos.map(p => `<li>
-                    <div class="svc-plano-label">${esc(p.label)}</div>
-                    <div class="svc-plano-preco">${esc(p.preco)}</div>
-                    <div class="svc-plano-formula">${esc(p.formula)}</div>
-                </li>`).join("")
+                faixa.planos.map(p => {
+                    if (p.consult) {
+                        return `<li class="is-consult">
+                            <div class="svc-plano-label">${esc(p.label)}</div>
+                            <div class="svc-plano-preco">Falar →</div>
+                            <div class="svc-plano-formula">orçamento personalizado</div>
+                        </li>`;
+                    }
+                    return `<li>
+                        <div class="svc-plano-label">${esc(p.label)}</div>
+                        <div class="svc-plano-preco">${esc(p.preco)}</div>
+                        <div class="svc-plano-formula">${esc(p.formula)}</div>
+                    </li>`;
+                }).join("")
               }</ul>`
             : "";
 

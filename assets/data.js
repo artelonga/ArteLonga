@@ -399,9 +399,9 @@
         { titulo: "Stylist, Moda e Passarela",           paraQuem: "Marcas · eventos", hoursLow: 4, hoursHigh: 20, cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade" }] },
         { titulo: "Tortas Salgadas da Veh", isPortfolio: true, paraQuem: "Eventos · empresas",
           planos: [
-              { label: "Encomenda · 5 tortas", hours: 4 },
-              { label: "Encomenda · 10 tortas", hours: 8 },
-              { label: "Bandeja · 25 tortas", hours: 20 }
+              { label: "Semanal", hours: 4 },
+              { label: "Mensal", hours: 16 },
+              { label: "Sob demanda" }
           ],
           cnae: [{ c: "5620-1/02", d: "Serviços de alimentação — bufê" }] },
         { titulo: "Tradução de Inglês",                  paraQuem: "Empresas · autores", hoursLow: 0.003, hoursHigh: 0.005, unit: "palavra", cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
@@ -418,9 +418,9 @@
         { titulo: "Grafite",                             paraQuem: "Eventos · ativações", hoursLow: 8, hoursHigh: 40, cnaeNovo: true, cnae: [{ c: "9002-7/01", d: "Atividades de artistas plásticos, jornalistas independentes e escritores" }] },
         { titulo: "Meditação",                           paraQuem: "Iniciantes · grupos",
           planos: [
-              { label: "Aula avulsa", hours: 1 },
-              { label: "Plano mensal · 4 aulas", hours: 4 },
-              { label: "Retiro de fim de semana", hours: 16 }
+              { label: "Semanal", hours: 1 },
+              { label: "Mensal", hours: 4 },
+              { label: "Sob demanda" }
           ],
           cnaeNovo: true, cnae: [{ c: "8690-9/99", d: "Outras atividades de atenção à saúde humana" }] },
         { titulo: "Rede de Talentos",                    paraQuem: "Empresas · contratantes", cnaeNovo: true, cnae: [{ c: "7810-8/00", d: "Seleção e agenciamento de mão-de-obra" }] },
@@ -428,9 +428,9 @@
         // ── Novos CNAEs a formalizar (antes sem classificação) ───────────────
         { titulo: "Acompanhamento Nutricional",          paraQuem: "Adultos · esportistas",
           planos: [
-              { label: "Consulta avulsa", hours: 1 },
-              { label: "Acompanhamento mensal · 2 consultas", hours: 2 },
-              { label: "Acompanhamento trimestral · 6 consultas", hours: 6 }
+              { label: "Semanal", hours: 0.5 },
+              { label: "Mensal", hours: 2 },
+              { label: "Sob demanda" }
           ],
           cnaeNovo: true, cnae: [{ c: "8650-0/02", d: "Atividades de profissionais da nutrição" }] },
         { titulo: "Autocuidado",                         paraQuem: "Adultos", hoursLow: 1, hoursHigh: 2, unit: "sessão", cnaeNovo: true, cnae: [{ c: "8690-9/99", d: "Outras atividades de atenção à saúde humana" }] },
@@ -438,9 +438,9 @@
         { titulo: "Consultoria Jurídica",                paraQuem: "Pequenas empresas · pessoas", hoursLow: 1, hoursHigh: 1, unit: "hora", cnaeNovo: true, cnae: [{ c: "6911-7/01", d: "Serviços advocatícios" }] },
         { titulo: "Cuidado com o Idoso",                 paraQuem: "Famílias · idosos",
           planos: [
-              { label: "Diária 6h", hours: 6 },
-              { label: "Plano semanal · 5 diárias", hours: 30 },
-              { label: "Plano mensal · 22 diárias", hours: 132 }
+              { label: "Semanal", hours: 30 },
+              { label: "Mensal", hours: 132 },
+              { label: "Sob demanda" }
           ],
           cnaeNovo: true, cnae: [{ c: "8712-3/00", d: "Serviços de assistência à saúde prestados a pacientes fora de unidades de saúde" }] },
         { titulo: "Desenho Botânico",                    paraQuem: "Editoras · coleções", hoursLow: 8, hoursHigh: 40, cnaeNovo: true, cnae: [{ c: "9002-7/01", d: "Atividades de artistas plásticos, jornalistas independentes e escritores" }] },
@@ -460,9 +460,9 @@
         { titulo: "Psicologia Social e Comunitária",     parent: "Saúde Mental", paraQuem: "Grupos · ONGs", hoursLow: 2, hoursHigh: 8, unit: "grupo", cnaeNovo: true, cnae: [{ c: "8650-0/03", d: "Atividades de psicologia e psicanálise" }] },
         { titulo: "Yoga",                                paraQuem: "Iniciantes · turmas",
           planos: [
-              { label: "Aula avulsa", hours: 1 },
-              { label: "Plano semanal · 1×/semana", hours: 4 },
-              { label: "Plano intensivo · 3×/semana", hours: 12 }
+              { label: "Semanal", hours: 1 },
+              { label: "Mensal", hours: 4 },
+              { label: "Sob demanda" }
           ],
           cnaeNovo: true, cnae: [{ c: "9313-1/00", d: "Atividades de condicionamento físico" }, { c: "8690-9/99", d: "Outras atividades de atenção à saúde humana" }] },
 
@@ -798,10 +798,17 @@
             ? `${fmtBR(minRate)}/h`
             : `${fmtBR(minRate)}–${fmtBR(maxRate)}/h`;
 
-        // Modo planos — array de pacotes de tempo nomeados. Override de tudo,
-        // mesmo pra não-sócios (se eles publicam planos, é porque têm preço fechado).
+        // Modo planos — array de pacotes nomeados. Padrão da rede:
+        //   { label: "Semanal", hours: N }
+        //   { label: "Mensal",  hours: M }
+        //   { label: "Sob demanda" }   ← sem hours = CTA, sem preço computado
+        // Override de tudo, mesmo pra não-sócios (se publicam planos, é porque
+        // têm pacote-padrão).
         if (s.planos && s.planos.length) {
             const planos = s.planos.map(p => {
+                if (typeof p.hours !== "number") {
+                    return { label: p.label, preco: null, formula: null, consult: true };
+                }
                 const low  = p.hours * minRate;
                 const high = p.hours * maxRate;
                 const unitSuffix = p.unit ? `/${p.unit}` : "";
@@ -810,7 +817,7 @@
                     ? `${fmtBR(low)}${unitSuffix}`
                     : `${fmtBR(low)} – ${fmtBR(high)}${unitSuffix}`;
                 const formula = `${hoursPart} × ${ratePart}`;
-                return { label: p.label, preco, formula };
+                return { label: p.label, preco, formula, consult: false };
             });
             return { planos, preco: null, formula: null, consult: false };
         }
