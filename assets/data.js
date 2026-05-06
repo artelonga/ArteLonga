@@ -426,12 +426,13 @@
           ],
           cnae: [{ c: "5620-1/02", d: "Serviços de alimentação — bufê" }] },
         // ── Tradução · parent + sub-pares de idiomas ──
-        { titulo: "Tradução",                            paraQuem: "Empresas · autores · pesquisadores", digital: true, cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
-        { titulo: "Tradução PT-EN",                      parent: "Tradução", implicitResponsavel: ["ramona"], paraQuem: "Português → Inglês", digital: true, cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
-        { titulo: "Tradução PT-DE",                      parent: "Tradução", implicitResponsavel: ["ramona"], paraQuem: "Português → Alemão", digital: true, cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
-        { titulo: "Tradução EN-DE",                      parent: "Tradução", implicitResponsavel: ["ramona"], paraQuem: "Inglês → Alemão", digital: true, cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
+        // Padrão da rede: 0,003-0,005h por palavra → R\$ 0,30 – R\$ 0,50/palavra.
+        { titulo: "Tradução",                            paraQuem: "Empresas · autores · pesquisadores", digital: true, hoursLow: 0.003, hoursHigh: 0.005, unit: "palavra", cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
+        { titulo: "Tradução PT-EN",                      parent: "Tradução", implicitResponsavel: ["ramona"], paraQuem: "Português → Inglês", digital: true, hoursLow: 0.003, hoursHigh: 0.005, unit: "palavra", cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
+        { titulo: "Tradução PT-DE",                      parent: "Tradução", implicitResponsavel: ["ramona"], paraQuem: "Português → Alemão", digital: true, hoursLow: 0.003, hoursHigh: 0.005, unit: "palavra", cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
+        { titulo: "Tradução EN-DE",                      parent: "Tradução", implicitResponsavel: ["ramona"], paraQuem: "Inglês → Alemão", digital: true, hoursLow: 0.003, hoursHigh: 0.005, unit: "palavra", cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
         { titulo: "Tradução EN-PT",                      parent: "Tradução", implicitResponsavel: ["yuri"], paraQuem: "Inglês → Português", digital: true, hoursLow: 0.003, hoursHigh: 0.005, unit: "palavra", cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
-        { titulo: "Tradução PT-Guarani",                 parent: "Tradução", implicitResponsavel: ["denise"], paraQuem: "Português → Guarani", digital: true, cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
+        { titulo: "Tradução PT-Guarani",                 parent: "Tradução", implicitResponsavel: ["denise"], paraQuem: "Português → Guarani", digital: true, hoursLow: 0.003, hoursHigh: 0.005, unit: "palavra", cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
         { titulo: "Tradução Guarani-PT",                 parent: "Tradução", implicitResponsavel: ["yuri"], paraQuem: "Guarani → Português", digital: true, hoursLow: 0.003, hoursHigh: 0.005, unit: "palavra", cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
 
         // ── Gaps de missões (serviços novos criados pra fechar ponte) ────────
@@ -995,7 +996,27 @@ digital: true,           planos: [
         if (!s.hoursLow || !s.hoursHigh) {
             return { planos: null, preco: "Sob consulta", formula: null, consult: true };
         }
-        // Não-sócios definem preço próprio → Sob consulta + canal direto.
+
+        // Per-unit pricing (palavra, torta, sessão, etc.) usa rate da rede e
+        // mostra o total computado — não respeita non-sócio rule, porque
+        // preço por unidade é padrão da rede, não negociado individualmente.
+        const isPerUnit = !!s.unit && !s.recurring && s.unit !== "hora";
+        if (isPerUnit) {
+            const useRate = DEFAULT_HOURLY_RATE;
+            const low  = s.hoursLow  * useRate;
+            const high = s.hoursHigh * useRate;
+            const unitSuffix = `/${s.unit}`;
+            const hoursPart = (s.hoursLow === s.hoursHigh)
+                ? `${fmtHours(s.hoursLow)}h por ${s.unit}`
+                : `${fmtHours(s.hoursLow)}–${fmtHours(s.hoursHigh)}h por ${s.unit}`;
+            const preco = (low === high)
+                ? `${fmtBR(low)}${unitSuffix}`
+                : `${fmtBR(low)} – ${fmtBR(high)}${unitSuffix}`;
+            const formula = `${hoursPart} × ${fmtBR(useRate)}/h`;
+            return { planos: null, preco, formula, consult: false };
+        }
+
+        // Não-sócios em serviço por projeto → Sob consulta + canal direto.
         if (ativos.length && ativos.some(h => !isSocio(h))) {
             return { planos: null, preco: "Sob consulta", formula: null, consult: true };
         }
