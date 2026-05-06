@@ -433,6 +433,7 @@
 
                 <!-- CTA secundário · prestador de serviço. Linka pra landing dedicada. -->
                 <section class="prestador-cta">
+                    <div class="prestador-eyebrow">Para parceiros</div>
                     <h2 class="prestador-h2">Tempo para se expressar.</h2>
                     <p class="prestador-tag">Te acompanhamos do primeiro contrato à aposentadoria.</p>
                     <p class="prestador-call">

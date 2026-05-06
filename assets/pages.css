@@ -237,6 +237,14 @@
     border-left: 3px solid #0a0a0a;
     border-radius: 2px;
 }
+.prestador-eyebrow {
+    font-size: 0.65rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: #0a0a0a;
+    font-weight: 700;
+    margin-bottom: 1.2vh;
+}
 .prestador-h2 {
     font-size: clamp(1.4rem, 3vw, 1.9rem);
     font-weight: 800;
