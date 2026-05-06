@@ -72,6 +72,35 @@
     color: #0a0a0a;
     border-bottom-color: #0a0a0a;
 }
+.market-loc-field {
+    position: relative;
+    display: inline-block;
+}
+.loc-dropdown {
+    position: absolute;
+    top: calc(100% + 2px);
+    left: 0;
+    min-width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    list-style: none;
+    margin: 0;
+    padding: 0.4vh 0;
+    background: #fff;
+    border: 1px solid #d4d4d4;
+    border-radius: 2px;
+    box-shadow: 0 4px 12px rgba(10,10,10,0.08);
+    z-index: 10;
+}
+.loc-dropdown li {
+    padding: 0.9vh 0.9rem;
+    font-size: 0.9rem;
+    color: #0a0a0a;
+    cursor: pointer;
+    white-space: nowrap;
+}
+.loc-dropdown li:hover { background: #f4f4f4; }
+
 /* Auto-size aproximado por field */
 #loc-estado { width: 4ch; }
 #loc-cidade { width: 13ch; }

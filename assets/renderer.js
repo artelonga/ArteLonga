@@ -422,20 +422,29 @@
 
                     <div class="market-loc">
                         <span class="market-loc-prefix">Em</span>
-                        <input type="text" id="loc-estado" class="market-loc-input is-default" list="dl-estados"
-                               value="${esc(defLoc.estado)}" autocomplete="off"
-                               aria-label="Estado" data-field="estado">
+                        <span class="market-loc-field">
+                            <input type="text" id="loc-estado" class="market-loc-input is-default"
+                                   value="${esc(defLoc.estado)}" autocomplete="off" spellcheck="false"
+                                   aria-label="Estado" aria-autocomplete="list" aria-controls="dd-estado"
+                                   data-field="estado">
+                            <ul class="loc-dropdown" id="dd-estado" hidden role="listbox"></ul>
+                        </span>
                         <span class="market-loc-sep">·</span>
-                        <input type="text" id="loc-cidade" class="market-loc-input is-default" list="dl-cidades"
-                               value="${esc(defLoc.cidade)}" autocomplete="off"
-                               aria-label="Cidade" data-field="cidade">
+                        <span class="market-loc-field">
+                            <input type="text" id="loc-cidade" class="market-loc-input is-default"
+                                   value="${esc(defLoc.cidade)}" autocomplete="off" spellcheck="false"
+                                   aria-label="Cidade" aria-autocomplete="list" aria-controls="dd-cidade"
+                                   data-field="cidade">
+                            <ul class="loc-dropdown" id="dd-cidade" hidden role="listbox"></ul>
+                        </span>
                         <span class="market-loc-sep">·</span>
-                        <input type="text" id="loc-bairro" class="market-loc-input is-default" list="dl-bairros"
-                               value="${esc(defLoc.bairro)}" autocomplete="off"
-                               aria-label="Bairro" data-field="bairro">
-                        <datalist id="dl-estados">${locOpts.estados.map(v => `<option value="${esc(v)}">`).join("")}</datalist>
-                        <datalist id="dl-cidades">${locOpts.cidades.map(v => `<option value="${esc(v)}">`).join("")}</datalist>
-                        <datalist id="dl-bairros">${locOpts.bairros.map(v => `<option value="${esc(v)}">`).join("")}</datalist>
+                        <span class="market-loc-field">
+                            <input type="text" id="loc-bairro" class="market-loc-input is-default"
+                                   value="${esc(defLoc.bairro)}" autocomplete="off" spellcheck="false"
+                                   aria-label="Bairro" aria-autocomplete="list" aria-controls="dd-bairro"
+                                   data-field="bairro">
+                            <ul class="loc-dropdown" id="dd-bairro" hidden role="listbox"></ul>
+                        </span>
                     </div>
                     <p class="market-loc-help">Clique pra editar. Serviços digitais aparecem em qualquer lugar.</p>
 
@@ -527,26 +536,74 @@
             input.focus();
         });
 
-        // 3 inputs de localização (estado/cidade/bairro). Default em cinza
-        // (.is-default); ao focar pela primeira vez seleciona tudo pra
-        // facilitar substituir. Ao digitar perde o cinza.
+        // 3 inputs de localização (estado/cidade/bairro). Cada um tem dropdown
+        // próprio (não-datalist, evita autofill do browser). Mostra só o que
+        // existe no DB; digitar fora retorna sem sugestões — o filtro mesmo
+        // assim aplica e provavelmente não retorna serviços (exceto digitais).
+        const locOptsByField = {
+            estado: locOpts.estados,
+            cidade: locOpts.cidades,
+            bairro: locOpts.bairros
+        };
         let locDebounce;
+        function _normLoc(s) { return String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").trim(); }
+        function renderDropdown(field) {
+            const el = locFields[field];
+            const dd = document.getElementById("dd-" + field);
+            const q = _normLoc(el.value);
+            const list = locOptsByField[field].filter(v => !q || _normLoc(v).includes(q));
+            if (!list.length) {
+                dd.hidden = true;
+                dd.innerHTML = "";
+                return;
+            }
+            dd.innerHTML = list.map(v =>
+                `<li role="option" data-val="${esc(v)}">${esc(v)}</li>`
+            ).join("");
+            dd.hidden = false;
+        }
+        function closeAllDropdowns() {
+            document.querySelectorAll(".loc-dropdown").forEach(d => d.hidden = true);
+        }
         ["estado", "cidade", "bairro"].forEach(field => {
             const el = locFields[field];
+            const dd = document.getElementById("dd-" + field);
+
             el.addEventListener("focus", () => {
                 if (!touchedFields[field]) el.select();
+                renderDropdown(field);
             });
             el.addEventListener("input", () => {
                 el.classList.remove("is-default");
                 touchedFields[field] = true;
                 activeFilters[field] = el.value.trim();
+                renderDropdown(field);
                 clearTimeout(locDebounce);
                 locDebounce = setTimeout(applyFilter, 120);
             });
-            el.addEventListener("change", () => {
+            el.addEventListener("blur", () => {
+                // Delay pra clique em option chegar antes do hide
+                setTimeout(() => { dd.hidden = true; }, 120);
+            });
+            el.addEventListener("keydown", e => {
+                if (e.key === "Escape") { dd.hidden = true; el.blur(); }
+            });
+            dd.addEventListener("mousedown", e => {
+                // mousedown evita o blur antes do click
+                const li = e.target.closest("li[data-val]");
+                if (!li) return;
+                e.preventDefault();
+                el.value = li.dataset.val;
+                el.classList.remove("is-default");
+                touchedFields[field] = true;
                 activeFilters[field] = el.value.trim();
+                dd.hidden = true;
                 applyFilter();
             });
+        });
+        // Click fora fecha
+        document.addEventListener("click", e => {
+            if (!e.target.closest(".market-loc-field")) closeAllDropdowns();
         });
 
         // Estado inicial.
