@@ -1193,6 +1193,12 @@ digital: true,           planos: [
                 label: "Impacto ambiental, social e cultural",
                 value: 3000,
                 detail: "investimento ativo em rede — também via trabalho pro-bono"
+            },
+            {
+                key: "reserva",
+                label: "Reserva · imprevistos",
+                value: 2000,
+                detail: "buffer pra variações de receita e custos"
             }
         ],
 
@@ -1256,8 +1262,8 @@ digital: true,           planos: [
                     solucoes: ["co", "quilomboaraucaria-solution"]
                 },
                 {
-                    label: "Interpretação e Tradução",
-                    detail: "2 jobs × R$ 2.000/dia",
+                    label: "Interpretação",
+                    detail: "2 jobs × R$ 2.000/dia (live · simultânea)",
                     unitValue: 2000,
                     unidades: 2,
                     responsavel: "yuri"
