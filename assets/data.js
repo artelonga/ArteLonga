@@ -373,6 +373,7 @@
         { titulo: "Sistemas Operacionais",       parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Times técnicos", hoursLow: 10, hoursHigh: 80, cnae: [{ c: "6204-0/00", d: "Consultoria em TI" }] },
         { titulo: "Redes",                       parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Empresas · escritórios", hoursLow: 8, hoursHigh: 60, cnae: [{ c: "6204-0/00", d: "Consultoria em TI" }] },
         { titulo: "Tráfego e Crescimento",       parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Marcas · e-commerce", hoursLow: 20, hoursHigh: 80, recurring: true, cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade" }, { c: "6319-4/00", d: "Portais, provedores de conteúdo e serviços de informação na internet" }] },
+        { titulo: "Automação de Processos",      parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Empresas · operações", hoursLow: 8, hoursHigh: 20, cnaeNovo: true, cnae: [{ c: "6202-3/00", d: "Desenvolvimento e licenciamento de software customizável" }, { c: "6204-0/00", d: "Consultoria em tecnologia da informação" }] },
 
         // ── Serviços com CNAE já formalizado no CNPJ ─────────────────────────
         { titulo: "Alfabetização",                       paraQuem: "Crianças · adultos", hoursLow: 1, hoursHigh: 2, unit: "aula", cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino não especificadas anteriormente" }] },
@@ -434,6 +435,7 @@
           ],
           cnaeNovo: true, cnae: [{ c: "8650-0/02", d: "Atividades de profissionais da nutrição" }] },
         { titulo: "Autocuidado",                         paraQuem: "Adultos", hoursLow: 1, hoursHigh: 2, unit: "sessão", cnaeNovo: true, cnae: [{ c: "8690-9/99", d: "Outras atividades de atenção à saúde humana" }] },
+        { titulo: "Auditoria",                           paraQuem: "Empresas · governança", cnaeNovo: true, cnae: [{ c: "6920-6/02", d: "Atividades de auditoria contábil e tributária" }] },
         { titulo: "Comunicação Científica",              paraQuem: "Pesquisadores · marcas", hoursLow: 5, hoursHigh: 30, cnaeNovo: true, cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino" }, { c: "5811-5/00", d: "Edição de livros" }] },
         { titulo: "Consultoria Jurídica",                paraQuem: "Pequenas empresas · pessoas", hoursLow: 1, hoursHigh: 1, unit: "hora", cnaeNovo: true, cnae: [{ c: "6911-7/01", d: "Serviços advocatícios" }] },
         { titulo: "Cuidado com o Idoso",                 paraQuem: "Famílias · idosos",
