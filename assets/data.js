@@ -1172,17 +1172,23 @@
     // `autor` resolve para um perfil interno via AL.get — permite citar
     // pessoas históricas (referenceOnly: true) sem expô-las nos rosters.
     const manifesto = {
-        missao: "Semear sonhos, escrever legados.",
-        visao: {
-            texto: "Trabalho digno.",
-            referencia: {
-                obra: "Rerum Novarum: sobre a condição dos operários",
-                data: "15 de maio de 1891",
-                autor: "leaoxiii",
-                url: "https://www.vatican.va/content/leo-xiii/pt/encyclicals/documents/hf_l-xiii_enc_15051891_rerum-novarum.html"
-            }
-        },
+        missao: "Conectar parceiros a seus clientes.",
+        visao: "Rede social profissional.",
         valores: [
+            {
+                titulo: "Semear sonhos, escrever legados.",
+                texto: ""
+            },
+            {
+                titulo: "Trabalho digno.",
+                texto: "",
+                referencia: {
+                    obra: "Rerum Novarum: sobre a condição dos operários",
+                    data: "15 de maio de 1891",
+                    autor: "leaoxiii",
+                    url: "https://www.vatican.va/content/leo-xiii/pt/encyclicals/documents/hf_l-xiii_enc_15051891_rerum-novarum.html"
+                }
+            },
             {
                 titulo: "",
                 texto: "Contribuir para a Agenda 2030 dos Objetivos de Desenvolvimento Sustentável.",
