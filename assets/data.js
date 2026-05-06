@@ -404,7 +404,7 @@
         { titulo: "Stylist, Moda e Passarela",           paraQuem: "Marcas · eventos", hoursLow: 4, hoursHigh: 20, cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade" }] },
         { titulo: "Tortas Salgadas da Veh", isPortfolio: true, paraQuem: "Eventos · empresas",
           planos: [
-              { label: "Sob demanda", hours: 4 },
+              { label: "Sob demanda" },
               { label: "Semanal" },
               { label: "Mensal" }
           ],
