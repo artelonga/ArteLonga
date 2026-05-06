@@ -377,7 +377,7 @@
         ]},
         { id: "educacao",   label: "Educação",    titles: [
             "Alfabetização", "Reforço Escolar", "Ensino, Formação e Liderança",
-            "Mentoria Espiritual", "Educação Ambiental"
+            "Mentoria Espiritual", "Educação Ambiental", "Tradução"
         ]},
         { id: "bem-estar",  label: "Bem-estar",   titles: [
             "Acompanhamento Nutricional", "Saúde Mental",
@@ -409,7 +409,7 @@
         ]},
         { id: "audiovisual", label: "Audiovisual", titles: [
             "Fotografia", "Piloto de Drone", "Produção Musical", "Filmagem de Festas e Eventos",
-            "Escrita, Interpretação e Tradução", "Atriz", "Cantora",
+            "Escrita, Interpretação e Tradução", "Tradução", "Atriz", "Cantora",
             "Modelo", "Criação de Conteúdo", "Poeta"
         ]}
     ];
@@ -1395,7 +1395,7 @@
     // ganha destaque quando a entrada é concretamente serviço × pessoa.
     function renderService(slug) {
         const s = AL.serviceBySlug(slug);
-        if (!s) { document.body.innerHTML = `<main class="main"><p>Serviço não encontrado.</p><a class="back" href="/servicos/">← voltar</a></main>`; return; }
+        if (!s) { document.body.innerHTML = `<main class="main"><p>Serviço não encontrado.</p><a class="back" href="/">← voltar</a></main>`; return; }
 
         document.title = `${s.nome || s.titulo} — Serviços — Arte Longa`;
 
@@ -1557,7 +1557,7 @@
 
                 ${related.length ? `<div class="section-header"><h2>Veja também</h2><span class="label">serviços relacionados</span></div>${relHtml}` : ""}
 
-                <a class="back" href="/servicos/">← voltar à rede</a>
+                <a class="back" href="/">← voltar pra home</a>
             </main>
             ${siteFooter()}
         `;
