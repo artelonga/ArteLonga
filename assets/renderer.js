@@ -396,13 +396,15 @@
                 ${esc(c.label)} <span class="sup-count">${c.items.length}</span>
             </button>`;
 
-        // Localização: free-text com sugestões via datalist. Serviços marcados
-        // como digital: true ignoram filtro (entrega remota). Default sugerido
-        // (placeholder) = "São Paulo · Jardim Umarizal".
-        const locSuggestions = AL.locationSuggestions();
+        // Localização: 3 inputs independentes (Estado · Cidade · Bairro) com
+        // datalist limitado ao que existe na DB. Default em cinza claro
+        // (.is-default); ao focar/digitar, vira preto editável. Serviços
+        // digital: true ignoram filtro.
+        const locOpts = AL.locationSuggestions();
         const defLoc = AL.DEFAULT_LOCATION;
-        const defLocLabel = `${defLoc.bairro} · ${defLoc.cidade} · ${defLoc.estado}`;
-        let activeLocQuery = defLocLabel;
+        // "Jd Umarizal" abreviação visual; valor real fica completo.
+        let activeFilters = { estado: defLoc.estado, cidade: defLoc.cidade, bairro: defLoc.bairro };
+        let touchedFields = { estado: false, cidade: false, bairro: false };
 
         document.body.innerHTML = `
             ${siteHeader()}
@@ -418,17 +420,24 @@
                                aria-label="Descreva o que precisa">
                     </form>
 
-                    <div class="market-loc-input">
-                        <label for="loc-q" class="market-loc-label">Sua cidade ou bairro</label>
-                        <input type="text" id="loc-q" list="loc-suggestions"
-                               value="${esc(defLocLabel)}"
-                               placeholder="Digite cidade ou bairro…"
-                               autocomplete="off">
-                        <datalist id="loc-suggestions">
-                            ${locSuggestions.map(s => `<option value="${esc(s)}">`).join("")}
-                        </datalist>
-                        <p class="market-loc-help">Serviços digitais aparecem em qualquer lugar.</p>
+                    <div class="market-loc">
+                        <span class="market-loc-prefix">Em</span>
+                        <input type="text" id="loc-estado" class="market-loc-input is-default" list="dl-estados"
+                               value="${esc(defLoc.estado)}" autocomplete="off"
+                               aria-label="Estado" data-field="estado">
+                        <span class="market-loc-sep">·</span>
+                        <input type="text" id="loc-cidade" class="market-loc-input is-default" list="dl-cidades"
+                               value="${esc(defLoc.cidade)}" autocomplete="off"
+                               aria-label="Cidade" data-field="cidade">
+                        <span class="market-loc-sep">·</span>
+                        <input type="text" id="loc-bairro" class="market-loc-input is-default" list="dl-bairros"
+                               value="${esc(defLoc.bairro)}" autocomplete="off"
+                               aria-label="Bairro" data-field="bairro">
+                        <datalist id="dl-estados">${locOpts.estados.map(v => `<option value="${esc(v)}">`).join("")}</datalist>
+                        <datalist id="dl-cidades">${locOpts.cidades.map(v => `<option value="${esc(v)}">`).join("")}</datalist>
+                        <datalist id="dl-bairros">${locOpts.bairros.map(v => `<option value="${esc(v)}">`).join("")}</datalist>
                     </div>
+                    <p class="market-loc-help">Clique pra editar. Serviços digitais aparecem em qualquer lugar.</p>
 
                     <p class="market-hint" id="market-hint">Filtre por categoria ou comece a digitar.</p>
                 </section>
@@ -444,7 +453,8 @@
                 <ul class="market-grid" id="market-grid"></ul>
 
                 <p class="market-empty" id="market-empty" hidden>
-                    Não encontrou? <a href="mailto:${REDE_EMAIL}?subject=Preciso%20de%20um%20servi%C3%A7o">Conte pra gente →</a>
+                    Nenhum resultado por aqui.
+                    <a href="mailto:${REDE_EMAIL}?subject=Encontrar%20uma%20solu%C3%A7%C3%A3o">Entre em contato para encontrarmos uma solução →</a>
                 </p>
 
                 <p class="market-all"><a href="/servicos/">Catálogo completo →</a></p>
@@ -457,19 +467,19 @@
         const count    = document.getElementById("market-count");
         const empty    = document.getElementById("market-empty");
         const chipsBox = document.getElementById("sup-cats");
-        const locInput = document.getElementById("loc-q");
+        const locFields = ["estado", "cidade", "bairro"].reduce((acc, f) => {
+            acc[f] = document.getElementById("loc-" + f);
+            return acc;
+        }, {});
 
         let activeCat = "";
 
-        // Filtra por localização. Digital sempre passa; outros precisam casar.
         function locFilter(list) {
-            const q = (activeLocQuery || "").trim();
-            if (!q) return list;
             return list.filter(s => {
                 if (s.digital) return true;
                 return s.responsavel.some(h => {
                     if (AL.isInactive(h)) return false;
-                    return AL.locationMatches(h, q);
+                    return AL.locationMatches(h, activeFilters);
                 });
             });
         }
@@ -517,16 +527,26 @@
             input.focus();
         });
 
-        // Free-text location filter — debounced re-render enquanto digita.
+        // 3 inputs de localização (estado/cidade/bairro). Default em cinza
+        // (.is-default); ao focar pela primeira vez seleciona tudo pra
+        // facilitar substituir. Ao digitar perde o cinza.
         let locDebounce;
-        locInput.addEventListener("input", () => {
-            activeLocQuery = locInput.value;
-            clearTimeout(locDebounce);
-            locDebounce = setTimeout(applyFilter, 120);
-        });
-        locInput.addEventListener("change", () => {
-            activeLocQuery = locInput.value;
-            applyFilter();
+        ["estado", "cidade", "bairro"].forEach(field => {
+            const el = locFields[field];
+            el.addEventListener("focus", () => {
+                if (!touchedFields[field]) el.select();
+            });
+            el.addEventListener("input", () => {
+                el.classList.remove("is-default");
+                touchedFields[field] = true;
+                activeFilters[field] = el.value.trim();
+                clearTimeout(locDebounce);
+                locDebounce = setTimeout(applyFilter, 120);
+            });
+            el.addEventListener("change", () => {
+                activeFilters[field] = el.value.trim();
+                applyFilter();
+            });
         });
 
         // Estado inicial.

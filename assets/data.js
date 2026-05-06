@@ -868,39 +868,40 @@ digital: true,           planos: [
         return tree;
     }
 
-    // Match livre por texto: usuário digita qualquer coisa (ex: "Cangaíba",
-    // "Rio de Janeiro", "MG"). Case-insensitive, sem acento. Cada palavra da
-    // query precisa aparecer no blob "bairro cidade estado".
+    // Match independente em cada nível (estado, cidade, bairro). Substring
+    // case-insensitive sem acento. Vazio = nível ignorado.
     function _normLoc(s) {
         return String(s || "").toLowerCase().normalize("NFD")
             .replace(/[̀-ͯ]/g, "").trim();
     }
-    function locationMatches(handleOrLoc, query) {
-        if (!query) return true;
-        const q = _normLoc(query);
-        if (!q) return true;
+    function locationMatches(handleOrLoc, filters) {
+        const f = filters || {};
         const loc = (typeof handleOrLoc === "string") ? locationOf(handleOrLoc) : handleOrLoc;
-        const blob = _normLoc([loc.bairro, loc.cidade, loc.estado].filter(Boolean).join(" "));
-        return q.split(/\s+/).every(t => blob.includes(t));
+        if (f.estado && !_normLoc(loc.estado).includes(_normLoc(f.estado))) return false;
+        if (f.cidade && !_normLoc(loc.cidade).includes(_normLoc(f.cidade))) return false;
+        if (f.bairro && !_normLoc(loc.bairro).includes(_normLoc(f.bairro))) return false;
+        return true;
     }
 
-    // Filtra serviços por texto livre de localização.
-    // Serviços com `digital: true` ignoram filtro (entrega remota — aparecem
-    // pra qualquer cidade/bairro).
-    function servicesIn(query) {
+    // Filtra serviços por { estado, cidade, bairro }. Strings vazias ignoradas.
+    // Serviços com `digital: true` ignoram filtro (entrega remota).
+    function servicesIn(filters) {
         return publicServices().filter(s => {
             if (s.digital) return true;
             return s.responsavel.some(h => {
                 if (isInactive(h)) return false;
-                return locationMatches(h, query);
+                return locationMatches(h, filters);
             });
         });
     }
 
-    // Sugestões pro autocomplete (datalist). Strings "Bairro · Cidade · UF",
-    // "Cidade · UF" e "UF" só do que existe na DB. Usuário pode digitar fora.
+    // Sugestões por nível pro datalist de cada input.
+    // Retorna { estados, cidades, bairros } — cada um array de strings únicas
+    // do que existe na DB (excluindo inativos).
     function locationSuggestions() {
-        const set = new Set();
+        const estados = new Set();
+        const cidades = new Set();
+        const bairros = new Set();
         const all = [...people, ...communities];
         for (const e of all) {
             if (isInactive(e.handle)) continue;
@@ -910,11 +911,15 @@ digital: true,           planos: [
             );
             if (!hasPublic) continue;
             const loc = locationOf(e.handle);
-            if (loc.bairro) set.add(`${loc.bairro} · ${loc.cidade} · ${loc.estado}`);
-            set.add(`${loc.cidade} · ${loc.estado}`);
-            set.add(loc.estado);
+            if (loc.estado) estados.add(loc.estado);
+            if (loc.cidade) cidades.add(loc.cidade);
+            if (loc.bairro) bairros.add(loc.bairro);
         }
-        return [...set].sort();
+        return {
+            estados: [...estados].sort(),
+            cidades: [...cidades].sort(),
+            bairros: [...bairros].sort()
+        };
     }
 
     // Pricing — sempre hours × rate. Para produtos (torta, hambúrguer, palavra),
