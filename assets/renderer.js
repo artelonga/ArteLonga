@@ -254,21 +254,20 @@
         document.addEventListener("keydown", e => { if (e.key === "Escape") m.classList.remove("on"); });
     }
 
-    // Site header (shared by every page)
+    // Site header — logo à esquerda, botão "Para parceiros" à direita.
     function siteHeader() {
         return `<header class="site-header">
             <div class="site-header-inner">
                 <a class="site-brand" href="/"><img src="/logo-al.png" alt="Arte Longa"></a>
-                <span class="site-tagline">semeando sonhos</span>
+                <a class="site-cta-parceiros" href="/faca-parte/">Para parceiros →</a>
             </div>
         </header>`;
     }
 
-    // Site footer — "Quem está por trás", visível em todas as páginas renderizadas.
+    // Site footer — sempre presente em todas as páginas renderizadas.
     function siteFooter() {
         return `<footer class="site-footer">
             <div class="site-footer-inner">
-                <span class="site-footer-lbl">Quem está por trás</span>
                 <a href="/parceiros/">Parceiros</a>
                 <span class="sep">·</span>
                 <a href="/sobre/">Sobre</a>
@@ -430,16 +429,6 @@
                 </p>
 
                 <p class="market-all"><a href="/servicos/">Catálogo completo →</a></p>
-
-                <!-- CTA secundário · prestador de serviço. Linka pra landing dedicada. -->
-                <section class="prestador-cta">
-                    <div class="prestador-eyebrow">Para parceiros</div>
-                    <h2 class="prestador-h2">Tempo para se expressar.</h2>
-                    <p class="prestador-tag">Te acompanhamos do primeiro contrato à aposentadoria.</p>
-                    <p class="prestador-call">
-                        <a class="prestador-cta-btn" href="/faca-parte/">Faça parte da rede →</a>
-                    </p>
-                </section>
             </main>
             ${siteFooter()}
         `;
