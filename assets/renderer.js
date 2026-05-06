@@ -464,10 +464,14 @@
                         : ""
                 }`;
             }
+            const childCount = (s.children && s.children.length) || 0;
+            const titleHtml = childCount
+                ? `${esc(s.titulo)} <span class="market-card-children">+${childCount}</span>`
+                : esc(s.titulo);
             return `
             <li class="market-card">
                 <a href="/servicos/${esc(s.slug)}/" class="market-card-link">
-                    <div class="market-card-titulo">${esc(s.titulo)}</div>
+                    <div class="market-card-titulo">${titleHtml}</div>
                     ${metaHtml}
                     ${precoHtml}
                     <div class="market-card-resp">${esc(respNames(s.responsavel))}</div>
@@ -1538,6 +1542,35 @@
               ).join("")}</ul>`
             : `<p class="svc-exemplos-empty">Em breve.</p>`;
 
+        // Sub-serviços (children): se este serviço é parent, lista cada filho
+        // como card linkável com paraQuem + responsável + preço.
+        const allServices = AL.publicServices();
+        const childServices = (s.children || [])
+            .map(t => allServices.find(x => x.titulo === t))
+            .filter(Boolean);
+        const childCard = c => {
+            const f = AL.computeFaixaPreco(c);
+            const respList = c.responsavel.map(h => {
+                const e = AL.get(h);
+                return e ? esc(e.nome) : esc(h);
+            }).join(", ");
+            const precoLine = f.preco
+                ? `<span class="svc-child-preco">${esc(f.preco)}</span>`
+                : (f.planos ? `<span class="svc-child-preco">${f.planos.length} planos</span>` : "");
+            return `<li>
+                <a href="/servicos/${esc(c.slug)}/" class="svc-child-link">
+                    <span class="svc-child-titulo">${esc(c.titulo)}</span>
+                    ${c.paraQuem ? `<span class="svc-child-meta">${esc(c.paraQuem)}</span>` : ""}
+                    ${precoLine}
+                    <span class="svc-child-resp">${respList}</span>
+                </a>
+            </li>`;
+        };
+        const subServicosHtml = childServices.length
+            ? `<div class="section-header"><h2>Sub-serviços</h2><span class="label">${childServices.length} variantes</span></div>
+               <ul class="svc-children">${childServices.map(childCard).join("")}</ul>`
+            : "";
+
         document.body.innerHTML = `
             ${siteHeader()}
             <main class="main">
@@ -1551,6 +1584,8 @@
                 ${attachmentsHtml}
 
                 ${provedoresHtml}
+
+                ${subServicosHtml}
 
                 <div class="section-header"><h2>Exemplos</h2><span class="label">trabalhos da rede</span></div>
                 ${exemplosHtml}
