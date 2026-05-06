@@ -47,7 +47,7 @@
                     data: "2015"
                 }
             ],
-            servicos: ["Escrita, Interpretação e Tradução", "Ensino, Formação e Liderança", "Inteligência e Tecnologia", "Gestão Executiva"],
+            servicos: ["Escrita, Interpretação e Tradução", "Ensino, Formação e Liderança", "Inteligência e Tecnologia", "Gestão Executiva", "Tradução EN-PT", "Tradução Guarani-PT"],
             subMembers: ["kiyoshi", "soninha"]
         },
         {
@@ -149,7 +149,13 @@
             handle: "ramona", type: "person", nome: "Ramona",
             role: "Internacionalização", tags: ["parceiro"],
             pic: null, bio: "",
-            servicos: ["Tradução de Inglês"]
+            servicos: ["Tradução PT-EN", "Tradução PT-DE", "Tradução EN-DE"]
+        },
+        {
+            handle: "denise", type: "person", nome: "Denise",
+            role: "Tradução · Guarani", tags: ["parceiro"],
+            pic: null, bio: "",
+            servicos: ["Tradução PT-Guarani"]
         },
         {
             handle: "rogerio", type: "person", nome: "Rogério",
@@ -419,7 +425,14 @@
               { label: "Mensal" }
           ],
           cnae: [{ c: "5620-1/02", d: "Serviços de alimentação — bufê" }] },
-        { titulo: "Tradução de Inglês",                  paraQuem: "Empresas · autores", digital: true, hoursLow: 0.003, hoursHigh: 0.005, unit: "palavra", cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
+        // ── Tradução · parent + sub-pares de idiomas ──
+        { titulo: "Tradução",                            paraQuem: "Empresas · autores · pesquisadores", digital: true, cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
+        { titulo: "Tradução PT-EN",                      parent: "Tradução", implicitResponsavel: ["ramona"], paraQuem: "Português → Inglês", digital: true, cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
+        { titulo: "Tradução PT-DE",                      parent: "Tradução", implicitResponsavel: ["ramona"], paraQuem: "Português → Alemão", digital: true, cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
+        { titulo: "Tradução EN-DE",                      parent: "Tradução", implicitResponsavel: ["ramona"], paraQuem: "Inglês → Alemão", digital: true, cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
+        { titulo: "Tradução EN-PT",                      parent: "Tradução", implicitResponsavel: ["yuri"], paraQuem: "Inglês → Português", digital: true, hoursLow: 0.003, hoursHigh: 0.005, unit: "palavra", cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
+        { titulo: "Tradução PT-Guarani",                 parent: "Tradução", implicitResponsavel: ["denise"], paraQuem: "Português → Guarani", digital: true, cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
+        { titulo: "Tradução Guarani-PT",                 parent: "Tradução", implicitResponsavel: ["yuri"], paraQuem: "Guarani → Português", digital: true, hoursLow: 0.003, hoursHigh: 0.005, unit: "palavra", cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
 
         // ── Gaps de missões (serviços novos criados pra fechar ponte) ────────
         { titulo: "Educação Ambiental",                  paraQuem: "Escolas · ONGs", hoursLow: 2, hoursHigh: 8, unit: "oficina", cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino" }] },
@@ -1000,7 +1013,7 @@ digital: true,           planos: [
     const rosterOrder = [
         "yuri", "igo", "joseantonio", "mono",
         "luke", "marina", "karina", "kayra", "aime",
-        "syl", "raquel", "alice", "ramona", "rogerio", "alzira", "miguel", "joao",
+        "syl", "raquel", "alice", "ramona", "denise", "rogerio", "alzira", "miguel", "joao",
         "rodney",
         "bruna",
         "quilomboaraucaria", "hfsassociados", "hedix",
