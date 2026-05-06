@@ -957,11 +957,11 @@ digital: true,           planos: [
 
         // Modo planos. Padrão da rede:
         //   { hours: N }              → label "Nh", preço hours × rate (flat fee)
-        //   { label: "Semanal" }      → "Sob demanda" (volume varia, fala-se direto)
-        //   { label: "Mensal"  }      → "Sob demanda"
-        //   { label: "Sob demanda" }  → "Sob demanda"
+        //   { label: "Semanal" }      → "Sob consulta" (volume varia, fala-se direto)
+        //   { label: "Mensal"  }      → "Sob consulta"
+        //   { label: "Sob demanda" }  → "Sob consulta"
         // Regra geral: plano com `hours` → label horária + preço computado;
-        // sem `hours` → label livre + preço "Sob demanda".
+        // sem `hours` → label livre + preço "Sob consulta".
         if (s.planos && s.planos.length) {
             const planos = s.planos.map(p => {
                 if (typeof p.hours === "number") {
@@ -975,7 +975,7 @@ digital: true,           planos: [
                     const formula = `${hoursPart} × ${ratePart}`;
                     return { label: p.label || hoursPart, preco, formula, consult: false };
                 }
-                return { label: p.label, preco: "Sob demanda", formula: null, consult: true };
+                return { label: p.label, preco: "Sob consulta", formula: null, consult: true };
             });
             return { planos, preco: null, formula: null, consult: false };
         }
