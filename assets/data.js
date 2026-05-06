@@ -350,6 +350,9 @@
     //                        "diária", "treino", "grupo", "hora". Vai como sufixo
     //                        do total ("R\$ 100/sessão"). Default = nada.
     //   recurring:          true = serviço mensal recorrente. Sufixo "/mês".
+    //   digital:            true = entregue remotamente (web/áudio/vídeo/texto).
+    //                        Bypass do filtro de localização — aparece em qualquer
+    //                        cidade/bairro. Marcar tudo que é online por natureza.
     //   planos:             array de [{ label, hours, unit? }] — pacotes de tempo
     //                        nomeados (ex.: "Plano semanal" = 4h, "Plano mensal" =
     //                        16h). Cada plano é renderizado com label + preço
@@ -373,39 +376,39 @@
     // Roadmap público da empresa — render pode exibir badge "a formalizar".
     const serviceCatalog = [
         // ── Sub-serviços de "Inteligência e Tecnologia" (Yuri cobre a árvore) ──
-        { titulo: "Desenvolvimento de API",      parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Empresas · times técnicos", hoursLow: 30, hoursHigh: 150, cnae: [{ c: "6202-3/00", d: "Desenvolvimento e licenciamento de software customizável" }] },
-        { titulo: "Desenvolvimento de Software", parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Empresas · startups", hoursLow: 80, hoursHigh: 400, cnae: [{ c: "6202-3/00", d: "Desenvolvimento e licenciamento de software customizável" }] },
-        { titulo: "Desenvolvimento Web",         parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Empresas · estúdios", hoursLow: 40, hoursHigh: 200, cnae: [{ c: "6201-5/02", d: "Web design" }, { c: "6202-3/00", d: "Desenvolvimento e licenciamento de software customizável" }] },
-        { titulo: "Nuvem",                       parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Empresas · projetos", hoursLow: 10, hoursHigh: 80, cnae: [{ c: "6204-0/00", d: "Consultoria em TI" }, { c: "6319-4/00", d: "Provedores de conteúdo e serviços de informação na internet" }] },
-        { titulo: "Computação",                  parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Times técnicos", hoursLow: 10, hoursHigh: 80, cnae: [{ c: "6204-0/00", d: "Consultoria em TI" }] },
-        { titulo: "Dados e Armazenamento",       parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Empresas · times de dados", hoursLow: 15, hoursHigh: 100, cnae: [{ c: "6204-0/00", d: "Consultoria em TI" }, { c: "6319-4/00", d: "Provedores de serviços de informação na internet" }] },
-        { titulo: "Hardware",                    parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Estúdios · projetos", hoursLow: 8, hoursHigh: 60, cnae: [{ c: "6204-0/00", d: "Consultoria em TI" }] },
-        { titulo: "Sistemas Operacionais",       parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Times técnicos", hoursLow: 10, hoursHigh: 80, cnae: [{ c: "6204-0/00", d: "Consultoria em TI" }] },
-        { titulo: "Redes",                       parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Empresas · escritórios", hoursLow: 8, hoursHigh: 60, cnae: [{ c: "6204-0/00", d: "Consultoria em TI" }] },
-        { titulo: "Tráfego e Crescimento",       parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Marcas · e-commerce", hoursLow: 20, hoursHigh: 80, recurring: true, cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade" }, { c: "6319-4/00", d: "Portais, provedores de conteúdo e serviços de informação na internet" }] },
-        { titulo: "Automação de Processos",      parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Empresas · operações", hoursLow: 8, hoursHigh: 20, cnaeNovo: true, cnae: [{ c: "6202-3/00", d: "Desenvolvimento e licenciamento de software customizável" }, { c: "6204-0/00", d: "Consultoria em tecnologia da informação" }] },
+        { titulo: "Desenvolvimento de API",      parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Empresas · times técnicos", digital: true, hoursLow: 30, hoursHigh: 150, cnae: [{ c: "6202-3/00", d: "Desenvolvimento e licenciamento de software customizável" }] },
+        { titulo: "Desenvolvimento de Software", parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Empresas · startups", digital: true, hoursLow: 80, hoursHigh: 400, cnae: [{ c: "6202-3/00", d: "Desenvolvimento e licenciamento de software customizável" }] },
+        { titulo: "Desenvolvimento Web",         parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Empresas · estúdios", digital: true, hoursLow: 40, hoursHigh: 200, cnae: [{ c: "6201-5/02", d: "Web design" }, { c: "6202-3/00", d: "Desenvolvimento e licenciamento de software customizável" }] },
+        { titulo: "Nuvem",                       parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Empresas · projetos", digital: true, hoursLow: 10, hoursHigh: 80, cnae: [{ c: "6204-0/00", d: "Consultoria em TI" }, { c: "6319-4/00", d: "Provedores de conteúdo e serviços de informação na internet" }] },
+        { titulo: "Computação",                  parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Times técnicos", digital: true, hoursLow: 10, hoursHigh: 80, cnae: [{ c: "6204-0/00", d: "Consultoria em TI" }] },
+        { titulo: "Dados e Armazenamento",       parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Empresas · times de dados", digital: true, hoursLow: 15, hoursHigh: 100, cnae: [{ c: "6204-0/00", d: "Consultoria em TI" }, { c: "6319-4/00", d: "Provedores de serviços de informação na internet" }] },
+        { titulo: "Hardware",                    parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Estúdios · projetos", digital: true, hoursLow: 8, hoursHigh: 60, cnae: [{ c: "6204-0/00", d: "Consultoria em TI" }] },
+        { titulo: "Sistemas Operacionais",       parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Times técnicos", digital: true, hoursLow: 10, hoursHigh: 80, cnae: [{ c: "6204-0/00", d: "Consultoria em TI" }] },
+        { titulo: "Redes",                       parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Empresas · escritórios", digital: true, hoursLow: 8, hoursHigh: 60, cnae: [{ c: "6204-0/00", d: "Consultoria em TI" }] },
+        { titulo: "Tráfego e Crescimento",       parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Marcas · e-commerce", digital: true, hoursLow: 20, hoursHigh: 80, recurring: true, cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade" }, { c: "6319-4/00", d: "Portais, provedores de conteúdo e serviços de informação na internet" }] },
+        { titulo: "Automação de Processos",      parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Empresas · operações", digital: true, hoursLow: 8, hoursHigh: 20, cnaeNovo: true, cnae: [{ c: "6202-3/00", d: "Desenvolvimento e licenciamento de software customizável" }, { c: "6204-0/00", d: "Consultoria em tecnologia da informação" }] },
 
         // ── Serviços com CNAE já formalizado no CNPJ ─────────────────────────
         { titulo: "Alfabetização",                       paraQuem: "Crianças · adultos", hoursLow: 1, hoursHigh: 2, unit: "aula", cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino não especificadas anteriormente" }] },
         { titulo: "Alimentação e Bebidas",               paraQuem: "Eventos · empresas", hoursLow: 0.35, hoursHigh: 1, unit: "pessoa", cnae: [{ c: "5620-1/02", d: "Serviços de alimentação para eventos e recepções — bufê" }] },
         { titulo: "Hambúrguer Artesanal", paraQuem: "Bairro · delivery", hoursLow: 0.25, hoursHigh: 0.6, unit: "unidade", cnaeNovo: true, cnae: [{ c: "5611-2/01", d: "Restaurantes e similares" }, { c: "5620-1/04", d: "Fornecimento de alimentos preparados preponderantemente para consumo domiciliar" }] },
-        { titulo: "Comunicação Visual",                  paraQuem: "Eventos · marcas", hoursLow: 8, hoursHigh: 30, cnae: [{ c: "7410-2/03", d: "Design de produto" }, { c: "7319-0/04", d: "Consultoria em publicidade" }] },
+        { titulo: "Comunicação Visual",                  paraQuem: "Eventos · marcas", digital: true, hoursLow: 8, hoursHigh: 30, cnae: [{ c: "7410-2/03", d: "Design de produto" }, { c: "7319-0/04", d: "Consultoria em publicidade" }] },
         { titulo: "Consultoria em Moda",                 paraQuem: "Marcas · pessoas", hoursLow: 4, hoursHigh: 20, cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade" }] },
-        { titulo: "Consultoria em TI",                   paraQuem: "Pequenas empresas · ONGs", hoursLow: 4, hoursHigh: 40, cnae: [{ c: "6204-0/00", d: "Consultoria em tecnologia da informação" }] },
-        { titulo: "Criação de Conteúdo",                 paraQuem: "Marcas · pessoas", hoursLow: 15, hoursHigh: 60, recurring: true, cnae: [{ c: "5911-1/99", d: "Produção cinematográfica, de vídeos e TV" }, { c: "5912-0/99", d: "Pós-produção audiovisual" }] },
+        { titulo: "Consultoria em TI",                   paraQuem: "Pequenas empresas · ONGs", digital: true, hoursLow: 4, hoursHigh: 40, cnae: [{ c: "6204-0/00", d: "Consultoria em tecnologia da informação" }] },
+        { titulo: "Criação de Conteúdo",                 paraQuem: "Marcas · pessoas", digital: true, hoursLow: 15, hoursHigh: 60, recurring: true, cnae: [{ c: "5911-1/99", d: "Produção cinematográfica, de vídeos e TV" }, { c: "5912-0/99", d: "Pós-produção audiovisual" }] },
         { titulo: "Dança e Expressão Corporal",          paraQuem: "Crianças · adultos", hoursLow: 1, hoursHigh: 1, unit: "aula", cnae: [{ c: "8592-9/01", d: "Ensino de dança" }] },
-        { titulo: "Design",                              paraQuem: "Marcas · produtos", hoursLow: 8, hoursHigh: 60, cnae: [{ c: "7410-2/03", d: "Design de produto" }] },
+        { titulo: "Design",                              paraQuem: "Marcas · produtos", digital: true, hoursLow: 8, hoursHigh: 60, cnae: [{ c: "7410-2/03", d: "Design de produto" }] },
         { titulo: "Ensino, Formação e Liderança",        paraQuem: "Empresas · times", hoursLow: 2, hoursHigh: 8, unit: "sessão", cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino" }, { c: "8599-6/03", d: "Treinamento em informática" }] },
-        { titulo: "Escrita, Interpretação e Tradução",   paraQuem: "Empresas · autores", hoursLow: 5, hoursHigh: 30, cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }, { c: "5811-5/00", d: "Edição de livros" }] },
-        { titulo: "Experiência de Usuário (UI/UX)",      paraQuem: "Produtos · apps", hoursLow: 15, hoursHigh: 100, cnae: [{ c: "7410-2/03", d: "Design de produto" }, { c: "6201-5/02", d: "Web design" }] },
+        { titulo: "Escrita, Interpretação e Tradução",   paraQuem: "Empresas · autores", digital: true, hoursLow: 5, hoursHigh: 30, cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }, { c: "5811-5/00", d: "Edição de livros" }] },
+        { titulo: "Experiência de Usuário (UI/UX)",      paraQuem: "Produtos · apps", digital: true, hoursLow: 15, hoursHigh: 100, cnae: [{ c: "7410-2/03", d: "Design de produto" }, { c: "6201-5/02", d: "Web design" }] },
         { titulo: "Fotografia",                          paraQuem: "Eventos · ensaios", hoursLow: 6, hoursHigh: 15, cnae: [{ c: "7420-0/01", d: "Atividades de produção de fotografias" }, { c: "7420-0/04", d: "Filmagem de festas e eventos" }] },
         { titulo: "Piloto de Drone",                     paraQuem: "Eventos · obras · imobiliário", cnaeNovo: true, cnae: [{ c: "7420-0/02", d: "Atividades de produção de fotografias aéreas" }, { c: "5911-1/99", d: "Produção de vídeos não especificada anteriormente" }] },
-        { titulo: "Inteligência e Tecnologia",           paraQuem: "Empresas · estúdios", hoursLow: 20, hoursHigh: 200, cnae: [{ c: "6204-0/00", d: "Consultoria em tecnologia da informação" }, { c: "6319-4/00", d: "Portais, provedores de conteúdo e serviços de informação na internet" }] },
-        { titulo: "Marketing Digital",                   paraQuem: "Marcas · pequenas empresas", hoursLow: 20, hoursHigh: 80, recurring: true, cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade" }] },
-        { titulo: "Mentoria Espiritual",                 paraQuem: "Adultos em transição", hoursLow: 1, hoursHigh: 2, unit: "sessão", cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino" }] },
+        { titulo: "Inteligência e Tecnologia",           paraQuem: "Empresas · estúdios", digital: true, hoursLow: 20, hoursHigh: 200, cnae: [{ c: "6204-0/00", d: "Consultoria em tecnologia da informação" }, { c: "6319-4/00", d: "Portais, provedores de conteúdo e serviços de informação na internet" }] },
+        { titulo: "Marketing Digital",                   paraQuem: "Marcas · pequenas empresas", digital: true, hoursLow: 20, hoursHigh: 80, recurring: true, cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade" }] },
+        { titulo: "Mentoria Espiritual",                 paraQuem: "Adultos em transição", digital: true, hoursLow: 1, hoursHigh: 2, unit: "sessão", cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino" }] },
         { titulo: "Murais e Fachadas",                   paraQuem: "Comércio · casa", hoursLow: 16, hoursHigh: 80, cnae: [{ c: "7410-2/03", d: "Design de produto" }, { c: "7319-0/01", d: "Criação de estandes para feiras e exposições" }] },
-        { titulo: "Pensamento Islâmico",                 paraQuem: "Curiosos · estudantes", hoursLow: 1, hoursHigh: 2, unit: "sessão", cnae: [{ c: "8592-9/99", d: "Ensino de arte e cultura não especificado anteriormente" }, { c: "8599-6/99", d: "Outras atividades de ensino" }] },
-        { titulo: "Privacidade e Segurança",             paraQuem: "Empresas · projetos sensíveis", hoursLow: 20, hoursHigh: 80, cnae: [{ c: "6204-0/00", d: "Consultoria em tecnologia da informação" }] },
+        { titulo: "Pensamento Islâmico",                 paraQuem: "Curiosos · estudantes", digital: true, hoursLow: 1, hoursHigh: 2, unit: "sessão", cnae: [{ c: "8592-9/99", d: "Ensino de arte e cultura não especificado anteriormente" }, { c: "8599-6/99", d: "Outras atividades de ensino" }] },
+        { titulo: "Privacidade e Segurança",             paraQuem: "Empresas · projetos sensíveis", digital: true, hoursLow: 20, hoursHigh: 80, cnae: [{ c: "6204-0/00", d: "Consultoria em tecnologia da informação" }] },
         { titulo: "Produção Musical",                    paraQuem: "Artistas · marcas", hoursLow: 8, hoursHigh: 20, cnae: [{ c: "9001-9/02", d: "Produção musical" }, { c: "5920-1/00", d: "Atividades de gravação de som e de edição de música" }] },
         { titulo: "Reforço Escolar",                     paraQuem: "Crianças · adolescentes", hoursLow: 1, hoursHigh: 2, unit: "aula", cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino" }] },
         { titulo: "Stylist, Moda e Passarela",           paraQuem: "Marcas · eventos", hoursLow: 4, hoursHigh: 20, cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade" }] },
@@ -416,7 +419,7 @@
               { label: "Mensal" }
           ],
           cnae: [{ c: "5620-1/02", d: "Serviços de alimentação — bufê" }] },
-        { titulo: "Tradução de Inglês",                  paraQuem: "Empresas · autores", hoursLow: 0.003, hoursHigh: 0.005, unit: "palavra", cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
+        { titulo: "Tradução de Inglês",                  paraQuem: "Empresas · autores", digital: true, hoursLow: 0.003, hoursHigh: 0.005, unit: "palavra", cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
 
         // ── Gaps de missões (serviços novos criados pra fechar ponte) ────────
         { titulo: "Educação Ambiental",                  paraQuem: "Escolas · ONGs", hoursLow: 2, hoursHigh: 8, unit: "oficina", cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino" }] },
@@ -425,30 +428,30 @@
 
         // ── Correções (CNAE a formalizar — hoje no CNPJ estava errado/ausente)
         { titulo: "Artes Visuais",                       paraQuem: "Coleções · ativações", hoursLow: 10, hoursHigh: 200, cnaeNovo: true, cnae: [{ c: "9002-7/01", d: "Atividades de artistas plásticos, jornalistas independentes e escritores" }] },
-        { titulo: "Conexões",                            paraQuem: "Empreendedores · rede", cnaeNovo: true, cnae: [{ c: "7020-4/00", d: "Atividades de consultoria em gestão empresarial" }] },
-        { titulo: "Gestão Executiva",                    paraQuem: "Pequenas empresas", hoursLow: 20, hoursHigh: 80, recurring: true, cnaeNovo: true, cnae: [{ c: "7020-4/00", d: "Atividades de consultoria em gestão empresarial" }] },
+        { titulo: "Conexões",                            paraQuem: "Empreendedores · rede", digital: true, cnaeNovo: true, cnae: [{ c: "7020-4/00", d: "Atividades de consultoria em gestão empresarial" }] },
+        { titulo: "Gestão Executiva",                    paraQuem: "Pequenas empresas", digital: true, hoursLow: 20, hoursHigh: 80, recurring: true, cnaeNovo: true, cnae: [{ c: "7020-4/00", d: "Atividades de consultoria em gestão empresarial" }] },
         { titulo: "Grafite",                             paraQuem: "Eventos · ativações", hoursLow: 8, hoursHigh: 40, cnaeNovo: true, cnae: [{ c: "9002-7/01", d: "Atividades de artistas plásticos, jornalistas independentes e escritores" }] },
         { titulo: "Meditação",                           paraQuem: "Iniciantes · grupos",
-          planos: [
+digital: true,           planos: [
               { hours: 1 },
               { label: "Semanal" },
               { label: "Mensal" }
           ],
           cnaeNovo: true, cnae: [{ c: "8690-9/99", d: "Outras atividades de atenção à saúde humana" }] },
-        { titulo: "Rede de Talentos",                    paraQuem: "Empresas · contratantes", cnaeNovo: true, cnae: [{ c: "7810-8/00", d: "Seleção e agenciamento de mão-de-obra" }] },
+        { titulo: "Rede de Talentos",                    paraQuem: "Empresas · contratantes", digital: true, cnaeNovo: true, cnae: [{ c: "7810-8/00", d: "Seleção e agenciamento de mão-de-obra" }] },
 
         // ── Novos CNAEs a formalizar (antes sem classificação) ───────────────
         { titulo: "Acompanhamento Nutricional",          paraQuem: "Adultos · esportistas",
-          planos: [
+digital: true,           planos: [
               { hours: 1 },
               { label: "Semanal" },
               { label: "Mensal" }
           ],
           cnaeNovo: true, cnae: [{ c: "8650-0/02", d: "Atividades de profissionais da nutrição" }] },
-        { titulo: "Autocuidado",                         paraQuem: "Adultos", hoursLow: 1, hoursHigh: 2, unit: "sessão", cnaeNovo: true, cnae: [{ c: "8690-9/99", d: "Outras atividades de atenção à saúde humana" }] },
-        { titulo: "Auditoria",                           paraQuem: "Empresas · governança", cnaeNovo: true, cnae: [{ c: "6920-6/02", d: "Atividades de auditoria contábil e tributária" }] },
-        { titulo: "Comunicação Científica",              paraQuem: "Pesquisadores · marcas", hoursLow: 5, hoursHigh: 30, cnaeNovo: true, cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino" }, { c: "5811-5/00", d: "Edição de livros" }] },
-        { titulo: "Consultoria Jurídica",                paraQuem: "Pequenas empresas · pessoas", hoursLow: 1, hoursHigh: 1, unit: "hora", cnaeNovo: true, cnae: [{ c: "6911-7/01", d: "Serviços advocatícios" }] },
+        { titulo: "Autocuidado",                         paraQuem: "Adultos", digital: true, hoursLow: 1, hoursHigh: 2, unit: "sessão", cnaeNovo: true, cnae: [{ c: "8690-9/99", d: "Outras atividades de atenção à saúde humana" }] },
+        { titulo: "Auditoria",                           paraQuem: "Empresas · governança", digital: true, cnaeNovo: true, cnae: [{ c: "6920-6/02", d: "Atividades de auditoria contábil e tributária" }] },
+        { titulo: "Comunicação Científica",              paraQuem: "Pesquisadores · marcas", digital: true, hoursLow: 5, hoursHigh: 30, cnaeNovo: true, cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino" }, { c: "5811-5/00", d: "Edição de livros" }] },
+        { titulo: "Consultoria Jurídica",                paraQuem: "Pequenas empresas · pessoas", digital: true, hoursLow: 1, hoursHigh: 1, unit: "hora", cnaeNovo: true, cnae: [{ c: "6911-7/01", d: "Serviços advocatícios" }] },
         { titulo: "Cuidado com o Idoso",                 paraQuem: "Famílias · idosos",
           planos: [
               { hours: 6 },
@@ -458,21 +461,21 @@
           cnaeNovo: true, cnae: [{ c: "8712-3/00", d: "Serviços de assistência à saúde prestados a pacientes fora de unidades de saúde" }] },
         { titulo: "Desenho Botânico",                    paraQuem: "Editoras · coleções", hoursLow: 8, hoursHigh: 40, cnaeNovo: true, cnae: [{ c: "9002-7/01", d: "Atividades de artistas plásticos, jornalistas independentes e escritores" }] },
         { titulo: "Drywall e Bioconstrução",             paraQuem: "Casa · obra", hoursLow: 20, hoursHigh: 500, cnaeNovo: true, cnae: [{ c: "4330-4/02", d: "Instalação de portas, janelas, tetos, divisórias e armários" }, { c: "4399-1/99", d: "Outros serviços especializados para construção" }] },
-        { titulo: "Gestão Administrativa",               paraQuem: "Pequenas empresas", hoursLow: 20, hoursHigh: 80, recurring: true, cnaeNovo: true, cnae: [{ c: "8211-3/00", d: "Serviços combinados de escritório e apoio administrativo" }] },
-        { titulo: "Gestão Contábil",                     paraQuem: "Pequenas empresas · MEI", hoursLow: 5, hoursHigh: 20, recurring: true, cnaeNovo: true, cnae: [{ c: "6920-6/01", d: "Atividades de contabilidade" }] },
-        { titulo: "Gestão Financeira",                   paraQuem: "Pequenas empresas", hoursLow: 8, hoursHigh: 40, recurring: true, cnaeNovo: true, cnae: [{ c: "7020-4/00", d: "Atividades de consultoria em gestão empresarial" }] },
-        { titulo: "Gestão Fiscal",                       paraQuem: "Pequenas empresas · MEI", hoursLow: 5, hoursHigh: 20, recurring: true, cnaeNovo: true, cnae: [{ c: "6920-6/01", d: "Atividades de contabilidade" }] },
-        { titulo: "Gestão Operacional",                  paraQuem: "Pequenas empresas", hoursLow: 20, hoursHigh: 80, recurring: true, cnaeNovo: true, cnae: [{ c: "7020-4/00", d: "Atividades de consultoria em gestão empresarial" }] },
-        { titulo: "Inteligência de Previsão",            paraQuem: "Empresas · fundos", hoursLow: 40, hoursHigh: 400, cnaeNovo: true, cnae: [{ c: "7320-3/00", d: "Pesquisa de mercado e de opinião pública" }, { c: "6311-9/00", d: "Tratamento de dados, provedores de serviços de aplicação e serviços de hospedagem" }] },
-        { titulo: "Market Making Preditivo",             paraQuem: "Mercados · plataformas", hoursLow: 40, hoursHigh: 400, cnaeNovo: true, cnae: [{ c: "6619-3/99", d: "Outras atividades auxiliares dos serviços financeiros" }] },
+        { titulo: "Gestão Administrativa",               paraQuem: "Pequenas empresas", digital: true, hoursLow: 20, hoursHigh: 80, recurring: true, cnaeNovo: true, cnae: [{ c: "8211-3/00", d: "Serviços combinados de escritório e apoio administrativo" }] },
+        { titulo: "Gestão Contábil",                     paraQuem: "Pequenas empresas · MEI", digital: true, hoursLow: 5, hoursHigh: 20, recurring: true, cnaeNovo: true, cnae: [{ c: "6920-6/01", d: "Atividades de contabilidade" }] },
+        { titulo: "Gestão Financeira",                   paraQuem: "Pequenas empresas", digital: true, hoursLow: 8, hoursHigh: 40, recurring: true, cnaeNovo: true, cnae: [{ c: "7020-4/00", d: "Atividades de consultoria em gestão empresarial" }] },
+        { titulo: "Gestão Fiscal",                       paraQuem: "Pequenas empresas · MEI", digital: true, hoursLow: 5, hoursHigh: 20, recurring: true, cnaeNovo: true, cnae: [{ c: "6920-6/01", d: "Atividades de contabilidade" }] },
+        { titulo: "Gestão Operacional",                  paraQuem: "Pequenas empresas", digital: true, hoursLow: 20, hoursHigh: 80, recurring: true, cnaeNovo: true, cnae: [{ c: "7020-4/00", d: "Atividades de consultoria em gestão empresarial" }] },
+        { titulo: "Inteligência de Previsão",            paraQuem: "Empresas · fundos", digital: true, hoursLow: 40, hoursHigh: 400, cnaeNovo: true, cnae: [{ c: "7320-3/00", d: "Pesquisa de mercado e de opinião pública" }, { c: "6311-9/00", d: "Tratamento de dados, provedores de serviços de aplicação e serviços de hospedagem" }] },
+        { titulo: "Market Making Preditivo",             paraQuem: "Mercados · plataformas", digital: true, hoursLow: 40, hoursHigh: 400, cnaeNovo: true, cnae: [{ c: "6619-3/99", d: "Outras atividades auxiliares dos serviços financeiros" }] },
         // ── Sub-serviços de "Saúde Mental" (Raquel cobre a árvore) ──
-        { titulo: "Saúde Mental",                        paraQuem: "Adultos · adolescentes", cnaeNovo: true, cnae: [{ c: "8650-0/03", d: "Atividades de psicologia e psicanálise" }] },
-        { titulo: "Psicologia Clínica",                  parent: "Saúde Mental", paraQuem: "Adultos", cnaeNovo: true, cnae: [{ c: "8650-0/03", d: "Atividades de psicologia e psicanálise" }] },
-        { titulo: "Psicoterapia Psicanalítica",          parent: "Saúde Mental", paraQuem: "Adultos", hoursLow: 1, hoursHigh: 1, unit: "sessão", cnaeNovo: true, cnae: [{ c: "8650-0/03", d: "Atividades de psicologia e psicanálise" }] },
-        { titulo: "Psicologia Analítica (Junguiana)",    parent: "Saúde Mental", paraQuem: "Adultos", hoursLow: 1, hoursHigh: 1, unit: "sessão", cnaeNovo: true, cnae: [{ c: "8650-0/03", d: "Atividades de psicologia e psicanálise" }] },
-        { titulo: "Psicologia Social e Comunitária",     parent: "Saúde Mental", paraQuem: "Grupos · ONGs", hoursLow: 2, hoursHigh: 8, unit: "grupo", cnaeNovo: true, cnae: [{ c: "8650-0/03", d: "Atividades de psicologia e psicanálise" }] },
+        { titulo: "Saúde Mental",                        paraQuem: "Adultos · adolescentes", digital: true, cnaeNovo: true, cnae: [{ c: "8650-0/03", d: "Atividades de psicologia e psicanálise" }] },
+        { titulo: "Psicologia Clínica",                  parent: "Saúde Mental", paraQuem: "Adultos", digital: true, cnaeNovo: true, cnae: [{ c: "8650-0/03", d: "Atividades de psicologia e psicanálise" }] },
+        { titulo: "Psicoterapia Psicanalítica",          parent: "Saúde Mental", paraQuem: "Adultos", digital: true, hoursLow: 1, hoursHigh: 1, unit: "sessão", cnaeNovo: true, cnae: [{ c: "8650-0/03", d: "Atividades de psicologia e psicanálise" }] },
+        { titulo: "Psicologia Analítica (Junguiana)",    parent: "Saúde Mental", paraQuem: "Adultos", digital: true, hoursLow: 1, hoursHigh: 1, unit: "sessão", cnaeNovo: true, cnae: [{ c: "8650-0/03", d: "Atividades de psicologia e psicanálise" }] },
+        { titulo: "Psicologia Social e Comunitária",     parent: "Saúde Mental", paraQuem: "Grupos · ONGs", digital: true, hoursLow: 2, hoursHigh: 8, unit: "grupo", cnaeNovo: true, cnae: [{ c: "8650-0/03", d: "Atividades de psicologia e psicanálise" }] },
         { titulo: "Yoga",                                paraQuem: "Iniciantes · turmas",
-          planos: [
+digital: true,           planos: [
               { hours: 1 },
               { label: "Semanal" },
               { label: "Mensal" }
@@ -865,19 +868,53 @@
         return tree;
     }
 
-    // Filtra serviços por localização. Filtros vazios ("") = qualquer.
-    // Match: pelo menos um responsável ativo do serviço cai na location.
-    function servicesIn(estado, cidade, bairro) {
-        return publicServices().filter(s =>
-            s.responsavel.some(h => {
+    // Match livre por texto: usuário digita qualquer coisa (ex: "Cangaíba",
+    // "Rio de Janeiro", "MG"). Case-insensitive, sem acento. Cada palavra da
+    // query precisa aparecer no blob "bairro cidade estado".
+    function _normLoc(s) {
+        return String(s || "").toLowerCase().normalize("NFD")
+            .replace(/[̀-ͯ]/g, "").trim();
+    }
+    function locationMatches(handleOrLoc, query) {
+        if (!query) return true;
+        const q = _normLoc(query);
+        if (!q) return true;
+        const loc = (typeof handleOrLoc === "string") ? locationOf(handleOrLoc) : handleOrLoc;
+        const blob = _normLoc([loc.bairro, loc.cidade, loc.estado].filter(Boolean).join(" "));
+        return q.split(/\s+/).every(t => blob.includes(t));
+    }
+
+    // Filtra serviços por texto livre de localização.
+    // Serviços com `digital: true` ignoram filtro (entrega remota — aparecem
+    // pra qualquer cidade/bairro).
+    function servicesIn(query) {
+        return publicServices().filter(s => {
+            if (s.digital) return true;
+            return s.responsavel.some(h => {
                 if (isInactive(h)) return false;
-                const loc = locationOf(h);
-                if (estado && loc.estado !== estado) return false;
-                if (cidade && loc.cidade !== cidade) return false;
-                if (bairro && loc.bairro !== bairro) return false;
-                return true;
-            })
-        );
+                return locationMatches(h, query);
+            });
+        });
+    }
+
+    // Sugestões pro autocomplete (datalist). Strings "Bairro · Cidade · UF",
+    // "Cidade · UF" e "UF" só do que existe na DB. Usuário pode digitar fora.
+    function locationSuggestions() {
+        const set = new Set();
+        const all = [...people, ...communities];
+        for (const e of all) {
+            if (isInactive(e.handle)) continue;
+            const hasPublic = services.some(s =>
+                !s.hidden && s.responsavel.includes(e.handle) &&
+                !s.responsavel.some(h => isInactive(h))
+            );
+            if (!hasPublic) continue;
+            const loc = locationOf(e.handle);
+            if (loc.bairro) set.add(`${loc.bairro} · ${loc.cidade} · ${loc.estado}`);
+            set.add(`${loc.cidade} · ${loc.estado}`);
+            set.add(loc.estado);
+        }
+        return [...set].sort();
     }
 
     // Pricing — sempre hours × rate. Para produtos (torta, hambúrguer, palavra),
@@ -1287,7 +1324,7 @@
         people, communities, services, solutions, missions, poems, rosterOrder, finances, manifesto,
         get, byHandle, isEmMemoria, isInactive, isSocio,
         rateOf, computeFaixaPreco, DEFAULT_HOURLY_RATE,
-        DEFAULT_LOCATION, locationOf, availableLocations, servicesIn,
+        DEFAULT_LOCATION, locationOf, availableLocations, servicesIn, locationMatches, locationSuggestions,
         portfolio, portfolioOf, portfolioFor,
         publicServices, roster, membersOf, subMembersOf, bundledServices,
         serviceCatalog, slugify,
