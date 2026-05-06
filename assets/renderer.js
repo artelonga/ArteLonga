@@ -396,13 +396,47 @@
                 ${esc(c.label)} <span class="sup-count">${c.items.length}</span>
             </button>`;
 
+        // Localização: árvore { estado → { cidade → Set<bairro> } } pra montar
+        // os 3 selects cascateados. Default = SP · São Paulo · Jardim Umarizal.
+        const locTree = AL.availableLocations();
+        const defLoc = AL.DEFAULT_LOCATION;
+        let activeLoc = { ...defLoc };
+        const optsEstado = [...locTree.keys()].sort();
+        function optsCidade(estado) {
+            const m = locTree.get(estado);
+            return m ? [...m.keys()].sort() : [];
+        }
+        function optsBairro(estado, cidade) {
+            const m = locTree.get(estado);
+            const set = m && m.get(cidade);
+            return set ? [...set].sort() : [];
+        }
+        function buildOptions(values, current) {
+            const empty = `<option value="">— qualquer —</option>`;
+            const list = values.map(v =>
+                `<option value="${esc(v)}"${v === current ? " selected" : ""}>${esc(v)}</option>`
+            ).join("");
+            return empty + list;
+        }
+
         document.body.innerHTML = `
             ${siteHeader()}
             <main class="main market-main">
                 <section class="market-hero">
                     <h1 class="market-h1">Serviços</h1>
                     <p class="market-tagline">Encontramos a solução para seu problema.</p>
-                    <p class="market-loc">São Paulo · Jardim Umarizal</p>
+
+                    <div class="market-loc-filter" id="market-loc-filter">
+                        <label class="market-loc-label">Estado
+                            <select id="loc-estado">${buildOptions(optsEstado, defLoc.estado)}</select>
+                        </label>
+                        <label class="market-loc-label">Cidade
+                            <select id="loc-cidade">${buildOptions(optsCidade(defLoc.estado), defLoc.cidade)}</select>
+                        </label>
+                        <label class="market-loc-label">Bairro
+                            <select id="loc-bairro">${buildOptions(optsBairro(defLoc.estado, defLoc.cidade), defLoc.bairro)}</select>
+                        </label>
+                    </div>
 
                     <form class="market-search" role="search" autocomplete="off"
                           onsubmit="event.preventDefault(); return false;">
@@ -438,8 +472,24 @@
         const count    = document.getElementById("market-count");
         const empty    = document.getElementById("market-empty");
         const chipsBox = document.getElementById("sup-cats");
+        const selEstado = document.getElementById("loc-estado");
+        const selCidade = document.getElementById("loc-cidade");
+        const selBairro = document.getElementById("loc-bairro");
 
         let activeCat = "";
+
+        // Filtra a lista de serviços pelos responsáveis ativos da location ativa.
+        function locFilter(list) {
+            if (!activeLoc.estado && !activeLoc.cidade && !activeLoc.bairro) return list;
+            return list.filter(s => s.responsavel.some(h => {
+                if (AL.isInactive(h)) return false;
+                const loc = AL.locationOf(h);
+                if (activeLoc.estado && loc.estado !== activeLoc.estado) return false;
+                if (activeLoc.cidade && loc.cidade !== activeLoc.cidade) return false;
+                if (activeLoc.bairro && loc.bairro !== activeLoc.bairro) return false;
+                return true;
+            }));
+        }
 
         function applyFilter() {
             const q = norm(input.value.trim());
@@ -456,6 +506,8 @@
             } else {
                 list = topo;
             }
+
+            list = locFilter(list);
 
             grid.innerHTML = list.map(card).join("");
             count.textContent = tokens.length
@@ -480,6 +532,36 @@
             input.value = "";
             applyFilter();
             input.focus();
+        });
+
+        // Cascade location filters: estado → cidade → bairro.
+        // "" (— qualquer —) abre o nível superior.
+        function refreshCidade() {
+            const list = activeLoc.estado ? optsCidade(activeLoc.estado) : [];
+            selCidade.innerHTML = buildOptions(list, activeLoc.cidade);
+            // Se a cidade ativa não está mais disponível, limpa.
+            if (activeLoc.cidade && !list.includes(activeLoc.cidade)) activeLoc.cidade = "";
+        }
+        function refreshBairro() {
+            const list = (activeLoc.estado && activeLoc.cidade) ? optsBairro(activeLoc.estado, activeLoc.cidade) : [];
+            selBairro.innerHTML = buildOptions(list, activeLoc.bairro);
+            if (activeLoc.bairro && !list.includes(activeLoc.bairro)) activeLoc.bairro = "";
+        }
+        selEstado.addEventListener("change", () => {
+            activeLoc.estado = selEstado.value;
+            activeLoc.cidade = ""; activeLoc.bairro = "";
+            refreshCidade(); refreshBairro();
+            applyFilter();
+        });
+        selCidade.addEventListener("change", () => {
+            activeLoc.cidade = selCidade.value;
+            activeLoc.bairro = "";
+            refreshBairro();
+            applyFilter();
+        });
+        selBairro.addEventListener("change", () => {
+            activeLoc.bairro = selBairro.value;
+            applyFilter();
         });
 
         // Estado inicial.

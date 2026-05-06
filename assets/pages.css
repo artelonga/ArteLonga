@@ -34,6 +34,49 @@
     font-weight: 700;
 }
 
+/* Filtro de localização — Estado · Cidade · Bairro em cascata. */
+.market-loc-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 1rem;
+    margin-bottom: 3vh;
+    max-width: 640px;
+}
+.market-loc-label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4vh;
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #666;
+    font-weight: 700;
+    flex: 1;
+    min-width: 110px;
+}
+.market-loc-label select {
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: none;
+    padding: 1vh 0.7rem;
+    border: 1px solid #d4d4d4;
+    border-radius: 2px;
+    background: #fff;
+    color: #0a0a0a;
+    cursor: pointer;
+}
+.market-loc-label select:focus {
+    outline: none;
+    border-color: #0a0a0a;
+    box-shadow: 0 0 0 3px rgba(10,10,10,0.08);
+}
+@media (max-width: 480px) {
+    .market-loc-filter { flex-direction: column; }
+    .market-loc-label { width: 100%; min-width: 0; }
+}
+
 .market-search {
     display: flex;
     max-width: 640px;

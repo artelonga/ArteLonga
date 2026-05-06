@@ -13,6 +13,15 @@
     // Default rate da rede. Cada pessoa pode ter `hourlyRate` próprio (override).
     const DEFAULT_HOURLY_RATE = 100;
 
+    // ─── LOCATION ────────────────────────────────────────────────────────────
+    // Localização padrão da rede (Jardim Umarizal). Pessoas sem `location`
+    // herdam isso. Rodney tem location próprio (Cangaíba). Schema:
+    //   location: { estado, cidade, bairro }   ← preferido
+    //   location: "Bairro · Cidade · UF"       ← legado, parseado em runtime
+    const DEFAULT_LOCATION = Object.freeze({
+        estado: "SP", cidade: "São Paulo", bairro: "Jardim Umarizal"
+    });
+
     // ─── PEOPLE ──────────────────────────────────────────────────────────────
     const people = [
         {
@@ -182,7 +191,7 @@
             handle: "rodney", type: "person", nome: "Rodney",
             role: "Piloto de Drone", tags: ["parceiro"],
             pic: null, bio: "",
-            location: "Cangaíba · São Paulo · SP",
+            location: { estado: "SP", cidade: "São Paulo", bairro: "Cangaíba" },
             servicos: ["Piloto de Drone"]
         },
 
@@ -811,6 +820,66 @@
         return out;
     }
 
+    // ─── LOCATION HELPERS ────────────────────────────────────────────────────
+    // Normaliza a location do parceiro pra { estado, cidade, bairro }.
+    // Aceita object structured, string legada ("Bairro · Cidade · UF") ou nada
+    // (cai no DEFAULT_LOCATION = SP · São Paulo · Jardim Umarizal).
+    function locationOf(handle) {
+        const e = get(handle);
+        if (!e || !e.location) return DEFAULT_LOCATION;
+        const loc = e.location;
+        if (typeof loc === "string") {
+            const parts = loc.split(/\s*·\s*/);
+            return {
+                estado: parts[2] || DEFAULT_LOCATION.estado,
+                cidade: parts[1] || DEFAULT_LOCATION.cidade,
+                bairro: parts[0] || DEFAULT_LOCATION.bairro
+            };
+        }
+        return {
+            estado: loc.estado || DEFAULT_LOCATION.estado,
+            cidade: loc.cidade || DEFAULT_LOCATION.cidade,
+            bairro: loc.bairro || DEFAULT_LOCATION.bairro
+        };
+    }
+
+    // Hierarquia de locations disponíveis: { estado: { cidade: Set<bairro> } }.
+    // Usado pra popular os selects cascateados na home.
+    function availableLocations() {
+        const tree = new Map();
+        const all = [...people, ...communities];
+        for (const e of all) {
+            if (isInactive(e.handle)) continue;
+            // Só aparece em filtro quem tem serviço ativo público.
+            const hasPublic = services.some(s =>
+                !s.hidden && s.responsavel.includes(e.handle) &&
+                !s.responsavel.some(h => isInactive(h))
+            );
+            if (!hasPublic) continue;
+            const loc = locationOf(e.handle);
+            if (!tree.has(loc.estado)) tree.set(loc.estado, new Map());
+            const cm = tree.get(loc.estado);
+            if (!cm.has(loc.cidade)) cm.set(loc.cidade, new Set());
+            if (loc.bairro) cm.get(loc.cidade).add(loc.bairro);
+        }
+        return tree;
+    }
+
+    // Filtra serviços por localização. Filtros vazios ("") = qualquer.
+    // Match: pelo menos um responsável ativo do serviço cai na location.
+    function servicesIn(estado, cidade, bairro) {
+        return publicServices().filter(s =>
+            s.responsavel.some(h => {
+                if (isInactive(h)) return false;
+                const loc = locationOf(h);
+                if (estado && loc.estado !== estado) return false;
+                if (cidade && loc.cidade !== cidade) return false;
+                if (bairro && loc.bairro !== bairro) return false;
+                return true;
+            })
+        );
+    }
+
     // Pricing — sempre hours × rate. Para produtos (torta, hambúrguer, palavra),
     // hoursLow/hoursHigh expressam horas POR UNIDADE (ex: 8h por batch de 10
     // tortas → 0.8h/torta × R\$ 100/h = R\$ 80/torta).
@@ -1218,6 +1287,7 @@
         people, communities, services, solutions, missions, poems, rosterOrder, finances, manifesto,
         get, byHandle, isEmMemoria, isInactive, isSocio,
         rateOf, computeFaixaPreco, DEFAULT_HOURLY_RATE,
+        DEFAULT_LOCATION, locationOf, availableLocations, servicesIn,
         portfolio, portfolioOf, portfolioFor,
         publicServices, roster, membersOf, subMembersOf, bundledServices,
         serviceCatalog, slugify,
