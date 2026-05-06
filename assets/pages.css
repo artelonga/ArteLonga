@@ -307,12 +307,22 @@
 }
 .prestador-cta-btn:hover { background: #c0392b; }
 
-/* Site footer (Quem está por trás) — global */
+/* Site footer · sempre visível no viewport (fixed bottom). Conteúdo principal
+   reserva padding-bottom equivalente pra não ficar atrás dele. */
 .site-footer {
-    margin-top: 8vh;
-    padding: 4vh 7vw;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1.6vh 7vw;
     border-top: 1px solid #eaeaea;
     background: #fafafa;
+    z-index: 50;
+}
+body { padding-bottom: 7vh; }
+@media (max-width: 640px) {
+    body { padding-bottom: 9vh; }
+    .site-footer { padding: 1.4vh 5vw; }
 }
 .site-footer-inner {
     display: flex;
