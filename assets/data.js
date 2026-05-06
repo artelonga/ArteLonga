@@ -11,11 +11,10 @@
 
     // ─── PRICING ─────────────────────────────────────────────────────────────
     // Default rate da rede. Cada pessoa pode ter `hourlyRate` próprio (override).
-    // Cada serviço ativo pode ter `hoursLow/hoursHigh` (estimativa de horas) e
-    // `unit` (sessão, aula, hora, consulta, oficina, ...) — o renderer monta a
-    // faixa de preço em runtime: hoursLow × min(rates) – hoursHigh × max(rates).
-    // Override total: setar `faixaPreco` (string) — vence o cálculo automático.
+    // FLAT_INITIAL_FEE = tarifa inicial única da Arte Longa, exibida nos planos
+    // como "Sob demanda" (entrada da rede pra qualquer serviço com pacote).
     const DEFAULT_HOURLY_RATE = 100;
+    const FLAT_INITIAL_FEE = 1000;
 
     // ─── PEOPLE ──────────────────────────────────────────────────────────────
     const people = [
@@ -181,6 +180,13 @@
                 instagram: "TerraPsicoterapia",
                 tagline: "Psicoterapia online e presencial: Inicie seu atendimento ⤵️"
             }
+        },
+        {
+            handle: "rodney", type: "person", nome: "Rodney",
+            role: "Piloto de Drone", tags: ["parceiro"],
+            pic: null, bio: "",
+            location: "Cangaíba · São Paulo · SP",
+            servicos: ["Piloto de Drone"]
         },
 
         // sub-members (shown under a parent profile, not on top-level roster)
@@ -389,6 +395,7 @@
         { titulo: "Escrita, Interpretação e Tradução",   paraQuem: "Empresas · autores", hoursLow: 5, hoursHigh: 30, cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }, { c: "5811-5/00", d: "Edição de livros" }] },
         { titulo: "Experiência de Usuário (UI/UX)",      paraQuem: "Produtos · apps", hoursLow: 15, hoursHigh: 100, cnae: [{ c: "7410-2/03", d: "Design de produto" }, { c: "6201-5/02", d: "Web design" }] },
         { titulo: "Fotografia",                          paraQuem: "Eventos · ensaios", hoursLow: 6, hoursHigh: 15, cnae: [{ c: "7420-0/01", d: "Atividades de produção de fotografias" }, { c: "7420-0/04", d: "Filmagem de festas e eventos" }] },
+        { titulo: "Piloto de Drone",                     paraQuem: "Eventos · obras · imobiliário", cnaeNovo: true, cnae: [{ c: "7420-0/02", d: "Atividades de produção de fotografias aéreas" }, { c: "5911-1/99", d: "Produção de vídeos não especificada anteriormente" }] },
         { titulo: "Inteligência e Tecnologia",           paraQuem: "Empresas · estúdios", hoursLow: 20, hoursHigh: 200, cnae: [{ c: "6204-0/00", d: "Consultoria em tecnologia da informação" }, { c: "6319-4/00", d: "Portais, provedores de conteúdo e serviços de informação na internet" }] },
         { titulo: "Marketing Digital",                   paraQuem: "Marcas · pequenas empresas", hoursLow: 20, hoursHigh: 80, recurring: true, cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade" }] },
         { titulo: "Mentoria Espiritual",                 paraQuem: "Adultos em transição", hoursLow: 1, hoursHigh: 2, unit: "sessão", cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino" }] },
@@ -400,9 +407,9 @@
         { titulo: "Stylist, Moda e Passarela",           paraQuem: "Marcas · eventos", hoursLow: 4, hoursHigh: 20, cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade" }] },
         { titulo: "Tortas Salgadas da Veh", isPortfolio: true, paraQuem: "Eventos · empresas",
           planos: [
+              { label: "Sob demanda" },
               { label: "Semanal", hours: 4 },
-              { label: "Mensal", hours: 16 },
-              { label: "Sob demanda" }
+              { label: "Mensal", hours: 16 }
           ],
           cnae: [{ c: "5620-1/02", d: "Serviços de alimentação — bufê" }] },
         { titulo: "Tradução de Inglês",                  paraQuem: "Empresas · autores", hoursLow: 0.003, hoursHigh: 0.005, unit: "palavra", cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
@@ -419,9 +426,9 @@
         { titulo: "Grafite",                             paraQuem: "Eventos · ativações", hoursLow: 8, hoursHigh: 40, cnaeNovo: true, cnae: [{ c: "9002-7/01", d: "Atividades de artistas plásticos, jornalistas independentes e escritores" }] },
         { titulo: "Meditação",                           paraQuem: "Iniciantes · grupos",
           planos: [
+              { label: "Sob demanda" },
               { label: "Semanal", hours: 1 },
-              { label: "Mensal", hours: 4 },
-              { label: "Sob demanda" }
+              { label: "Mensal", hours: 4 }
           ],
           cnaeNovo: true, cnae: [{ c: "8690-9/99", d: "Outras atividades de atenção à saúde humana" }] },
         { titulo: "Rede de Talentos",                    paraQuem: "Empresas · contratantes", cnaeNovo: true, cnae: [{ c: "7810-8/00", d: "Seleção e agenciamento de mão-de-obra" }] },
@@ -429,9 +436,9 @@
         // ── Novos CNAEs a formalizar (antes sem classificação) ───────────────
         { titulo: "Acompanhamento Nutricional",          paraQuem: "Adultos · esportistas",
           planos: [
+              { label: "Sob demanda" },
               { label: "Semanal", hours: 0.5 },
-              { label: "Mensal", hours: 2 },
-              { label: "Sob demanda" }
+              { label: "Mensal", hours: 2 }
           ],
           cnaeNovo: true, cnae: [{ c: "8650-0/02", d: "Atividades de profissionais da nutrição" }] },
         { titulo: "Autocuidado",                         paraQuem: "Adultos", hoursLow: 1, hoursHigh: 2, unit: "sessão", cnaeNovo: true, cnae: [{ c: "8690-9/99", d: "Outras atividades de atenção à saúde humana" }] },
@@ -440,9 +447,9 @@
         { titulo: "Consultoria Jurídica",                paraQuem: "Pequenas empresas · pessoas", hoursLow: 1, hoursHigh: 1, unit: "hora", cnaeNovo: true, cnae: [{ c: "6911-7/01", d: "Serviços advocatícios" }] },
         { titulo: "Cuidado com o Idoso",                 paraQuem: "Famílias · idosos",
           planos: [
+              { label: "Sob demanda" },
               { label: "Semanal", hours: 30 },
-              { label: "Mensal", hours: 132 },
-              { label: "Sob demanda" }
+              { label: "Mensal", hours: 132 }
           ],
           cnaeNovo: true, cnae: [{ c: "8712-3/00", d: "Serviços de assistência à saúde prestados a pacientes fora de unidades de saúde" }] },
         { titulo: "Desenho Botânico",                    paraQuem: "Editoras · coleções", hoursLow: 8, hoursHigh: 40, cnaeNovo: true, cnae: [{ c: "9002-7/01", d: "Atividades de artistas plásticos, jornalistas independentes e escritores" }] },
@@ -462,9 +469,9 @@
         { titulo: "Psicologia Social e Comunitária",     parent: "Saúde Mental", paraQuem: "Grupos · ONGs", hoursLow: 2, hoursHigh: 8, unit: "grupo", cnaeNovo: true, cnae: [{ c: "8650-0/03", d: "Atividades de psicologia e psicanálise" }] },
         { titulo: "Yoga",                                paraQuem: "Iniciantes · turmas",
           planos: [
+              { label: "Sob demanda" },
               { label: "Semanal", hours: 1 },
-              { label: "Mensal", hours: 4 },
-              { label: "Sob demanda" }
+              { label: "Mensal", hours: 4 }
           ],
           cnaeNovo: true, cnae: [{ c: "9313-1/00", d: "Atividades de condicionamento físico" }, { c: "8690-9/99", d: "Outras atividades de atenção à saúde humana" }] },
 
@@ -800,16 +807,33 @@
             ? `${fmtBR(minRate)}/h`
             : `${fmtBR(minRate)}–${fmtBR(maxRate)}/h`;
 
-        // Modo planos — Semanal · Mensal · Sob demanda. Todos os 3 viram CTA
-        // ("Falar →"); cliente pega o plano que combina e a gente fala preço
-        // direto. Pacote-padrão sem fingir cravar valor.
+        // Modo planos. Padrão da rede:
+        //   Sob demanda      → R\$ 1.000 flat (tarifa inicial · única)
+        //   Semanal          → hours × rate (computado)
+        //   Mensal           → hours × rate (computado)
+        // Override por plano:
+        //   { flatFee: N }   → fee customizado pra esse plano
+        //   { hours: N }     → computado de hours × rate
+        //   sem ambos        → "Sob consulta" (legado)
         if (s.planos && s.planos.length) {
-            const planos = s.planos.map(p => ({
-                label: p.label,
-                preco: null,
-                formula: null,
-                consult: true
-            }));
+            const planos = s.planos.map(p => {
+                if (typeof p.flatFee === "number" || p.label === "Sob demanda") {
+                    const fee = p.flatFee || FLAT_INITIAL_FEE;
+                    return { label: p.label, preco: fmtBR(fee), formula: "Tarifa inicial · única", consult: false };
+                }
+                if (typeof p.hours === "number") {
+                    const low  = p.hours * minRate;
+                    const high = p.hours * maxRate;
+                    const unitSuffix = p.unit ? `/${p.unit}` : "";
+                    const hoursPart = `${fmtHours(p.hours)}h`;
+                    const preco = (low === high)
+                        ? `${fmtBR(low)}${unitSuffix}`
+                        : `${fmtBR(low)} – ${fmtBR(high)}${unitSuffix}`;
+                    const formula = `${hoursPart} × ${ratePart}`;
+                    return { label: p.label, preco, formula, consult: false };
+                }
+                return { label: p.label, preco: "Sob consulta", formula: null, consult: true };
+            });
             return { planos, preco: null, formula: null, consult: false };
         }
 
@@ -836,6 +860,7 @@
         "yuri", "igo", "joseantonio", "mono",
         "luke", "marina", "karina", "kayra", "aime",
         "syl", "raquel", "alice", "ramona", "rogerio", "alzira", "miguel", "joao",
+        "rodney",
         "bruna",
         "quilomboaraucaria", "hfsassociados", "hedix",
         "retro-umarizal"
