@@ -1006,13 +1006,17 @@ digital: true,           planos: [
             const low  = s.hoursLow  * useRate;
             const high = s.hoursHigh * useRate;
             const unitSuffix = `/${s.unit}`;
-            const hoursPart = (s.hoursLow === s.hoursHigh)
-                ? `${fmtHours(s.hoursLow)}h por ${s.unit}`
-                : `${fmtHours(s.hoursLow)}–${fmtHours(s.hoursHigh)}h por ${s.unit}`;
             const preco = (low === high)
                 ? `${fmtBR(low)}${unitSuffix}`
                 : `${fmtBR(low)} – ${fmtBR(high)}${unitSuffix}`;
-            const formula = `${hoursPart} × ${fmtBR(useRate)}/h`;
+            // Pra unidades sub-hora (palavra, torta), a fórmula "0,003h por palavra"
+            // confunde — esconde, deixa só o preço falar. Pra unidades >= 1h
+            // (sessão, aula, consulta, diária, oficina), mostra a base.
+            const formula = (s.hoursHigh < 1)
+                ? `Tarifa-base R$ ${useRate}/h`
+                : (s.hoursLow === s.hoursHigh
+                    ? `${fmtHours(s.hoursLow)}h por ${s.unit} × R$ ${useRate}/h`
+                    : `${fmtHours(s.hoursLow)}–${fmtHours(s.hoursHigh)}h por ${s.unit} × R$ ${useRate}/h`);
             return { planos: null, preco, formula, consult: false };
         }
 
