@@ -239,3 +239,62 @@ CREATE INDEX events_path_ts     ON events(path, ts);
 - Removing or renaming required fields, changing types, redefining semantics →
   bump `SCHEMA_VERSION`. Backend keeps the old read-path live for at least 30
   days so queued events from older clients still ingest.
+
+---
+
+## 9. Public read endpoints (dashboard `/analytics/`)
+
+A página pública `artelonga.com.br/analytics/` (noindex) consome estes
+endpoints — **sem auth**, somente leitura agregada, sem PII. Todos retornam
+JSON. CORS aberto pra `https://artelonga.com.br`.
+
+### `GET /api/v1/analytics/public/summary?days=30`
+
+Retorna agregados pra o intervalo informado (1, 7, 30 ou 90 dias).
+
+```ts
+type SummaryResponse = {
+  range: { from: string, to: string, days: number },   // ISO datetimes
+  views: number,                                       // total page_view
+  events_total: number,                                // todos os eventos no range
+  visitors: number,                                    // unique vid
+  returning?: number,                                  // visitantes que tinham vid antes do range
+  sessions: number,                                    // unique sid
+  session_avg_ms?: number,                             // duração média (ms)
+  countries: number,                                   // distinct
+  cities?: number,
+  timeseries: Array<{ bucket: string, count: number }>, // bucket = ISO date ou hora
+  top_pages: Array<{ path: string, views: number, visitors: number }>,
+  geo: Array<{ country: string, city?: string, visitors: number, sessions: number }>
+}
+```
+
+Bucketing: `days=1` → hora, demais → dia. Limite top_pages = 30, geo = 50.
+
+### `GET /api/v1/analytics/public/recent?limit=50`
+
+Stream recente — últimos N eventos (max 200). Útil pra "live tail" no dashboard.
+
+```ts
+type RecentResponse = {
+  events: Array<{
+    ts: number,           // epoch ms
+    name: string,
+    path?: string,
+    country?: string,
+    city?: string
+  }>
+}
+```
+
+Sem `vid`, `sid`, `ip_hash`, `ua_brand`, `props`. Só o que o público pode ver.
+
+### Privacidade
+
+- Nenhum dos endpoints expõe `vid`, `sid`, `ip_hash`, UTM, props, experiments ou
+  qualquer campo que possa identificar visitante individual.
+- Eventos com `name = js_error` ou `js_promise_rejection` ficam fora do
+  `recent` (ruído + risco de stack vazar info).
+- Cache HTTP: `Cache-Control: public, max-age=60` é razoável (dashboard
+  não precisa ser real-time absoluto).
+- Rate-limit por IP recomendado: 30 req/min.
