@@ -798,27 +798,16 @@
             ? `${fmtBR(minRate)}/h`
             : `${fmtBR(minRate)}–${fmtBR(maxRate)}/h`;
 
-        // Modo planos — array de pacotes nomeados. Padrão da rede:
-        //   { label: "Semanal", hours: N }
-        //   { label: "Mensal",  hours: M }
-        //   { label: "Sob demanda" }   ← sem hours = CTA, sem preço computado
-        // Override de tudo, mesmo pra não-sócios (se publicam planos, é porque
-        // têm pacote-padrão).
+        // Modo planos — Semanal · Mensal · Sob demanda. Todos os 3 viram CTA
+        // ("Falar →"); cliente pega o plano que combina e a gente fala preço
+        // direto. Pacote-padrão sem fingir cravar valor.
         if (s.planos && s.planos.length) {
-            const planos = s.planos.map(p => {
-                if (typeof p.hours !== "number") {
-                    return { label: p.label, preco: null, formula: null, consult: true };
-                }
-                const low  = p.hours * minRate;
-                const high = p.hours * maxRate;
-                const unitSuffix = p.unit ? `/${p.unit}` : "";
-                const hoursPart = `${fmtHours(p.hours)}h`;
-                const preco = (low === high)
-                    ? `${fmtBR(low)}${unitSuffix}`
-                    : `${fmtBR(low)} – ${fmtBR(high)}${unitSuffix}`;
-                const formula = `${hoursPart} × ${ratePart}`;
-                return { label: p.label, preco, formula, consult: false };
-            });
+            const planos = s.planos.map(p => ({
+                label: p.label,
+                preco: null,
+                formula: null,
+                consult: true
+            }));
             return { planos, preco: null, formula: null, consult: false };
         }
 
@@ -826,25 +815,17 @@
         if (!s.hoursLow || !s.hoursHigh) {
             return { planos: null, preco: "Sob consulta", formula: null, consult: true };
         }
-        // Só sócios têm preço calculado pela rede; qualquer não-sócio → Sob consulta.
+        // Não-sócios definem preço próprio → Sob consulta + canal direto.
         if (ativos.length && ativos.some(h => !isSocio(h))) {
             return { planos: null, preco: "Sob consulta", formula: null, consult: true };
         }
 
-        const low  = s.hoursLow  * minRate;
-        const high = s.hoursHigh * maxRate;
-        const unitSuffix = s.recurring ? "/mês" : (s.unit ? `/${s.unit}` : "");
-        const isPerUnit = !!s.unit && !s.recurring && s.unit !== "hora";
+        // Sócios em serviço one-time → mostra a tarifa horária flat (R\$ 100/h).
+        // Total fica sob demanda, calculado conforme escopo do trabalho.
         const hoursPart = (s.hoursLow === s.hoursHigh)
-            ? `${fmtHours(s.hoursLow)}h`
-            : `${fmtHours(s.hoursLow)}–${fmtHours(s.hoursHigh)}h`;
-        const preco = (low === high)
-            ? `${fmtBR(low)}${unitSuffix}`
-            : `${fmtBR(low)} – ${fmtBR(high)}${unitSuffix}`;
-        const formula = isPerUnit
-            ? `${hoursPart} por ${s.unit} × ${ratePart}`
-            : `${hoursPart} × ${ratePart}`;
-        return { planos: null, preco, formula, consult: false };
+            ? `~${fmtHours(s.hoursLow)}h estimadas`
+            : `~${fmtHours(s.hoursLow)}–${fmtHours(s.hoursHigh)}h estimadas`;
+        return { planos: null, preco: ratePart, formula: hoursPart, consult: false };
     }
 
     // Roster = what shows on /parceiros/ (top-level people + communities in this order)

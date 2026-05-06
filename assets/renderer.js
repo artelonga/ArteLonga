@@ -402,7 +402,7 @@
             <main class="main market-main">
                 <section class="market-hero">
                     <h1 class="market-h1">Serviços</h1>
-                    <p class="market-tagline">Desenvolvemos a solução pro seu problema.</p>
+                    <p class="market-tagline">Encontramos a solução para seu problema.</p>
                     <p class="market-loc">São Paulo · Jardim Umarizal</p>
 
                     <form class="market-search" role="search" autocomplete="off"
