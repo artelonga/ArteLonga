@@ -773,6 +773,44 @@
         });
     }
 
+    // ─── PORTFOLIO ────────────────────────────────────────────────────────────
+    // Conceito derivado: entry = intersecção parceiro × serviço.
+    // Não tem tipo próprio no schema — é gerado em runtime a partir de
+    // service.responsavel. Documentado em docs/SCHEMA.md.
+    function portfolioEntry(parceiroHandle, servico) {
+        const p = get(parceiroHandle);
+        return {
+            parceiro: parceiroHandle,
+            parceiroNome: p ? p.nome : parceiroHandle,
+            servico: servico.titulo,
+            servicoSlug: servico.slug,
+            servicoUrl: `/servicos/${servico.slug}/`
+        };
+    }
+    function portfolioOf(parceiroHandle) {
+        return services
+            .filter(s => !s.hidden && s.responsavel.includes(parceiroHandle))
+            .map(s => portfolioEntry(parceiroHandle, s));
+    }
+    function portfolioFor(servicoTitulo) {
+        const s = services.find(x => x.titulo === servicoTitulo);
+        if (!s || s.hidden) return [];
+        return s.responsavel
+            .filter(h => !isInactive(h))
+            .map(h => portfolioEntry(h, s));
+    }
+    function portfolio() {
+        const out = [];
+        for (const s of services) {
+            if (s.hidden) continue;
+            for (const h of s.responsavel) {
+                if (isInactive(h)) continue;
+                out.push(portfolioEntry(h, s));
+            }
+        }
+        return out;
+    }
+
     // Pricing — sempre hours × rate. Para produtos (torta, hambúrguer, palavra),
     // hoursLow/hoursHigh expressam horas POR UNIDADE (ex: 8h por batch de 10
     // tortas → 0.8h/torta × R\$ 100/h = R\$ 80/torta).
@@ -1174,6 +1212,7 @@
         people, communities, services, solutions, missions, poems, rosterOrder, finances, manifesto,
         get, byHandle, isEmMemoria, isInactive, isSocio,
         rateOf, computeFaixaPreco, DEFAULT_HOURLY_RATE,
+        portfolio, portfolioOf, portfolioFor,
         publicServices, roster, membersOf, subMembersOf, bundledServices,
         serviceCatalog, slugify,
         serviceBySlug, serviceByTitle, solutionsUsingService, relatedServices,
