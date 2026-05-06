@@ -284,17 +284,18 @@
     const SUPERCATS = [
         { id: "eventos",    label: "Eventos",     titles: [
             "Filmagem de Festas e Eventos", "Fotografia", "Produção Musical",
-            "Alimentação e Bebidas", "Hambúrguer Artesanal",
+            "Alimentação e Bebidas", "Hambúrguer Artesanal", "Piloto de Drone",
             "Atriz", "Cantora", "Modelo", "Dança e Expressão Corporal",
             "Artes Visuais", "Criação de Conteúdo", "Comunicação Visual",
-            "Produção de Desfile"
+            "Produção de Desfile", "Produção de Eventos"
         ]},
         { id: "digital",    label: "Digital",     titles: [
             "Inteligência e Tecnologia", "Desenvolvimento Web",
             "Desenvolvimento de Software", "Desenvolvimento de API",
-            "Privacidade e Segurança Digital", "Comunicação Visual",
+            "Automação de Processos",
+            "Privacidade e Segurança", "Comunicação Visual",
             "Marketing Digital", "Tráfego e Crescimento", "Design",
-            "Experiência de Usuário", "Criação de Conteúdo",
+            "Experiência de Usuário (UI/UX)", "Criação de Conteúdo",
             "Consultoria em TI", "Nuvem", "Computação",
             "Dados e Armazenamento", "Hardware", "Sistemas Operacionais", "Redes"
         ]},
@@ -314,6 +315,7 @@
         { id: "negocios",   label: "Negócios",    titles: [
             "Gestão Administrativa", "Gestão Contábil", "Gestão Executiva",
             "Gestão Financeira", "Gestão Fiscal", "Gestão Operacional",
+            "Auditoria", "Automação de Processos",
             "Consultoria Jurídica", "Consultoria em Moda",
             "Rede de Parcerias", "Rede de Talentos", "Conexões",
             "Inteligência de Previsão", "Market Making Preditivo"
@@ -323,7 +325,7 @@
             "Tortas Salgadas da Veh"
         ]},
         { id: "audiovisual", label: "Audiovisual", titles: [
-            "Fotografia", "Produção Musical", "Filmagem de Festas e Eventos",
+            "Fotografia", "Piloto de Drone", "Produção Musical", "Filmagem de Festas e Eventos",
             "Escrita, Interpretação e Tradução", "Atriz", "Cantora",
             "Modelo", "Criação de Conteúdo", "Poeta"
         ]}

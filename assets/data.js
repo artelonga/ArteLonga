@@ -11,10 +11,7 @@
 
     // ─── PRICING ─────────────────────────────────────────────────────────────
     // Default rate da rede. Cada pessoa pode ter `hourlyRate` próprio (override).
-    // FLAT_INITIAL_FEE = tarifa inicial única da Arte Longa, exibida nos planos
-    // como "Sob demanda" (entrada da rede pra qualquer serviço com pacote).
     const DEFAULT_HOURLY_RATE = 100;
-    const FLAT_INITIAL_FEE = 1000;
 
     // ─── PEOPLE ──────────────────────────────────────────────────────────────
     const people = [
@@ -407,9 +404,9 @@
         { titulo: "Stylist, Moda e Passarela",           paraQuem: "Marcas · eventos", hoursLow: 4, hoursHigh: 20, cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade" }] },
         { titulo: "Tortas Salgadas da Veh", isPortfolio: true, paraQuem: "Eventos · empresas",
           planos: [
-              { label: "Sob demanda" },
-              { label: "Semanal", hours: 4 },
-              { label: "Mensal", hours: 16 }
+              { label: "Sob demanda", hours: 4 },
+              { label: "Semanal" },
+              { label: "Mensal" }
           ],
           cnae: [{ c: "5620-1/02", d: "Serviços de alimentação — bufê" }] },
         { titulo: "Tradução de Inglês",                  paraQuem: "Empresas · autores", hoursLow: 0.003, hoursHigh: 0.005, unit: "palavra", cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
@@ -426,9 +423,9 @@
         { titulo: "Grafite",                             paraQuem: "Eventos · ativações", hoursLow: 8, hoursHigh: 40, cnaeNovo: true, cnae: [{ c: "9002-7/01", d: "Atividades de artistas plásticos, jornalistas independentes e escritores" }] },
         { titulo: "Meditação",                           paraQuem: "Iniciantes · grupos",
           planos: [
-              { label: "Sob demanda" },
-              { label: "Semanal", hours: 1 },
-              { label: "Mensal", hours: 4 }
+              { label: "Sob demanda", hours: 1 },
+              { label: "Semanal" },
+              { label: "Mensal" }
           ],
           cnaeNovo: true, cnae: [{ c: "8690-9/99", d: "Outras atividades de atenção à saúde humana" }] },
         { titulo: "Rede de Talentos",                    paraQuem: "Empresas · contratantes", cnaeNovo: true, cnae: [{ c: "7810-8/00", d: "Seleção e agenciamento de mão-de-obra" }] },
@@ -436,9 +433,9 @@
         // ── Novos CNAEs a formalizar (antes sem classificação) ───────────────
         { titulo: "Acompanhamento Nutricional",          paraQuem: "Adultos · esportistas",
           planos: [
-              { label: "Sob demanda" },
-              { label: "Semanal", hours: 0.5 },
-              { label: "Mensal", hours: 2 }
+              { label: "Sob demanda", hours: 1 },
+              { label: "Semanal" },
+              { label: "Mensal" }
           ],
           cnaeNovo: true, cnae: [{ c: "8650-0/02", d: "Atividades de profissionais da nutrição" }] },
         { titulo: "Autocuidado",                         paraQuem: "Adultos", hoursLow: 1, hoursHigh: 2, unit: "sessão", cnaeNovo: true, cnae: [{ c: "8690-9/99", d: "Outras atividades de atenção à saúde humana" }] },
@@ -447,9 +444,9 @@
         { titulo: "Consultoria Jurídica",                paraQuem: "Pequenas empresas · pessoas", hoursLow: 1, hoursHigh: 1, unit: "hora", cnaeNovo: true, cnae: [{ c: "6911-7/01", d: "Serviços advocatícios" }] },
         { titulo: "Cuidado com o Idoso",                 paraQuem: "Famílias · idosos",
           planos: [
-              { label: "Sob demanda" },
-              { label: "Semanal", hours: 30 },
-              { label: "Mensal", hours: 132 }
+              { label: "Sob demanda", hours: 6 },
+              { label: "Semanal" },
+              { label: "Mensal" }
           ],
           cnaeNovo: true, cnae: [{ c: "8712-3/00", d: "Serviços de assistência à saúde prestados a pacientes fora de unidades de saúde" }] },
         { titulo: "Desenho Botânico",                    paraQuem: "Editoras · coleções", hoursLow: 8, hoursHigh: 40, cnaeNovo: true, cnae: [{ c: "9002-7/01", d: "Atividades de artistas plásticos, jornalistas independentes e escritores" }] },
@@ -469,9 +466,9 @@
         { titulo: "Psicologia Social e Comunitária",     parent: "Saúde Mental", paraQuem: "Grupos · ONGs", hoursLow: 2, hoursHigh: 8, unit: "grupo", cnaeNovo: true, cnae: [{ c: "8650-0/03", d: "Atividades de psicologia e psicanálise" }] },
         { titulo: "Yoga",                                paraQuem: "Iniciantes · turmas",
           planos: [
-              { label: "Sob demanda" },
-              { label: "Semanal", hours: 1 },
-              { label: "Mensal", hours: 4 }
+              { label: "Sob demanda", hours: 1 },
+              { label: "Semanal" },
+              { label: "Mensal" }
           ],
           cnaeNovo: true, cnae: [{ c: "9313-1/00", d: "Atividades de condicionamento físico" }, { c: "8690-9/99", d: "Outras atividades de atenção à saúde humana" }] },
 
@@ -808,19 +805,12 @@
             : `${fmtBR(minRate)}–${fmtBR(maxRate)}/h`;
 
         // Modo planos. Padrão da rede:
-        //   Sob demanda      → R\$ 1.000 flat (tarifa inicial · única)
-        //   Semanal          → hours × rate (computado)
-        //   Mensal           → hours × rate (computado)
-        // Override por plano:
-        //   { flatFee: N }   → fee customizado pra esse plano
-        //   { hours: N }     → computado de hours × rate
-        //   sem ambos        → "Sob consulta" (legado)
+        //   { label: "Sob demanda", hours: N } → computado: N × rate (engajamento atômico)
+        //   { label: "Semanal" }                → "Sob consulta" (volume varia, fala-se direto)
+        //   { label: "Mensal"  }                → "Sob consulta"
+        // Regra geral: plano com `hours` → computado; sem `hours` → Sob consulta.
         if (s.planos && s.planos.length) {
             const planos = s.planos.map(p => {
-                if (typeof p.flatFee === "number" || p.label === "Sob demanda") {
-                    const fee = p.flatFee || FLAT_INITIAL_FEE;
-                    return { label: p.label, preco: fmtBR(fee), formula: "Tarifa inicial · única", consult: false };
-                }
                 if (typeof p.hours === "number") {
                     const low  = p.hours * minRate;
                     const high = p.hours * maxRate;
