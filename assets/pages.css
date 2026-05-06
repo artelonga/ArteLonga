@@ -182,6 +182,8 @@
     gap: 0.6rem;
 }
 .market-card-planos li:last-child { border-bottom: none; }
+.market-card-planos li.is-consult .plano-label,
+.market-card-planos li.is-consult .plano-preco { color: #c0392b; }
 .plano-label {
     font-size: 0.78rem;
     color: #444;
@@ -829,6 +831,10 @@
     color: #888;
     font-variant-numeric: tabular-nums;
 }
+.svc-planos li.is-consult { border-color: #c0392b; }
+.svc-planos li.is-consult .svc-plano-label,
+.svc-planos li.is-consult .svc-plano-preco { color: #c0392b; }
+.svc-planos li.is-consult .svc-plano-formula { color: #b94a3a; font-style: italic; font-family: inherit; }
 .svc-cta {
     margin: 2vh 0 3vh;
 }
