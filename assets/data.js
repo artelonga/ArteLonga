@@ -341,8 +341,6 @@
     //                        "diária", "treino", "grupo", "hora". Vai como sufixo
     //                        do total ("R\$ 100/sessão"). Default = nada.
     //   recurring:          true = serviço mensal recorrente. Sufixo "/mês".
-    //   isPortfolio:        true = intersecção pessoa × serviço concreta
-    //                        (ex.: "Tortas Salgadas da Veh"). CTA = "Pedir orçamento".
     //   planos:             array de [{ label, hours, unit? }] — pacotes de tempo
     //                        nomeados (ex.: "Plano semanal" = 4h, "Plano mensal" =
     //                        16h). Cada plano é renderizado com label + preço
@@ -381,7 +379,7 @@
         // ── Serviços com CNAE já formalizado no CNPJ ─────────────────────────
         { titulo: "Alfabetização",                       paraQuem: "Crianças · adultos", hoursLow: 1, hoursHigh: 2, unit: "aula", cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino não especificadas anteriormente" }] },
         { titulo: "Alimentação e Bebidas",               paraQuem: "Eventos · empresas", hoursLow: 0.35, hoursHigh: 1, unit: "pessoa", cnae: [{ c: "5620-1/02", d: "Serviços de alimentação para eventos e recepções — bufê" }] },
-        { titulo: "Hambúrguer Artesanal", isPortfolio: true, paraQuem: "Bairro · delivery", hoursLow: 0.25, hoursHigh: 0.6, unit: "unidade", cnaeNovo: true, cnae: [{ c: "5611-2/01", d: "Restaurantes e similares" }, { c: "5620-1/04", d: "Fornecimento de alimentos preparados preponderantemente para consumo domiciliar" }] },
+        { titulo: "Hambúrguer Artesanal", paraQuem: "Bairro · delivery", hoursLow: 0.25, hoursHigh: 0.6, unit: "unidade", cnaeNovo: true, cnae: [{ c: "5611-2/01", d: "Restaurantes e similares" }, { c: "5620-1/04", d: "Fornecimento de alimentos preparados preponderantemente para consumo domiciliar" }] },
         { titulo: "Comunicação Visual",                  paraQuem: "Eventos · marcas", hoursLow: 8, hoursHigh: 30, cnae: [{ c: "7410-2/03", d: "Design de produto" }, { c: "7319-0/04", d: "Consultoria em publicidade" }] },
         { titulo: "Consultoria em Moda",                 paraQuem: "Marcas · pessoas", hoursLow: 4, hoursHigh: 20, cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade" }] },
         { titulo: "Consultoria em TI",                   paraQuem: "Pequenas empresas · ONGs", hoursLow: 4, hoursHigh: 40, cnae: [{ c: "6204-0/00", d: "Consultoria em tecnologia da informação" }] },
@@ -402,7 +400,7 @@
         { titulo: "Produção Musical",                    paraQuem: "Artistas · marcas", hoursLow: 8, hoursHigh: 20, cnae: [{ c: "9001-9/02", d: "Produção musical" }, { c: "5920-1/00", d: "Atividades de gravação de som e de edição de música" }] },
         { titulo: "Reforço Escolar",                     paraQuem: "Crianças · adolescentes", hoursLow: 1, hoursHigh: 2, unit: "aula", cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino" }] },
         { titulo: "Stylist, Moda e Passarela",           paraQuem: "Marcas · eventos", hoursLow: 4, hoursHigh: 20, cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade" }] },
-        { titulo: "Tortas Salgadas da Veh", isPortfolio: true, paraQuem: "Eventos · empresas",
+        { titulo: "Tortas Salgadas da Veh", paraQuem: "Eventos · empresas",
           planos: [
               { label: "Sob demanda" },
               { label: "Semanal" },

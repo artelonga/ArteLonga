@@ -121,9 +121,6 @@
     transition: border-color 0.15s ease, transform 0.15s ease;
 }
 .market-card:hover { border-color: #0a0a0a; transform: translateY(-1px); }
-.market-card.is-portfolio { border-color: #0a0a0a; }
-.market-card.is-portfolio:hover { border-color: #0a0a0a; }
-
 .market-card-link {
     display: block;
     padding: 2vh 1.1rem;
@@ -754,18 +751,6 @@
     line-height: 1.05;
     color: #0a0a0a;
     margin-bottom: 1.4vh;
-}
-.svc-badge {
-    display: inline-block;
-    font-size: 0.62rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    font-weight: 700;
-    color: #555;
-    border: 1px solid #d4d4d4;
-    padding: 0.3em 0.7em;
-    margin-bottom: 1.6vh;
-    border-radius: 2px;
 }
 .svc-meta {
     display: flex;

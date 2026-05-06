@@ -381,9 +381,8 @@
                         : ""
                 }`;
             }
-            const cls = s.isPortfolio ? "market-card is-portfolio" : "market-card";
             return `
-            <li class="${cls}">
+            <li class="market-card">
                 <a href="/servicos/${esc(s.slug)}/" class="market-card-link">
                     <div class="market-card-titulo">${esc(s.titulo)}</div>
                     ${metaHtml}
@@ -1234,9 +1233,6 @@
               }</ul>`
             : "";
 
-        const portfolioBadge = s.isPortfolio
-            ? `<div class="svc-badge">Portfolio</div>`
-            : "";
 
         // Related services (co-occurring) — útil pra explorar adjacentes.
         const related = AL.relatedServices(s.titulo);
@@ -1263,8 +1259,8 @@
                ).join("")}</ul>`
             : "";
 
-        const ctaLabelGeneric = s.isPortfolio ? "Pedir orçamento" : "Falar conosco";
-        const subject = encodeURIComponent(`${s.isPortfolio ? "Orçamento" : "Sobre o serviço"} · ${s.titulo}`);
+        const ctaLabelGeneric = "Falar conosco";
+        const subject = encodeURIComponent(`Sobre o serviço · ${s.titulo}`);
 
         // Card por responsável — quando o prestador tem canal próprio
         // (WhatsApp/Instagram/tagline), o cliente fala direto com ele.
@@ -1344,7 +1340,6 @@
             ${siteHeader()}
             <main class="main">
                 <div class="service-crumb"><a href="/servicos/">← Catálogo</a></div>
-                ${portfolioBadge}
                 <h1 class="service-title">${esc(s.titulo)}</h1>
                 ${metaHtml}
                 ${formulaHtml}
