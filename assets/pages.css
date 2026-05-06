@@ -203,6 +203,14 @@
     line-height: 1.25;
     margin-bottom: 0.4vh;
 }
+.market-card-children {
+    font-size: 0.7rem;
+    color: #888;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    margin-left: 0.3em;
+    vertical-align: middle;
+}
 .market-card-meta {
     font-size: 0.78rem;
     color: #444;
@@ -1014,6 +1022,55 @@ body { padding-bottom: 7vh; }
     font-size: 0.88rem;
     color: #999;
     font-style: italic;
+}
+
+/* Sub-serviços (children) na página de detalhe do parent. */
+.svc-children {
+    list-style: none;
+    margin: 1vh 0 3vh;
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+}
+.svc-children li { margin: 0; }
+.svc-child-link {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas: "titulo preco" "meta meta" "resp resp";
+    gap: 0.4vh 1rem;
+    padding: 1.8vh 1.2rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    background: #fff;
+    color: #0a0a0a;
+    text-decoration: none;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.svc-child-link:hover { border-color: #0a0a0a; transform: translateY(-1px); }
+.svc-child-titulo {
+    grid-area: titulo;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: -0.005em;
+}
+.svc-child-meta {
+    grid-area: meta;
+    font-size: 0.78rem;
+    color: #555;
+}
+.svc-child-preco {
+    grid-area: preco;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #0a0a0a;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+.svc-child-resp {
+    grid-area: resp;
+    font-size: 0.7rem;
+    color: #999;
+    letter-spacing: 0.04em;
 }
 .service-resp {
     font-size: 0.95rem;
