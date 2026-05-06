@@ -3,217 +3,205 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Faça parte da rede — Arte Longa</title>
+    <title>Para parceiros — Arte Longa</title>
     <link rel="stylesheet" href="/assets/site.css?v=20260503">
     <link rel="stylesheet" href="/assets/components.css?v=20260508">
-    <link rel="stylesheet" href="/assets/pages.css?v=20260534">
+    <link rel="stylesheet" href="/assets/pages.css?v=20260535">
     <style>
-        .fp-hero { margin-bottom: 5vh; padding-top: 4vh; }
+        .fp-wrap {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 4vh;
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 4vh 0 6vh;
+        }
         .fp-h1 {
-            font-size: clamp(2.4rem, 6vw, 4.5rem);
+            font-size: clamp(2rem, 5vw, 3.4rem);
             font-weight: 800;
-            letter-spacing: -0.035em;
-            line-height: 1;
+            letter-spacing: -0.03em;
+            line-height: 1.05;
             color: #0a0a0a;
-            margin-bottom: 1.4vh;
+            margin-bottom: 0.8vh;
         }
         .fp-tagline {
-            font-size: clamp(1rem, 2vw, 1.25rem);
-            line-height: 1.4;
-            color: #444;
-            max-width: 44ch;
-            font-weight: 500;
-            margin-bottom: 1vh;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #555;
+            max-width: 50ch;
+            margin-bottom: 0.8vh;
         }
         .fp-loc {
-            font-size: 0.72rem;
+            font-size: 0.68rem;
             letter-spacing: 0.22em;
             text-transform: uppercase;
             color: #999;
             font-weight: 700;
+            margin-bottom: 5vh;
         }
 
-        .fp-section {
-            margin: 6vh 0 3vh;
+        .fp-form {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 2px;
+            padding: 4vh 2.4rem;
         }
-        .fp-section h2 {
-            font-size: 0.72rem;
-            font-weight: 700;
+        .fp-form-title {
+            font-size: 0.65rem;
             letter-spacing: 0.24em;
             text-transform: uppercase;
             color: #0a0a0a;
-            border-top: 2px solid #0a0a0a;
-            padding-top: 1.5vh;
-            margin-bottom: 2.5vh;
-        }
-        .fp-text {
-            font-size: 1rem;
-            line-height: 1.65;
-            color: #333;
-            max-width: 62ch;
-            margin-bottom: 2vh;
-        }
-        .fp-text strong { color: #0a0a0a; font-weight: 700; }
-
-        /* Mock-card mostrando a experiência customizável */
-        .fp-mock-wrap {
-            background: #fafafa;
-            border-left: 3px solid #0a0a0a;
-            padding: 3vh 1.6rem;
-            margin: 2vh 0;
-            max-width: 640px;
-        }
-        .fp-mock-label {
-            font-size: 0.6rem;
-            letter-spacing: 0.22em;
-            text-transform: uppercase;
-            color: #999;
             font-weight: 700;
-            margin-bottom: 1.6vh;
-        }
-        .fp-mock-card {
-            background: #fff;
-            border: 1px solid #e0e0e0;
-            border-radius: 2px;
-            padding: 2.4vh 1.4rem;
-        }
-        .fp-mock-head {
-            display: flex;
-            gap: 0.6rem;
-            align-items: baseline;
-            flex-wrap: wrap;
             margin-bottom: 1vh;
         }
-        .fp-mock-name {
-            font-size: 1.15rem;
-            font-weight: 700;
-            color: #0a0a0a;
+        .fp-form-sub {
+            font-size: 0.88rem;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 3vh;
         }
-        .fp-mock-role {
+        .fp-field { margin-bottom: 2.4vh; }
+        .fp-field label {
+            display: block;
             font-size: 0.7rem;
             letter-spacing: 0.16em;
             text-transform: uppercase;
-            color: #888;
+            color: #666;
             font-weight: 600;
+            margin-bottom: 0.6vh;
         }
-        .fp-mock-tagline {
-            font-size: 0.92rem;
-            color: #444;
-            line-height: 1.45;
-            margin-bottom: 1.8vh;
-            max-width: 50ch;
+        .fp-field input[type="text"],
+        .fp-field input[type="email"],
+        .fp-field input[type="tel"],
+        .fp-field textarea,
+        .fp-field select {
+            width: 100%;
+            font-family: inherit;
+            font-size: 0.95rem;
+            padding: 1.2vh 0.9rem;
+            border: 1px solid #d4d4d4;
+            border-radius: 2px;
+            background: #fff;
+            color: #0a0a0a;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
         }
-        .fp-mock-actions {
-            display: flex;
-            gap: 0.6rem 1rem;
-            flex-wrap: wrap;
-            align-items: center;
+        .fp-field input:focus,
+        .fp-field textarea:focus,
+        .fp-field select:focus {
+            outline: none;
+            border-color: #0a0a0a;
+            box-shadow: 0 0 0 3px rgba(10,10,10,0.08);
         }
-        .fp-mock-wa {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4em;
-            font-size: 0.8rem;
-            letter-spacing: 0.14em;
+        .fp-field textarea { min-height: 100px; resize: vertical; }
+        .fp-radio-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+        .fp-radio-group label {
+            display: block;
+            padding: 1.6vh 1rem;
+            border: 1px solid #d4d4d4;
+            border-radius: 2px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #0a0a0a;
+            text-transform: none;
+            letter-spacing: -0.005em;
+            margin: 0;
+            transition: border-color 0.15s ease, background 0.15s ease;
+        }
+        .fp-radio-group label:hover { border-color: #0a0a0a; }
+        .fp-radio-group input[type="radio"] { display: none; }
+        .fp-radio-group label:has(input:checked) {
+            background: #0a0a0a;
+            border-color: #0a0a0a;
+            color: #fff;
+        }
+        .fp-radio-sub {
+            display: block;
+            font-size: 0.7rem;
+            color: #888;
+            font-weight: 500;
+            letter-spacing: 0;
+            text-transform: none;
+            margin-top: 0.3vh;
+        }
+        .fp-radio-group label:has(input:checked) .fp-radio-sub { color: #bbb; }
+        .fp-submit {
+            width: 100%;
+            font-family: inherit;
+            font-size: 0.85rem;
+            letter-spacing: 0.18em;
             text-transform: uppercase;
             font-weight: 700;
-            padding: 1.2vh 1.2rem;
-            background: #25D366;
+            padding: 1.8vh 1.6rem;
+            background: #0a0a0a;
             color: #fff;
+            border: none;
             border-radius: 2px;
-            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.15s ease;
         }
-        .fp-mock-ig {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4em;
-            font-size: 0.82rem;
-            color: #555;
-            text-decoration: none;
-            font-weight: 500;
+        .fp-submit:hover { background: #c0392b; }
+        .fp-success {
+            display: none;
+            margin-top: 2vh;
+            padding: 2vh 1.4rem;
+            background: #f0f9f0;
+            border-left: 3px solid #25D366;
+            font-size: 0.9rem;
+            color: #1a5b1a;
+            line-height: 1.5;
         }
+        .fp-success.on { display: block; }
 
-        .fp-grid {
+        .fp-how { margin: 4vh 0 2vh; }
+        .fp-how h2 {
+            font-size: 0.65rem;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            color: #0a0a0a;
+            font-weight: 700;
+            border-top: 2px solid #0a0a0a;
+            padding-top: 1.5vh;
+            margin-bottom: 2vh;
+        }
+        .fp-how-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-            margin: 2vh 0;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 0.8rem;
         }
-        .fp-tile {
-            background: #fff;
+        .fp-how-tile {
+            padding: 2.4vh 1.2rem;
             border: 1px solid #e0e0e0;
-            padding: 3vh 1.4rem;
             border-radius: 2px;
+            background: #fff;
         }
-        .fp-tile-num {
+        .fp-how-num {
             font-family: 'SF Mono', Monaco, monospace;
             font-size: 0.78rem;
             color: #c0392b;
             font-weight: 700;
             margin-bottom: 0.6vh;
         }
-        .fp-tile-titulo {
-            font-size: 1rem;
+        .fp-how-titulo {
+            font-size: 0.95rem;
             font-weight: 700;
             color: #0a0a0a;
-            margin-bottom: 1vh;
+            margin-bottom: 0.8vh;
+            letter-spacing: -0.005em;
         }
-        .fp-tile-desc {
-            font-size: 0.88rem;
+        .fp-how-desc {
+            font-size: 0.85rem;
             color: #555;
             line-height: 1.5;
         }
 
-        .fp-opts {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 0.6rem;
-            margin: 2vh 0;
-        }
-        .fp-opt {
-            display: block;
-            padding: 2.2vh 1.2rem;
-            background: #fff;
-            border: 1px solid #d4d4d4;
-            border-radius: 2px;
-            color: #0a0a0a;
-            text-decoration: none;
-            transition: border-color 0.15s ease, transform 0.15s ease;
-        }
-        .fp-opt:hover { border-color: #0a0a0a; transform: translateY(-1px); }
-        .fp-opt-titulo {
-            display: block;
-            font-size: 1rem;
-            font-weight: 700;
-            margin-bottom: 0.4vh;
-        }
-        .fp-opt-sub {
-            display: block;
-            font-size: 0.78rem;
-            color: #888;
-        }
-
-        .fp-cta {
-            margin: 4vh 0 2vh;
-        }
-        .fp-cta-btn {
-            display: inline-block;
-            font-size: 0.82rem;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            font-weight: 700;
-            padding: 1.5vh 1.8rem;
-            background: #0a0a0a;
-            color: #fff;
-            border-radius: 2px;
-            text-decoration: none;
-            transition: background 0.15s ease;
-        }
-        .fp-cta-btn:hover { background: #c0392b; }
-
         .back {
             display: inline-block;
-            margin-top: 5vh;
+            margin-top: 4vh;
             padding: 0.6rem 0;
             font-size: 0.85rem;
             letter-spacing: 0.16em;
@@ -223,6 +211,10 @@
             text-decoration: none;
         }
         .back:hover { color: #c0392b; }
+
+        @media (max-width: 640px) {
+            .fp-radio-group { grid-template-columns: 1fr; }
+        }
     </style>
     <script defer src="/assets/analytics.js?v=20260429"></script>
 </head>
@@ -238,81 +230,94 @@
     </header>
 
     <main class="main">
-        <section class="fp-hero">
-            <h1 class="fp-h1">Tempo para se expressar.</h1>
-            <p class="fp-tagline">Te acompanhamos do primeiro contrato à aposentadoria.</p>
-            <p class="fp-loc">Para prestadores de serviço · São Paulo · Jardim Umarizal</p>
-        </section>
+        <div class="fp-wrap">
+            <div>
+                <h1 class="fp-h1">Para parceiros.</h1>
+                <p class="fp-tagline">Tempo para se expressar — te acompanhamos do primeiro contrato à aposentadoria.</p>
+                <p class="fp-loc">Rede de prestadores · Brasil</p>
+            </div>
 
-        <section class="fp-section">
-            <h2>Sua marca, seu canal</h2>
-            <p class="fp-text">
-                Quando você é parceiro, seu serviço aparece com <strong>seu nome, sua tagline, seu canal direto</strong>. Arte Longa dá a vitrine; o cliente fala com você. Sem intermediação artificial, sem aprisionamento, sem fricção.
-            </p>
-            <div class="fp-mock-wrap">
-                <div class="fp-mock-label">Exemplo · Como você aparece</div>
-                <div class="fp-mock-card">
-                    <div class="fp-mock-head">
-                        <span class="fp-mock-name">João</span>
-                        <span class="fp-mock-role">Psicologia Clínica</span>
+            <form class="fp-form" id="parceiro-form" novalidate>
+                <div class="fp-form-title">Faça parte da rede</div>
+                <p class="fp-form-sub">
+                    Conta da gente o que você faz. Em até 48h, entramos em contato pra alinhar canal direto, planos (Sob demanda · Semanal · Mensal) e seu lugar no catálogo.
+                </p>
+
+                <div class="fp-field">
+                    <label for="fp-nome">Nome ou nome artístico</label>
+                    <input type="text" id="fp-nome" name="nome" required autocomplete="name">
+                </div>
+
+                <div class="fp-field">
+                    <label for="fp-servico">O que você faz</label>
+                    <input type="text" id="fp-servico" name="servico" placeholder="Ex.: Piloto de drone, fotografia, psicologia clínica…" required>
+                </div>
+
+                <div class="fp-field">
+                    <label for="fp-cidade">Cidade · bairro</label>
+                    <input type="text" id="fp-cidade" name="cidade" placeholder="Ex.: São Paulo · Cangaíba" required>
+                </div>
+
+                <div class="fp-field">
+                    <label>Situação fiscal</label>
+                    <div class="fp-radio-group">
+                        <label>
+                            <input type="radio" name="cnpj" value="possuo" required>
+                            <span class="fp-radio-text">
+                                Possuo CNPJ
+                                <span class="fp-radio-sub">MEI · ME · etc.</span>
+                            </span>
+                        </label>
+                        <label>
+                            <input type="radio" name="cnpj" value="preciso" required>
+                            <span class="fp-radio-text">
+                                Preciso de um CNPJ
+                                <span class="fp-radio-sub">A gente te orienta</span>
+                            </span>
+                        </label>
                     </div>
-                    <p class="fp-mock-tagline">Psicoterapia online e presencial: Inicie seu atendimento ⤵️</p>
-                    <div class="fp-mock-actions">
-                        <a class="fp-mock-wa" href="https://wa.me/5511983717331" target="_blank" rel="noopener">
-                            WhatsApp +55 11 98371-7331
-                        </a>
-                        <a class="fp-mock-ig" href="https://instagram.com/TerraPsicoterapia" target="_blank" rel="noopener">
-                            @TerraPsicoterapia
-                        </a>
+                </div>
+
+                <div class="fp-field">
+                    <label for="fp-contato">Email ou WhatsApp</label>
+                    <input type="text" id="fp-contato" name="contato" placeholder="Como prefere ser contatado" required>
+                </div>
+
+                <div class="fp-field">
+                    <label for="fp-msg">Algo mais que queira contar (opcional)</label>
+                    <textarea id="fp-msg" name="mensagem" placeholder="Tagline, link de portfólio, agenda, qualquer coisa…"></textarea>
+                </div>
+
+                <button type="submit" class="fp-submit">Faça parte da rede →</button>
+
+                <div class="fp-success" id="fp-success">
+                    <strong>Recebemos.</strong> A gente entra em contato em até 48h pelo canal que você passou. Bem-vindo à rede.
+                </div>
+            </form>
+
+            <section class="fp-how">
+                <h2>Como funciona</h2>
+                <div class="fp-how-grid">
+                    <div class="fp-how-tile">
+                        <div class="fp-how-num">01</div>
+                        <div class="fp-how-titulo">Seu canal direto</div>
+                        <div class="fp-how-desc">Cliente fala com você no seu WhatsApp/Instagram, com sua tagline. Arte Longa dá a vitrine; sem intermediação artificial.</div>
+                    </div>
+                    <div class="fp-how-tile">
+                        <div class="fp-how-num">02</div>
+                        <div class="fp-how-titulo">Três planos padrão</div>
+                        <div class="fp-how-desc">Sob demanda (tarifa inicial · única R$ 1.000) · Semanal · Mensal. Você define horas, a rede faz a conta. R$ 100/h é a tarifa-base; sócios têm rate próprio.</div>
+                    </div>
+                    <div class="fp-how-tile">
+                        <div class="fp-how-num">03</div>
+                        <div class="fp-how-titulo">Catálogo claro</div>
+                        <div class="fp-how-desc">Seu serviço aparece com Pra quem · Faixa de preço · Por você. O cliente entende em 5 segundos e clica.</div>
                     </div>
                 </div>
-            </div>
-            <p class="fp-text">
-                <strong>Você define</strong>: WhatsApp, Instagram, link da agenda, página externa. Pode mudar a qualquer momento. O cliente sai do site direto pra sua mão.
-            </p>
-        </section>
+            </section>
 
-        <section class="fp-section">
-            <h2>Preço · você decide</h2>
-            <div class="fp-grid">
-                <div class="fp-tile">
-                    <div class="fp-tile-num">01</div>
-                    <div class="fp-tile-titulo">Sob consulta</div>
-                    <div class="fp-tile-desc">Cliente entra em contato com você. Você define o preço pelo seu canal direto. Default da rede — bom pra quando o serviço varia muito (psicologia, gastronomia, agro, audiovisual…).</div>
-                </div>
-                <div class="fp-tile">
-                    <div class="fp-tile-num">02</div>
-                    <div class="fp-tile-titulo">Linha Arte Longa · R$ 1.000</div>
-                    <div class="fp-tile-desc">Tarifa única e transparente para serviços-pacote da Arte Longa (tech, design, comunicação, marketing). Cliente vê o preço fechado no card antes de clicar.</div>
-                </div>
-            </div>
-            <p class="fp-text">
-                Os dois modos convivem. Cada serviço seu pode ter sua estratégia — e mudar conforme você quiser.
-            </p>
-        </section>
-
-        <section class="fp-section">
-            <h2>Como entrar</h2>
-            <p class="fp-text">
-                Dois caminhos. Qual descreve você?
-            </p>
-            <div class="fp-opts">
-                <a class="fp-opt" href="mailto:rede@artelonga.com.br?subject=Fa%C3%A7o%20parte%20da%20rede%20%C2%B7%20Possuo%20CNPJ">
-                    <span class="fp-opt-titulo">Possuo CNPJ</span>
-                    <span class="fp-opt-sub">MEI · ME · etc.</span>
-                </a>
-                <a class="fp-opt" href="mailto:rede@artelonga.com.br?subject=Fa%C3%A7o%20parte%20da%20rede%20%C2%B7%20Preciso%20de%20um%20CNPJ">
-                    <span class="fp-opt-titulo">Preciso de um CNPJ</span>
-                    <span class="fp-opt-sub">A gente te orienta</span>
-                </a>
-            </div>
-        </section>
-
-        <p class="fp-cta">
-            <a class="fp-cta-btn" href="mailto:rede@artelonga.com.br?subject=Fa%C3%A7o%20parte%20da%20rede">Faça parte da rede →</a>
-        </p>
-
-        <a class="back" href="/">← voltar</a>
+            <a class="back" href="/">← voltar</a>
+        </div>
     </main>
 
     <footer class="site-footer">
@@ -325,6 +330,41 @@
             <a href="/proximos-passos/">Próximos passos</a>
         </div>
     </footer>
+
+    <script>
+        (function () {
+            const form = document.getElementById("parceiro-form");
+            const success = document.getElementById("fp-success");
+            if (!form) return;
+            form.addEventListener("submit", e => {
+                e.preventDefault();
+                const data = new FormData(form);
+                const nome = (data.get("nome") || "").trim();
+                const servico = (data.get("servico") || "").trim();
+                const cidade = (data.get("cidade") || "").trim();
+                const cnpj = (data.get("cnpj") || "").trim();
+                const contato = (data.get("contato") || "").trim();
+                const msg = (data.get("mensagem") || "").trim();
+                if (!nome || !servico || !cidade || !cnpj || !contato) {
+                    form.reportValidity();
+                    return;
+                }
+                const subject = `Faça parte da rede · ${nome}`;
+                const body = [
+                    `Nome: ${nome}`,
+                    `Serviço: ${servico}`,
+                    `Cidade · bairro: ${cidade}`,
+                    `Situação fiscal: ${cnpj === "possuo" ? "Possuo CNPJ (MEI · ME · etc.)" : "Preciso de um CNPJ"}`,
+                    `Contato: ${contato}`,
+                    msg ? `\nMensagem:\n${msg}` : ""
+                ].filter(Boolean).join("\n");
+                const mailto = `mailto:rede@artelonga.com.br?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                window.location.href = mailto;
+                success.classList.add("on");
+                form.querySelector(".fp-submit").textContent = "Enviado ✓";
+            });
+        })();
+    </script>
 
 </body>
 </html>
