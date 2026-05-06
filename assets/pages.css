@@ -34,47 +34,42 @@
     font-weight: 700;
 }
 
-/* Filtro de localização — Estado · Cidade · Bairro em cascata. */
-.market-loc-filter {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem 1rem;
-    margin-bottom: 3vh;
+/* Filtro de localização — input livre com sugestões via datalist.
+   Serviços digitais (data.digital === true) ignoram o filtro. */
+.market-loc-input {
     max-width: 640px;
+    margin: 1.6vh 0 0;
 }
-.market-loc-label {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4vh;
+.market-loc-input .market-loc-label {
+    display: block;
     font-size: 0.62rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: #666;
     font-weight: 700;
-    flex: 1;
-    min-width: 110px;
+    margin-bottom: 0.6vh;
 }
-.market-loc-label select {
+.market-loc-input input[type="text"] {
+    width: 100%;
     font-family: inherit;
-    font-size: 0.9rem;
-    font-weight: 500;
-    letter-spacing: 0;
-    text-transform: none;
-    padding: 1vh 0.7rem;
+    font-size: 0.95rem;
+    padding: 1.2vh 0.9rem;
     border: 1px solid #d4d4d4;
     border-radius: 2px;
     background: #fff;
     color: #0a0a0a;
-    cursor: pointer;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
-.market-loc-label select:focus {
+.market-loc-input input[type="text"]:focus {
     outline: none;
     border-color: #0a0a0a;
     box-shadow: 0 0 0 3px rgba(10,10,10,0.08);
 }
-@media (max-width: 480px) {
-    .market-loc-filter { flex-direction: column; }
-    .market-loc-label { width: 100%; min-width: 0; }
+.market-loc-help {
+    font-size: 0.7rem;
+    color: #888;
+    margin-top: 0.5vh;
+    letter-spacing: 0.04em;
 }
 
 .market-search {
