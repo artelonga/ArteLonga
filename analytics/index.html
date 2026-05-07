@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <title>Analytics — Arte Longa</title>
-    <link rel="stylesheet" href="/assets/site.css?v=20260565">
+    <link rel="stylesheet" href="/assets/site.css?v=20260566">
     <link rel="stylesheet" href="/assets/components.css?v=20260508">
-    <link rel="stylesheet" href="/assets/pages.css?v=20260565">
+    <link rel="stylesheet" href="/assets/pages.css?v=20260566">
     <style>
         .analytics-wrap { max-width: 980px; margin: 0 auto; padding: 4vh 0 6vh; }
         .analytics-h1 {
@@ -475,14 +475,9 @@
                 const localEvents = readLocalQueue();
                 const localSummary = summaryFromLocal(localEvents, activeDays);
                 const banner = `<div class="empty-state">
-                    <strong>Backend em deploy.</strong> O endpoint público de leitura
-                    (<code>${ENDPOINT_BASE}/summary</code>) ainda não responde.
                     ${localSummary
-                        ? `Mostrando dados da <em>fila local</em> deste navegador (${localEvents.length} eventos bufferizados). Quando o backend ficar de pé, a página passa a refletir a rede inteira.`
-                        : `A fila local deste navegador também está vazia. Navegue pelo site e os eventos começam a aparecer aqui.`}
-                    <br><br>
-                    Detalhes do contrato: <a href="https://github.com/artelonga/ArteLonga/blob/main/docs/analytics-api.md">docs/analytics-api.md</a>.
-                    ${reason ? `<br><small style="color: #999;">${escapeHtml(reason)}</small>` : ""}
+                        ? `<strong>Fila local</strong> · ${localEvents.length} eventos neste navegador.`
+                        : `<strong>Sem dados ainda.</strong> Navegue pelo site pra gerar eventos.`}
                 </div>`;
                 if (localSummary) {
                     renderKPIs(localSummary);
