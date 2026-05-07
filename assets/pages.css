@@ -182,6 +182,67 @@
 }
 .sup-chip.is-active .sup-count { color: #bbb; }
 
+/* Toggle "Prestados pela Arte Longa" — filtro pra serviços com algum sócio. */
+.market-toggle {
+    margin: 0 0 2vh;
+}
+.toggle-chip {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5em;
+    cursor: pointer;
+    padding: 0.9vh 1rem;
+    border: 1px solid #d4d4d4;
+    border-radius: 999px;
+    background: #fff;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #444;
+    transition: all 0.15s ease;
+    user-select: none;
+}
+.toggle-chip:hover { border-color: #0a0a0a; color: #0a0a0a; }
+.toggle-chip input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    border: 1.5px solid #888;
+    border-radius: 2px;
+    cursor: pointer;
+    position: relative;
+    margin: 0;
+}
+.toggle-chip input[type="checkbox"]:checked {
+    background: #0a0a0a;
+    border-color: #0a0a0a;
+}
+.toggle-chip input[type="checkbox"]:checked::after {
+    content: "✓";
+    position: absolute;
+    top: -3px;
+    left: 1px;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+}
+.toggle-chip:has(input:checked) {
+    background: #0a0a0a;
+    color: #fff;
+    border-color: #0a0a0a;
+}
+.toggle-help {
+    font-size: 0.7rem;
+    color: #888;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+}
+.toggle-chip:has(input:checked) .toggle-help { color: #bbb; }
+@media (max-width: 520px) {
+    .toggle-help { width: 100%; flex-basis: 100%; margin-top: 0.3vh; }
+}
+
 .market-count {
     font-size: 0.74rem;
     letter-spacing: 0.14em;
