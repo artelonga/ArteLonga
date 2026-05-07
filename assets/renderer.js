@@ -499,6 +499,7 @@
             <main class="main market-main">
                 <section class="market-hero">
                     <h1 class="market-h1">Serviços</h1>
+                    <p class="market-sub">Profissionais e produtos da rede, conectados ao que você precisa.</p>
 
                     <form class="market-search" role="search" autocomplete="off"
                           onsubmit="event.preventDefault(); return false;">
@@ -824,6 +825,7 @@
             ${siteHeader()}
             <main class="main">
                 <h1 class="statement">Arte Longa é:</h1>
+                <p class="page-summary">Quem entrega na rede.</p>
                 <ul class="roster">${rows}</ul>
                 <p class="socio-legend"><span class="socio-mark">*</span> sócio · sempre em expansão</p>
                 <div class="coda"><span class="when">01.04.2026</span></div>
@@ -1728,7 +1730,7 @@
             ${siteHeader()}
             <main class="main">
                 <h1 class="page-title">Recursos</h1>
-                <div class="page-subtitle">Arte Longa · ${esc(f.quarter)}</div>
+                <div class="page-subtitle">Transparência financeira · receita, custos e meta trimestral · ${esc(f.quarter)}</div>
 
                 <p class="intro">Como a rede se sustenta. Em ${esc(f.quarter)} projetamos <strong>${fmt(totalReceitaQ2)}</strong> de receita — suficiente para cobrir os <strong>${fmt(totalCustos * 3)}</strong> de custos operacionais e dedicar o trimestre a teste, validação e melhoria. Esta página é pública e atualizada em tempo real.</p>
 
