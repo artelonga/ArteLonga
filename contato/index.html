@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contato — Arte Longa</title>
-    <link rel="stylesheet" href="/assets/site.css?v=20260565">
+    <link rel="stylesheet" href="/assets/site.css?v=20260566">
     <link rel="stylesheet" href="/assets/components.css?v=20260508">
-    <link rel="stylesheet" href="/assets/pages.css?v=20260565">
+    <link rel="stylesheet" href="/assets/pages.css?v=20260566">
     <style>
         .ct-wrap { max-width: 720px; margin: 0 auto; padding: 4vh 0 6vh; }
         .ct-h1 {
@@ -91,6 +91,12 @@
             display: grid;
             grid-template-columns: 80px 1fr 1.4fr;
             gap: 0.5rem;
+            margin-top: 0.8vh;
+        }
+        .ct-loc-grid.is-hidden { display: none; }
+        .ct-modo-group {
+            grid-template-columns: 1fr 1fr;
+            margin-bottom: 0;
         }
 
         .ct-radio-group {
@@ -181,10 +187,8 @@
 
     <main class="main">
         <div class="ct-wrap">
-            <h1 class="ct-h1">Falar com a rede.</h1>
-            <p class="ct-tagline">
-                Conta da gente o que você precisa. Em até 48h, alguém da rede entra em contato.
-            </p>
+            <h1 class="ct-h1">Descreva o seu problema.</h1>
+            <p class="ct-tagline">Encontramos a solução.</p>
 
             <div class="ct-context is-hidden" id="ct-context">
                 <strong id="ct-context-title">Sobre o serviço</strong>
@@ -213,7 +217,17 @@
 
                 <div class="ct-field">
                     <label>Onde acontece</label>
-                    <div class="ct-loc-grid">
+                    <div class="ct-radio-group ct-modo-group">
+                        <label>
+                            <input type="radio" name="modo" value="fisico" checked>
+                            <span>Físico</span>
+                        </label>
+                        <label>
+                            <input type="radio" name="modo" value="digital">
+                            <span>Digital</span>
+                        </label>
+                    </div>
+                    <div class="ct-loc-grid" id="ct-loc-grid">
                         <input type="text" id="ct-estado" name="estado" placeholder="Estado" autocomplete="address-level1">
                         <input type="text" id="ct-cidade" name="cidade" placeholder="Cidade" autocomplete="address-level2">
                         <input type="text" id="ct-bairro" name="bairro" placeholder="Bairro" autocomplete="address-level3">
@@ -287,6 +301,18 @@
                 precisa.placeholder = `Descreva o que precisa de ${servico}…`;
             }
 
+            // Físico/Digital toggle — esconde location quando digital.
+            const locGrid = document.getElementById("ct-loc-grid");
+            document.querySelectorAll('input[name="modo"]').forEach(r => {
+                r.addEventListener("change", () => {
+                    if (r.value === "digital" && r.checked) {
+                        locGrid.classList.add("is-hidden");
+                    } else if (r.value === "fisico" && r.checked) {
+                        locGrid.classList.remove("is-hidden");
+                    }
+                });
+            });
+
             const form = document.getElementById("contato-form");
             const success = document.getElementById("ct-success");
             form.addEventListener("submit", e => {
@@ -306,12 +332,16 @@
                 const subject = servico
                     ? `Demanda · ${servico} · ${nome}`
                     : `Demanda · ${nome}`;
+                const modo = get("modo") || "fisico";
+                const localLabel = modo === "digital"
+                    ? "Digital"
+                    : `Físico · ${get("bairro") || "—"} · ${get("cidade") || "—"} · ${get("estado") || "—"}`;
                 const body = [
                     `Nome: ${nome}`,
                     servico  ? `Serviço de interesse: ${servico}` : "",
                     parceiro ? `Parceiro de interesse: ${parceiro}` : "",
                     `Demanda: ${precisa}`,
-                    `Local: ${get("bairro") || "—"} · ${get("cidade") || "—"} · ${get("estado") || "—"}`,
+                    `Local: ${localLabel}`,
                     `Canal preferido: ${canalLabel}`,
                     `Contato: ${contato}`
                 ].filter(Boolean).join("\n");
