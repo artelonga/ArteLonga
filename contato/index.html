@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contato — Arte Longa</title>
+    <link rel="stylesheet" href="/assets/site.css?v=20260565">
+    <link rel="stylesheet" href="/assets/components.css?v=20260508">
+    <link rel="stylesheet" href="/assets/pages.css?v=20260565">
+    <style>
+        .ct-wrap { max-width: 720px; margin: 0 auto; padding: 4vh 0 6vh; }
+        .ct-h1 {
+            font-size: clamp(2rem, 5vw, 3.4rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.05;
+            color: #0a0a0a;
+            margin-bottom: 0.8vh;
+        }
+        .ct-tagline {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #555;
+            max-width: 50ch;
+            margin-bottom: 5vh;
+        }
+        .ct-context {
+            margin-bottom: 4vh;
+            padding: 2vh 1.4rem;
+            background: #fafafa;
+            border-left: 3px solid #0a0a0a;
+            font-size: 0.92rem;
+            line-height: 1.55;
+            color: #333;
+        }
+        .ct-context strong { color: #0a0a0a; font-weight: 700; }
+        .ct-context.is-hidden { display: none; }
+
+        .ct-form {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 2px;
+            padding: 4vh 2.4rem;
+        }
+        .ct-form-title {
+            font-size: 0.65rem;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            color: #0a0a0a;
+            font-weight: 700;
+            margin-bottom: 1vh;
+        }
+        .ct-form-sub {
+            font-size: 0.88rem;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 3vh;
+        }
+
+        .ct-field { margin-bottom: 2.4vh; }
+        .ct-field label {
+            display: block;
+            font-size: 0.7rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: #666;
+            font-weight: 600;
+            margin-bottom: 0.6vh;
+        }
+        .ct-field input[type="text"],
+        .ct-field input[type="email"],
+        .ct-field textarea {
+            width: 100%;
+            font-family: inherit;
+            font-size: 0.95rem;
+            padding: 1.2vh 0.9rem;
+            border: 1px solid #d4d4d4;
+            border-radius: 2px;
+            background: #fff;
+            color: #0a0a0a;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+        .ct-field input:focus,
+        .ct-field textarea:focus {
+            outline: none;
+            border-color: #0a0a0a;
+            box-shadow: 0 0 0 3px rgba(10,10,10,0.08);
+        }
+        .ct-field textarea { min-height: 120px; resize: vertical; }
+        .ct-loc-grid {
+            display: grid;
+            grid-template-columns: 80px 1fr 1.4fr;
+            gap: 0.5rem;
+        }
+
+        .ct-radio-group {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+        }
+        .ct-radio-group label {
+            display: block;
+            padding: 1.6vh 1rem;
+            border: 1px solid #d4d4d4;
+            border-radius: 2px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #0a0a0a;
+            text-align: center;
+            margin: 0;
+            transition: all 0.15s ease;
+        }
+        .ct-radio-group label:hover { border-color: #0a0a0a; }
+        .ct-radio-group input[type="radio"] { display: none; }
+        .ct-radio-group label:has(input:checked) {
+            background: #0a0a0a;
+            border-color: #0a0a0a;
+            color: #fff;
+        }
+
+        .ct-submit {
+            width: 100%;
+            font-family: inherit;
+            font-size: 0.85rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            font-weight: 700;
+            padding: 1.8vh 1.6rem;
+            background: #0a0a0a;
+            color: #fff;
+            border: none;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+        .ct-submit:hover { background: #c0392b; }
+        .ct-success {
+            display: none;
+            margin-top: 2vh;
+            padding: 2vh 1.4rem;
+            background: #f0f9f0;
+            border-left: 3px solid #25D366;
+            font-size: 0.9rem;
+            color: #1a5b1a;
+            line-height: 1.5;
+        }
+        .ct-success.on { display: block; }
+
+        @media (max-width: 640px) {
+            .ct-radio-group { grid-template-columns: 1fr; }
+            .ct-loc-grid { grid-template-columns: 1fr 1fr; }
+            .ct-loc-grid input:first-child { grid-column: 1 / -1; }
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 4vh;
+            padding: 0.6rem 0;
+            font-size: 0.85rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: #444;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .back:hover { color: #c0392b; }
+    </style>
+    <script defer src="/assets/analytics.js?v=20260429"></script>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="site-header-inner">
+            <a class="site-brand" href="/">
+                <img src="/logo-al.png" alt="Arte Longa">
+            </a>
+            <a class="site-cta-parceiros" href="/faca-parte/">Para parceiros →</a>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="ct-wrap">
+            <h1 class="ct-h1">Falar com a rede.</h1>
+            <p class="ct-tagline">
+                Conta da gente o que você precisa. Em até 48h, alguém da rede entra em contato.
+            </p>
+
+            <div class="ct-context is-hidden" id="ct-context">
+                <strong id="ct-context-title">Sobre o serviço</strong>
+                <span id="ct-context-detail"></span>
+            </div>
+
+            <form class="ct-form" id="contato-form" novalidate>
+                <div class="ct-form-title">Contato</div>
+                <p class="ct-form-sub">
+                    Os campos abaixo viram input pro nosso backend de demanda. Quanto mais
+                    contexto, mais rápido a gente devolve um caminho concreto.
+                </p>
+
+                <input type="hidden" id="ct-servico-hidden" name="servico_ref">
+                <input type="hidden" id="ct-parceiro-hidden" name="parceiro_ref">
+
+                <div class="ct-field">
+                    <label for="ct-nome">Nome</label>
+                    <input type="text" id="ct-nome" name="nome" required autocomplete="name">
+                </div>
+
+                <div class="ct-field">
+                    <label for="ct-precisa">O que você precisa</label>
+                    <textarea id="ct-precisa" name="precisa" placeholder="Descreva a demanda, contexto, prazo se houver…" required></textarea>
+                </div>
+
+                <div class="ct-field">
+                    <label>Onde acontece</label>
+                    <div class="ct-loc-grid">
+                        <input type="text" id="ct-estado" name="estado" placeholder="Estado" autocomplete="address-level1">
+                        <input type="text" id="ct-cidade" name="cidade" placeholder="Cidade" autocomplete="address-level2">
+                        <input type="text" id="ct-bairro" name="bairro" placeholder="Bairro" autocomplete="address-level3">
+                    </div>
+                </div>
+
+                <div class="ct-field">
+                    <label>Como prefere ser contatado</label>
+                    <div class="ct-radio-group">
+                        <label>
+                            <input type="radio" name="canal" value="email" required>
+                            <span>Email</span>
+                        </label>
+                        <label>
+                            <input type="radio" name="canal" value="whatsapp" required>
+                            <span>WhatsApp</span>
+                        </label>
+                        <label>
+                            <input type="radio" name="canal" value="outro" required>
+                            <span>Outro</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="ct-field">
+                    <label for="ct-contato">Contato</label>
+                    <input type="text" id="ct-contato" name="contato" placeholder="Email, WhatsApp ou link" required>
+                </div>
+
+                <button type="submit" class="ct-submit">Enviar →</button>
+
+                <div class="ct-success" id="ct-success">
+                    <strong>Recebemos.</strong> Em até 48h alguém da rede entra em contato pelo canal que você passou.
+                </div>
+            </form>
+
+            <a class="back" href="/">← voltar</a>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-footer-inner">
+            <a href="/parceiros/">Parceiros</a>
+            <span class="sep">·</span>
+            <a href="/sobre/">Sobre</a>
+            <span class="sep">·</span>
+            <a href="/proximos-passos/">Próximos passos</a>
+        </div>
+    </footer>
+
+    <script>
+        (function () {
+            const params = new URLSearchParams(location.search);
+            const servico  = (params.get("servico")  || "").trim();
+            const parceiro = (params.get("parceiro") || "").trim();
+            const ctxBox = document.getElementById("ct-context");
+            const ctxT   = document.getElementById("ct-context-title");
+            const ctxD   = document.getElementById("ct-context-detail");
+            const sH     = document.getElementById("ct-servico-hidden");
+            const pH     = document.getElementById("ct-parceiro-hidden");
+            const precisa = document.getElementById("ct-precisa");
+
+            if (servico) {
+                ctxBox.classList.remove("is-hidden");
+                ctxT.textContent = "Sobre " + servico;
+                if (parceiro) {
+                    ctxD.textContent = " · com " + parceiro;
+                }
+                sH.value = servico;
+                if (parceiro) pH.value = parceiro;
+                precisa.placeholder = `Descreva o que precisa de ${servico}…`;
+            }
+
+            const form = document.getElementById("contato-form");
+            const success = document.getElementById("ct-success");
+            form.addEventListener("submit", e => {
+                e.preventDefault();
+                const d = new FormData(form);
+                const get = k => (d.get(k) || "").trim();
+                const nome    = get("nome");
+                const precisa = get("precisa");
+                const canal   = get("canal");
+                const contato = get("contato");
+                if (!nome || !precisa || !canal || !contato) {
+                    form.reportValidity();
+                    return;
+                }
+                const canalLabel = canal === "email" ? "Email"
+                                 : canal === "whatsapp" ? "WhatsApp" : "Outro";
+                const subject = servico
+                    ? `Demanda · ${servico} · ${nome}`
+                    : `Demanda · ${nome}`;
+                const body = [
+                    `Nome: ${nome}`,
+                    servico  ? `Serviço de interesse: ${servico}` : "",
+                    parceiro ? `Parceiro de interesse: ${parceiro}` : "",
+                    `Demanda: ${precisa}`,
+                    `Local: ${get("bairro") || "—"} · ${get("cidade") || "—"} · ${get("estado") || "—"}`,
+                    `Canal preferido: ${canalLabel}`,
+                    `Contato: ${contato}`
+                ].filter(Boolean).join("\n");
+                const mailto = `mailto:rede@artelonga.com.br?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                window.location.href = mailto;
+                success.classList.add("on");
+                form.querySelector(".ct-submit").textContent = "Enviado ✓";
+            });
+        })();
+    </script>
+
+</body>
+</html>

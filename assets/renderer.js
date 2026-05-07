@@ -548,7 +548,7 @@
                     <label class="toggle-chip">
                         <input type="checkbox" id="al-only">
                         <span>Prestados pela Arte Longa</span>
-                        <span class="toggle-help">só serviços com algum sócio responsável (Yuri, Igo, José Antônio, Mono, Luke, Marina)</span>
+                        <span class="toggle-help">serviços oferecidos pelos sócios (Yuri, Igo, José Antônio, Mono, Luke, Marina)</span>
                     </label>
                 </div>
 
@@ -557,7 +557,7 @@
 
                 <p class="market-empty" id="market-empty" hidden>
                     Nenhum resultado por aqui.
-                    <a href="mailto:${REDE_EMAIL}?subject=Encontrar%20uma%20solu%C3%A7%C3%A3o">Entre em contato para encontrarmos uma solução →</a>
+                    <a href="/contato/">Entre em contato para encontrarmos uma solução →</a>
                 </p>
 
                 <p class="market-all"><a href="/servicos/">Rede completa →</a></p>
@@ -1526,8 +1526,9 @@
                 </a>`);
             }
             if (!c.whatsapp) {
-                // Sem WhatsApp = botão de email pré-preenchido.
-                actions.unshift(`<a class="svc-cta-btn" href="mailto:${REDE_EMAIL}?subject=${subject}%20-%20${encodeURIComponent(p.nome)}">${ctaLabelGeneric} →</a>`);
+                // Sem WhatsApp = leva pro form de contato com contexto pré-preenchido.
+                const ctUrl = `/contato/?servico=${encodeURIComponent(s.titulo)}&parceiro=${encodeURIComponent(p.nome)}`;
+                actions.unshift(`<a class="svc-cta-btn" href="${ctUrl}">${ctaLabelGeneric} →</a>`);
             }
 
             return `<div class="provedor-card">
@@ -1540,10 +1541,11 @@
             </div>`;
         }
         const respAtivos = respEntities.filter(p => !AL.isInactive(p.handle));
+        const fallbackCtUrl = `/contato/?servico=${encodeURIComponent(s.titulo)}`;
         const provedoresHtml = respAtivos.length
             ? `<div class="provedores">${respAtivos.map(provedorCard).join("")}</div>`
             : `<p class="svc-cta">
-                <a class="svc-cta-btn" href="mailto:${REDE_EMAIL}?subject=${subject}">${ctaLabelGeneric} →</a>
+                <a class="svc-cta-btn" href="${fallbackCtUrl}">${ctaLabelGeneric} →</a>
                </p>`;
 
         // Exemplos públicos por serviço. Vazio = sem exemplo (mostra "Em breve").
