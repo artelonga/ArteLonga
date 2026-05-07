@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sobre — Arte Longa</title>
-    <link rel="stylesheet" href="/assets/site.css?v=20260559">
+    <link rel="stylesheet" href="/assets/site.css?v=20260560">
     <link rel="stylesheet" href="/assets/components.css?v=20260508">
-    <link rel="stylesheet" href="/assets/pages.css?v=20260559">
+    <link rel="stylesheet" href="/assets/pages.css?v=20260560">
     <style>
         .page-title {
             font-size: clamp(2rem, 4vw, 3rem);
@@ -87,6 +87,75 @@
             font-variant-numeric: tabular-nums;
         }
         .info-value.mono { font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace; }
+
+        /* Bio — manifesto / premissa operacional da rede */
+        .bio-lead {
+            font-size: 1.05rem;
+            line-height: 1.65;
+            color: #333;
+            max-width: 62ch;
+            margin: 0 0 4vh;
+        }
+        .bio-lead strong { color: #0a0a0a; font-weight: 700; display: block; margin-bottom: 0.6vh; }
+        .bio-lead em { font-style: italic; color: #555; }
+
+        .bio-h3 {
+            font-size: 0.7rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: #0a0a0a;
+            font-weight: 700;
+            margin: 4vh 0 1.2vh;
+        }
+        .bio-text {
+            font-size: 0.95rem;
+            line-height: 1.65;
+            color: #333;
+            max-width: 62ch;
+            margin: 0 0 2vh;
+        }
+        .bio-text strong { color: #0a0a0a; font-weight: 700; }
+
+        .bio-breakdown {
+            display: grid;
+            grid-template-columns: 110px 1fr;
+            gap: 1.4vh 1.4rem;
+            margin: 1vh 0 3vh;
+            max-width: 62ch;
+        }
+        .bio-breakdown dt {
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #0a0a0a;
+            font-variant-numeric: tabular-nums;
+            padding-top: 0.2em;
+        }
+        .bio-breakdown dd {
+            margin: 0;
+            font-size: 0.95rem;
+            color: #333;
+            line-height: 1.45;
+        }
+        .bio-breakdown dd span {
+            display: block;
+            font-size: 0.78rem;
+            color: #888;
+            margin-top: 0.2vh;
+        }
+
+        .bio-inspiracao {
+            margin: 3vh 0 2vh;
+            font-size: 0.85rem;
+            color: #666;
+            line-height: 1.55;
+            font-style: normal;
+            max-width: 62ch;
+            padding: 1.6vh 1.4rem;
+            background: #fafafa;
+            border-left: 3px solid #d4d4d4;
+        }
+        .bio-inspiracao em { font-style: italic; color: #0a0a0a; font-weight: 600; }
 
         /* História — single short prose paragraph */
         .historia-text {
@@ -193,12 +262,59 @@
         <div class="page-subtitle">Arte Longa · Transparência</div>
 
         <ul class="sub-nav">
-            <li><a href="#historia" class="active">História</a></li>
+            <li><a href="#bio" class="active">Bio</a></li>
+            <li><a href="#historia">História</a></li>
             <li><a href="#manifesto">Manifesto</a></li>
             <li><a href="#contato">Contato</a></li>
             <li><a href="#oportunidade">Oportunidade</a></li>
             <li><a href="/proximos-passos/">Próximos Passos</a></li>
         </ul>
+
+        <div class="section-header" id="bio">
+            <h2>Bio</h2>
+        </div>
+
+        <p class="bio-lead">
+            <strong>Marketplace centralizado · Rede social profissional.</strong>
+            Serviços e produtos são fruto da expressão da criatividade individual.
+            Cada parceiro traz sua marca, sua tagline, seu canal direto.
+            A beleza vive no <em>quirkiness</em> e na individualidade de cada negócio.
+        </p>
+
+        <h3 class="bio-h3">Como o trabalho se distribui</h3>
+        <p class="bio-text">
+            Um parceiro típico trabalha cerca de 36h/semana × 4 semanas =
+            <strong>144h/mês a R$ 100/h = R$ 14.400 mensais</strong>, divididos em:
+        </p>
+        <dl class="bio-breakdown">
+            <dt>R$ 2.000</dt>
+            <dd>Pro-labore <span>renda pessoal</span></dd>
+            <dt>R$ 4.000</dt>
+            <dd>Benefícios <span>autocuidado e família</span></dd>
+            <dt>R$ 6.000</dt>
+            <dd>Impacto <span>social, ambiental e cultural</span></dd>
+            <dt>R$ 2.400</dt>
+            <dd>Flexibilidade <span>folgas, férias ou lucro do negócio</span></dd>
+        </dl>
+
+        <h3 class="bio-h3">Escuta ativa · Market making</h3>
+        <p class="bio-text">
+            Funcionamos como <strong>market maker de produtos e serviços</strong>.
+            Ouvindo o cliente final, entendemos a demanda; ouvindo os parceiros,
+            entendemos a oferta. Inteligência analítica conecta os dois lados.
+        </p>
+        <p class="bio-text">
+            Diferente de iFood, Uber e DoorDash — onde a oferta é estática do lado
+            do prestador e a demanda dinâmica do lado do cliente —, aqui
+            <strong>os dois lados são dinâmicos</strong>. O inventário está ligado
+            à oferta: o menu, a agenda, o que está disponível, tudo se ajusta em
+            tempo real.
+        </p>
+
+        <p class="bio-inspiracao">
+            <em>Inspiração:</em> kibutzim israelenses · tekoá guarani · escambo local ·
+            cooperativas (Sicoob, Sicredi, Unimed, B3) — com foco em inovação.
+        </p>
 
         <div class="section-header" id="historia">
             <h2>História</h2>
@@ -254,7 +370,7 @@
         </div>
     </footer>
 
-    <script src="/assets/data.js?v=20260559"></script>
+    <script src="/assets/data.js?v=20260560"></script>
     <script>
     (function () {
         if (!window.AL || !AL.manifesto) return;
