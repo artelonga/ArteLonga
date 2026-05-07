@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contato — Arte Longa</title>
-    <link rel="stylesheet" href="/assets/site.css?v=20260566">
+    <link rel="stylesheet" href="/assets/site.css?v=20260507">
     <link rel="stylesheet" href="/assets/components.css?v=20260508">
-    <link rel="stylesheet" href="/assets/pages.css?v=20260566">
+    <link rel="stylesheet" href="/assets/pages.css?v=20260507">
     <style>
         .ct-wrap { max-width: 720px; margin: 0 auto; padding: 4vh 0 6vh; }
         .ct-h1 {
@@ -94,15 +94,41 @@
             margin-top: 0.8vh;
         }
         .ct-loc-grid.is-hidden { display: none; }
-        .ct-modo-group {
-            grid-template-columns: 1fr 1fr;
-            margin-bottom: 0;
+
+        /* Modo pills (Físico · Digital) — toggle pequeno acima da location.
+           Visualmente subordinado ao radio principal (Email/WA/Outro). */
+        .ct-modo-pills {
+            display: inline-flex;
+            gap: 0.3rem;
+            padding: 0.3vh;
+            background: #f0f0f0;
+            border-radius: 999px;
+            margin-bottom: 0.5vh;
+        }
+        .ct-modo-pills label {
+            padding: 0.6vh 0.9rem;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #555;
+            cursor: pointer;
+            border-radius: 999px;
+            margin: 0;
+            transition: all 0.15s ease;
+        }
+        .ct-modo-pills label:hover { color: #0a0a0a; }
+        .ct-modo-pills input[type="radio"] { display: none; }
+        .ct-modo-pills label:has(input:checked) {
+            background: #fff;
+            color: #0a0a0a;
+            box-shadow: 0 1px 3px rgba(10,10,10,0.08);
         }
 
+        /* Radio group principal (Email/WA/Outro) — botões full-width. */
         .ct-radio-group {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 0.5rem;
+            width: 100%;
         }
         .ct-radio-group label {
             display: block;
@@ -110,7 +136,7 @@
             border: 1px solid #d4d4d4;
             border-radius: 2px;
             cursor: pointer;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             font-weight: 600;
             color: #0a0a0a;
             text-align: center;
@@ -196,12 +222,6 @@
             </div>
 
             <form class="ct-form" id="contato-form" novalidate>
-                <div class="ct-form-title">Contato</div>
-                <p class="ct-form-sub">
-                    Os campos abaixo viram input pro nosso backend de demanda. Quanto mais
-                    contexto, mais rápido a gente devolve um caminho concreto.
-                </p>
-
                 <input type="hidden" id="ct-servico-hidden" name="servico_ref">
                 <input type="hidden" id="ct-parceiro-hidden" name="parceiro_ref">
 
@@ -217,7 +237,7 @@
 
                 <div class="ct-field">
                     <label>Onde acontece</label>
-                    <div class="ct-radio-group ct-modo-group">
+                    <div class="ct-modo-pills" role="radiogroup" aria-label="Modo">
                         <label>
                             <input type="radio" name="modo" value="fisico" checked>
                             <span>Físico</span>
