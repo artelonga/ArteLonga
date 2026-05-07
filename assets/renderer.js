@@ -544,6 +544,14 @@
                     ${cats.map(chip).join("")}
                 </div>
 
+                <div class="market-toggle">
+                    <label class="toggle-chip">
+                        <input type="checkbox" id="al-only">
+                        <span>Prestados pela Arte Longa</span>
+                        <span class="toggle-help">só serviços com algum sócio responsável (Yuri, Igo, José Antônio, Mono, Luke, Marina)</span>
+                    </label>
+                </div>
+
                 <div class="market-count" id="market-count"></div>
                 <ul class="market-grid" id="market-grid"></ul>
 
@@ -562,6 +570,7 @@
         const count    = document.getElementById("market-count");
         const empty    = document.getElementById("market-empty");
         const chipsBox = document.getElementById("sup-cats");
+        const alOnly   = document.getElementById("al-only");
         const locFields = ["estado", "cidade", "bairro"].reduce((acc, f) => {
             acc[f] = document.getElementById("loc-" + f);
             return acc;
@@ -577,6 +586,15 @@
                     return AL.locationMatches(h, activeFilters);
                 });
             });
+        }
+        // "Prestados pela Arte Longa" — pelo menos um responsável é sócio
+        // (Yuri, Igo, José Antônio, Mono, Luke, Marina). Inclui combinações
+        // mistas onde sócio + não-sócio entregam juntos.
+        function alOnlyFilter(list) {
+            if (!alOnly || !alOnly.checked) return list;
+            return list.filter(s =>
+                s.responsavel.some(h => !AL.isInactive(h) && AL.isSocio(h))
+            );
         }
 
         function applyFilter() {
@@ -603,6 +621,7 @@
             }
 
             list = locFilter(list);
+            list = alOnlyFilter(list);
 
             grid.innerHTML = list.map(card).join("");
             count.textContent = tokens.length
@@ -614,6 +633,7 @@
         }
 
         input.addEventListener("input", applyFilter);
+        if (alOnly) alOnly.addEventListener("change", applyFilter);
         chipsBox.addEventListener("click", e => {
             const btn = e.target.closest(".sup-chip");
             if (!btn) return;
