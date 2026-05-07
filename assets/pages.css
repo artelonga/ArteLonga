@@ -17,6 +17,20 @@
     color: #0a0a0a;
     margin-bottom: 1.2vh;
 }
+.market-sub {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #666;
+    max-width: 60ch;
+    margin: 0 0 3vh;
+}
+.page-summary {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #666;
+    max-width: 60ch;
+    margin: 0 0 3vh;
+}
 .market-tagline {
     font-size: clamp(1rem, 2vw, 1.25rem);
     line-height: 1.4;
