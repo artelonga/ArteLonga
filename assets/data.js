@@ -425,6 +425,7 @@
               { label: "Mensal" }
           ],
           cnae: [{ c: "5620-1/02", d: "Serviços de alimentação — bufê" }] },
+        { titulo: "Interpretação",                       paraQuem: "EN ↔ PT · live · simultânea", implicitResponsavel: ["yuri"], digital: true, hoursLow: 2, hoursHigh: 8, cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
         // ── Tradução · parent + sub-pares de idiomas ──
         // Padrão da rede: 0,003-0,005h por palavra → R\$ 0,30 – R\$ 0,50/palavra.
         { titulo: "Tradução",                            paraQuem: "Empresas · autores · pesquisadores", digital: true, hoursLow: 0.003, hoursHigh: 0.005, unit: "palavra", cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },

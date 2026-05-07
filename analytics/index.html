@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <title>Analytics — Arte Longa</title>
-    <link rel="stylesheet" href="/assets/site.css?v=20260563">
+    <link rel="stylesheet" href="/assets/site.css?v=20260564">
     <link rel="stylesheet" href="/assets/components.css?v=20260508">
-    <link rel="stylesheet" href="/assets/pages.css?v=20260563">
+    <link rel="stylesheet" href="/assets/pages.css?v=20260564">
     <style>
         .analytics-wrap { max-width: 980px; margin: 0 auto; padding: 4vh 0 6vh; }
         .analytics-h1 {
@@ -431,21 +431,77 @@
                     </li>
                 `).join("")}</ul>`;
             }
+            // Fallback: ler fila local do analytics.js (localStorage). Quando
+            // o backend não responde, mostra o que está bufferizado neste browser.
+            function readLocalQueue() {
+                try {
+                    const raw = localStorage.getItem("al_evq_v1");
+                    if (!raw) return [];
+                    const parsed = JSON.parse(raw);
+                    return Array.isArray(parsed) ? parsed : [];
+                } catch (_) { return []; }
+            }
+            function summaryFromLocal(events, days) {
+                if (!events.length) return null;
+                const cutoff = Date.now() - days * 86400000;
+                const recent = events.filter(e => (e.ts || 0) >= cutoff);
+                const views = recent.filter(e => e.name === "page_view").length;
+                const visitors = new Set(recent.map(e => e.vid).filter(Boolean)).size;
+                const sessions = new Set(recent.map(e => e.sid).filter(Boolean)).size;
+                const pageCount = new Map();
+                const pageVisitors = new Map();
+                for (const e of recent) {
+                    if (e.name !== "page_view" || !e.path) continue;
+                    pageCount.set(e.path, (pageCount.get(e.path) || 0) + 1);
+                    if (!pageVisitors.has(e.path)) pageVisitors.set(e.path, new Set());
+                    pageVisitors.get(e.path).add(e.vid);
+                }
+                const top_pages = [...pageCount.entries()]
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 30)
+                    .map(([path, c]) => ({ path, views: c, visitors: pageVisitors.get(path).size }));
+                const tsMap = new Map();
+                for (const e of recent) {
+                    if (e.name !== "page_view") continue;
+                    const day = new Date(e.ts || 0).toISOString().slice(0, 10);
+                    tsMap.set(day, (tsMap.get(day) || 0) + 1);
+                }
+                const timeseries = [...tsMap.entries()].sort()
+                    .map(([bucket, count]) => ({ bucket, count }));
+                return { views, events_total: recent.length, visitors, sessions,
+                    countries: 0, timeseries, top_pages, geo: [] };
+            }
             function renderEmpty(reason) {
-                const msg = `<div class="empty-state">
+                const localEvents = readLocalQueue();
+                const localSummary = summaryFromLocal(localEvents, activeDays);
+                const banner = `<div class="empty-state">
                     <strong>Backend em deploy.</strong> O endpoint público de leitura
-                    (<code>${ENDPOINT_BASE}/summary</code>) não está respondendo ainda.
-                    Os eventos seguem fluindo no cliente — abra o devtools e rode
-                    <code>AL_analytics.info()</code> pra ver a fila local.
+                    (<code>${ENDPOINT_BASE}/summary</code>) ainda não responde.
+                    ${localSummary
+                        ? `Mostrando dados da <em>fila local</em> deste navegador (${localEvents.length} eventos bufferizados). Quando o backend ficar de pé, a página passa a refletir a rede inteira.`
+                        : `A fila local deste navegador também está vazia. Navegue pelo site e os eventos começam a aparecer aqui.`}
                     <br><br>
                     Detalhes do contrato: <a href="https://github.com/artelonga/ArteLonga/blob/main/docs/analytics-api.md">docs/analytics-api.md</a>.
                     ${reason ? `<br><small style="color: #999;">${escapeHtml(reason)}</small>` : ""}
                 </div>`;
-                $("ts-host").innerHTML        = msg;
-                $("top-pages-host").innerHTML = "";
-                $("geo-host").innerHTML       = "";
-                $("recent-host").innerHTML    = "";
-                ["kpi-views","kpi-visitors","kpi-sessions","kpi-countries"].forEach(id => $(id).textContent = "—");
+                if (localSummary) {
+                    renderKPIs(localSummary);
+                    $("ts-host").innerHTML = banner;
+                    const tsHost = document.createElement("div");
+                    $("ts-host").appendChild(tsHost);
+                    renderTimeseries(tsHost, localSummary.timeseries);
+                    renderTopPages($("top-pages-host"), localSummary.top_pages);
+                    $("geo-host").innerHTML = `<div class="empty-state">Geolocalização vem do backend (hash de IP server-side). Indisponível na fila local.</div>`;
+                    renderRecent($("recent-host"), localEvents.slice(-50).reverse().map(e => ({
+                        ts: e.ts, name: e.name, path: e.path, country: null, city: null
+                    })));
+                } else {
+                    $("ts-host").innerHTML = banner;
+                    $("top-pages-host").innerHTML = "";
+                    $("geo-host").innerHTML = "";
+                    $("recent-host").innerHTML = "";
+                    ["kpi-views","kpi-visitors","kpi-sessions","kpi-countries"].forEach(id => $(id).textContent = "—");
+                }
             }
 
             // ─── HELPERS ─────────────────────────────────────────────────────

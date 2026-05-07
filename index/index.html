@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Índice — Arte Longa</title>
+    <link rel="stylesheet" href="/assets/site.css?v=20260564">
+    <link rel="stylesheet" href="/assets/components.css?v=20260508">
+    <link rel="stylesheet" href="/assets/pages.css?v=20260564">
+    <style>
+        .idx-wrap { max-width: 880px; margin: 0 auto; padding: 4vh 0 6vh; }
+        .idx-h1 {
+            font-size: clamp(2rem, 5vw, 3.4rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.05;
+            color: #0a0a0a;
+            margin-bottom: 0.8vh;
+        }
+        .idx-sub {
+            font-size: 0.95rem;
+            line-height: 1.55;
+            color: #555;
+            max-width: 60ch;
+            margin-bottom: 1vh;
+        }
+        .idx-meta {
+            font-size: 0.68rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: #999;
+            font-weight: 700;
+            margin-bottom: 5vh;
+        }
+
+        .idx-section { margin: 5vh 0 2vh; }
+        .idx-section h2 {
+            font-size: 0.7rem;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            color: #0a0a0a;
+            font-weight: 700;
+            border-top: 2px solid #0a0a0a;
+            padding-top: 1.5vh;
+            margin-bottom: 0.6vh;
+        }
+        .idx-section .label {
+            font-size: 0.65rem;
+            letter-spacing: 0.18em;
+            color: #999;
+            text-transform: uppercase;
+            margin-bottom: 2vh;
+        }
+
+        .idx-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            gap: 0.6rem;
+        }
+        .idx-row {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            gap: 1.4rem;
+            padding: 1.6vh 0;
+            border-bottom: 1px solid #f0f0f0;
+            align-items: baseline;
+        }
+        .idx-row:last-child { border-bottom: none; }
+        .idx-link {
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
+            font-size: 0.92rem;
+            color: #0a0a0a;
+            text-decoration: none;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .idx-link:hover { color: #c0392b; }
+        .idx-desc {
+            font-size: 0.92rem;
+            color: #444;
+            line-height: 1.55;
+        }
+        .idx-flag {
+            display: inline-block;
+            font-size: 0.6rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #888;
+            font-weight: 700;
+            margin-left: 0.4em;
+            padding: 0.1em 0.4em;
+            border: 1px solid #d4d4d4;
+            border-radius: 2px;
+            vertical-align: middle;
+        }
+
+        @media (max-width: 640px) {
+            .idx-row { grid-template-columns: 1fr; gap: 0.4vh; }
+            .idx-link { font-size: 1rem; }
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 4vh;
+            padding: 0.6rem 0;
+            font-size: 0.85rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: #444;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .back:hover { color: #c0392b; }
+    </style>
+    <script defer src="/assets/analytics.js?v=20260429"></script>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="site-header-inner">
+            <a class="site-brand" href="/">
+                <img src="/logo-al.png" alt="Arte Longa">
+            </a>
+            <a class="site-cta-parceiros" href="/faca-parte/">Para parceiros →</a>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="idx-wrap">
+            <h1 class="idx-h1">Índice</h1>
+            <p class="idx-sub">
+                Mapa de todas as páginas públicas do site, com a finalidade de cada uma.
+                Inclui as <em>noindex</em> (acessíveis por URL, fora do índice de busca).
+            </p>
+            <p class="idx-meta">Para navegação · referência interna</p>
+
+            <section class="idx-section">
+                <h2>Para contratantes</h2>
+                <p class="label">Quem busca um serviço</p>
+                <ul class="idx-list">
+                    <li class="idx-row">
+                        <a class="idx-link" href="/">/</a>
+                        <span class="idx-desc">Marketplace · busca, filtros e catálogo de serviços. Primeiro contato do cliente.</span>
+                    </li>
+                    <li class="idx-row">
+                        <a class="idx-link" href="/servicos/">/servicos/</a>
+                        <span class="idx-desc">Rede completa · catálogo total sem filtro de localização. Cada item linka pra detalhe.</span>
+                    </li>
+                    <li class="idx-row">
+                        <a class="idx-link" href="/servicos/&lt;slug&gt;/">/servicos/&lt;slug&gt;/</a>
+                        <span class="idx-desc">Detalhe do serviço · paraQuem, preço, fórmula, provedores com canal direto, exemplos e relacionados.</span>
+                    </li>
+                    <li class="idx-row">
+                        <a class="idx-link" href="/parceiros/">/parceiros/</a>
+                        <span class="idx-desc">Quem entrega na rede · roster de pessoas e comunidades. Sócios marcados com asterisco.</span>
+                    </li>
+                    <li class="idx-row">
+                        <a class="idx-link" href="/&lt;handle&gt;/">/&lt;handle&gt;/</a>
+                        <span class="idx-desc">Perfil de parceiro · bio, role, serviços oferecidos, comunidades.</span>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="idx-section">
+                <h2>Para prestadores</h2>
+                <p class="label">Quem quer fazer parte da rede</p>
+                <ul class="idx-list">
+                    <li class="idx-row">
+                        <a class="idx-link" href="/faca-parte/">/faca-parte/</a>
+                        <span class="idx-desc">Cadastro de prestadores · como funciona em 6 tiles, formulário de inscrição, e Caminho para sociedade com breakdown do trabalho mensal.</span>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="idx-section">
+                <h2>Para investidores</h2>
+                <p class="label">Quem quer aportar</p>
+                <ul class="idx-list">
+                    <li class="idx-row">
+                        <a class="idx-link" href="/oportunidade/">/oportunidade/</a>
+                        <span class="idx-desc">Termos de investimento · empréstimo conversível em participação, saída por 100% do CDI, projeção R$ 75k no Q2.</span>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="idx-section">
+                <h2>Identidade · transparência</h2>
+                <p class="label">Quem é a rede e como ela se sustenta</p>
+                <ul class="idx-list">
+                    <li class="idx-row">
+                        <a class="idx-link" href="/sobre/">/sobre/</a>
+                        <span class="idx-desc">Bio · História · Missão/Visão/Valores · Contato · link pra Oportunidade. Premissa operacional da rede.</span>
+                    </li>
+                    <li class="idx-row">
+                        <a class="idx-link" href="/proximos-passos/">/proximos-passos/</a>
+                        <span class="idx-desc">Metas Q2 2026 · transparência contábil, número de parceiros, MRR, faturamento, GNU GPL.</span>
+                    </li>
+                    <li class="idx-row">
+                        <a class="idx-link" href="/recursos/">/recursos/</a>
+                        <span class="idx-desc">Transparência financeira · custos, receita projetada, projetos, pro-bono, meta trimestral.</span>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="idx-section">
+                <h2>Referência</h2>
+                <p class="label">Páginas técnicas e de mapeamento</p>
+                <ul class="idx-list">
+                    <li class="idx-row">
+                        <a class="idx-link" href="/legal/">/legal/<span class="idx-flag">noindex</span></a>
+                        <span class="idx-desc">Mapeamento dos termos do marketplace contra a Lei 14.133/2021 (Nova Lei de Licitações). Útil pra contratos com órgão público.</span>
+                    </li>
+                    <li class="idx-row">
+                        <a class="idx-link" href="/analytics/">/analytics/<span class="idx-flag">noindex</span></a>
+                        <span class="idx-desc">Telemetria pública · KPIs, timeseries, top-pages, geolocalização, eventos recentes. In-house, sem cookies de terceiros.</span>
+                    </li>
+                    <li class="idx-row">
+                        <a class="idx-link" href="/index/">/index/<span class="idx-flag">noindex</span></a>
+                        <span class="idx-desc">Esta página. Mapa de todas as URLs com finalidade de cada uma.</span>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="idx-section">
+                <h2>Legacy · acessível por URL</h2>
+                <p class="label">Mantidas pra não quebrar links antigos</p>
+                <ul class="idx-list">
+                    <li class="idx-row">
+                        <a class="idx-link" href="/solucoes/">/solucoes/<span class="idx-flag">noindex</span></a>
+                        <span class="idx-desc">Universos da rede (Co, Yggdrasil, Quilombo Araucária, Hedix, Shandara). Conceito de "solução" saiu do funil principal — vive aqui.</span>
+                    </li>
+                    <li class="idx-row">
+                        <a class="idx-link" href="/&lt;universo&gt;/">/&lt;universo&gt;/</a>
+                        <span class="idx-desc">Profile de universo · /co/, /yggdrasil/, /agora/, /quilomboaraucaria/, /artelonga/, etc.</span>
+                    </li>
+                </ul>
+            </section>
+
+            <a class="back" href="/">← voltar</a>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-footer-inner">
+            <a href="/parceiros/">Parceiros</a>
+            <span class="sep">·</span>
+            <a href="/sobre/">Sobre</a>
+            <span class="sep">·</span>
+            <a href="/proximos-passos/">Próximos passos</a>
+        </div>
+    </footer>
+
+</body>
+</html>
