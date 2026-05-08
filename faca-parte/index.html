@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Para parceiros — Arte Longa</title>
-    <link rel="stylesheet" href="/assets/site.css?v=20260566">
+    <link rel="stylesheet" href="/assets/site.css?v=20260507">
     <link rel="stylesheet" href="/assets/components.css?v=20260508">
-    <link rel="stylesheet" href="/assets/pages.css?v=20260566">
+    <link rel="stylesheet" href="/assets/pages.css?v=20260507">
     <style>
         .fp-wrap {
             display: grid;
@@ -274,6 +274,41 @@
             font-style: italic;
             max-width: 60ch;
         }
+        .fp-sub {
+            font-size: 0.62rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: #888;
+            font-weight: 700;
+            margin: 3vh 0 1.2vh;
+        }
+        .fp-direitos {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto auto;
+            grid-auto-flow: column;
+            gap: 0.6vh 1.6rem;
+            margin: 0 0 2vh;
+            max-width: 60ch;
+        }
+        .fp-direitos dt {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: #0a0a0a;
+        }
+        .fp-direitos dd {
+            margin: 0;
+            font-size: 0.85rem;
+            color: #555;
+            line-height: 1.5;
+        }
+        @media (max-width: 640px) {
+            .fp-direitos {
+                grid-template-columns: 1fr;
+                grid-template-rows: none;
+                grid-auto-flow: row;
+            }
+        }
         .fp-radio-group-3 {
             grid-template-columns: repeat(3, 1fr);
         }
@@ -419,20 +454,35 @@
             <section class="fp-caminho">
                 <h2>Caminho para sociedade</h2>
                 <p class="fp-caminho-lead">
-                    Quem entrega valor consistente vira sócio. Sócio recebe pro-labore
-                    mensal e participa da gestão. Pra dar dimensão: um parceiro típico
-                    trabalha cerca de 36h/sem × 4 = <strong>144h/mês a R$ 100/h =
-                    R$ 14.400 mensais</strong>, distribuídos em quatro frentes.
+                    Quem entrega valor consistente vira sócio. Sócio tem
+                    <strong>participação nos lucros</strong> e
+                    <strong>poder decisório</strong> na gestão da rede,
+                    além de pro-labore mensal.
+                </p>
+
+                <h3 class="fp-sub">Direitos do sócio</h3>
+                <dl class="fp-direitos">
+                    <dt>Participação nos lucros</dt>
+                    <dd>Distribuída proporcionalmente entre sócios ao fim do exercício.</dd>
+                    <dt>Poder decisório</dt>
+                    <dd>Voz e voto nas decisões estratégicas, financeiras e de admissão de novos sócios.</dd>
+                </dl>
+
+                <h3 class="fp-sub">Composição da remuneração mensal</h3>
+                <p class="fp-caminho-lead">
+                    Pra dar dimensão: um parceiro típico trabalha cerca de
+                    32h/sem × 4 = <strong>128h/mês a R$ 100/h =
+                    R$ 12.800 mensais</strong>, distribuídos em quatro frentes.
                 </p>
                 <dl class="fp-breakdown">
                     <dt>R$ 2.000</dt>
-                    <dd>Pro-labore <span>renda pessoal</span></dd>
-                    <dt>R$ 4.000</dt>
+                    <dd>Pessoal <span>renda direta</span></dd>
+                    <dt>R$ 3.000</dt>
                     <dd>Benefícios <span>autocuidado e família</span></dd>
-                    <dt>R$ 6.000</dt>
+                    <dt>R$ 5.000</dt>
                     <dd>Impacto <span>social, ambiental e cultural</span></dd>
-                    <dt>R$ 2.400</dt>
-                    <dd>Flexibilidade <span>folgas, férias ou lucro do negócio</span></dd>
+                    <dt>R$ 2.800</dt>
+                    <dd>Reserva <span>folgas, férias e flexibilidade</span></dd>
                 </dl>
                 <p class="fp-caminho-note">
                     A composição é flexível e ajusta ao momento de cada parceiro.
