@@ -1913,11 +1913,19 @@
     // pela rede; nesse caso o listener registraria tarde demais e a página
     // ficaria em branco. Por isso checamos readyState e despachamos direto se
     // o DOM já está pronto.
+    //
+    // try/catch: renderers escrevem document.body.innerHTML no FIM do template
+    // literal. Se algo lança no meio (ex: uma entry malformada em AL.people
+    // sem .handle), o body nunca recebe o HTML e a página fica em branco
+    // silenciosamente. Aqui pelo menos mostramos uma mensagem visível.
     function dispatch() {
         const page = document.body.dataset.page;
         const fn = pageFns[page];
-        if (fn) fn();
-        else if (page) console.warn(`No renderer for page: ${page}`);
+        if (!fn) { if (page) console.warn(`No renderer for page: ${page}`); return; }
+        try { fn(); } catch (e) {
+            console.error("render falhou:", e);
+            document.body.innerHTML = `<main class="main"><p>Algo quebrou ao renderizar esta página. <a href="/">voltar</a></p></main>`;
+        }
     }
     if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", dispatch);
