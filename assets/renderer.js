@@ -1907,10 +1907,21 @@
         poem: () => renderPoem(document.body.dataset.slug)
     };
 
-    document.addEventListener("DOMContentLoaded", () => {
+    // Carregado via bootstrap.js como script dinâmico — async=false só garante
+    // ordem entre os scripts injetados, NÃO bloqueia DOMContentLoaded. Como o
+    // body é praticamente vazio, DCL costuma disparar antes do renderer chegar
+    // pela rede; nesse caso o listener registraria tarde demais e a página
+    // ficaria em branco. Por isso checamos readyState e despachamos direto se
+    // o DOM já está pronto.
+    function dispatch() {
         const page = document.body.dataset.page;
         const fn = pageFns[page];
         if (fn) fn();
         else if (page) console.warn(`No renderer for page: ${page}`);
-    });
+    }
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", dispatch);
+    } else {
+        dispatch();
+    }
 })(window);
