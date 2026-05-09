@@ -137,12 +137,6 @@
     outline: none;
     box-shadow: 0 0 0 3px rgba(10,10,10,0.08);
 }
-.market-hint {
-    font-size: 0.78rem;
-    color: #888;
-    letter-spacing: 0.04em;
-    margin-bottom: 0;
-}
 
 /* Supercategorias — chips horizontais */
 .sup-cats {

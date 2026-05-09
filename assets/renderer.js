@@ -566,8 +566,6 @@
                         </span>
                     </div>
                     <p class="market-loc-help">Clique pra editar.</p>
-
-                    <p class="market-hint" id="market-hint">Filtre por categoria ou comece a digitar.</p>
                 </section>
 
                 <div class="sup-cats" id="sup-cats">
