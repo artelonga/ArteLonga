@@ -96,6 +96,39 @@
         });
     })();
 
+    // ─── BIO AUDIO PLAYER ────────────────────────────────────────────────────
+    // Toggle play/pause em .bio-audio-btn. Apenas um áudio toca por vez —
+    // se o usuário clica em outro, pausamos o anterior.
+    (function initBioAudio() {
+        let active = null;
+        document.addEventListener("click", e => {
+            const btn = e.target.closest && e.target.closest(".bio-audio-btn");
+            if (!btn) return;
+            const wrap = btn.closest(".profile-bio-audio");
+            const audio = wrap && wrap.querySelector(".bio-audio-el");
+            if (!audio) return;
+            if (audio.paused) {
+                if (active && active !== audio) { active.pause(); }
+                audio.play().then(() => {
+                    btn.dataset.state = "playing";
+                    active = audio;
+                    if (window.AL_track) window.AL_track("bio_audio_play", { src: audio.getAttribute("src") });
+                }).catch(() => { btn.dataset.state = "paused"; });
+            } else {
+                audio.pause();
+                btn.dataset.state = "paused";
+            }
+        });
+        document.addEventListener("ended", e => {
+            if (e.target && e.target.classList && e.target.classList.contains("bio-audio-el")) {
+                const wrap = e.target.closest(".profile-bio-audio");
+                const btn = wrap && wrap.querySelector(".bio-audio-btn");
+                if (btn) btn.dataset.state = "paused";
+                if (active === e.target) active = null;
+            }
+        }, true);
+    })();
+
     // Blocks split by blank lines. Within a block, single newlines become <br>.
     // A block where every line starts with "> " renders as <blockquote>.
     function bioFull(entity) {
@@ -1224,6 +1257,20 @@
         const { html: counterHtml, tick: tickFn } = counter(p);
 
         const bioHtmlOut = bioFull(p);
+        const bioHiddenHtml = p.bioHidden
+            ? `<details class="profile-bio-hidden"><summary>[...]</summary><p>${esc(p.bioHidden)}</p></details>`
+            : "";
+        // Áudio da bio — fonte pode ser estática hoje, backend depois.
+        // Botão play/pause minimalista ao lado do bio.
+        const bioAudioHtml = p.bioAudio
+            ? `<div class="profile-bio-audio">
+                <button type="button" class="bio-audio-btn" aria-label="Tocar bio em áudio" data-state="paused">
+                    <span class="bio-audio-icon" aria-hidden="true"></span>
+                    <span class="bio-audio-label">Ouvir</span>
+                </button>
+                <audio class="bio-audio-el" preload="metadata" src="${esc(p.bioAudio)}"></audio>
+            </div>`
+            : "";
         const emBreveNote = p.emBreve ? `<div class="em-breve-note">Perfil em breve.</div>` : "";
         const emMemoriaNote = p.emMemoria ? `<div class="em-memoria-note"><em>em memória</em></div>` : "";
 
@@ -1392,6 +1439,8 @@
                         ${p.role ? `<div class="profile-role">${esc(p.role)}</div>` : ""}
                         ${counterHtml}
                         ${p.bioTitle ? `<h2 class="profile-bio-title">${esc(p.bioTitle)}</h2>` : ""}
+                        ${bioHiddenHtml}
+                        ${bioAudioHtml}
                         ${bioHtmlOut}
                     </div>
                 </div>
