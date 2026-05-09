@@ -498,9 +498,9 @@
                 }`;
             }
             const childCount = (s.children && s.children.length) || 0;
-            const titleHtml = childCount
-                ? `${esc(s.titulo)} <span class="market-card-children">+${childCount}</span>`
-                : esc(s.titulo);
+            const childrenBadge = childCount ? ` <span class="market-card-children">+${childCount}</span>` : "";
+            const onlineBadge = s.digital ? ` <span class="market-card-online">online</span>` : "";
+            const titleHtml = `${esc(s.titulo)}${childrenBadge}${onlineBadge}`;
             return `
             <li class="market-card">
                 <a href="/servicos/${esc(s.slug)}/" class="market-card-link">
@@ -565,7 +565,7 @@
                             <ul class="loc-dropdown" id="dd-bairro" hidden role="listbox"></ul>
                         </span>
                     </div>
-                    <p class="market-loc-help">Clique pra editar. Serviços digitais ignoram localização.</p>
+                    <p class="market-loc-help">Clique pra editar.</p>
 
                     <p class="market-hint" id="market-hint">Filtre por categoria ou comece a digitar.</p>
                 </section>

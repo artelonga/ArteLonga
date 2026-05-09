@@ -276,6 +276,18 @@
     margin-left: 0.3em;
     vertical-align: middle;
 }
+.market-card-online {
+    font-size: 0.62rem;
+    color: #444;
+    background: #f0f0f0;
+    padding: 0.15em 0.55em;
+    border-radius: 999px;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    text-transform: lowercase;
+    vertical-align: middle;
+    white-space: nowrap;
+}
 .market-card-meta {
     font-size: 0.78rem;
     color: #444;
