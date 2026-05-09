@@ -660,6 +660,30 @@
                     ? `${list.length} em ${cats.find(c => c.id === activeCat).label}`
                     : `${list.length} serviços`);
             empty.hidden = list.length !== 0;
+
+            // Atualiza contadores dos chips de supercategoria: cada um reflete
+            // a intersecção da categoria com search + loc + alOnly atuais. Sem
+            // isso, "Todos 50" continuava mostrando 50 mesmo com search ativa
+            // filtrando pra 8.
+            const matching = tokens.length
+                ? new Set(indexed
+                    .filter(({ blob }) => tokens.every(t => {
+                        if (blob.includes(t)) return true;
+                        const syns = ANGLICISM_MAP[t];
+                        return syns ? syns.some(s => blob.includes(s)) : false;
+                    }))
+                    .map(x => x.s.titulo))
+                : null;
+            const countFor = items => {
+                const filtered = matching ? items.filter(s => matching.has(s.titulo)) : items;
+                return alOnlyFilter(locFilter(filtered)).length;
+            };
+            const allChipCount = chipsBox.querySelector('.sup-chip[data-cat=""] .sup-count');
+            if (allChipCount) allChipCount.textContent = countFor(topo);
+            cats.forEach(cat => {
+                const el = chipsBox.querySelector(`.sup-chip[data-cat="${cat.id}"] .sup-count`);
+                if (el) el.textContent = countFor(cat.items);
+            });
         }
 
         input.addEventListener("input", applyFilter);
