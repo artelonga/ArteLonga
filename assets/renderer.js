@@ -565,7 +565,7 @@
                             <ul class="loc-dropdown" id="dd-bairro" hidden role="listbox"></ul>
                         </span>
                     </div>
-                    <p class="market-loc-help">Clique pra editar. Serviços digitais aparecem em qualquer lugar.</p>
+                    <p class="market-loc-help">Clique pra editar. Serviços digitais ignoram localização.</p>
 
                     <p class="market-hint" id="market-hint">Filtre por categoria ou comece a digitar.</p>
                 </section>
@@ -581,7 +581,6 @@
                     <label class="toggle-chip">
                         <input type="checkbox" id="al-only">
                         <span>Prestados pela Arte Longa</span>
-                        <span class="toggle-help">serviços oferecidos pelos sócios (Yuri, Igo, José Antônio, Mono, Luke, Marina)</span>
                     </label>
                 </div>
 
