@@ -116,6 +116,64 @@ components:
           type: string
       required: [label, url]
 
+    PortfolioPoem:
+      type: object
+      description: Poema autoral. Renderizado em `/<autor>/<slug>/`.
+      properties:
+        kind:
+          type: string
+          enum: [poem]
+        slug:
+          type: string
+          description: URL-safe slug. Compõe `/<autor>/<slug>/`.
+        titulo:
+          type: string
+        stanzas:
+          type: array
+          description: Lista de estrofes; cada estrofe é lista de linhas.
+          items:
+            type: array
+            items:
+              type: string
+        draft:
+          type: boolean
+          default: false
+          description: Se true, não renderizado publicamente. Útil enquanto texto está em produção.
+      required: [kind, slug, titulo, stanzas]
+
+    PortfolioEssay:
+      type: object
+      description: Ensaio em prosa. Renderizado em `/<autor>/<slug>/`.
+      properties:
+        kind:
+          type: string
+          enum: [essay]
+        slug:
+          type: string
+        titulo:
+          type: string
+        short:
+          type: string
+          description: Resumo (1-3 frases) pra teaser.
+        body:
+          type: string
+          description: Markdown multi-linha (literal block scalar `|`).
+        draft:
+          type: boolean
+          default: false
+      required: [kind, slug, titulo]
+
+    PortfolioItem:
+      description: Item autoral (poema, ensaio, etc). Discriminator é `kind`.
+      oneOf:
+        - $ref: "#/components/schemas/PortfolioPoem"
+        - $ref: "#/components/schemas/PortfolioEssay"
+      discriminator:
+        propertyName: kind
+        mapping:
+          poem: "#/components/schemas/PortfolioPoem"
+          essay: "#/components/schemas/PortfolioEssay"
+
     Contacts:
       type: object
       properties:
@@ -185,6 +243,11 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/HomeLink"
+        portfolio:
+          type: array
+          description: Itens autorais (poemas, ensaios). Cada um renderizado em `/<handle>/<slug>/`.
+          items:
+            $ref: "#/components/schemas/PortfolioItem"
         emMemoria:
           type: boolean
           default: false

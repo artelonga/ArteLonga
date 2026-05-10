@@ -92,3 +92,14 @@ servicos:
 subMembers:
   - kiyoshi
   - soninha
+portfolio:
+  - kind: poem
+    slug: maes
+    titulo: Mães
+    draft: true
+    # TODO: cole o texto do poema. Cada estrofe é uma sub-array de linhas.
+    # Exemplo de estrutura (substitua pelo conteúdo real):
+    stanzas:
+      - - "[texto da primeira estrofe — linha 1]"
+        - "[linha 2]"
+      - - "[texto da segunda estrofe]"

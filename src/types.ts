@@ -43,6 +43,34 @@ export interface HomeLink {
     url: string;
 }
 
+/**
+ * Item autoral (poema, ensaio, etc) que vive em `<handle>/profile.yaml#portfolio`.
+ * Renderizado em `/<handle>/<slug>/` via dispatch `data-page="poem"|"essay"`.
+ *
+ * Discriminated union via `kind`. Adicionar novos kinds (song, video, etc)
+ * estendendo `PortfolioItem` aqui + schema em openapi.
+ */
+export interface PortfolioPoem {
+    kind: "poem";
+    slug: string;
+    titulo: string;
+    /** Lista de estrofes; cada estrofe é lista de linhas. */
+    stanzas: string[][];
+    draft?: boolean;
+}
+
+export interface PortfolioEssay {
+    kind: "essay";
+    slug: string;
+    titulo: string;
+    short?: string;
+    /** Markdown multi-linha. */
+    body?: string;
+    draft?: boolean;
+}
+
+export type PortfolioItem = PortfolioPoem | PortfolioEssay;
+
 export interface Contacts {
     tagline?: string;
     email?: string;
@@ -72,6 +100,7 @@ export interface Person {
     communities?: Handle[];
     contacts?: Contacts;
     homeLinks?: HomeLink[];
+    portfolio?: PortfolioItem[];
     emMemoria?: boolean;
     referenceOnly?: boolean;
     externalUrl?: string;
