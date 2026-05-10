@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+# Pre-commit hook — enforça que data.js esteja em sync com YAMLs.
+# Wired via husky. Roda automaticamente em `git commit`.
+#
+# Pra desabilitar temporariamente em emergência (não recomendado):
+#   git commit --no-verify
+#
+# Pra desabilitar permanentemente: remove esse arquivo + reverte
+# package.json (devDep husky + script prepare).
+
+. "$(dirname "$0")/_/husky.sh"
+
+node tools/pre-commit-check.mjs

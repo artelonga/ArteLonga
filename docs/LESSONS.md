@@ -476,11 +476,41 @@ correção a artelonga-only (2026-05-09).
 
 ---
 
+## L-021: Edição direta em arquivo AUTO-GENERATED é silenciosamente sobrescrita
+
+**Anti-pattern:** editar `assets/data.js` entre marcadores
+`AUTO-GENERATED:*-START/END` quando há source YAML correspondente
+(`<handle>/profile.yaml`, `<handle>/community.yaml`).
+
+**Why broke:** commit `80808b40` editou bio do Mono diretamente em
+data.js (~1700 chars). Bake subsequente sobrescreve o bloco com output
+regenerado dos YAMLs (que tinham bio vazia) — conteúdo perdido sem
+alerta. Resolveu mergear PR #40 manualmente: mover bio pro YAML,
+re-bake, commit.
+
+**Mitigação imediata (manual):** mover content pro YAML correspondente,
+rodar `npm run bake`, commit.
+
+**Mitigação preventiva (shipped em AL-17):**
+- `tools/pre-commit-check.mjs` — snapshot data.js, roda bake, compara
+  bytes. Falha exit 1 se drift.
+- `.husky/pre-commit` — wira ao git via husky (`npm install` ativa via
+  prepare script).
+- Mensagem de erro instrui exatamente o que fazer.
+
+**Quando aplicar:** sempre. Hook deve estar ativo em todo dev
+environment. CI check é backup.
+
+**Incident:** `80808b40` (Mono bio inline em data.js, 2026-05-10);
+resolvido em PR #40 + AL-17.
+
+---
+
 ## Convenção de manutenção
 
 - Adicionar entrada em LESSONS.md quando commit `fix:` ou `refactor:`
   ensinou algo generalizável (não trivial, não óbvio).
-- Sintaxe: L-NNN, próximo número livre (atualmente 21).
+- Sintaxe: L-NNN, próximo número livre (atualmente 22).
 - Não remover entradas. Marcar `~~strikethrough~~` + nota se obsoleta.
 - PR template (futuro) pode incluir checkbox "L-NNN adicionada".
 
@@ -494,6 +524,7 @@ correção a artelonga-only (2026-05-09).
 - **Versioning/cache:** L-011, L-015
 - **Browser quirks:** L-006
 - **Architecture decoupling:** L-012, L-013
-- **Persistence/LGPD:** L-018, L-019
+- **Persistence/LGPD:** L-018, L-019, L-021
 - **Pricing/contract stability:** L-014
 - **Scope/YAGNI:** L-020
+- **Auto-generated drift:** L-021
