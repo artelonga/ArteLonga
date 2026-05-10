@@ -2,7 +2,7 @@
 id: 3
 title: "Memory system: docs/LESSONS.md + docs/STATE.md + CLAUDE.md lições"
 type: user-story
-status: todo
+status: done
 priority: high
 labels:
   - docs
@@ -11,7 +11,7 @@ labels:
   - memory
 module: docs
 created_at: 2026-05-10T00:00:00Z
-updated_at: 2026-05-10T00:00:00Z
+updated_at: 2026-05-10T20:21:59.879154+00:00
 ---
 
 GIVEN o repo tem 30+ commits `fix|feat|refactor` que ensinaram lições
@@ -164,7 +164,7 @@ estático em GitHub Pages. Marketplace de serviços focado no contratante.
 
 ## Backlog aberto
 
-(listar `work/artelonga/AL-*.md` com `status: todo`)
+(listar `work/artelonga/AL-*.md` com `status: in_progress`)
 
 ## Como contribuir
 
@@ -201,7 +201,7 @@ Node.js, sem deps externas:
 1. Lê `CHANGELOG.md`, extrai primeira section de release (não [Unreleased]).
 2. Roda `git log --since="30 days ago" --grep="^feat"` e `^fix`,
    formata como bullet list.
-3. Lista `work/artelonga/AL-*.md` filtrando `status: todo|in_progress`.
+3. Lista `work/artelonga/AL-*.md` filtrando `status: in_progress|in_progress`.
 4. Escreve `docs/STATE.md` com header `auto-gerado YYYY-MM-DD`.
 5. Determinístico se rodado no mesmo dia (timestamp dentro de 24h
    gera mesmo output exceto pela data).
