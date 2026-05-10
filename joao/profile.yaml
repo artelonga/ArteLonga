@@ -1,0 +1,28 @@
+handle: joao
+type: person
+nome: João
+role: Psicologia Clínica
+tags:
+  - parceiro
+bio: >-
+  Psicólogo clínico com abordagem em psicanálise e psicologia junguiana, atuando no atendimento de crianças,
+  adolescentes, adultos, idosos e casais. É pós-graduado em Psicologia Social e Ciências Humanas, desenvolvendo um
+  trabalho fundamentado na escuta clínica, com foco na elaboração do sofrimento psíquico, no fortalecimento da autonomia
+  e na promoção do bem-estar mental.
+
+
+  Possui experiência no acolhimento de pessoas em situação de vulnerabilidade social e dependência química, além de
+  integrar o grupo de masculinidades da Fecaf. Realiza atendimentos nas modalidades online e presencial.
+servicos:
+  - Psicologia Clínica
+  - Saúde Mental
+  - Psicoterapia Psicanalítica
+  - Psicologia Analítica (Junguiana)
+  - Psicologia Social e Comunitária
+communities:
+  - quilomboaraucaria
+contacts:
+  whatsapp: '5511983717331'
+  whatsappDisplay: +55 11 98371-7331
+  instagram: TerraPsicoterapia
+  tagline: 'Psicoterapia online e presencial: Inicie seu atendimento ⤵️'

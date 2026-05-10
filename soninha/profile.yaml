@@ -1,0 +1,17 @@
+handle: soninha
+type: person
+nome: Soninha
+role: ''
+tags:
+  - parceiro
+  - familia
+  - em-memoria
+bio: ''
+emMemoria: true
+birthDate: '1961-11-01'
+deathDate: '2025-10-01'
+servicos:
+  - Mãe do Yuri
+  - Atriz
+  - Cantora
+parentHandle: yuri

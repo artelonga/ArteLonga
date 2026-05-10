@@ -1,0 +1,13 @@
+handle: alicia
+type: person
+nome: Alicia
+role: ''
+tags:
+  - parceiro
+  - menor
+bio: ''
+underage: true
+servicos:
+  - Futuro
+  - Filha da Bruna
+parentHandle: bruna

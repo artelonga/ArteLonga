@@ -2,7 +2,7 @@
 id: 1
 title: "LGPD: migrar perfis de membros de data.js para per-handle YAML"
 type: user-story
-status: todo
+status: done
 priority: high
 labels:
   - refactor
@@ -11,7 +11,7 @@ labels:
   - build
 module: data
 created_at: 2026-05-10T00:00:00Z
-updated_at: 2026-05-10T00:00:00Z
+updated_at: 2026-05-10T10:00:46.071887+00:00
 ---
 
 GIVEN os dados ricos de cada membro (bio, citações, sub-members, serviços,

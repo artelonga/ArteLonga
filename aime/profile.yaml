@@ -1,0 +1,12 @@
+handle: aime
+type: person
+nome: Aime
+role: em breve
+tags:
+  - parceiro
+  - em-breve
+bio: ''
+emBreve: true
+muted: true
+subMembers:
+  - john

@@ -1,0 +1,11 @@
+handle: mono
+type: person
+nome: Mono
+role: Segurança
+tags:
+  - fundador
+  - parceiro
+bio: ''
+servicos:
+  - Consultoria em TI
+  - Privacidade e Segurança

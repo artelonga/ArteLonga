@@ -9,6 +9,16 @@ Each release links to a *why* (the pain or opportunity it addresses) so a reader
 
 ## [Unreleased]
 
+### Refactored (AL-1: LGPD — perfis de membros migrados para per-handle YAML)
+
+Cada um dos 36 membros tem agora um arquivo `<handle>/profile.yaml` como source of truth do perfil, substituindo o array `people` hardcoded em `assets/data.js`. Exercício do Art. 18 LGPD (acesso, correção, deleção) é viável via PR na pasta do handle. `data.js` continua sendo o artefato consumido pelo renderer — comportamento runtime zero-alteração.
+
+- **`<handle>/profile.yaml`** — 36 arquivos criados, um por membro (pessoas, negócios, referências históricas).
+- **`tools/bake-people.mjs`** — build script determinístico: lê todos os `*/profile.yaml` e regenera a seção `people` em `assets/data.js`. Roda `node -e "require('./assets/data.js')"` pra validar o parse.
+- **`tools/people-order.txt`** — define a ordem canônica dos perfis no array (preserva a ordem editorial).
+- **`assets/data.js`** — seção `people` marcada `AUTO-GENERATED:PEOPLE-START/END`; suporte a `globalThis` pra validação com Node.js.
+- **`package.json`** — adicionado `js-yaml` como devDependency do build script.
+
 ### Changed (pivot product-oriented · marketplace de serviços)
 
 Site reorientado de catálogo institucional para **marketplace de serviços** focado no contratante. Direção definida pelo feedback de mercado (Jack Dorsey: "reduzir elementos ao mínimo, cada um o mais perfeito"; liquidez via recorte geográfico; 5 segundos de atenção).
