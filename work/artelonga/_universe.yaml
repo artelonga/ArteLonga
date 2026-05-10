@@ -1,0 +1,34 @@
+name: ArteLonga
+description: >
+  Universo de desenvolvimento do site artelonga.com.br — board com user-stories
+  e tarefas. Compatível com co-auto.
+schema_version: 1
+content_types:
+  - name: user-story
+    schema:
+      id:
+        type: number
+        required: true
+      title:
+        type: string
+        required: true
+      status:
+        type: enum
+        values: [todo, in_progress, done, blocked, cancelled]
+      priority:
+        type: enum
+        values: [low, medium, high, critical]
+      type:
+        type: string
+      parent:
+        type: number
+      module:
+        type: string
+  - name: task
+    schema:
+      title:
+        type: string
+        required: true
+      status:
+        type: enum
+        values: [todo, doing, done]
