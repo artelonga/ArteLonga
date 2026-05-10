@@ -1,0 +1,353 @@
+openapi: 3.1.0
+info:
+  title: Arte Longa Universe
+  description: |
+    Schema do universe artelonga — single source of truth pras shapes
+    consumidas pelo renderer estático e pela API do backend `co`.
+
+    Cada `<handle>/profile.yaml` e `<handle>/community.yaml` valida
+    contra os schemas em `components/schemas/`. O `bake-people.mjs` e
+    `bake-communities.mjs` usam isso pra validar antes de regenerar
+    `assets/data.js`.
+  version: 1.0.0
+  contact:
+    name: Arte Longa
+    email: rede@artelonga.com.br
+servers:
+  - url: https://co.artelonga.com.br/api/v1/universes/artelonga
+    description: Production (read-only)
+  - url: https://co-artelonga-uat.fly.dev/api/v1/universes/artelonga
+    description: UAT
+
+paths:
+  /entries:
+    get:
+      summary: Listar entries por tipo
+      parameters:
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: [servico, missao, membro, comunidade, garden, relato, ref, proj, node, doc]
+        - name: q
+          in: query
+          description: Full-text search
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Lista de entries
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  entries:
+                    type: array
+                    items:
+                      oneOf:
+                        - $ref: "#/components/schemas/Person"
+                        - $ref: "#/components/schemas/Community"
+                        - $ref: "#/components/schemas/Service"
+
+  /reindex:
+    post:
+      summary: Re-sincronizar após edição local
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Reindexed
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Handle:
+      description: Identificador único de pessoa, comunidade ou business.
+      type: string
+      pattern: "^[a-z0-9][a-z0-9-]*$"
+      maxLength: 64
+      examples: [yuri, quilomboaraucaria, retro-umarizal]
+
+    EntityType:
+      type: string
+      enum: [person, business, community, reference]
+
+    Tag:
+      type: string
+      enum: [fundador, parceiro, comunidade, em-memoria, guardiao, familia, contabilidade, alimentacao]
+
+    Citacao:
+      type: object
+      properties:
+        texto:
+          type: string
+        autor:
+          $ref: "#/components/schemas/Handle"
+        autorNome:
+          type: string
+          description: Nome do autor quando ele não é uma entity registrada.
+        autorEmBreve:
+          type: object
+          properties:
+            title:
+              type: string
+        obra:
+          type: string
+        data:
+          type: string
+          format: date
+        url:
+          type: string
+          format: uri
+      required: [texto]
+
+    HomeLink:
+      type: object
+      properties:
+        label:
+          type: string
+        url:
+          type: string
+      required: [label, url]
+
+    Contacts:
+      type: object
+      properties:
+        tagline:
+          type: string
+        email:
+          type: string
+          format: email
+        whatsapp:
+          type: string
+        site:
+          type: string
+          format: uri
+
+    Person:
+      type: object
+      properties:
+        handle:
+          $ref: "#/components/schemas/Handle"
+        type:
+          type: string
+          enum: [person, business, reference]
+        nome:
+          type: string
+        role:
+          type: string
+          description: Função/papel curto (ex "Sementes", "Comunicação").
+        tags:
+          type: array
+          items:
+            $ref: "#/components/schemas/Tag"
+        pic:
+          type: string
+          description: Caminho relativo da foto (ex "/yuri/yuri.jpg").
+          nullable: true
+        birthDate:
+          type: string
+          format: date-time
+        bioTitle:
+          type: string
+        bioCurta:
+          type: string
+          maxLength: 280
+        bio:
+          type: string
+          description: Markdown inline (links, ênfases). Multi-linha via `\|` literal.
+        citacoes:
+          type: array
+          items:
+            $ref: "#/components/schemas/Citacao"
+        servicos:
+          type: array
+          items:
+            type: string
+            description: Título de service (referência soft pelo titulo).
+        subMembers:
+          type: array
+          items:
+            $ref: "#/components/schemas/Handle"
+        communities:
+          type: array
+          items:
+            $ref: "#/components/schemas/Handle"
+        contacts:
+          $ref: "#/components/schemas/Contacts"
+        homeLinks:
+          type: array
+          items:
+            $ref: "#/components/schemas/HomeLink"
+        emMemoria:
+          type: boolean
+          default: false
+        referenceOnly:
+          type: boolean
+          default: false
+        externalUrl:
+          type: string
+          format: uri
+          description: Pra type=business com site próprio.
+      required: [handle, type, nome]
+
+    Parceria:
+      type: object
+      properties:
+        de:
+          $ref: "#/components/schemas/Handle"
+        tipo:
+          type: string
+          enum: [pro-bono, paga, troca]
+        descricao:
+          type: string
+        contribuicoes:
+          type: array
+          items:
+            type: object
+            properties:
+              quem:
+                $ref: "#/components/schemas/Handle"
+              oque:
+                type: string
+            required: [quem, oque]
+      required: [de, tipo]
+
+    Community:
+      type: object
+      properties:
+        handle:
+          $ref: "#/components/schemas/Handle"
+        type:
+          type: string
+          enum: [community]
+        nome:
+          type: string
+        role:
+          type: string
+        tags:
+          type: array
+          items:
+            $ref: "#/components/schemas/Tag"
+        pic:
+          type: string
+          nullable: true
+        tagline:
+          type: string
+        bio:
+          type: string
+        externalUrl:
+          type: string
+          format: uri
+        site:
+          type: string
+          format: uri
+        servicos:
+          type: array
+          items:
+            type: string
+        membros:
+          type: array
+          items:
+            $ref: "#/components/schemas/Handle"
+        parcerias:
+          type: array
+          items:
+            $ref: "#/components/schemas/Parceria"
+        sectionBreak:
+          type: boolean
+          default: false
+          description: UI hint pro renderer.
+      required: [handle, type, nome]
+
+    CnaeEntry:
+      type: object
+      properties:
+        c:
+          type: string
+          description: Código CNAE (ex 6202-3/00).
+        d:
+          type: string
+          description: Descrição.
+      required: [c, d]
+
+    Service:
+      type: object
+      properties:
+        titulo:
+          type: string
+        slug:
+          type: string
+          description: Auto-derived from titulo via slugify().
+        parent:
+          type: string
+          description: Titulo do parent service (sub-services).
+        paraQuem:
+          type: string
+          description: Audience tagline (ex "Empresas · estúdios"). Hoje hidden no card.
+        digital:
+          type: boolean
+          default: false
+        recurring:
+          type: boolean
+          default: false
+        hoursLow:
+          type: number
+          minimum: 0
+        hoursHigh:
+          type: number
+          minimum: 0
+        unit:
+          type: string
+          enum: [hora, palavra, pessoa, unidade, aula, sessão]
+        responsavel:
+          type: array
+          items:
+            $ref: "#/components/schemas/Handle"
+          description: Derived. Quem oferece o service.
+        implicitResponsavel:
+          type: array
+          items:
+            $ref: "#/components/schemas/Handle"
+          description: Sub-services herdam responsibility do parent.
+        cnae:
+          type: array
+          items:
+            $ref: "#/components/schemas/CnaeEntry"
+        cnaeNovo:
+          type: boolean
+          default: false
+      required: [titulo]
+
+    UniverseData:
+      description: Shape do `window.AL` exposed pelo renderer (data.js).
+      type: object
+      properties:
+        people:
+          type: array
+          items:
+            $ref: "#/components/schemas/Person"
+        communities:
+          type: array
+          items:
+            $ref: "#/components/schemas/Community"
+        services:
+          type: array
+          items:
+            $ref: "#/components/schemas/Service"
+        DEFAULT_LOCATION:
+          type: object
+          properties:
+            estado:
+              type: string
+            cidade:
+              type: string
+            bairro:
+              type: string
+      required: [people, communities, services]

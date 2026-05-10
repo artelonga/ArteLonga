@@ -16,6 +16,9 @@ Para entrar no projeto, leia nessa ordem:
 |---|---|---|
 | `docs/STATE.md` | **Snapshot do projeto agora** — stack, 4 fases narradas, backlog aberto, princípios | Onboarding em 10min |
 | `docs/LESSONS.md` | **Catálogo append-only de anti-patterns** mineradas dos fixes históricos (L-001..L-020) | Antes de começar qualquer trabalho |
+| `/design/` | **Design palette estática** — cores, tipografia, components do sistema (form sem content) | Quando for adicionar UI |
+| `openapi/artelonga.yaml` | **Schema spec** — single source of truth pras shapes (Person, Community, Service) | Quando mexer em data layer |
+| `src/types.ts` | **TypeScript types** espelhando o openapi schema | Quando escrever TS |
 | `CHANGELOG.md` | Histórico narrativo por release com o "why" | Quando precisar contexto histórico |
 | `work/artelonga/AL-N.md` | **Backlog co-auto** — tasks abertas (todo) + done retroativas | Pegar próximo trabalho |
 | Esse `CLAUDE.md` | Stack, conventions, V bumping, como editar | Sempre carregado pelo agente |
@@ -134,3 +137,22 @@ Para adicionar uma nova comunidade:
 4. Rode `npm run bake-communities`.
 
 > **Tip:** `npm run bake` roda os dois bakes em sequência (people + communities).
+
+## Design system
+
+Princípio: **separar form de content**.
+
+| Layer | Onde vive | O que é |
+|---|---|---|
+| Form (apresentação) | `assets/{site,components,pages}.css`, futuro `src/components/*.ts` | Como tudo se parece. Reusável. |
+| Content (dado) | `<handle>/profile.yaml`, `<handle>/community.yaml`, `data.js` (auto-gen), endpoints `co` | O que é mostrado. Específico. |
+| Schema (contrato) | `openapi/artelonga.yaml` | Shape single-source-of-truth. |
+| Types | `src/types.ts` | TypeScript espelhando o schema. |
+| Showcase | `/design/index.html` | Form em isolamento (sem content real). |
+
+Pra ver os componentes do sistema (cores, buttons, badges, chips, cards, forms), abre `/design/` localmente ou em produção. É noindex/nofollow — só dev.
+
+Quando criar componente novo:
+1. Adicionar visual + markup + (se aplicável) TS interface em `/design/index.html`.
+2. Adicionar tipos no `src/types.ts` (ou regenerar do openapi quando tivermos `openapi-typescript`).
+3. Quando AL-23 ship, implementar em `src/components/<Component>.ts`.

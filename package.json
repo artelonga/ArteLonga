@@ -3,11 +3,13 @@
   "private": true,
   "type": "module",
   "devDependencies": {
-    "js-yaml": "^4.1.0"
+    "js-yaml": "^4.1.0",
+    "typescript": "^5.4.0"
   },
   "scripts": {
     "bake-people": "node tools/bake-people.mjs",
     "bake-communities": "node tools/bake-communities.mjs",
-    "bake": "npm run bake-people && npm run bake-communities"
+    "bake": "npm run bake-people && npm run bake-communities",
+    "typecheck": "tsc --noEmit"
   }
 }
