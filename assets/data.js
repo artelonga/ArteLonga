@@ -75,14 +75,28 @@
               "kind": "poem",
               "slug": "maes",
               "titulo": "Mães",
-              "draft": true,
               "stanzas": [
                 [
-                  "[texto da primeira estrofe — linha 1]",
-                  "[linha 2]"
+                  "Tudo em casa deixou de ser asséptico,",
+                  "Nem tem espaço desde que mamãe partiu",
+                  "Quatro gatos, Becky, o Ki e eu, nenhum cético",
+                  "Lembrando dela que sempre se orgulhou do plantio"
                 ],
                 [
-                  "[texto da segunda estrofe]"
+                  "Iyá N'lá foi quem cortou a luz",
+                  "Em pleno dia das mães",
+                  "Pra lembrar de Jesus na cruz",
+                  "Crucificado por mentes sãs"
+                ],
+                [
+                  "Ń'lé Ń'Yvyrupa",
+                  "Presença sagrada feminina",
+                  "Pra mode a gente se amar"
+                ],
+                [
+                  "Por que ela é linda",
+                  "Muito mais que Soninha",
+                  "Força pra continuar"
                 ]
               ]
             }
@@ -1626,6 +1640,35 @@ digital: true,           planos: [
     // AUTO-GENERATED: regenerado por tools/bake-people.mjs.
     // AUTO-GENERATED:POEMS-START
     const poems = [
+        {
+          "slug": "maes",
+          "titulo": "Mães",
+          "autor": "yuri",
+          "stanzas": [
+            [
+              "Tudo em casa deixou de ser asséptico,",
+              "Nem tem espaço desde que mamãe partiu",
+              "Quatro gatos, Becky, o Ki e eu, nenhum cético",
+              "Lembrando dela que sempre se orgulhou do plantio"
+            ],
+            [
+              "Iyá N'lá foi quem cortou a luz",
+              "Em pleno dia das mães",
+              "Pra lembrar de Jesus na cruz",
+              "Crucificado por mentes sãs"
+            ],
+            [
+              "Ń'lé Ń'Yvyrupa",
+              "Presença sagrada feminina",
+              "Pra mode a gente se amar"
+            ],
+            [
+              "Por que ela é linda",
+              "Muito mais que Soninha",
+              "Força pra continuar"
+            ]
+          ]
+        },
         {
           "slug": "inocencia",
           "titulo": "Inocência",
