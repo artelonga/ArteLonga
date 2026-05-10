@@ -171,3 +171,26 @@ Quando criar componente novo:
 1. Adicionar visual + markup + (se aplicável) TS interface em `/design/index.html`.
 2. Adicionar tipos no `src/types.ts` (ou regenerar do openapi quando tivermos `openapi-typescript`).
 3. Quando AL-23 ship, implementar em `src/components/<Component>.ts`.
+
+## Convenção de PR
+
+**1 PR por AL.** Cada `AL-N.md` em `work/artelonga/` corresponde a exatamente uma branch + uma PR.
+
+- **Branch:** `feat/al-N-<slug>` ou `fix/al-N-<slug>` ou `refactor/al-N-<slug>`.
+- **PR title:** `<tipo>(AL-N): <título da task>`.
+- **PR body:** referencia o `work/artelonga/AL-N.md` + bullet do entregue.
+- **Após merge:** marca `status: done` no AL-N.md (commit separado ou no merge).
+
+**Razões:**
+- Review focado — reviewer carrega contexto de UMA AL por vez.
+- Rollback granular — revert de PR = revert de AL.
+- Histórico legível — `gh pr view <num>` mostra todo o trabalho de uma AL.
+- Co-auto compatível — cada AL pode ser executada por agente separado em paralelo.
+
+**Quando 2 ALs convergem no mesmo arquivo:**
+1. Mergeia uma primeiro.
+2. Rebase a outra contra main após merge.
+3. Resolve conflitos.
+4. Abre PR independente.
+
+**Exceção rara:** se duas ALs são pequenas + literalmente o mesmo refactor numa região do código, podem ir juntas com PR title `<tipo>(AL-X+Y): <descrição>`. Documentar no body por que bundlou. Convenção default é split.
