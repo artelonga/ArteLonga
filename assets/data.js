@@ -69,6 +69,37 @@
           "subMembers": [
             "kiyoshi",
             "soninha"
+          ],
+          "portfolio": [
+            {
+              "kind": "poem",
+              "slug": "maes",
+              "titulo": "Mães",
+              "stanzas": [
+                [
+                  "Tudo em casa deixou de ser asséptico,",
+                  "Nem tem espaço desde que mamãe partiu",
+                  "Quatro gatos, Becky, o Ki e eu, nenhum cético",
+                  "Lembrando dela que sempre se orgulhou do plantio"
+                ],
+                [
+                  "Iyá N'lá foi quem cortou a luz",
+                  "Em pleno dia das mães",
+                  "Pra lembrar de Jesus na cruz",
+                  "Crucificado por mentes sãs"
+                ],
+                [
+                  "Ń'lé Ń'Yvyrupa",
+                  "Presença sagrada feminina",
+                  "Pra mode a gente se amar"
+                ],
+                [
+                  "Por que ela é linda",
+                  "Muito mais que Soninha",
+                  "Força pra continuar"
+                ]
+              ]
+            }
           ]
         },
         {
@@ -481,7 +512,51 @@
             "Pai do Yuri",
             "Poeta"
           ],
-          "parentHandle": "yuri"
+          "parentHandle": "yuri",
+          "portfolio": [
+            {
+              "kind": "poem",
+              "slug": "inocencia",
+              "titulo": "Inocência",
+              "stanzas": [
+                [
+                  "Há, apesar do adiantado horário, crianças pelas ruas",
+                  "De lágrimas ressecadas e corações embrutecidos pela dor",
+                  "Se encolhem nalgum canto e dormem nas frias noites nuas",
+                  "E do manto dos ressentimentos, fazem indevassável cobertor",
+                  "E não sonham mais com inocência..."
+                ],
+                [
+                  "Há, apesar das crianças róseas, crianças pálidas pelas ruas",
+                  "De saúdes enfraquecidas, mas de corpos endurecidos como aço",
+                  "Que à perspectiva de alguma dor, entorpecidos cheiram luas",
+                  "E se diluem entre os detritos, pequeninos, em mil pedaços",
+                  "E não mais choram por carência..."
+                ],
+                [
+                  "Há, apesar de tanto fausto, crianças famintas pelas ruas",
+                  "Frutos de outra fome, enganada em fugazes prazeres vãos",
+                  "Alimentados pela nossa hipocrisia cega à realidade crua",
+                  "E que sobrevivem entre delitos, vazios, pequeninos anciãos",
+                  "E nós clamamos por um pouco de decência..."
+                ],
+                [
+                  "Há, apesar de tanta brutalidade, crianças puras pelas ruas",
+                  "Que se protegem do mal dos homens, com finos e imaginários véus",
+                  "Sonham alguma dignidade, choram a insignificância das suas vidas",
+                  "E, já quase irremediáveis, ainda suplicam para os céus",
+                  "Meu Deus! Um pouquinho de clemência..."
+                ],
+                [
+                  "Que frio na alma!",
+                  "Que fome da carinho!",
+                  "Que sede de justiça!",
+                  "Que prisão a liberdade!",
+                  "Mas, de resto, tudo bem..."
+                ]
+              ]
+            }
+          ]
         },
         {
           "handle": "soninha",
@@ -1560,51 +1635,84 @@ digital: true,           planos: [
     function serviceByTitle(titulo) { return services.find(s => s.titulo === titulo); }
 
     // ─── POEMAS ──────────────────────────────────────────────────────────────
-    // Poemas associados a perfis (Kiyoshi etc.). Renderizados em /<autor>/<slug>/.
+    // Poemas autorais de membros — derivados de profile.yaml.portfolio[kind=poem].
+    // Renderizados em /<autor>/<slug>/. Não editar diretamente.
+    // AUTO-GENERATED: regenerado por tools/bake-people.mjs.
+    // AUTO-GENERATED:POEMS-START
     const poems = [
         {
-            slug: "inocencia",
-            titulo: "Inocência",
-            autor: "kiyoshi",
-            stanzas: [
-                [
-                    "Há, apesar do adiantado horário, crianças pelas ruas",
-                    "De lágrimas ressecadas e corações embrutecidos pela dor",
-                    "Se encolhem nalgum canto e dormem nas frias noites nuas",
-                    "E do manto dos ressentimentos, fazem indevassável cobertor",
-                    "E não sonham mais com inocência..."
-                ],
-                [
-                    "Há, apesar das crianças róseas, crianças pálidas pelas ruas",
-                    "De saúdes enfraquecidas, mas de corpos endurecidos como aço",
-                    "Que à perspectiva de alguma dor, entorpecidos cheiram luas",
-                    "E se diluem entre os detritos, pequeninos, em mil pedaços",
-                    "E não mais choram por carência..."
-                ],
-                [
-                    "Há, apesar de tanto fausto, crianças famintas pelas ruas",
-                    "Frutos de outra fome, enganada em fugazes prazeres vãos",
-                    "Alimentados pela nossa hipocrisia cega à realidade crua",
-                    "E que sobrevivem entre delitos, vazios, pequeninos anciãos",
-                    "E nós clamamos por um pouco de decência..."
-                ],
-                [
-                    "Há, apesar de tanta brutalidade, crianças puras pelas ruas",
-                    "Que se protegem do mal dos homens, com finos e imaginários véus",
-                    "Sonham alguma dignidade, choram a insignificância das suas vidas",
-                    "E, já quase irremediáveis, ainda suplicam para os céus",
-                    "Meu Deus! Um pouquinho de clemência..."
-                ],
-                [
-                    "Que frio na alma!",
-                    "Que fome da carinho!",
-                    "Que sede de justiça!",
-                    "Que prisão a liberdade!",
-                    "Mas, de resto, tudo bem..."
-                ]
+          "slug": "maes",
+          "titulo": "Mães",
+          "autor": "yuri",
+          "stanzas": [
+            [
+              "Tudo em casa deixou de ser asséptico,",
+              "Nem tem espaço desde que mamãe partiu",
+              "Quatro gatos, Becky, o Ki e eu, nenhum cético",
+              "Lembrando dela que sempre se orgulhou do plantio"
+            ],
+            [
+              "Iyá N'lá foi quem cortou a luz",
+              "Em pleno dia das mães",
+              "Pra lembrar de Jesus na cruz",
+              "Crucificado por mentes sãs"
+            ],
+            [
+              "Ń'lé Ń'Yvyrupa",
+              "Presença sagrada feminina",
+              "Pra mode a gente se amar"
+            ],
+            [
+              "Por que ela é linda",
+              "Muito mais que Soninha",
+              "Força pra continuar"
             ]
+          ]
+        },
+        {
+          "slug": "inocencia",
+          "titulo": "Inocência",
+          "autor": "kiyoshi",
+          "stanzas": [
+            [
+              "Há, apesar do adiantado horário, crianças pelas ruas",
+              "De lágrimas ressecadas e corações embrutecidos pela dor",
+              "Se encolhem nalgum canto e dormem nas frias noites nuas",
+              "E do manto dos ressentimentos, fazem indevassável cobertor",
+              "E não sonham mais com inocência..."
+            ],
+            [
+              "Há, apesar das crianças róseas, crianças pálidas pelas ruas",
+              "De saúdes enfraquecidas, mas de corpos endurecidos como aço",
+              "Que à perspectiva de alguma dor, entorpecidos cheiram luas",
+              "E se diluem entre os detritos, pequeninos, em mil pedaços",
+              "E não mais choram por carência..."
+            ],
+            [
+              "Há, apesar de tanto fausto, crianças famintas pelas ruas",
+              "Frutos de outra fome, enganada em fugazes prazeres vãos",
+              "Alimentados pela nossa hipocrisia cega à realidade crua",
+              "E que sobrevivem entre delitos, vazios, pequeninos anciãos",
+              "E nós clamamos por um pouco de decência..."
+            ],
+            [
+              "Há, apesar de tanta brutalidade, crianças puras pelas ruas",
+              "Que se protegem do mal dos homens, com finos e imaginários véus",
+              "Sonham alguma dignidade, choram a insignificância das suas vidas",
+              "E, já quase irremediáveis, ainda suplicam para os céus",
+              "Meu Deus! Um pouquinho de clemência..."
+            ],
+            [
+              "Que frio na alma!",
+              "Que fome da carinho!",
+              "Que sede de justiça!",
+              "Que prisão a liberdade!",
+              "Mas, de resto, tudo bem..."
+            ]
+          ]
         }
     ];
+    // AUTO-GENERATED:POEMS-END
     function poemBySlug(slug) { return poems.find(p => p.slug === slug); }
     function poemsByAuthor(handle) { return poems.filter(p => p.autor === handle); }
 

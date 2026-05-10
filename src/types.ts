@@ -43,10 +43,42 @@ export interface HomeLink {
     url: string;
 }
 
+/**
+ * Item autoral (poema, ensaio, etc) que vive em `<handle>/profile.yaml#portfolio`.
+ * Renderizado em `/<handle>/<slug>/` via dispatch `data-page="poem"|"essay"`.
+ */
+export interface PortfolioPoem {
+    kind: "poem";
+    slug: string;
+    titulo: string;
+    autor?: Handle;
+    stanzas: string[][];
+    draft?: boolean;
+}
+
+export interface PortfolioEssay {
+    kind: "essay";
+    slug: string;
+    titulo: string;
+    short?: string;
+    body?: string;
+    draft?: boolean;
+}
+
+export type PortfolioItem = PortfolioPoem | PortfolioEssay;
+
+export interface EssayItem {
+    titulo?: string;
+    short?: string;
+    long?: string;
+}
+
 export interface Contacts {
     tagline?: string;
     email?: string;
     whatsapp?: string;
+    whatsappDisplay?: string;
+    instagram?: string;
     site?: string;
 }
 
@@ -63,18 +95,29 @@ export interface Person {
     tags?: Tag[];
     pic?: string | null;
     birthDate?: string;
+    deathDate?: string;
     bioTitle?: string;
     bioCurta?: string;
     bio?: string;
+    bioHidden?: string;
+    bioAudio?: string;
     citacoes?: Citacao[];
     servicos?: string[]; // titulos de service
     subMembers?: Handle[];
     communities?: Handle[];
     contacts?: Contacts;
     homeLinks?: HomeLink[];
+    portfolio?: PortfolioItem[];
+    essays?: EssayItem[];
+    essaysTitle?: string;
     emMemoria?: boolean;
+    emBreve?: boolean;
+    aposentado?: boolean;
+    underage?: boolean;
+    muted?: boolean;
     referenceOnly?: boolean;
     externalUrl?: string;
+    site?: string;
 }
 
 export interface Contribuicao {
@@ -98,12 +141,16 @@ export interface Community {
     pic?: string | null;
     tagline?: string;
     bio?: string;
+    bioCurta?: string;
     externalUrl?: string;
     site?: string;
     servicos?: string[];
     membros?: Handle[];
     parcerias?: Parceria[];
     sectionBreak?: boolean;
+    muted?: boolean;
+    emBreve?: boolean;
+    emMemoria?: boolean;
 }
 
 export interface Service {
@@ -121,12 +168,140 @@ export interface Service {
     cnae?: CnaeEntry[];
     cnaeNovo?: boolean;
     children?: string[]; // titulos de children
+    descNossa?: string;
+    summary?: string;
+    nome?: string;
+    attachments?: Array<{ kind?: string; label: string; url: string }>;
 }
 
 export interface DefaultLocation {
     estado: string;
     cidade: string;
     bairro: string;
+}
+
+// ── Mission types ──────────────────────────────────────────────────────────
+
+export interface Mission {
+    handle: string;
+    nome: string;
+    subtitle?: string;
+    objetivo?: string;
+    objetivoAutor?: Handle;
+    comunidade?: Handle;
+    displayAtRoot?: boolean;
+    attachments?: Array<{ kind?: string; label: string; url: string }>;
+    envolvidos?: Handle[];
+    servicos?: string[];
+}
+
+// ── Solution types ─────────────────────────────────────────────────────────
+
+export interface SolutionPlatform {
+    name: string;
+    status: string;
+    statusText: string;
+}
+
+export interface Solution {
+    handle: Handle;
+    type: "solution";
+    nome: string;
+    tagline?: string;
+    desc?: string;
+    descLong?: string;
+    url?: string;
+    urlLabel?: string;
+    internalLink?: boolean;
+    universo?: boolean;
+    lifecycle?: "active" | "futuro";
+    platforms?: SolutionPlatform[];
+    bundledServices?: string[] | "*";
+    externalUrl?: string;
+}
+
+// ── Finance types ──────────────────────────────────────────────────────────
+
+export interface FinanceCostBreakdown {
+    label: string;
+    value: number;
+    handle?: Handle;
+}
+
+export interface FinanceCostItem {
+    label: string;
+    value: number;
+    detail?: string;
+    breakdown?: FinanceCostBreakdown[];
+}
+
+export interface FinanceRecurrentItem {
+    label: string;
+    mensal: number;
+    detail: string;
+    responsavel: Handle;
+    client?: string;
+    solucoes?: Handle[];
+}
+
+export interface FinanceRampaMes {
+    mes: string;
+    value: number;
+}
+
+export interface FinanceRampaItem {
+    label: string;
+    detail: string;
+    responsavel: Handle;
+    client?: string;
+    meses: FinanceRampaMes[];
+    solucoes?: Handle[];
+}
+
+export interface FinanceProjectItem {
+    label: string;
+    detail: string;
+    unitValue: number;
+    unidades: number;
+    responsavel?: Handle;
+    solucoes?: Handle[];
+}
+
+export interface FinanceProBonoItem {
+    label: string;
+    detail: string;
+    responsavel: Handle;
+    solucoes?: Handle[];
+}
+
+export interface FinanceReceita {
+    recorrenteMensal: FinanceRecurrentItem[];
+    rampa: FinanceRampaItem[];
+    projetos: FinanceProjectItem[];
+    proBono: FinanceProBonoItem[];
+}
+
+export interface Finances {
+    quarter: string;
+    metaQ2: number;
+    custos: FinanceCostItem[];
+    receita: FinanceReceita;
+}
+
+// ── FaixaPreco ────────────────────────────────────────────────────────────
+
+export interface FaixaPlano {
+    label: string;
+    preco: string;
+    consult?: boolean;
+    formula?: string;
+}
+
+export interface FaixaPreco {
+    preco?: string;
+    formula?: string;
+    consult?: boolean;
+    planos?: FaixaPlano[];
 }
 
 /**
@@ -137,25 +312,39 @@ export interface UniverseData {
     people: Person[];
     communities: Community[];
     services: Service[];
+    missions: Mission[];
+    solutions: Solution[];
+    finances: Finances;
     DEFAULT_LOCATION: DefaultLocation;
 
-    // Helpers (runtime)
-    get(handle: Handle): Person | Community | undefined;
+    // Lookup helpers
+    get(handle: Handle): Person | Community | Solution | undefined;
     serviceByTitle(titulo: string): Service | undefined;
     serviceBySlug(slug: string): Service | undefined;
     publicServices(): Service[];
+    roster(): (Person | Community)[];
     rosterOrder: Handle[];
+
+    // Predicate helpers
     isInactive(handle: Handle): boolean;
     isSocio(handle: Handle): boolean;
     locationMatches(handle: Handle, filter: Partial<DefaultLocation>): boolean;
+
+    // Suggestion helpers
     locationSuggestions(): { estados: string[]; cidades: string[]; bairros: string[] };
-    computeFaixaPreco(s: Service): {
-        preco?: string;
-        formula?: string;
-        consult?: boolean;
-        planos?: { label: string; preco: string; consult?: boolean }[];
-    };
+
+    // Computation helpers
+    computeFaixaPreco(s: Service): FaixaPreco;
     slugify(s: string): string;
+    relatedServices(titulo: string): Service[];
+
+    // Mission helpers
+    subMissionsOf(handle: string): Mission[];
+    topLevelMissions(): Mission[];
+
+    // Poem helpers
+    poemsByAuthor(handle: Handle): PortfolioPoem[];
+    poemBySlug(slug: string): PortfolioPoem | undefined;
 }
 
 declare global {

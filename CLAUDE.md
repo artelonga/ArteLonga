@@ -151,7 +151,34 @@ npm run typecheck          # tsc --noEmit (valida src/*.ts contra openapi types)
 - `audit-consistency` previne o caso Kelly/Matheus (declarados em communities mas não em membros).
 - `typecheck` valida que TS files (`src/`) batem com types do `src/types.ts`.
 
+**`npm run validate-yaml`** — valida cada `<handle>/profile.yaml` e `<handle>/community.yaml` contra os schemas em `openapi/artelonga.yaml#/components/schemas/{Person,Community}`. Roda **automaticamente** no início de `npm run bake-people` / `npm run bake-communities` (pre-flight: bake aborta se gap). Use direto pra checar sem rodar bake.
+
 Todos exitam com código 1 se gap detectado. Listam exatamente o que está faltando.
+
+## Pre-commit hook (L-021 prevention)
+
+`.husky/pre-commit` roda `tools/pre-commit-check.mjs` em todo `git commit`. Checa que `assets/data.js` está em sync com os YAMLs source-of-truth (snapshot + bake + compare). Falha com instruções se drift detectado.
+
+**Como ativar (uma vez por clone):**
+
+```bash
+npm install
+# husky se auto-instala via prepare script
+```
+
+**Pra rodar manualmente sem commitar:**
+
+```bash
+npm run pre-commit
+```
+
+**Em emergência (não recomendado — descumprir o hook é como pular o cinto):**
+
+```bash
+git commit --no-verify
+```
+
+Lesson: `docs/LESSONS.md#L-021` — Mono incident (bio editada direto em data.js → bake sobrescreveria). Esse hook impede que repita.
 
 ## Design system
 
@@ -171,3 +198,35 @@ Quando criar componente novo:
 1. Adicionar visual + markup + (se aplicável) TS interface em `/design/index.html`.
 2. Adicionar tipos no `src/types.ts` (ou regenerar do openapi quando tivermos `openapi-typescript`).
 3. Quando AL-23 ship, implementar em `src/components/<Component>.ts`.
+
+## Convenção de PR
+
+**1 conventional commit por AL.** PRs podem bundlar várias ALs quando isso expedita trabalho — o tracking fica nos commits, não na cardinalidade da PR.
+
+**Commits:**
+- Cada AL = pelo menos 1 commit `<tipo>(AL-N): <descrição>`.
+- Tipos: `feat` (minor bump), `fix` (patch), `refactor` (patch), `docs` (patch), `chore` (no bump), `test` (patch).
+- Multi-commit por AL é OK (`feat(AL-N): part 1`, `feat(AL-N): part 2`) se ajuda review/bisect.
+
+**Branches:**
+- `feat/al-N-<slug>` quando AL única na branch.
+- `feat/al-N+M-<slug>` ou outro nome quando bundla múltiplas (sem padrão estrito).
+
+**PRs:**
+- Title: `<tipo>(AL-N): <título>` ou `<tipo>(AL-N+M): <descrição combinada>` se bundlado.
+- Body: lista as ALs cobertas + bullet do entregue por AL. Referencia `work/artelonga/AL-N.md`.
+- **Após merge:** marca `status: done` em cada AL-N.md afetada.
+
+**Semver:**
+- Bump derivado dos COMMITS, não da PR. `feat: …` em qualquer commit → minor bump no release.
+- Multi-feat na PR = um minor bump (não cumulativo).
+
+**Quando preferir split:**
+- ALs com áreas de código disjuntas → 1 PR cada (review mais focado).
+- Risco de regressão alto → isolar pra rollback granular.
+
+**Quando preferir bundle:**
+- ALs pequenas + work já feito junto → não desbundla por dogma.
+- Refactor que toca mesma região → menos rebase.
+
+Convenção é guideline, não regra rígida. Princípio: **rastreabilidade vem dos conventional commits**, PRs são unidades de review/deploy.

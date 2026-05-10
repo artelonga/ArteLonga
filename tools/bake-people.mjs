@@ -20,6 +20,21 @@ const ORDER_FILE = path.join(__dirname, 'people-order.txt');
 
 const START_MARKER = '// AUTO-GENERATED:PEOPLE-START';
 const END_MARKER   = '// AUTO-GENERATED:PEOPLE-END';
+const POEMS_START_MARKER = '// AUTO-GENERATED:POEMS-START';
+const POEMS_END_MARKER   = '// AUTO-GENERATED:POEMS-END';
+
+// ── Pre-flight: schema validation (AL-25) ──────────────────────────────────
+// Roda validate-yaml.mjs antes de bakear. Se algum profile.yaml falhar
+// schema, bake aborta sem tocar data.js.
+try {
+    execSync('node tools/validate-yaml.mjs --type=people', {
+        cwd: root,
+        stdio: 'inherit',
+    });
+} catch {
+    console.error('[bake-people] ABORT: schema validation failed (see above).');
+    process.exit(1);
+}
 
 // ── Load order ──────────────────────────────────────────────────────────────
 const order = fs.existsSync(ORDER_FILE)
@@ -118,10 +133,54 @@ while (blockEnd < original.length && original[blockEnd] !== '\n') blockEnd++;
 // Include the newline itself
 if (blockEnd < original.length && original[blockEnd] === '\n') blockEnd++;
 
-const patched = original.slice(0, blockStart) + newBlock + '\n' + original.slice(blockEnd);
+let patched = original.slice(0, blockStart) + newBlock + '\n' + original.slice(blockEnd);
+
+// ── Derive POEMS from people[].portfolio[kind=poem] ────────────────────────
+// Cada poem entry vira { slug, titulo, autor, stanzas } compatível com o
+// shape antigo do array poems[]. Drafts são pulados (não renderizados).
+const poemsDerived = [];
+for (const p of people) {
+    if (!Array.isArray(p.portfolio)) continue;
+    for (const item of p.portfolio) {
+        if (item.kind !== 'poem') continue;
+        if (item.draft) continue;
+        poemsDerived.push({
+            slug: item.slug,
+            titulo: item.titulo,
+            autor: p.handle,
+            stanzas: item.stanzas,
+        });
+    }
+}
+
+const poemsLines = [];
+poemsLines.push('    ' + POEMS_START_MARKER);
+poemsLines.push('    const poems = [');
+for (let i = 0; i < poemsDerived.length; i++) {
+    const block = JSON.stringify(poemsDerived[i], null, 2);
+    const indented = block.split('\n').map(l => '        ' + l).join('\n');
+    const comma = i < poemsDerived.length - 1 ? ',' : '';
+    poemsLines.push(indented + comma);
+}
+poemsLines.push('    ];');
+poemsLines.push('    ' + POEMS_END_MARKER);
+const poemsBlock = poemsLines.join('\n');
+
+const poemsStartIdx = patched.indexOf(POEMS_START_MARKER);
+const poemsEndIdx   = patched.indexOf(POEMS_END_MARKER);
+if (poemsStartIdx === -1 || poemsEndIdx === -1) {
+    console.error(`[bake-people] ERROR: poems markers not found in ${DATA_JS}`);
+    process.exit(1);
+}
+let poemsBlockStart = poemsStartIdx;
+while (poemsBlockStart > 0 && patched[poemsBlockStart - 1] !== '\n') poemsBlockStart--;
+let poemsBlockEnd = poemsEndIdx + POEMS_END_MARKER.length;
+while (poemsBlockEnd < patched.length && patched[poemsBlockEnd] !== '\n') poemsBlockEnd++;
+if (poemsBlockEnd < patched.length && patched[poemsBlockEnd] === '\n') poemsBlockEnd++;
+patched = patched.slice(0, poemsBlockStart) + poemsBlock + '\n' + patched.slice(poemsBlockEnd);
 
 fs.writeFileSync(DATA_JS, patched, 'utf8');
-console.log(`[bake-people] Wrote ${DATA_JS}`);
+console.log(`[bake-people] Wrote ${DATA_JS} (${people.length} people, ${poemsDerived.length} poems)`);
 
 // ── Validate ─────────────────────────────────────────────────────────────────
 try {
