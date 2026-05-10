@@ -15,7 +15,7 @@
 // (data.js define window.AL; renderer.js consome). defer não funciona
 // em script dinâmico — async=false é o equivalente correto.
 (function () {
-    var V = "20260510b";
+    var V = "20260510c";
     var head = document.head;
 
     ["site.css", "components.css", "pages.css"].forEach(function (name) {
