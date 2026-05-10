@@ -9,15 +9,26 @@ Each release links to a *why* (the pain or opportunity it addresses) so a reader
 
 ## [Unreleased]
 
-### Refactored (AL-1: LGPD — perfis de membros migrados para per-handle YAML)
+### Refactored (AL-1 + AL-2: LGPD per-handle YAML migration · template)
 
-Cada um dos 36 membros tem agora um arquivo `<handle>/profile.yaml` como source of truth do perfil, substituindo o array `people` hardcoded em `assets/data.js`. Exercício do Art. 18 LGPD (acesso, correção, deleção) é viável via PR na pasta do handle. `data.js` continua sendo o artefato consumido pelo renderer — comportamento runtime zero-alteração.
+Tanto perfis de membros (AL-1, 36 entries) quanto comunidades parceiras (AL-2, 3 entries) tem agora arquivo individual por handle (`<handle>/profile.yaml`, `<handle>/community.yaml`) como source of truth, substituindo os arrays `people` e `communities` hardcoded em `assets/data.js`. Exercício do Art. 18 LGPD (acesso, correção, deleção) é viável via PR na pasta do handle. `data.js` continua sendo o artefato consumido pelo renderer — comportamento runtime zero-alteração.
 
-- **`<handle>/profile.yaml`** — 36 arquivos criados, um por membro (pessoas, negócios, referências históricas).
-- **`tools/bake-people.mjs`** — build script determinístico: lê todos os `*/profile.yaml` e regenera a seção `people` em `assets/data.js`. Roda `node -e "require('./assets/data.js')"` pra validar o parse.
-- **`tools/people-order.txt`** — define a ordem canônica dos perfis no array (preserva a ordem editorial).
-- **`assets/data.js`** — seção `people` marcada `AUTO-GENERATED:PEOPLE-START/END`; suporte a `globalThis` pra validação com Node.js.
-- **`package.json`** — adicionado `js-yaml` como devDependency do build script.
+Estabelece **template repetível** pra futuros refactors de "separate content from form" (services, missions, leads, etc):
+
+1. Source: `<handle>/<type>.yaml` (YAML puro, bio em literal block scalar `|`).
+2. Build: `tools/bake-<type>.mjs` determinístico — lê todos os YAMLs, regenera bloco `AUTO-GENERATED:<TYPE>-START/END` em `data.js`.
+3. Order: `tools/<type>-order.txt` define ordem canônica.
+4. Validate: `node -e "require('./assets/data.js')"` no fim do bake.
+5. CHANGELOG entry + V bump em `assets/bootstrap.js`.
+6. `CLAUDE.md` raiz atualizado com instrução de "como editar".
+
+Detalhes:
+- **`<handle>/profile.yaml`** — 36 arquivos (pessoas, negócios, referências históricas).
+- **`<handle>/community.yaml`** — 3 arquivos (quilomboaraucaria, hfsassociados, hedix).
+- **`tools/bake-people.mjs` + `tools/bake-communities.mjs`** — scripts determinísticos.
+- **`tools/people-order.txt` + `tools/communities-order.txt`** — ordens canônicas.
+- **`assets/data.js`** — seções `people` e `communities` marcadas `AUTO-GENERATED`; suporte a `globalThis` pra validação com Node.js.
+- **`package.json`** — `js-yaml` devDependency + scripts `bake-people`, `bake-communities`, `bake` (combo).
 
 ### Changed (pivot product-oriented · marketplace de serviços)
 

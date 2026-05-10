@@ -1,0 +1,55 @@
+handle: quilomboaraucaria
+type: community
+nome: Quilombo Araucária
+role: Terra
+tags:
+  - comunidade
+  - parceiro
+pic: /quilomboaraucaria/quilomboaraucaria.png
+tagline: Natureza Viva, Futuro Ancestral
+bio: Espaço de resistência ambiental, cultural e social.
+externalUrl: https://quilomboaraucaria.org
+site: https://quilomboaraucaria.org
+# QA oferece serviços que realizam suas próprias missões — agrofloresta,
+# compostagem, educação ambiental, produção de desfile da escola de samba,
+# futebol. Complementam os serviços individuais dos membros.
+servicos:
+  - Agrofloresta
+  - Compostagem
+  - Educação Ambiental
+  - Produção de Desfile
+  - Futebol e Esporte
+# Ordem: alive-unique primeiro, em memória em seguida; fundadores (que também
+# estão no roster principal) ficam atrás de "ver mais" na renderização.
+membros:
+  - antony
+  - bia
+  - ken
+  - quinho
+  - tiao
+  - veh
+  - carlinhos
+  - mara-brandao
+  - yuri
+  - igo
+  - joseantonio
+  - mono
+  - bruna
+  - rogerio
+  - alzira
+  - joao
+# Parceria pro-bono exibida em /quilomboaraucaria/.
+parcerias:
+  - de: artelonga
+    tipo: pro-bono
+    descricao: "Arte Longa construiu a plataforma digital e a comunicação do Quilombo Araucária sem cobrar — como contribuição ao impacto ambiental, social e cultural."
+    contribuicoes:
+      - quem: yuri
+        oque: "Inteligência e Tecnologia · todos os subcomponentes (Desenvolvimento Web, API, Dados, Nuvem, Computação, Hardware, Redes, Sistemas, Software) + Tráfego e Crescimento"
+      - quem: mono
+        oque: "Design · Privacidade e Segurança"
+      - quem: bruna
+        oque: "Criação de Conteúdo"
+      - quem: igo
+        oque: "Conexões"
+sectionBreak: true

@@ -64,10 +64,10 @@ curl -X POST /api/v1/universes/artelonga/reindex \
 
 ## Como editar o perfil de um membro
 
-A section `people` em `assets/data.js` é **AUTO-GENERATED** — não edite diretamente.
+A seção `people` em `assets/data.js` é **AUTO-GENERATED** — não edite diretamente.
 
 1. Edite `<handle>/profile.yaml` (ex: `yuri/profile.yaml`).
-2. Rode `node tools/bake-people.mjs` para regenerar `assets/data.js`.
+2. Rode `node tools/bake-people.mjs` (ou `npm run bake-people`) para regenerar `assets/data.js`.
 3. Bumpe `V` em `assets/bootstrap.js` para invalidar o cache do GitHub Pages.
 4. Commit: `refactor(<handle>): atualiza perfil`.
 
@@ -75,4 +75,21 @@ Para adicionar um novo membro:
 1. Crie a pasta `<handle>/` com `index.html` (copie de outro membro).
 2. Crie `<handle>/profile.yaml` com os campos obrigatórios (`handle`, `type`, `nome`).
 3. Adicione o handle em `tools/people-order.txt` na posição desejada.
-4. Rode `node tools/bake-people.mjs`.
+4. Rode `npm run bake-people`.
+
+## Como editar o perfil de uma comunidade
+
+A seção `communities` em `assets/data.js` é **AUTO-GENERATED** — não edite diretamente.
+
+1. Edite `<handle>/community.yaml` (ex: `quilomboaraucaria/community.yaml`).
+2. Rode `node tools/bake-communities.mjs` (ou `npm run bake-communities`) para regenerar `assets/data.js`.
+3. Bumpe `V` em `assets/bootstrap.js` para invalidar o cache do GitHub Pages.
+4. Commit: `refactor(<handle>): atualiza comunidade`.
+
+Para adicionar uma nova comunidade:
+1. Crie a pasta `<handle>/` com `index.html` (copie de outro handle).
+2. Crie `<handle>/community.yaml` com os campos obrigatórios (`handle`, `type`, `nome`).
+3. Adicione o handle em `tools/communities-order.txt` na posição desejada.
+4. Rode `npm run bake-communities`.
+
+> **Tip:** `npm run bake` roda os dois bakes em sequência (people + communities).

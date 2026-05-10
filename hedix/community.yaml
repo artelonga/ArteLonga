@@ -1,0 +1,13 @@
+handle: hedix
+type: community
+nome: Hedix
+role: Previsão
+tags:
+  - comunidade
+  - parceiro
+externalUrl: https://hedix.com.br/
+site: https://hedix.com.br/
+servicos:
+  - Market Making Preditivo
+  - Inteligência de Previsão
+  - Desenvolvimento de API
