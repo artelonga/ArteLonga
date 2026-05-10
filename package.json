@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "devDependencies": {
+    "husky": "^9.1.0",
     "js-yaml": "^4.1.0",
     "typescript": "^5.4.0"
   },
@@ -13,6 +14,8 @@
     "audit-shells": "node tools/audit-shells.mjs",
     "audit-consistency": "node tools/audit-consistency.mjs",
     "audit": "npm run audit-shells && npm run audit-consistency",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "pre-commit": "node tools/pre-commit-check.mjs",
+    "prepare": "husky"
   }
 }

@@ -153,6 +153,31 @@ npm run typecheck          # tsc --noEmit (valida src/*.ts contra openapi types)
 
 Todos exitam com código 1 se gap detectado. Listam exatamente o que está faltando.
 
+## Pre-commit hook (L-021 prevention)
+
+`.husky/pre-commit` roda `tools/pre-commit-check.mjs` em todo `git commit`. Checa que `assets/data.js` está em sync com os YAMLs source-of-truth (snapshot + bake + compare). Falha com instruções se drift detectado.
+
+**Como ativar (uma vez por clone):**
+
+```bash
+npm install
+# husky se auto-instala via prepare script
+```
+
+**Pra rodar manualmente sem commitar:**
+
+```bash
+npm run pre-commit
+```
+
+**Em emergência (não recomendado — descumprir o hook é como pular o cinto):**
+
+```bash
+git commit --no-verify
+```
+
+Lesson: `docs/LESSONS.md#L-021` — Mono incident (bio editada direto em data.js → bake sobrescreveria). Esse hook impede que repita.
+
 ## Design system
 
 Princípio: **separar form de content**.
