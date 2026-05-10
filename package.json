@@ -3,7 +3,8 @@
   "private": true,
   "type": "module",
   "devDependencies": {
-    "js-yaml": "^4.1.0"
+    "js-yaml": "^4.1.0",
+    "typescript": "^5.4.0"
   },
   "scripts": {
     "bake-people": "node tools/bake-people.mjs",
@@ -11,6 +12,7 @@
     "bake": "npm run bake-people && npm run bake-communities",
     "audit-shells": "node tools/audit-shells.mjs",
     "audit-consistency": "node tools/audit-consistency.mjs",
-    "audit": "npm run audit-shells && npm run audit-consistency"
+    "audit": "npm run audit-shells && npm run audit-consistency",
+    "typecheck": "tsc --noEmit"
   }
 }

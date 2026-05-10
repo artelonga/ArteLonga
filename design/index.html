@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Design Palette — Arte Longa</title>
+<script src="/assets/bootstrap.js"></script>
+<style>
+    /* Design palette page-specific styles. Imports site.css/components.css/pages.css
+     * via bootstrap pra mostrar componentes em contexto real, sem ressar.
+     * Layout aqui é ad-hoc — palette é um doc, não um component em si. */
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 4vh 2rem 8vh;
+        line-height: 1.5;
+        color: #0a0a0a;
+    }
+    h1.dp-title {
+        font-size: clamp(2.5rem, 6vw, 4rem);
+        font-weight: 800;
+        letter-spacing: -0.04em;
+        line-height: 1;
+        margin-bottom: 1vh;
+    }
+    p.dp-sub {
+        font-size: 1rem;
+        color: #555;
+        max-width: 60ch;
+        margin-bottom: 6vh;
+    }
+    h2.dp-section {
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        color: #0a0a0a;
+        border-top: 2px solid #0a0a0a;
+        padding-top: 2vh;
+        margin: 8vh 0 3vh;
+    }
+    h3.dp-comp {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin: 4vh 0 0.8vh;
+    }
+    p.dp-desc {
+        font-size: 0.88rem;
+        color: #555;
+        max-width: 65ch;
+        margin-bottom: 2vh;
+    }
+    .dp-canvas {
+        background: #fafafa;
+        border: 1px solid #eaeaea;
+        border-radius: 4px;
+        padding: 3vh 1.4rem;
+        margin-bottom: 1.5vh;
+    }
+    .dp-canvas + pre.dp-code {
+        margin-top: -1.5vh;
+    }
+    pre.dp-code {
+        background: #0a0a0a;
+        color: #ddd;
+        padding: 1.4vh 1rem;
+        border-radius: 0 0 4px 4px;
+        font-family: 'SF Mono', Monaco, Consolas, monospace;
+        font-size: 0.78rem;
+        line-height: 1.5;
+        overflow-x: auto;
+        margin-bottom: 3vh;
+    }
+    pre.dp-code .k { color: #79c0ff; } /* keyword/tag */
+    pre.dp-code .s { color: #a5d6ff; } /* string */
+    pre.dp-code .c { color: #8b949e; } /* comment */
+
+    /* Color swatches */
+    .dp-swatches {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 0.6rem;
+    }
+    .dp-swatch {
+        border: 1px solid #eaeaea;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+    .dp-swatch-color {
+        height: 6vh;
+        min-height: 50px;
+    }
+    .dp-swatch-meta {
+        padding: 1vh 0.6rem;
+        font-size: 0.72rem;
+    }
+    .dp-swatch-meta strong { display: block; font-weight: 700; }
+    .dp-swatch-meta code { font-family: 'SF Mono', Monaco, monospace; color: #555; }
+
+    /* Type scale */
+    .dp-type-row {
+        display: grid;
+        grid-template-columns: 80px 1fr;
+        gap: 1rem;
+        align-items: baseline;
+        padding: 1.2vh 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    .dp-type-label {
+        font-size: 0.7rem;
+        color: #999;
+        font-family: 'SF Mono', Monaco, monospace;
+    }
+
+    /* Spacing scale */
+    .dp-spacing { display: flex; align-items: flex-end; gap: 0.4rem; flex-wrap: wrap; }
+    .dp-space-block {
+        background: #0a0a0a;
+        position: relative;
+        font-size: 0.62rem;
+    }
+    .dp-space-block span {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        margin-top: 0.4vh;
+        color: #555;
+        font-family: 'SF Mono', Monaco, monospace;
+        white-space: nowrap;
+    }
+
+    /* API table */
+    .dp-api-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.85rem;
+        margin: 1.5vh 0;
+    }
+    .dp-api-table th, .dp-api-table td {
+        text-align: left;
+        padding: 1vh 0.6rem;
+        border-bottom: 1px solid #f0f0f0;
+        vertical-align: top;
+    }
+    .dp-api-table th {
+        font-size: 0.62rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: #999;
+        font-weight: 700;
+        border-bottom: 2px solid #0a0a0a;
+    }
+    .dp-api-table code {
+        font-family: 'SF Mono', Monaco, monospace;
+        color: #c0392b;
+        font-size: 0.82rem;
+    }
+
+    /* Demo grids */
+    .dp-row { display: flex; gap: 0.8rem; flex-wrap: wrap; align-items: center; }
+
+    /* Mini cards reused from market-card pattern, slightly constrained */
+    .dp-card-demo {
+        max-width: 280px;
+        border: 1px solid #eaeaea;
+        border-radius: 2px;
+    }
+
+    .dp-note {
+        background: #fffbf0;
+        border-left: 3px solid #d4a73a;
+        padding: 1.5vh 1.2rem;
+        font-size: 0.85rem;
+        color: #555;
+        margin: 2vh 0;
+    }
+    .dp-note strong { color: #0a0a0a; }
+</style>
+</head>
+<body data-page="design">
+
+<h1 class="dp-title">Design Palette</h1>
+<p class="dp-sub">
+    Sistema de design do site Arte Longa em isolamento. Mostra <em>form</em>:
+    cores, tipografia, componentes, padrões. <em>Content</em> (parceiros,
+    serviços específicos) vive em outro lugar — <code>&lt;handle&gt;/profile.yaml</code>,
+    <code>data.js</code>, etc. Aqui é só template visual. Open this page when
+    you need to see how a component looks before composing pages.
+</p>
+
+<div class="dp-note">
+    <strong>How to use:</strong> cada component tem um <em>canvas</em> (visual)
+    + <em>code</em> (markup) + uma <em>API table</em> propondo a interface TS
+    quando virar componente. AL-22 estabelece esse contrato; AL-23 migra o
+    renderer pra usar componentes tipados.
+</div>
+
+<!-- ─── COLOR PALETTE ──────────────────────────────────────────────────── -->
+<h2 class="dp-section">Color palette</h2>
+<p class="dp-desc">
+    Monochromatic com 1 accent (vermelho terra). Background sempre branco;
+    tipografia preta; greys pra hierarquia secundária.
+</p>
+<div class="dp-swatches">
+    <div class="dp-swatch">
+        <div class="dp-swatch-color" style="background: #0a0a0a"></div>
+        <div class="dp-swatch-meta"><strong>Black</strong><code>#0a0a0a</code></div>
+    </div>
+    <div class="dp-swatch">
+        <div class="dp-swatch-color" style="background: #fff; border-bottom: 1px solid #eaeaea"></div>
+        <div class="dp-swatch-meta"><strong>White</strong><code>#ffffff</code></div>
+    </div>
+    <div class="dp-swatch">
+        <div class="dp-swatch-color" style="background: #333"></div>
+        <div class="dp-swatch-meta"><strong>Gray-1</strong><code>#333</code></div>
+    </div>
+    <div class="dp-swatch">
+        <div class="dp-swatch-color" style="background: #555"></div>
+        <div class="dp-swatch-meta"><strong>Gray-2</strong><code>#555</code></div>
+    </div>
+    <div class="dp-swatch">
+        <div class="dp-swatch-color" style="background: #888"></div>
+        <div class="dp-swatch-meta"><strong>Gray-3</strong><code>#888</code></div>
+    </div>
+    <div class="dp-swatch">
+        <div class="dp-swatch-color" style="background: #999"></div>
+        <div class="dp-swatch-meta"><strong>Gray-4</strong><code>#999</code></div>
+    </div>
+    <div class="dp-swatch">
+        <div class="dp-swatch-color" style="background: #bbb"></div>
+        <div class="dp-swatch-meta"><strong>Gray-5</strong><code>#bbb</code></div>
+    </div>
+    <div class="dp-swatch">
+        <div class="dp-swatch-color" style="background: #eaeaea"></div>
+        <div class="dp-swatch-meta"><strong>Gray-6</strong><code>#eaeaea</code></div>
+    </div>
+    <div class="dp-swatch">
+        <div class="dp-swatch-color" style="background: #f0f0f0"></div>
+        <div class="dp-swatch-meta"><strong>Gray-7</strong><code>#f0f0f0</code></div>
+    </div>
+    <div class="dp-swatch">
+        <div class="dp-swatch-color" style="background: #fafafa"></div>
+        <div class="dp-swatch-meta"><strong>Gray-8</strong><code>#fafafa</code></div>
+    </div>
+    <div class="dp-swatch">
+        <div class="dp-swatch-color" style="background: #c0392b"></div>
+        <div class="dp-swatch-meta"><strong>Accent (terra)</strong><code>#c0392b</code></div>
+    </div>
+</div>
+
+<!-- ─── TYPOGRAPHY ─────────────────────────────────────────────────────── -->
+<h2 class="dp-section">Typography</h2>
+<p class="dp-desc">
+    System font stack (sem custom font; performance + sem licensing).
+    Pesos: 400, 500, 600, 700, 800. Letter-spacing reduz com size aumentando.
+</p>
+
+<div class="dp-canvas">
+    <div class="dp-type-row"><span class="dp-type-label">3.4rem</span><span style="font-size: clamp(2rem, 5vw, 3.4rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05;">Display H1</span></div>
+    <div class="dp-type-row"><span class="dp-type-label">1.6rem</span><span style="font-size: 1.6rem; font-weight: 800; letter-spacing: -0.02em;">KPI value</span></div>
+    <div class="dp-type-row"><span class="dp-type-label">1rem</span><span style="font-size: 1rem; font-weight: 700;">Card title</span></div>
+    <div class="dp-type-row"><span class="dp-type-label">0.95rem</span><span style="font-size: 0.95rem;">Subtitle / hero copy</span></div>
+    <div class="dp-type-row"><span class="dp-type-label">0.88rem</span><span style="font-size: 0.88rem;">Body text</span></div>
+    <div class="dp-type-row"><span class="dp-type-label">0.78rem</span><span style="font-size: 0.78rem;">Meta / secondary</span></div>
+    <div class="dp-type-row"><span class="dp-type-label">0.72rem</span><span style="font-size: 0.72rem; letter-spacing: 0.04em;">Label</span></div>
+    <div class="dp-type-row"><span class="dp-type-label">0.62rem</span><span style="font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 700; color: #888;">Eyebrow / tag</span></div>
+</div>
+
+<!-- ─── BUTTONS ────────────────────────────────────────────────────────── -->
+<h2 class="dp-section">Buttons</h2>
+<p class="dp-desc">
+    Padronização: primário sólido preto sobre branco, secondário borda só.
+    Hover: invertem (background→branco→preto, etc).
+</p>
+
+<h3 class="dp-comp">Primary (solid black on hover terra)</h3>
+<div class="dp-canvas">
+    <div class="dp-row">
+        <button class="ct-submit" style="font-family: inherit; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; padding: 1.4vh 2rem; background: #0a0a0a; color: #fff; border: 1px solid #0a0a0a; border-radius: 2px; cursor: pointer;">Enviar →</button>
+    </div>
+</div>
+<pre class="dp-code"><span class="c">// Future TS API (AL-23):</span>
+<span class="k">&lt;Button</span> variant=<span class="s">"primary"</span> arrow<span class="k">&gt;</span>Enviar<span class="k">&lt;/Button&gt;</span></pre>
+
+<h3 class="dp-comp">Secondary (border only)</h3>
+<div class="dp-canvas">
+    <div class="dp-row">
+        <a href="#" style="display: inline-block; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; padding: 1.4vh 2rem; border: 1px solid #0a0a0a; color: #0a0a0a; text-decoration: none; border-radius: 2px;">Para parceiros →</a>
+    </div>
+</div>
+<pre class="dp-code"><span class="k">&lt;Button</span> variant=<span class="s">"secondary"</span> as=<span class="s">"a"</span> href=<span class="s">"/faca-parte/"</span><span class="k">&gt;</span>Para parceiros<span class="k">&lt;/Button&gt;</span></pre>
+
+<table class="dp-api-table">
+    <thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Notes</th></tr></thead>
+    <tbody>
+        <tr><td><code>variant</code></td><td><code>"primary" | "secondary"</code></td><td><code>"primary"</code></td><td></td></tr>
+        <tr><td><code>arrow</code></td><td><code>boolean</code></td><td><code>false</code></td><td>Append " →"</td></tr>
+        <tr><td><code>as</code></td><td><code>"button" | "a"</code></td><td><code>"button"</code></td><td></td></tr>
+        <tr><td><code>href</code></td><td><code>string</code></td><td>—</td><td>Required when as="a"</td></tr>
+        <tr><td><code>onClick</code></td><td><code>(e: Event) =&gt; void</code></td><td>—</td><td></td></tr>
+    </tbody>
+</table>
+
+<!-- ─── BADGES ─────────────────────────────────────────────────────────── -->
+<h2 class="dp-section">Badges</h2>
+<p class="dp-desc">
+    Pequenos indicadores inline ao lado do título de cards. Tamanho 0.62-0.7rem,
+    text-transform lowercase, padding mínimo.
+</p>
+
+<h3 class="dp-comp">Online (digital service)</h3>
+<div class="dp-canvas">
+    <div class="dp-row">
+        <span style="font-size: 1rem; font-weight: 700;">Desenvolvimento Web</span>
+        <span class="market-card-online">online</span>
+    </div>
+</div>
+<pre class="dp-code"><span class="k">&lt;Badge</span> tone=<span class="s">"online"</span><span class="k">&gt;</span>online<span class="k">&lt;/Badge&gt;</span></pre>
+
+<h3 class="dp-comp">Children counter (+N sub-services)</h3>
+<div class="dp-canvas">
+    <div class="dp-row">
+        <span style="font-size: 1rem; font-weight: 700;">Inteligência e Tecnologia</span>
+        <span class="market-card-children">+11</span>
+    </div>
+</div>
+<pre class="dp-code"><span class="k">&lt;Badge</span> tone=<span class="s">"counter"</span><span class="k">&gt;</span>+11<span class="k">&lt;/Badge&gt;</span></pre>
+
+<table class="dp-api-table">
+    <thead><tr><th>Prop</th><th>Type</th><th>Default</th></tr></thead>
+    <tbody>
+        <tr><td><code>tone</code></td><td><code>"online" | "counter" | "muted"</code></td><td><code>"muted"</code></td></tr>
+    </tbody>
+</table>
+
+<!-- ─── CHIPS ──────────────────────────────────────────────────────────── -->
+<h2 class="dp-section">Chips (filter / toggle)</h2>
+<p class="dp-desc">
+    Pílulas interativas pra filtros e toggles. Padrão: borda cinza →
+    hover preta → active sólido preto.
+</p>
+
+<h3 class="dp-comp">Filter chip with count</h3>
+<div class="dp-canvas">
+    <div class="dp-row">
+        <button class="sup-chip is-active" data-cat="" aria-pressed="true">Todos <span class="sup-count">12</span></button>
+        <button class="sup-chip" data-cat="digital">Digital <span class="sup-count">8</span></button>
+        <button class="sup-chip" data-cat="bem-estar">Bem-estar <span class="sup-count">5</span></button>
+    </div>
+</div>
+<pre class="dp-code"><span class="k">&lt;FilterChip</span> active count={<span class="s">12</span>}<span class="k">&gt;</span>Todos<span class="k">&lt;/FilterChip&gt;</span>
+<span class="k">&lt;FilterChip</span> count={<span class="s">8</span>} onSelect={selectCat}<span class="k">&gt;</span>Digital<span class="k">&lt;/FilterChip&gt;</span></pre>
+
+<h3 class="dp-comp">Toggle chip (boolean)</h3>
+<div class="dp-canvas">
+    <label class="toggle-chip">
+        <input type="checkbox">
+        <span>Prestados pela Arte Longa</span>
+    </label>
+</div>
+<pre class="dp-code"><span class="k">&lt;ToggleChip</span> checked={onlySocios} onChange={setOnlySocios}<span class="k">&gt;</span>
+  Prestados pela Arte Longa
+<span class="k">&lt;/ToggleChip&gt;</span></pre>
+
+<table class="dp-api-table">
+    <thead><tr><th>Prop</th><th>Type</th><th>Default</th></tr></thead>
+    <tbody>
+        <tr><td><code>active</code></td><td><code>boolean</code></td><td><code>false</code></td></tr>
+        <tr><td><code>count</code></td><td><code>number</code></td><td>—</td></tr>
+        <tr><td><code>onSelect</code></td><td><code>() =&gt; void</code></td><td>—</td></tr>
+        <tr><td><code>onChange</code></td><td><code>(checked: boolean) =&gt; void</code></td><td>—</td></tr>
+    </tbody>
+</table>
+
+<!-- ─── CARD ──────────────────────────────────────────────────────────── -->
+<h2 class="dp-section">Card (service)</h2>
+<p class="dp-desc">
+    Padrão de service card no marketplace. Título + badges inline + price area
+    (formatos: planos, hours×rate, "Sob consulta") + responsáveis no rodapé.
+</p>
+
+<h3 class="dp-comp">Hours × rate</h3>
+<div class="dp-canvas">
+    <ul class="market-grid" style="display: block;">
+        <li class="market-card dp-card-demo">
+            <a class="market-card-link" href="#">
+                <div class="market-card-titulo">Desenvolvimento Web <span class="market-card-online">online</span></div>
+                <div class="market-card-price">R$ 4.000 — R$ 20.000</div>
+                <div class="market-card-formula">Tarifa-base R$ 100/h</div>
+                <div class="market-card-resp">Yuri</div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+<h3 class="dp-comp">Plans (semanal/mensal)</h3>
+<div class="dp-canvas">
+    <ul class="market-grid" style="display: block;">
+        <li class="market-card dp-card-demo">
+            <a class="market-card-link" href="#">
+                <div class="market-card-titulo">Mentoria Espiritual <span class="market-card-online">online</span></div>
+                <ul class="market-card-planos">
+                    <li><span class="plano-label">Sessão avulsa</span><span class="plano-preco">R$ 100</span></li>
+                    <li><span class="plano-label">Semanal</span><span class="plano-preco">R$ 400/mês</span></li>
+                    <li class="is-consult"><span class="plano-label">Mensal</span><span class="plano-preco">Sob consulta</span></li>
+                </ul>
+                <div class="market-card-resp">Aime</div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+<h3 class="dp-comp">Sob consulta</h3>
+<div class="dp-canvas">
+    <ul class="market-grid" style="display: block;">
+        <li class="market-card dp-card-demo">
+            <a class="market-card-link" href="#">
+                <div class="market-card-titulo">Babá</div>
+                <div class="market-card-price is-consult">Sob consulta</div>
+                <div class="market-card-resp">Kelly</div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+<pre class="dp-code"><span class="k">&lt;ServiceCard</span> service={s} <span class="k">/&gt;</span>
+<span class="c">// Internamente decide planos vs hours×rate vs "Sob consulta"
+// baseado em s.hoursLow/High + AL.computeFaixaPreco(s).</span></pre>
+
+<table class="dp-api-table">
+    <thead><tr><th>Prop</th><th>Type</th><th>Notes</th></tr></thead>
+    <tbody>
+        <tr><td><code>service</code></td><td><code>Service</code></td><td>From <code>src/types.ts</code> (gen from openapi)</td></tr>
+        <tr><td><code>onClick</code></td><td><code>(s: Service) =&gt; void</code></td><td>Default: navigate to <code>/servicos/{slug}/</code></td></tr>
+    </tbody>
+</table>
+
+<!-- ─── EMPTY STATE ────────────────────────────────────────────────────── -->
+<h2 class="dp-section">Empty state</h2>
+<p class="dp-desc">
+    Quando filtro retorna 0. Sempre com CTA de recuperação (link pra contato
+    ou pra clear filter). Nunca grid vazio sem texto.
+</p>
+
+<div class="dp-canvas">
+    <p class="market-empty">
+        Nenhum resultado por aqui.
+        <a href="/contato/">Entre em contato para encontrarmos uma solução →</a>
+    </p>
+</div>
+
+<pre class="dp-code"><span class="k">&lt;EmptyState</span>
+  message=<span class="s">"Nenhum resultado por aqui."</span>
+  ctaHref=<span class="s">"/contato/"</span>
+  ctaLabel=<span class="s">"Entre em contato para encontrarmos uma solução"</span>
+<span class="k">/&gt;</span></pre>
+
+<!-- ─── FORM (input + dropdown) ────────────────────────────────────────── -->
+<h2 class="dp-section">Form fields</h2>
+<p class="dp-desc">
+    Pattern de inputs do site: borda inferior solid, sem background, foco
+    apenas via cor + bg. Dropdown custom (não <code>&lt;datalist&gt;</code> —
+    L-006). Localização tem pills com is-default state.
+</p>
+
+<h3 class="dp-comp">Search input</h3>
+<div class="dp-canvas">
+    <form class="market-search" role="search" autocomplete="off" onsubmit="event.preventDefault();" style="margin: 0;">
+        <input type="search" placeholder="Descreva o que precisa…" autocomplete="off" aria-label="Descreva o que precisa">
+    </form>
+</div>
+<pre class="dp-code"><span class="k">&lt;SearchInput</span> placeholder=<span class="s">"Descreva o que precisa…"</span> onChange={onSearch} <span class="k">/&gt;</span></pre>
+
+<h3 class="dp-comp">Location input (with default state)</h3>
+<div class="dp-canvas">
+    <input type="text" class="market-loc-input is-default" value="São Paulo" placeholder="Estado" style="display: inline-block; width: 200px;">
+    <small style="color: #999; margin-left: 1rem;">→ click → editavel</small>
+</div>
+
+<h3 class="dp-comp">Form fieldset (contato)</h3>
+<div class="dp-canvas" style="background: #fff;">
+    <form class="ct-form" novalidate style="background: #fff; border: 1px solid #e0e0e0; padding: 3vh 2rem; max-width: 500px;">
+        <label style="display: block; margin-bottom: 1.5vh;">
+            <span style="display: block; font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700; color: #555; margin-bottom: 0.6vh;">Nome</span>
+            <input type="text" name="nome" style="width: 100%; padding: 1vh 0.6rem; border: 1px solid #ccc; font-family: inherit; font-size: 0.95rem;">
+        </label>
+        <label style="display: block; margin-bottom: 1.5vh;">
+            <span style="display: block; font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700; color: #555; margin-bottom: 0.6vh;">Mensagem</span>
+            <textarea name="mensagem" rows="3" style="width: 100%; padding: 1vh 0.6rem; border: 1px solid #ccc; font-family: inherit; font-size: 0.95rem;"></textarea>
+        </label>
+        <button type="submit" class="ct-submit" style="font-family: inherit; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; padding: 1.4vh 2rem; background: #0a0a0a; color: #fff; border: 1px solid #0a0a0a; border-radius: 2px; cursor: pointer;">Enviar →</button>
+    </form>
+</div>
+
+<!-- ─── REFERENCE ──────────────────────────────────────────────────────── -->
+<h2 class="dp-section">Referência</h2>
+<p class="dp-desc">
+    Esse arquivo aplica o design tokens de <code>assets/site.css</code>,
+    <code>components.css</code>, <code>pages.css</code>. Imports chegam via
+    <code>/assets/bootstrap.js</code> (mesmo do resto do site).
+</p>
+<ul style="font-size: 0.88rem; line-height: 1.8;">
+    <li><a href="/">← voltar pra home</a></li>
+    <li>Schemas: <code>openapi/artelonga.yaml</code></li>
+    <li>Types: <code>src/types.ts</code></li>
+    <li>AL-22 (esse trabalho): <code>work/artelonga/AL-22.md</code></li>
+    <li>AL-23 (renderer migration): <code>work/artelonga/AL-23.md</code></li>
+</ul>
+
+</body>
+</html>
