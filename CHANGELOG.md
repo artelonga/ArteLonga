@@ -9,6 +9,19 @@ Each release links to a *why* (the pain or opportunity it addresses) so a reader
 
 ## [Unreleased]
 
+### Added (AL-3: Memory system — docs/LESSONS.md + docs/STATE.md + CLAUDE.md)
+
+Catálogo append-only de 21 anti-patterns extraídos do histórico de commits em
+`docs/LESSONS.md` (L-001..L-021). Snapshot auto-gerado do projeto em
+`docs/STATE.md`, produzido por `tools/bake-state.mjs` (Node.js, sem deps
+externas; determinístico no mesmo dia). Section "Lições críticas" adicionada
+ao `CLAUDE.md` com as 7 lessons mais load-bearing inline.
+
+**Por que:** padrões repetidos (DCL race, render silencioso, URL sem shell,
+dado multi-tenant) só viviam implícitos em CHANGELOG.md + commit messages. Um
+dev ou agente novo precisava ler centenas de commits pra entender convenções
+estabelecidas. Agora: 4 docs, 4 camadas mentais, sem ler 30 commits.
+
 ### Refactored (AL-23: Migrar renderer.js para componentes TS modulares)
 
 `assets/renderer.js` (~1900 linhas de JS vanilla) extraído para módulos TypeScript estritos em `src/`. Componentes tipados com interfaces do `src/types.ts`; cada página vira um módulo independente; dispatcher com readyState check (L-001) e try/catch (L-002). Build pipeline Vite produz o bundle final `assets/renderer.js`.
