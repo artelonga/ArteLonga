@@ -303,47 +303,70 @@
             "Pensamento Islâmico",
             "Dança e Expressão Corporal"
           ],
-          "essaysTitle": "Ensaios · Pensamento Islâmico",
-          "essays": [
+          "portfolio": [
             {
+              "kind": "essay",
+              "slug": "ensaio-01",
               "titulo": "",
               "short": "",
-              "long": ""
+              "body": "",
+              "draft": true
             },
             {
+              "kind": "essay",
+              "slug": "ensaio-02",
               "titulo": "",
               "short": "",
-              "long": ""
+              "body": "",
+              "draft": true
             },
             {
+              "kind": "essay",
+              "slug": "ensaio-03",
               "titulo": "",
               "short": "",
-              "long": ""
+              "body": "",
+              "draft": true
             },
             {
+              "kind": "essay",
+              "slug": "ensaio-04",
               "titulo": "",
               "short": "",
-              "long": ""
+              "body": "",
+              "draft": true
             },
             {
+              "kind": "essay",
+              "slug": "ensaio-05",
               "titulo": "",
               "short": "",
-              "long": ""
+              "body": "",
+              "draft": true
             },
             {
+              "kind": "essay",
+              "slug": "ensaio-06",
               "titulo": "",
               "short": "",
-              "long": ""
+              "body": "",
+              "draft": true
             },
             {
+              "kind": "essay",
+              "slug": "ensaio-07",
               "titulo": "",
               "short": "",
-              "long": ""
+              "body": "",
+              "draft": true
             },
             {
+              "kind": "essay",
+              "slug": "ensaio-08",
               "titulo": "",
               "short": "",
-              "long": ""
+              "body": "",
+              "draft": true
             }
           ]
         },
