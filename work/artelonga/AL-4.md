@@ -2,7 +2,7 @@
 id: 4
 title: "/contato/ persiste leads no co backend (substituir mailto)"
 type: user-story
-status: todo
+status: done
 priority: high
 labels:
   - feat
@@ -11,7 +11,7 @@ labels:
   - lgpd
 module: contato
 created_at: 2026-05-10T00:00:00Z
-updated_at: 2026-05-10T00:00:00Z
+updated_at: 2026-05-10T20:43:41.967453+00:00
 ---
 
 GIVEN o form de `/contato/` hoje (`contato/index.html:365`) usa `mailto:`

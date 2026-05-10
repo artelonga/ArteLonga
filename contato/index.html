@@ -195,6 +195,24 @@
             text-decoration: none;
         }
         .back:hover { color: #c0392b; }
+
+        .ct-privacy {
+            font-size: 0.78rem;
+            color: #888;
+            line-height: 1.4;
+            margin-bottom: 1.6vh;
+        }
+        .ct-privacy a { color: #666; }
+
+        .ct-fallback {
+            display: none;
+            margin-top: 1.2vh;
+            font-size: 0.88rem;
+            color: #b45309;
+            line-height: 1.5;
+        }
+        .ct-fallback.on { display: block; }
+        .ct-fallback a { color: #b45309; font-weight: 600; }
     </style>
 </head>
 <body>
@@ -274,7 +292,13 @@
                     <input type="text" id="ct-contato" name="contato" placeholder="Email, WhatsApp ou link" required>
                 </div>
 
+                <p class="ct-privacy">Seus dados são armazenados em servidor seguro por até 24 meses. Direitos LGPD: acesso, correção ou deleção em <a href="mailto:rede@artelonga.com.br">rede@artelonga.com.br</a>.</p>
+
                 <button type="submit" class="ct-submit">Enviar →</button>
+
+                <div class="ct-fallback" id="ct-fallback">
+                    Falha na conexão. <a href="#" id="ct-fallback-link">Clique aqui para enviar por email</a>.
+                </div>
 
                 <div class="ct-success" id="ct-success">
                     <strong>Recebemos.</strong> Em até 48h alguém da rede entra em contato pelo canal que você passou.
@@ -332,7 +356,26 @@
 
             const form = document.getElementById("contato-form");
             const success = document.getElementById("ct-success");
-            form.addEventListener("submit", e => {
+            const fallbackDiv = document.getElementById("ct-fallback");
+            const fallbackLink = document.getElementById("ct-fallback-link");
+
+            function buildMailto(nome, precisa, localLabel, canalLabel, contato) {
+                const subject = servico
+                    ? `Demanda · ${servico} · ${nome}`
+                    : `Demanda · ${nome}`;
+                const body = [
+                    `Nome: ${nome}`,
+                    servico  ? `Serviço de interesse: ${servico}` : "",
+                    parceiro ? `Parceiro de interesse: ${parceiro}` : "",
+                    `Demanda: ${precisa}`,
+                    `Local: ${localLabel}`,
+                    `Canal preferido: ${canalLabel}`,
+                    `Contato: ${contato}`
+                ].filter(Boolean).join("\n");
+                return `mailto:rede@artelonga.com.br?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            }
+
+            form.addEventListener("submit", async e => {
                 e.preventDefault();
                 const d = new FormData(form);
                 const get = k => (d.get(k) || "").trim();
@@ -344,28 +387,52 @@
                     form.reportValidity();
                     return;
                 }
+                const submit = form.querySelector(".ct-submit");
+                submit.disabled = true;
+                submit.textContent = "Enviando…";
+                fallbackDiv.classList.remove("on");
+
                 const canalLabel = canal === "email" ? "Email"
                                  : canal === "whatsapp" ? "WhatsApp" : "Outro";
-                const subject = servico
-                    ? `Demanda · ${servico} · ${nome}`
-                    : `Demanda · ${nome}`;
                 const modo = get("modo") || "fisico";
                 const localLabel = modo === "digital"
                     ? "Digital"
                     : `Físico · ${get("bairro") || "—"} · ${get("cidade") || "—"} · ${get("estado") || "—"}`;
-                const body = [
-                    `Nome: ${nome}`,
-                    servico  ? `Serviço de interesse: ${servico}` : "",
-                    parceiro ? `Parceiro de interesse: ${parceiro}` : "",
+
+                const mensagem = [
                     `Demanda: ${precisa}`,
                     `Local: ${localLabel}`,
                     `Canal preferido: ${canalLabel}`,
                     `Contato: ${contato}`
-                ].filter(Boolean).join("\n");
-                const mailto = `mailto:rede@artelonga.com.br?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-                window.location.href = mailto;
-                success.classList.add("on");
-                form.querySelector(".ct-submit").textContent = "Enviado ✓";
+                ].join("\n");
+
+                const payload = {
+                    nome: nome || null,
+                    email: canal === "email" ? contato : null,
+                    telefone: canal === "whatsapp" ? contato : null,
+                    mensagem,
+                    servico_titulo: servico || null,
+                    parceiro_handle: parceiro || null,
+                };
+
+                try {
+                    const r = await fetch("https://co.artelonga.com.br/api/v1/leads", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(payload),
+                        credentials: "omit",
+                        mode: "cors"
+                    });
+                    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                    submit.textContent = "Enviado ✓";
+                    success.classList.add("on");
+                } catch (err) {
+                    console.error("lead submit failed:", err);
+                    submit.textContent = "Falhou — tente de novo";
+                    submit.disabled = false;
+                    fallbackLink.href = buildMailto(nome, precisa, localLabel, canalLabel, contato);
+                    fallbackDiv.classList.add("on");
+                }
             });
         })();
     </script>

@@ -9,6 +9,10 @@ Each release links to a *why* (the pain or opportunity it addresses) so a reader
 
 ## [Unreleased]
 
+### Added (AL-4: /contato/ persiste leads no co backend)
+
+Form de `/contato/` substitui `mailto:` por POST para `https://co.artelonga.com.br/api/v1/leads`. Submissão bem-sucedida mostra "Enviado ✓" e exibe bloco de confirmação. Falha de rede mostra "Falhou — tente de novo" + link `mailto:` como recuperação (nenhum lead perdido). Privacy notice LGPD visível antes do submit (retenção 24 meses, contato para exercício de direitos). Backend (CO-183) persiste em SQLite com `created_at`, `status='new'` e `ip_hash` (daily-salt, nunca IP bruto); dispara email notification pra `rede@artelonga.com.br`. Admin queue em `co.artelonga.com.br/admin/leads`.
+
 ### Refactored (AL-23: Migrar renderer.js para componentes TS modulares)
 
 `assets/renderer.js` (~1900 linhas de JS vanilla) extraído para módulos TypeScript estritos em `src/`. Componentes tipados com interfaces do `src/types.ts`; cada página vira um módulo independente; dispatcher com readyState check (L-001) e try/catch (L-002). Build pipeline Vite produz o bundle final `assets/renderer.js`.
