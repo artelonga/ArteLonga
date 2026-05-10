@@ -1,6 +1,6 @@
 ---
 id: 1
-title: "LGPD: migrar perfis de membros de data.js para per-handle markdown"
+title: "LGPD: migrar perfis de membros de data.js para per-handle YAML"
 type: user-story
 status: todo
 priority: high
@@ -19,82 +19,78 @@ foto, função) hoje vivem em `assets/data.js` num array `people = [...]` de
 ~750 linhas hardcoded, AND essa estrutura impede que cada membro tenha
 controle direto sobre seu próprio conteúdo (acesso, edição, deleção pra
 exercer direitos LGPD), AND mexer no perfil de uma pessoa hoje significa
-editar um arquivo que mistura dados de 28+ membros + comunidades + negócios,
+editar um arquivo que mistura dados de 30+ membros + comunidades + negócios,
 
-WHEN movemos cada perfil pra `<handle>/index.md` (frontmatter pra campos
-estruturados + corpo markdown pra bio/citações), AND adicionamos um build
-script `tools/bake-people.mjs` que lê todos os `<handle>/index.md` e
-regenera a seção `people = [...]` em `assets/data.js` automaticamente,
+WHEN movemos cada perfil pra `<handle>/profile.yaml` (YAML puro, um parser,
+sem Markdown body), AND adicionamos um build script `tools/bake-people.mjs`
+que lê todos os `<handle>/profile.yaml` e regenera a seção `people = [...]`
+em `assets/data.js` automaticamente,
 
-THEN cada membro pode editar/excluir seu próprio diretório (jurisdição
-clara — direito de acesso e portabilidade LGPD Art. 18), AND o `data.js`
-continua sendo o artefato consumido pelo renderer (zero mudança na lógica
-de runtime), AND o board público (artelonga.com.br) renderiza identicamente
-ao estado atual após a migração.
+THEN cada membro tem ownership claro do próprio diretório (LGPD Art. 18:
+acesso, correção, deleção exercíveis via PR no folder dele), AND `data.js`
+continua sendo o artefato consumido pelo renderer (zero mudança runtime),
+AND o site renderiza identicamente após a migração.
 
 ---
 
+## Por que YAML puro (não YAML+MD frontmatter)
+
+YAML+MD (estilo Jekyll) usa `---` pra separar frontmatter de body. **Dois
+parsers** (YAML e Markdown), edge cases na linha do `---`, e bio com `---`
+literal no texto vira "fim do frontmatter" inesperado. YAML puro evita
+tudo isso: bio é apenas mais um campo, multi-linha via literal block
+scalar (`|`), preserva newlines + markdown links inline como texto.
+
+Pra prosa simples (parágrafos com links), YAML puro basta. Markdown rich
+features (headers, listas, blockquotes) não são usados em bio.
+
+Bonus: alinhado com o backend `co` que já lê `membros/<h>.md` com
+frontmatter YAML — convergem pra mesma direção (uma source of truth no
+futuro, fora do escopo desse ticket).
+
 ## Estado atual
 
-`assets/data.js:26-274` define `const people = [ ... ]` com 36 entries.
-Cada entry pode ter os seguintes campos (não todos obrigatórios):
+`assets/data.js:26-274` define `const people = [ ... ]` com ~36 entries.
+Campos possíveis (não todos obrigatórios):
 
 ```js
 {
-    handle: "yuri", type: "person" | "business" | "reference",
-    nome: "Yuri", role: "Sementes",
-    tags: ["fundador", "parceiro"],
-    pic: "/yuri/yuri.jpg?v=20260428",
-    birthDate: "1993-06-24T12:30:00-03:00",
-    bioTitle: "Terra",
-    bioCurta: "...",
-    bio: "...",         // multi-linha com markdown inline
-    citacoes: [{ texto, autor, obra, data, url }],
-    servicos: ["Inteligência e Tecnologia", ...],
-    subMembers: ["kiyoshi", "soninha"],
-    communities: ["quilomboaraucaria"],
-    contacts: { tagline, ... },
-    homeLinks: [...],
-    emMemoria: true,
-    referenceOnly: true,
-    poems: [...]
+    handle, type, nome, role, tags, pic, birthDate,
+    bioTitle, bioCurta, bio,        // texto multi-linha com markdown inline
+    citacoes: [{ texto, autor, obra, data, url, autorEmBreve }],
+    servicos: [...], subMembers: [...], communities: [...],
+    contacts: { tagline, ... }, homeLinks: [...],
+    emMemoria, referenceOnly, poems
 }
 ```
 
 Pasta `<handle>/` hoje contém só assets estáticos (imagens, áudio) +
-`index.html` que carrega o SDK e renderiza o profile via
-`renderer.js:renderProfile()`.
-
-Backend `co` lê `membros/<handle>.md` (frontmatter mínimo) via API mas
-o frontend ignora — duplicação de fontes da verdade.
+`index.html` que carrega o SDK e renderiza profile via `renderer.js`.
 
 ## Estado-alvo
 
-Para cada membro com handle `<h>`:
+```
+<handle>/
+├── profile.yaml      # source of truth (NOVO)
+├── index.html        # entry point HTML (sem mudança)
+└── *.{jpg,png,ogg}   # assets referenciados por pic
+```
 
-- `<h>/index.md` — fonte da verdade. Frontmatter pra campos estruturados,
-  corpo markdown pra bio + bioCurta + citações.
-- `<h>/index.html` — entry point HTML (já existe, sem mudança).
-- `<h>/*.{jpg,png,ogg}` — assets estáticos referenciados pelo `pic`.
-- `membros/<h>.md` — pode ser deletado OU virar symlink/stub que aponta
-  pra `<h>/index.md` (decidir na implementação; symlink quebra GH Pages).
-
-`assets/data.js` continua existindo mas a seção `people` vira:
+`assets/data.js` mantido, mas a seção `people` vira:
 
 ```js
 // AUTO-GENERATED: do not edit by hand. Run `node tools/bake-people.mjs`.
 // AUTO-GENERATED:PEOPLE-START
-const people = [ /* generated from <handle>/index.md files */ ];
+const people = [ /* ... */ ];
 // AUTO-GENERATED:PEOPLE-END
 ```
 
 Demais seções (pricing, location, communities, services, missions,
-universos, portfolio) **NÃO mudam** — ficam inalteradas em data.js.
+universos, portfolio) **não mudam**.
 
-## Formato do `<handle>/index.md`
+## Formato `<handle>/profile.yaml`
 
 ```yaml
----
 handle: yuri
 type: person                # person | business | reference
 nome: Yuri
@@ -103,7 +99,15 @@ tags: [fundador, parceiro]
 pic: /yuri/yuri.jpg?v=20260428
 birthDate: 1993-06-24T12:30:00-03:00
 bioTitle: Terra
-bioCurta: "Filho de Kiyoshi e Soninha..."
+bioCurta: "Filho de Kiyoshi e Soninha e fascinado por todos que me inspiram..."
+bio: |
+  Filho de Kiyoshi e Soninha e fascinado por [todos que me inspiram](/parceiros/#todos)
+  Como neurocientista, busco compreender a consciência
+  Como ser humano, busco compreender os saberes ancestrais
+  Trabalho com desenvolvimento de [tecnologia sustentável](/solucoes/)
+
+  Não haviam nomes quando nossos ancestrais pisaram na Terra
+  ...
 servicos:
   - "Escrita, Interpretação e Tradução"
   - "Ensino, Formação e Liderança"
@@ -117,122 +121,120 @@ homeLinks:
 emMemoria: false                   # omit se false
 referenceOnly: false               # omit se false
 citacoes:
-  - texto: "..."
+  - texto: "A terceira utilidade..."
     autor: leaoxiii
     obra: "Rerum Novarum: sobre a condição dos operários"
     data: 1891-05-15
     url: "https://www.vatican.va/..."
----
-
-[Filho de Kiyoshi e Soninha](/parceiros/#todos) e fascinado por todos que me inspiram.
-Como neurocientista, busco compreender a consciência.
-Como ser humano, busco compreender os saberes ancestrais.
-Trabalho com desenvolvimento de [tecnologia sustentável](/solucoes/).
-
-Não haviam nomes quando nossos ancestrais pisaram na Terra...
-
-(corpo markdown vira o campo `bio`)
+  - texto: "Pra onde você voaria se fosse livre?"
+    autorNome: "Yuri"
+    autorEmBreve:
+      title: "Capítulo 1: Gênesis"
+    data: "2015"
 ```
 
-**Convenção:** se o corpo markdown estiver vazio, `bio = ""`. `bioCurta`
-fica no frontmatter (curto, single-line). Citações longas com texto
-multi-linha podem usar YAML literal block scalar (`|`) ou ficar como
-markdown blockquote no corpo (decidir na implementação — preferir
-frontmatter pra dados estruturados).
+**Convenções:**
+- bio multi-linha via `|` (literal block scalar) — preserva newlines + indentação interna.
+- Strings com aspas duplas pra textos curtos com pontuação especial.
+- Campos opcionais omitidos se vazios/falsy.
+- `\n\n` em data.js atual vira **linha em branco** no YAML (preserva separação de parágrafos).
+- Markdown inline em bio (links, bold) fica como texto literal — renderer já processa isso no runtime.
 
 ## Implementação
 
-### Phase 1: Build script (`tools/bake-people.mjs`)
+### Phase 1: Build script `tools/bake-people.mjs`
 
-Script Node.js (não precisa de deps externas, usa só `fs`, `path`,
-`yaml` já presente OU regex simples pra frontmatter).
+Node.js, sem deps externas além do parser YAML:
+- `js-yaml` (npm install --save-dev). Único parser.
+- Sem regex pra frontmatter, sem dois passes, sem MD parser.
 
 Lê:
-1. Todos os subdiretórios da raiz que tenham `<handle>/index.md`.
-2. Parseia frontmatter YAML + corpo markdown.
-3. Mapeia campos pro shape do array `people`.
-4. Ordena pela ordem do data.js atual (preserva order pra evitar diff
-   desnecessário) — pode usar um arquivo `tools/people-order.txt` se
-   precisar.
+1. Glob `*/profile.yaml` na raiz do repo.
+2. Parse YAML → objeto JS.
+3. Validate shape (campos obrigatórios, tipos esperados).
+4. Ordena pela ordem do data.js atual (preserva ordem; `tools/people-order.txt` opcional).
 
 Escreve:
 - Substitui o bloco entre `// AUTO-GENERATED:PEOPLE-START` e
   `// AUTO-GENERATED:PEOPLE-END` em `assets/data.js`.
-- Roda `node -e "require('./assets/data.js')"` no final pra validar.
+- JSON-like output formatado (2-space indent, trailing comma).
+- Roda `node -e "require('./assets/data.js')"` pra validar parse.
 
-Saída deve ser estável (mesmo input → byte-idêntico output).
+Saída determinística: mesmo input → byte-idêntico output.
 
-### Phase 2: Migração inicial
+### Phase 2: Migração inicial — `tools/extract-people.mjs`
 
-Script auxiliar `tools/extract-people.mjs` (one-shot, descartável) que
-faz o caminho inverso: lê o `data.js` atual, gera 28+ arquivos
-`<handle>/index.md` com o conteúdo correspondente. Roda uma vez e é
-deletado.
+One-shot, descartável: lê `data.js` atual, gera 30+ arquivos
+`<handle>/profile.yaml`. Roda uma vez, deleta depois.
 
 Para cada `<handle>` ainda sem pasta (ex: `joao`, `kiyoshi`,
-`soninha`), criar a pasta + `index.html` (template padrão) +
-`index.md` (gerado).
+`soninha`, `kelly`, `matheus`), criar a pasta + `index.html` (template
+padrão) + `profile.yaml`.
+
+Bio: converter `\n\n` em linhas em branco no `|` block scalar. Strings
+com aspas duplas em frontmatter. Citações com texto longo idem.
 
 ### Phase 3: Wire ao build
 
 - Adicionar `tools/bake-people.mjs` ao fluxo de commit:
   - Pre-commit hook (opcional, via `package.json` scripts ou husky).
   - GH Action `.github/workflows/bake-people.yml` que roda em PRs e
-    falha se `data.js` está dessincronizado de algum `<handle>/index.md`.
+    falha se `data.js` está dessincronizado de algum `<handle>/profile.yaml`.
 - Documentar em `CLAUDE.md` raiz: "pra editar perfil de membro,
-  edite `<handle>/index.md` e rode `node tools/bake-people.mjs`."
+  edite `<handle>/profile.yaml` e rode `node tools/bake-people.mjs`."
 
 ### Phase 4: Limpeza
 
-- Marcar a seção legada de `people` em `data.js` como
-  AUTO-GENERATED (substitui pelo output do bake).
+- Marcar a seção legada de `people` em `data.js` como AUTO-GENERATED.
 - `membros/<h>.md` (frontmatter mínimo do backend) pode coexistir
   ou ser removido — decidir depois (não bloqueia esse ticket).
 
 ## Critérios de aceitação
 
-- [ ] Cada membro listado hoje em `data.js` tem um `<handle>/index.md`
-      correspondente com frontmatter completo + corpo markdown (se houver bio).
+- [ ] Cada membro listado hoje em `data.js` tem um `<handle>/profile.yaml`
+      correspondente, validado contra o shape esperado.
 - [ ] `tools/bake-people.mjs` existe, é determinístico, e regenera a seção
       `people` de `data.js` byte-idêntica em runs consecutivos.
 - [ ] Após rodar o bake, `node -e "require('./assets/data.js')"` passa sem erro.
 - [ ] `AL.people.length` e `AL.get('<handle>')` retornam os mesmos valores
-      antes e depois da migração (verificável por snapshot test).
+      antes e depois da migração (snapshot test).
 - [ ] Site renderiza identicamente — comparar `/`, `/parceiros/`, `/yuri/`,
-      `/alice/`, `/joao/` antes/depois (manual ou via screenshot diff).
+      `/alice/`, `/joao/` antes/depois.
 - [ ] V em `bootstrap.js` é bumpado.
 - [ ] `CHANGELOG.md` documenta a mudança.
 - [ ] `CLAUDE.md` raiz inclui instruções de "como editar perfil".
 
 ## Out of scope
 
-- Migrar `services` array pra per-service markdown — separado, AL-2 talvez.
+- Migrar `services` array pra per-service YAML — separado, abrir AL-2 se desejado.
 - Migrar `communities` array — idem.
 - Migrar `missions` / `universos` / `portfolio` — idem.
-- Backend integration: fazer o `co` consumir `<handle>/index.md` ao invés
-  de `membros/<h>.md`. Pode-se manter os dois ou unificar depois.
-- Authoring tools (CMS, web editor) — fora do escopo. Por enquanto editar
-  via PR no Git é suficiente.
-- Auto-detect de mudanças locais e re-bake automático no dev server.
+- Backend integration: fazer o `co` consumir `<handle>/profile.yaml` ao
+  invés de `membros/<h>.md`. Pode-se manter os dois ou unificar depois.
+- Authoring tools (CMS, web editor). Por ora editar via PR no Git.
+- Auto re-bake em dev server.
 
 ## Notas de implementação
 
-- **Bio multi-linha com markdown inline:** preservar quebras de linha e
-  links exatamente como estão no `data.js` atual. Atenção a
-  `\n\n` (parágrafos), `[text](url)` (links), e citações inline.
-- **Citações com `autorEmBreve: { title: "Capítulo 1: Gênesis" }`:**
-  campo opcional, preserva no frontmatter.
-- **Yuri tem bio gigante (~50 linhas):** verificar que YAML literal block
-  scalar (`bio: |`) ou markdown body lida com isso sem perda.
+- **Bio multi-linha:** YAML literal block scalar (`|`) preserva newlines.
+  Indentação interna preservada; cuidado com indentação base (typically
+  2 espaços abaixo de `bio:`).
+- **Markdown inline em bio:** `[text](url)` fica como texto literal no
+  YAML. Renderer já processa esses no runtime (linkify).
+- **Citações com texto longo:** usar `texto: |` se passar de uma linha,
+  ou string com aspas se for short.
+- **`autorEmBreve: { title: "..." }`:** YAML inline mapping ou bloco —
+  ambos válidos.
+- **Yuri tem bio gigante (~50 linhas):** YAML literal scalar lida
+  perfeitamente, sem perda.
 - **Business entries** (ex: `retro-umarizal` com `type: "business"`):
-  mesmo padrão. `externalUrl` em vez de pic é OK.
-- **Reference entries** (ex: `leaoxiii` com `referenceOnly: true`):
-  podem ser people do tipo `person` mas com flag — preservar.
+  mesmo schema, com `externalUrl` em vez de `pic` — tudo OK em YAML.
+- **Reference entries** (`leaoxiii` com `referenceOnly: true`): mesma
+  pasta + profile.yaml, com `referenceOnly: true` no topo.
 
 ## Related
 
 - `assets/data.js:26-274` — fonte atual de `people`.
 - `assets/renderer.js:renderProfile` — consumer.
-- `membros/<handle>.md` — backend's separate source (não impactado nesse ticket).
-- `_universe.yaml` — schema do universe artelonga (verificar que `membro`
-  como content_type continua válido).
+- `membros/<handle>.md` — backend's separate source (não impactado).
+- `_universe.yaml` — schema do universe artelonga.
