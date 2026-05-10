@@ -475,9 +475,9 @@
         // fórmula), ou Sob consulta. Renderer escolhe automaticamente.
         const card = s => {
             const faixa = AL.computeFaixaPreco(s);
-            const metaHtml = s.paraQuem
-                ? `<div class="market-card-meta">${esc(s.paraQuem)}</div>`
-                : "";
+            // paraQuem permanece em data.js como metadata (audiences feature
+            // futura); por ora não exibimos no card pra manter foco em
+            // serviço · preço · responsáveis.
             let precoHtml = "";
             if (faixa.planos) {
                 precoHtml = `<ul class="market-card-planos">${
@@ -505,7 +505,6 @@
             <li class="market-card">
                 <a href="/servicos/${esc(s.slug)}/" class="market-card-link">
                     <div class="market-card-titulo">${titleHtml}</div>
-                    ${metaHtml}
                     ${precoHtml}
                     <div class="market-card-resp">${esc(respNames(s.responsavel))}</div>
                 </a>

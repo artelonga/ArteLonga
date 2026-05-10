@@ -47,7 +47,7 @@
                     data: "2015"
                 }
             ],
-            servicos: ["Escrita, Interpretação e Tradução", "Ensino, Formação e Liderança", "Inteligência e Tecnologia", "Gestão Executiva", "Tradução EN-PT", "Tradução Guarani-PT"],
+            servicos: ["Escrita, Interpretação e Tradução", "Ensino, Formação e Liderança", "Inteligência e Tecnologia", "Gestão Executiva", "Tradução EN-PT", "Tradução Guarani-PT", "Assistência Técnica"],
             subMembers: ["kiyoshi", "soninha"]
         },
         {
@@ -223,6 +223,8 @@
         { handle: "quinho", type: "person", nome: "Quinho", role: "", tags: ["parceiro"], pic: null, bio: "", servicos: ["Artes Visuais", "Grafite", "Murais e Fachadas"], communities: ["quilomboaraucaria"] },
         { handle: "tiao", type: "person", nome: "Tião", role: "", tags: ["parceiro"], pic: null, bio: "", servicos: ["Drywall e Bioconstrução"], communities: ["quilomboaraucaria"] },
         { handle: "veh", type: "person", nome: "Veh", role: "", tags: ["parceiro"], pic: null, bio: "", servicos: ["Alimentação e Bebidas", "Tortas Salgadas da Veh"], communities: ["quilomboaraucaria"], contacts: { tagline: "Tortas salgadas artesanais. Faça seu pedido ⤵️" } },
+        { handle: "matheus", type: "person", nome: "Matheus", role: "", tags: ["parceiro"], pic: null, bio: "", servicos: ["Assistência Técnica"], communities: ["quilomboaraucaria"] },
+        { handle: "kelly", type: "person", nome: "Kelly", role: "", tags: ["parceiro"], pic: null, bio: "", servicos: ["Babá"] },
         {
             handle: "carlinhos", type: "person", nome: "Carlinhos",
             role: "Distribuição de Frutas",
@@ -399,6 +401,8 @@
 
         // ── Serviços com CNAE já formalizado no CNPJ ─────────────────────────
         { titulo: "Alfabetização",                       paraQuem: "Crianças · adultos", hoursLow: 1, hoursHigh: 2, unit: "aula", cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino não especificadas anteriormente" }] },
+        { titulo: "Assistência Técnica",                 paraQuem: "Equipamentos · pessoas", cnae: [{ c: "9521-5/00", d: "Reparação e manutenção de equipamentos eletroeletrônicos de uso pessoal e doméstico" }] },
+        { titulo: "Babá",                                paraQuem: "Crianças · famílias", cnae: [{ c: "9700-5/00", d: "Serviços domésticos" }] },
         { titulo: "Alimentação e Bebidas",               paraQuem: "Eventos · empresas", hoursLow: 0.35, hoursHigh: 1, unit: "pessoa", cnae: [{ c: "5620-1/02", d: "Serviços de alimentação para eventos e recepções — bufê" }] },
         { titulo: "Hambúrguer Artesanal", paraQuem: "Bairro · delivery", hoursLow: 0.25, hoursHigh: 0.6, unit: "unidade", cnaeNovo: true, cnae: [{ c: "5611-2/01", d: "Restaurantes e similares" }, { c: "5620-1/04", d: "Fornecimento de alimentos preparados preponderantemente para consumo domiciliar" }] },
         { titulo: "Comunicação Visual",                  paraQuem: "Eventos · marcas", digital: true, hoursLow: 8, hoursHigh: 30, cnae: [{ c: "7410-2/03", d: "Design de produto" }, { c: "7319-0/04", d: "Consultoria em publicidade" }] },
