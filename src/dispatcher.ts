@@ -7,6 +7,7 @@ const pageMap: Record<string, () => Promise<{ render: () => void }>> = {
     profile: () => import("./pages/profile"),
     service: () => import("./pages/service"),
     poem: () => import("./pages/poem"),
+    essay: () => import("./pages/essay"),
 };
 
 function dispatch(): void {

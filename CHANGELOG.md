@@ -9,6 +9,20 @@ Each release links to a *why* (the pain or opportunity it addresses) so a reader
 
 ## [Unreleased]
 
+### Refactored (AL-27: Migrar Alice essays inline → portfolio[kind=essay] + renderEssay)
+
+`alice/profile.yaml` substituiu os campos legado `essaysTitle` + `essays[]` por
+`portfolio: [{kind: essay, slug, titulo, short, body, draft: true}]` × 8 — mesma
+abstração de `PortfolioItem` estabelecida em AL-26 para poemas. `src/pages/essay.ts`
+adicionado como renderer de essay individual em `/<handle>/<slug>/` (espelho de
+`poem.ts`, typography editorial). Dispatcher atualizado com `essay` case. Todos os
+8 ensaios permanecem `draft: true` até texto real chegar; shells HTML não criadas
+enquanto drafts (L-007 não se aplica a conteúdo não publicado).
+
+**Por que:** o shape ad-hoc `essays[]` impedia a abstração unificada de peças autorais
+(`PortfolioItem`). Agora poem e essay consomem a mesma infra: bake derive + dispatcher
++ URL pattern `/<handle>/<slug>/`.
+
 ### Added (AL-3: Memory system — docs/LESSONS.md + docs/STATE.md + CLAUDE.md)
 
 Catálogo append-only de 21 anti-patterns extraídos do histórico de commits em
