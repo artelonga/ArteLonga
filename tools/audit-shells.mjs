@@ -58,9 +58,28 @@ for (const e of allHandles) {
     }
 }
 
+// 3. Cada portfolio item (não-draft) → <handle>/<slug>/index.html
+let portfolioCount = 0;
+for (const p of (AL.people || [])) {
+    if (!Array.isArray(p.portfolio)) continue;
+    for (const item of p.portfolio) {
+        if (item.draft) continue;
+        portfolioCount++;
+        const shell = path.join(ROOT, p.handle, item.slug, "index.html");
+        if (!fs.existsSync(shell)) {
+            gaps.push({
+                kind: `portfolio:${item.kind}`,
+                handle: `${p.handle}/${item.slug}`,
+                expected: shell,
+                ref: item.titulo,
+            });
+        }
+    }
+}
+
 // Output
 if (gaps.length === 0) {
-    console.log(`[audit-shells] OK — ${AL.services.length} services + ${allHandles.length} handles, todas as shells presentes.`);
+    console.log(`[audit-shells] OK — ${AL.services.length} services + ${allHandles.length} handles + ${portfolioCount} portfolio items, todas as shells presentes.`);
     process.exit(0);
 }
 
@@ -73,4 +92,6 @@ console.error(`\nFix: criar shell HTML em cada path acima. Template:`);
 console.error(`  <!DOCTYPE html><html lang="pt-BR"><head>...<script src="/assets/bootstrap.js"></script></head>`);
 console.error(`  <body data-page="service" data-slug="<slug>"></body></html>  (pra services)`);
 console.error(`  <body data-page="profile" data-handle="<handle>"></body></html>  (pra perfis)`);
+console.error(`  <body data-page="poem" data-slug="<slug>"></body></html>  (pra portfolio:poem)`);
+console.error(`  <body data-page="essay" data-slug="<slug>"></body></html>  (pra portfolio:essay)`);
 process.exit(1);
