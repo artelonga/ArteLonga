@@ -630,6 +630,9 @@
           "bio": "",
           "servicos": [
             "Babá"
+          ],
+          "communities": [
+            "quilomboaraucaria"
           ]
         },
         {
@@ -736,6 +739,8 @@
             "quinho",
             "tiao",
             "veh",
+            "matheus",
+            "kelly",
             "carlinhos",
             "mara-brandao",
             "yuri",
