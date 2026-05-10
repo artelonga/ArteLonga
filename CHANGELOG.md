@@ -9,6 +9,16 @@ Each release links to a *why* (the pain or opportunity it addresses) so a reader
 
 ## [Unreleased]
 
+### Refactored (AL-2: communities migradas para per-community YAML)
+
+Cada uma das 3 comunidades tem agora `<handle>/community.yaml` como source of truth do perfil, substituindo o array `communities` hardcoded em `assets/data.js`. Mesmo padrão LGPD do AL-1 (perfis de membros). `data.js` continua o artefato do renderer — comportamento runtime zero-alteração.
+
+- **`<handle>/community.yaml`** — 3 arquivos criados (quilomboaraucaria, hfsassociados, hedix).
+- **`tools/bake-communities.mjs`** — build script determinístico que lê todos os `*/community.yaml` e regenera a seção `communities` em `assets/data.js`.
+- **`tools/communities-order.txt`** — ordem canônica das comunidades no array.
+- **`assets/data.js`** — seção `communities` marcada `AUTO-GENERATED:COMMUNITIES-START/END`; suporte a `globalThis` para validação com Node.js.
+- **`package.json`** — `js-yaml` como devDependency.
+
 ### Changed (pivot product-oriented · marketplace de serviços)
 
 Site reorientado de catálogo institucional para **marketplace de serviços** focado no contratante. Direção definida pelo feedback de mercado (Jack Dorsey: "reduzir elementos ao mínimo, cada um o mais perfeito"; liquidez via recorte geográfico; 5 segundos de atenção).
