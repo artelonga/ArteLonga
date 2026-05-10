@@ -18,6 +18,7 @@
     "validate-yaml": "node tools/validate-yaml.mjs",
     "bake-people": "node tools/bake-people.mjs",
     "bake-communities": "node tools/bake-communities.mjs",
+    "bake-state": "node tools/bake-state.mjs",
     "bake": "npm run bake-people && npm run bake-communities",
     "audit-shells": "node tools/audit-shells.mjs",
     "audit-consistency": "node tools/audit-consistency.mjs",

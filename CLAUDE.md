@@ -106,6 +106,21 @@ curl -X POST /api/v1/universes/artelonga/reindex \
 - `draft: true` no frontmatter = não publicado
 - Datas no formato ISO-8601 (`date: 2024-11-28`)
 
+## Lições críticas (consulte antes de codar)
+
+Catálogo completo em `docs/LESSONS.md`. As load-bearing:
+
+1. **L-001 — DCL race em script dinâmico.** Use `document.readyState` check.
+2. **L-002 — Render fail silencioso.** Try/catch em todo dispatcher de body.innerHTML.
+3. **L-003 — UI derivada de filtro deve atualizar toda.** Não só o output principal.
+4. **L-004 — Copy ajuda compensa UI ruim.** Conserta UI primeiro.
+5. **L-007 — URL sem shell HTML = 404.** Audit cross-coverage em toda mudança de catalog.
+6. **L-008 — Termos de domínio são trabalho técnico.** Precisão > brevidade.
+7. **L-009 — Dado multi-tenant em arquivo único viola LGPD.** Folder per owner.
+
+Adicionar entrada nova em `docs/LESSONS.md` quando um fix ensinar algo
+generalizável. Sintaxe: L-NNN, próximo número livre. Não remover entradas.
+
 ## Como editar o perfil de um membro
 
 A seção `people` em `assets/data.js` é **AUTO-GENERATED** — não edite diretamente.

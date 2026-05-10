@@ -9,6 +9,23 @@ Each release links to a *why* (the pain or opportunity it addresses) so a reader
 
 ## [Unreleased]
 
+### Added (AL-3: Memory system — docs/LESSONS.md + docs/STATE.md + CLAUDE.md)
+
+Catálogo append-only de 21 anti-patterns extraídos do histórico de commits em
+`docs/LESSONS.md` (L-001..L-021). Snapshot auto-gerado do projeto em
+`docs/STATE.md`, produzido por `tools/bake-state.mjs` (Node.js, sem deps
+externas; determinístico no mesmo dia). Section "Lições críticas" adicionada
+ao `CLAUDE.md` com as 7 lessons mais load-bearing inline.
+
+**Por que:** padrões repetidos (DCL race, render silencioso, URL sem shell,
+dado multi-tenant) só viviam implícitos em CHANGELOG.md + commit messages. Um
+dev ou agente novo precisava ler centenas de commits pra entender convenções
+estabelecidas. Agora: 4 docs, 4 camadas mentais, sem ler 30 commits.
+
+### Added (AL-4: /contato/ persiste leads no co backend)
+
+Form de `/contato/` substitui `mailto:` por POST para `https://co.artelonga.com.br/api/v1/leads`. Submissão bem-sucedida mostra "Enviado ✓" e exibe bloco de confirmação. Falha de rede mostra "Falhou — tente de novo" + link `mailto:` como recuperação (nenhum lead perdido). Privacy notice LGPD visível antes do submit (retenção 24 meses, contato para exercício de direitos). Backend (CO-183) persiste em SQLite com `created_at`, `status='new'` e `ip_hash` (daily-salt, nunca IP bruto); dispara email notification pra `rede@artelonga.com.br`. Admin queue em `co.artelonga.com.br/admin/leads`.
+
 ### Refactored (AL-23: Migrar renderer.js para componentes TS modulares)
 
 `assets/renderer.js` (~1900 linhas de JS vanilla) extraído para módulos TypeScript estritos em `src/`. Componentes tipados com interfaces do `src/types.ts`; cada página vira um módulo independente; dispatcher com readyState check (L-001) e try/catch (L-002). Build pipeline Vite produz o bundle final `assets/renderer.js`.
