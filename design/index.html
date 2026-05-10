@@ -192,9 +192,9 @@
 
 <div class="dp-note">
     <strong>How to use:</strong> cada component tem um <em>canvas</em> (visual)
-    + <em>code</em> (markup) + uma <em>API table</em> propondo a interface TS
-    quando virar componente. AL-22 estabelece esse contrato; AL-23 migra o
-    renderer pra usar componentes tipados.
+    + <em>code</em> (markup) + uma <em>API table</em> com a interface TS real.
+    Os canvases marcados com <code>data-showcase</code> são populados pelo módulo
+    real em <code>/dist/showcase.js</code> — não HTML mock.
 </div>
 
 <!-- ─── COLOR PALETTE ──────────────────────────────────────────────────── -->
@@ -276,21 +276,20 @@
 </p>
 
 <h3 class="dp-comp">Primary (solid black on hover terra)</h3>
-<div class="dp-canvas">
+<div class="dp-canvas" data-showcase="button-primary">
     <div class="dp-row">
         <button class="ct-submit" style="font-family: inherit; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; padding: 1.4vh 2rem; background: #0a0a0a; color: #fff; border: 1px solid #0a0a0a; border-radius: 2px; cursor: pointer;">Enviar →</button>
     </div>
 </div>
-<pre class="dp-code"><span class="c">// Future TS API (AL-23):</span>
-<span class="k">&lt;Button</span> variant=<span class="s">"primary"</span> arrow<span class="k">&gt;</span>Enviar<span class="k">&lt;/Button&gt;</span></pre>
+<pre class="dp-code"><span class="k">Button</span>({ variant: <span class="s">"primary"</span>, label: <span class="s">"Enviar"</span>, arrow: <span class="s">true</span> })</pre>
 
 <h3 class="dp-comp">Secondary (border only)</h3>
-<div class="dp-canvas">
+<div class="dp-canvas" data-showcase="button-secondary">
     <div class="dp-row">
         <a href="#" style="display: inline-block; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; padding: 1.4vh 2rem; border: 1px solid #0a0a0a; color: #0a0a0a; text-decoration: none; border-radius: 2px;">Para parceiros →</a>
     </div>
 </div>
-<pre class="dp-code"><span class="k">&lt;Button</span> variant=<span class="s">"secondary"</span> as=<span class="s">"a"</span> href=<span class="s">"/faca-parte/"</span><span class="k">&gt;</span>Para parceiros<span class="k">&lt;/Button&gt;</span></pre>
+<pre class="dp-code"><span class="k">Button</span>({ variant: <span class="s">"secondary"</span>, as: <span class="s">"a"</span>, href: <span class="s">"/faca-parte/"</span>, label: <span class="s">"Para parceiros"</span>, arrow: <span class="s">true</span> })</pre>
 
 <table class="dp-api-table">
     <thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Notes</th></tr></thead>
@@ -314,7 +313,7 @@
 <div class="dp-canvas">
     <div class="dp-row">
         <span style="font-size: 1rem; font-weight: 700;">Desenvolvimento Web</span>
-        <span class="market-card-online">online</span>
+        <span data-showcase="badge-online"><span class="market-card-online">online</span></span>
     </div>
 </div>
 <pre class="dp-code"><span class="k">&lt;Badge</span> tone=<span class="s">"online"</span><span class="k">&gt;</span>online<span class="k">&lt;/Badge&gt;</span></pre>
@@ -323,7 +322,7 @@
 <div class="dp-canvas">
     <div class="dp-row">
         <span style="font-size: 1rem; font-weight: 700;">Inteligência e Tecnologia</span>
-        <span class="market-card-children">+11</span>
+        <span data-showcase="badge-counter"><span class="market-card-children">+11</span></span>
     </div>
 </div>
 <pre class="dp-code"><span class="k">&lt;Badge</span> tone=<span class="s">"counter"</span><span class="k">&gt;</span>+11<span class="k">&lt;/Badge&gt;</span></pre>
@@ -344,17 +343,17 @@
 
 <h3 class="dp-comp">Filter chip with count</h3>
 <div class="dp-canvas">
-    <div class="dp-row">
+    <div class="dp-row" data-showcase="filter-chips">
         <button class="sup-chip is-active" data-cat="" aria-pressed="true">Todos <span class="sup-count">12</span></button>
         <button class="sup-chip" data-cat="digital">Digital <span class="sup-count">8</span></button>
         <button class="sup-chip" data-cat="bem-estar">Bem-estar <span class="sup-count">5</span></button>
     </div>
 </div>
-<pre class="dp-code"><span class="k">&lt;FilterChip</span> active count={<span class="s">12</span>}<span class="k">&gt;</span>Todos<span class="k">&lt;/FilterChip&gt;</span>
-<span class="k">&lt;FilterChip</span> count={<span class="s">8</span>} onSelect={selectCat}<span class="k">&gt;</span>Digital<span class="k">&lt;/FilterChip&gt;</span></pre>
+<pre class="dp-code"><span class="k">FilterChip</span>({ id: <span class="s">""</span>, label: <span class="s">"Todos"</span>, count: <span class="s">12</span>, active: <span class="s">true</span> })
+<span class="k">FilterChip</span>({ id: <span class="s">"digital"</span>, label: <span class="s">"Digital"</span>, count: <span class="s">8</span> })</pre>
 
 <h3 class="dp-comp">Toggle chip (boolean)</h3>
-<div class="dp-canvas">
+<div class="dp-canvas" data-showcase="toggle-chip">
     <label class="toggle-chip">
         <input type="checkbox">
         <span>Prestados pela Arte Longa</span>
@@ -383,51 +382,21 @@
 
 <h3 class="dp-comp">Hours × rate</h3>
 <div class="dp-canvas">
-    <ul class="market-grid" style="display: block;">
-        <li class="market-card dp-card-demo">
-            <a class="market-card-link" href="#">
-                <div class="market-card-titulo">Desenvolvimento Web <span class="market-card-online">online</span></div>
-                <div class="market-card-price">R$ 4.000 — R$ 20.000</div>
-                <div class="market-card-formula">Tarifa-base R$ 100/h</div>
-                <div class="market-card-resp">Yuri</div>
-            </a>
-        </li>
-    </ul>
+    <ul class="market-grid" style="display: block;" data-showcase="service-card-hours"></ul>
 </div>
 
 <h3 class="dp-comp">Plans (semanal/mensal)</h3>
 <div class="dp-canvas">
-    <ul class="market-grid" style="display: block;">
-        <li class="market-card dp-card-demo">
-            <a class="market-card-link" href="#">
-                <div class="market-card-titulo">Mentoria Espiritual <span class="market-card-online">online</span></div>
-                <ul class="market-card-planos">
-                    <li><span class="plano-label">Sessão avulsa</span><span class="plano-preco">R$ 100</span></li>
-                    <li><span class="plano-label">Semanal</span><span class="plano-preco">R$ 400/mês</span></li>
-                    <li class="is-consult"><span class="plano-label">Mensal</span><span class="plano-preco">Sob consulta</span></li>
-                </ul>
-                <div class="market-card-resp">Aime</div>
-            </a>
-        </li>
-    </ul>
+    <ul class="market-grid" style="display: block;" data-showcase="service-card-planos"></ul>
 </div>
 
 <h3 class="dp-comp">Sob consulta</h3>
 <div class="dp-canvas">
-    <ul class="market-grid" style="display: block;">
-        <li class="market-card dp-card-demo">
-            <a class="market-card-link" href="#">
-                <div class="market-card-titulo">Babá</div>
-                <div class="market-card-price is-consult">Sob consulta</div>
-                <div class="market-card-resp">Kelly</div>
-            </a>
-        </li>
-    </ul>
+    <ul class="market-grid" style="display: block;" data-showcase="service-card-consult"></ul>
 </div>
 
-<pre class="dp-code"><span class="k">&lt;ServiceCard</span> service={s} <span class="k">/&gt;</span>
-<span class="c">// Internamente decide planos vs hours×rate vs "Sob consulta"
-// baseado em s.hoursLow/High + AL.computeFaixaPreco(s).</span></pre>
+<pre class="dp-code"><span class="k">ServiceCard</span>({ service: s, respNames: <span class="s">"Yuri"</span>, faixa: AL.computeFaixaPreco(s) })
+<span class="c">// Decide planos vs hours×rate vs "Sob consulta" via faixa.planos / faixa.preco.</span></pre>
 
 <table class="dp-api-table">
     <thead><tr><th>Prop</th><th>Type</th><th>Notes</th></tr></thead>
@@ -444,7 +413,7 @@
     ou pra clear filter). Nunca grid vazio sem texto.
 </p>
 
-<div class="dp-canvas">
+<div class="dp-canvas" data-showcase="empty-state">
     <p class="market-empty">
         Nenhum resultado por aqui.
         <a href="/contato/">Entre em contato para encontrarmos uma solução →</a>
@@ -505,9 +474,10 @@
     <li><a href="/">← voltar pra home</a></li>
     <li>Schemas: <code>openapi/artelonga.yaml</code></li>
     <li>Types: <code>src/types.ts</code></li>
-    <li>AL-22 (esse trabalho): <code>work/artelonga/AL-22.md</code></li>
-    <li>AL-23 (renderer migration): <code>work/artelonga/AL-23.md</code></li>
+    <li>AL-22: <code>work/artelonga/AL-22.md</code></li>
+    <li>AL-23: <code>work/artelonga/AL-23.md</code> · componentes em <code>src/components/</code></li>
 </ul>
 
+<script type="module" src="/dist/showcase.js"></script>
 </body>
 </html>

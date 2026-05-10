@@ -9,6 +9,20 @@ Each release links to a *why* (the pain or opportunity it addresses) so a reader
 
 ## [Unreleased]
 
+### Refactored (AL-23: Migrar renderer.js para componentes TS modulares)
+
+`assets/renderer.js` (~1900 linhas de JS vanilla) extraído para módulos TypeScript estritos em `src/`. Componentes tipados com interfaces do `src/types.ts`; cada página vira um módulo independente; dispatcher com readyState check (L-001) e try/catch (L-002). Build pipeline Vite produz o bundle final `assets/renderer.js`.
+
+**Estrutura criada:**
+- `src/lib/` — helpers puros: `esc`, `norm`, `slugify`, `anglicism`, `markdown`, `ui`
+- `src/components/` — 11 componentes: `Badge`, `Button`, `FilterChip`, `ToggleChip`, `ServiceCard`, `ProfileCard`, `EmptyState`, `SearchInput`, `LocationInput`, `SiteHeader`, `SiteFooter`
+- `src/pages/` — 8 page modules: `home`, `parceiros`, `servicos`, `solucoes`, `recursos`, `profile`, `service`, `poem`
+- `src/dispatcher.ts` — lazy imports por `body[data-page]`; async try/catch
+- `src/showcase.ts` — popula `/design/` com componentes reais (não HTML mock)
+- `vite.config.ts` + `vite.renderer.config.ts` — dois targets: IIFE → `assets/renderer.js`, ESM → `dist/showcase.js`
+
+**Por que:** renderer monolítico de ~1900 linhas dificultava onboarding, reuso e testes. Agora cada componente tem interface estrita compilada; bugs de shape (typo em field name, props erradas) aparecem em compile time em vez de runtime. `/design/` palette usa os mesmos componentes que o site em vez de HTML mock.
+
 ### Refactored (AL-1 + AL-2: LGPD per-handle YAML migration · template)
 
 Tanto perfis de membros (AL-1, 36 entries) quanto comunidades parceiras (AL-2, 3 entries) tem agora arquivo individual por handle (`<handle>/profile.yaml`, `<handle>/community.yaml`) como source of truth, substituindo os arrays `people` e `communities` hardcoded em `assets/data.js`. Exercício do Art. 18 LGPD (acesso, correção, deleção) é viável via PR na pasta do handle. `data.js` continua sendo o artefato consumido pelo renderer — comportamento runtime zero-alteração.

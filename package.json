@@ -4,9 +4,14 @@
   "type": "module",
   "devDependencies": {
     "js-yaml": "^4.1.0",
-    "typescript": "^5.4.0"
+    "typescript": "^5.4.0",
+    "vite": "^6.3.5"
   },
   "scripts": {
+    "build": "vite build --config vite.renderer.config.ts && vite build",
+    "build:renderer": "vite build --config vite.renderer.config.ts",
+    "build:showcase": "vite build",
+    "dev": "vite",
     "bake-people": "node tools/bake-people.mjs",
     "bake-communities": "node tools/bake-communities.mjs",
     "bake": "npm run bake-people && npm run bake-communities",
