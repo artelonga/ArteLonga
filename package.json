@@ -10,6 +10,9 @@
     "bake-people": "node tools/bake-people.mjs",
     "bake-communities": "node tools/bake-communities.mjs",
     "bake": "npm run bake-people && npm run bake-communities",
+    "audit-shells": "node tools/audit-shells.mjs",
+    "audit-consistency": "node tools/audit-consistency.mjs",
+    "audit": "npm run audit-shells && npm run audit-consistency",
     "typecheck": "tsc --noEmit"
   }
 }

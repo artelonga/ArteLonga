@@ -138,6 +138,21 @@ Para adicionar uma nova comunidade:
 
 > **Tip:** `npm run bake` roda os dois bakes em sequência (people + communities).
 
+## Audits (rodar antes de PR)
+
+```
+npm run audit              # roda os dois abaixo
+npm run audit-shells       # cada slug em data.js tem servicos/<slug>/index.html?
+npm run audit-consistency  # profile.communities ↔ community.membros consistente?
+npm run typecheck          # tsc --noEmit (valida src/*.ts contra openapi types)
+```
+
+- `audit-shells` previne L-007 (URL referenciada sem shell HTML = 404).
+- `audit-consistency` previne o caso Kelly/Matheus (declarados em communities mas não em membros).
+- `typecheck` valida que TS files (`src/`) batem com types do `src/types.ts`.
+
+Todos exitam com código 1 se gap detectado. Listam exatamente o que está faltando.
+
 ## Design system
 
 Princípio: **separar form de content**.
