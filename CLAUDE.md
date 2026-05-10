@@ -174,23 +174,32 @@ Quando criar componente novo:
 
 ## Convenção de PR
 
-**1 PR por AL.** Cada `AL-N.md` em `work/artelonga/` corresponde a exatamente uma branch + uma PR.
+**1 conventional commit por AL.** PRs podem bundlar várias ALs quando isso expedita trabalho — o tracking fica nos commits, não na cardinalidade da PR.
 
-- **Branch:** `feat/al-N-<slug>` ou `fix/al-N-<slug>` ou `refactor/al-N-<slug>`.
-- **PR title:** `<tipo>(AL-N): <título da task>`.
-- **PR body:** referencia o `work/artelonga/AL-N.md` + bullet do entregue.
-- **Após merge:** marca `status: done` no AL-N.md (commit separado ou no merge).
+**Commits:**
+- Cada AL = pelo menos 1 commit `<tipo>(AL-N): <descrição>`.
+- Tipos: `feat` (minor bump), `fix` (patch), `refactor` (patch), `docs` (patch), `chore` (no bump), `test` (patch).
+- Multi-commit por AL é OK (`feat(AL-N): part 1`, `feat(AL-N): part 2`) se ajuda review/bisect.
 
-**Razões:**
-- Review focado — reviewer carrega contexto de UMA AL por vez.
-- Rollback granular — revert de PR = revert de AL.
-- Histórico legível — `gh pr view <num>` mostra todo o trabalho de uma AL.
-- Co-auto compatível — cada AL pode ser executada por agente separado em paralelo.
+**Branches:**
+- `feat/al-N-<slug>` quando AL única na branch.
+- `feat/al-N+M-<slug>` ou outro nome quando bundla múltiplas (sem padrão estrito).
 
-**Quando 2 ALs convergem no mesmo arquivo:**
-1. Mergeia uma primeiro.
-2. Rebase a outra contra main após merge.
-3. Resolve conflitos.
-4. Abre PR independente.
+**PRs:**
+- Title: `<tipo>(AL-N): <título>` ou `<tipo>(AL-N+M): <descrição combinada>` se bundlado.
+- Body: lista as ALs cobertas + bullet do entregue por AL. Referencia `work/artelonga/AL-N.md`.
+- **Após merge:** marca `status: done` em cada AL-N.md afetada.
 
-**Exceção rara:** se duas ALs são pequenas + literalmente o mesmo refactor numa região do código, podem ir juntas com PR title `<tipo>(AL-X+Y): <descrição>`. Documentar no body por que bundlou. Convenção default é split.
+**Semver:**
+- Bump derivado dos COMMITS, não da PR. `feat: …` em qualquer commit → minor bump no release.
+- Multi-feat na PR = um minor bump (não cumulativo).
+
+**Quando preferir split:**
+- ALs com áreas de código disjuntas → 1 PR cada (review mais focado).
+- Risco de regressão alto → isolar pra rollback granular.
+
+**Quando preferir bundle:**
+- ALs pequenas + work já feito junto → não desbundla por dogma.
+- Refactor que toca mesma região → menos rebase.
+
+Convenção é guideline, não regra rígida. Princípio: **rastreabilidade vem dos conventional commits**, PRs são unidades de review/deploy.
