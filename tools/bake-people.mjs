@@ -23,6 +23,19 @@ const END_MARKER   = '// AUTO-GENERATED:PEOPLE-END';
 const POEMS_START_MARKER = '// AUTO-GENERATED:POEMS-START';
 const POEMS_END_MARKER   = '// AUTO-GENERATED:POEMS-END';
 
+// ── Pre-flight: schema validation (AL-25) ──────────────────────────────────
+// Roda validate-yaml.mjs antes de bakear. Se algum profile.yaml falhar
+// schema, bake aborta sem tocar data.js.
+try {
+    execSync('node tools/validate-yaml.mjs --type=people', {
+        cwd: root,
+        stdio: 'inherit',
+    });
+} catch {
+    console.error('[bake-people] ABORT: schema validation failed (see above).');
+    process.exit(1);
+}
+
 // ── Load order ──────────────────────────────────────────────────────────────
 const order = fs.existsSync(ORDER_FILE)
     ? fs.readFileSync(ORDER_FILE, 'utf8').trim().split('\n').map(s => s.trim()).filter(Boolean)

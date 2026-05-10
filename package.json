@@ -3,6 +3,8 @@
   "private": true,
   "type": "module",
   "devDependencies": {
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
     "husky": "^9.1.0",
     "js-yaml": "^4.1.0",
     "typescript": "^5.4.0",
@@ -13,6 +15,7 @@
     "build:renderer": "vite build --config vite.renderer.config.ts",
     "build:showcase": "vite build",
     "dev": "vite",
+    "validate-yaml": "node tools/validate-yaml.mjs",
     "bake-people": "node tools/bake-people.mjs",
     "bake-communities": "node tools/bake-communities.mjs",
     "bake": "npm run bake-people && npm run bake-communities",

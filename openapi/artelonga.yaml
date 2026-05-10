@@ -80,7 +80,19 @@ components:
 
     Tag:
       type: string
-      enum: [fundador, parceiro, comunidade, em-memoria, guardiao, familia, contabilidade, alimentacao]
+      enum:
+        - fundador
+        - parceiro
+        - comunidade
+        - em-memoria
+        - em-breve
+        - guardiao
+        - familia
+        - menor
+        - referencia
+        - aposentado
+        - contabilidade
+        - alimentacao
 
     Citacao:
       type: object
@@ -101,7 +113,7 @@ components:
           type: string
         data:
           type: string
-          format: date
+          description: ISO-8601 OU ano só ("2015") OU date-time. Free-form pra acomodar citações imprecisas.
         url:
           type: string
           format: uri
@@ -211,12 +223,15 @@ components:
           nullable: true
         birthDate:
           type: string
-          format: date-time
+          description: ISO-8601, date OR date-time. Date-only (1957-03-15) é válido pra registros históricos sem hora; date-time (1993-06-24T12:30:00-03:00) pra registros precisos.
+          oneOf:
+            - format: date
+            - format: date-time
         bioTitle:
           type: string
         bioCurta:
           type: string
-          maxLength: 280
+          description: Resumo curto da bio. Soft-cap 280 chars (recomendado pra teaser); não enforced.
         bio:
           type: string
           description: Markdown inline (links, ênfases). Multi-linha via `\|` literal.
@@ -256,8 +271,7 @@ components:
           default: false
         externalUrl:
           type: string
-          format: uri
-          description: Pra type=business com site próprio.
+          description: URL externa OU path relativo (`/retro-umarizal/`). Pra type=business com site próprio ou redirect interno.
       required: [handle, type, nome]
 
     Parceria:

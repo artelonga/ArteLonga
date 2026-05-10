@@ -151,6 +151,8 @@ npm run typecheck          # tsc --noEmit (valida src/*.ts contra openapi types)
 - `audit-consistency` previne o caso Kelly/Matheus (declarados em communities mas não em membros).
 - `typecheck` valida que TS files (`src/`) batem com types do `src/types.ts`.
 
+**`npm run validate-yaml`** — valida cada `<handle>/profile.yaml` e `<handle>/community.yaml` contra os schemas em `openapi/artelonga.yaml#/components/schemas/{Person,Community}`. Roda **automaticamente** no início de `npm run bake-people` / `npm run bake-communities` (pre-flight: bake aborta se gap). Use direto pra checar sem rodar bake.
+
 Todos exitam com código 1 se gap detectado. Listam exatamente o que está faltando.
 
 ## Pre-commit hook (L-021 prevention)
