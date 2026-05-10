@@ -8,6 +8,47 @@ title: CLAUDE.md
 Agência de gestão de carreira, marca e produto, tecnologia e comunicação.
 Site público em [artelonga.com.br](https://artelonga.com.br).
 
+## Mapa de documentação
+
+Para entrar no projeto, leia nessa ordem:
+
+| Doc | O que é | Quando consultar |
+|---|---|---|
+| `docs/STATE.md` | **Snapshot do projeto agora** — stack, 4 fases narradas, backlog aberto, princípios | Onboarding em 10min |
+| `docs/LESSONS.md` | **Catálogo append-only de anti-patterns** mineradas dos fixes históricos (L-001..L-020) | Antes de começar qualquer trabalho |
+| `CHANGELOG.md` | Histórico narrativo por release com o "why" | Quando precisar contexto histórico |
+| `work/artelonga/AL-N.md` | **Backlog co-auto** — tasks abertas (todo) + done retroativas | Pegar próximo trabalho |
+| Esse `CLAUDE.md` | Stack, conventions, V bumping, como editar | Sempre carregado pelo agente |
+
+## Rodar localmente
+
+Site é estático; basta servir os arquivos. Escolha um:
+
+```bash
+# Python 3 (vem nativo no macOS)
+python3 -m http.server 8000
+
+# Ou Node
+npx serve .
+# ou
+npx http-server -p 8000
+```
+
+Acessa em `http://localhost:8000`. Mudanças em arquivos = hard reload no browser (sem hot reload — é vanilla JS).
+
+**Nota:** o cache do `bootstrap.js?v=...` significa que pra ver CSS/JS atualizados em testes locais, você pode (a) bumpar V, (b) DevTools > Disable cache (com DevTools aberto), ou (c) hard reload (`Cmd+Shift+R`).
+
+## Deploy
+
+**Main → produção automática.** GitHub Pages detecta push em `main` e republica em ~1min. Cache Fastly (CDN do GH Pages) tem TTL de ~10min — propagação completa pode levar isso. Bumpar `V` em `bootstrap.js` invalida assets versionados imediatamente.
+
+**Branch → preview manual.** GH Pages serve só `main`. Pra testar uma branch sem mergear:
+- `git push origin <branch>` + checkout local em outra dev machine.
+- Ou abrir PR e usar [GitHub Codespaces](https://github.com/codespaces) com a branch + `python3 -m http.server`.
+- Ou (recomendado) merge PR com `--squash` em main após review — deploy é trivial e rollback é só reverter.
+
+**Sem CI build step.** Não há `npm run build`. Os bakes de `data.js` (people, communities) são opt-in: rode antes de commitar se editou `<handle>/profile.yaml` ou `<handle>/community.yaml` (ver "Como editar perfil" abaixo).
+
 ## Universe
 
 - **Slug**: `artelonga`
