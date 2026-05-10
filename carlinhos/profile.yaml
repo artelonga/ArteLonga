@@ -1,0 +1,22 @@
+handle: carlinhos
+type: person
+nome: Carlinhos
+role: Distribuição de Frutas
+tags:
+  - parceiro
+  - familia
+  - em-memoria
+  - guardiao
+bio: >-
+  Guardião. Quem passou pelo Quilombo conheceu o Carlinhos — e pela fruta que ele distribuía, a generosidade da terra
+  virou lembrança viva.
+
+
+  [Leia mais no quilomboaraucaria.org →](https://quilomboaraucaria.org/blog/carlinhos)
+emMemoria: true
+birthDate: '1965-06-01T12:00:00-03:00'
+deathDate: '2025-06-01'
+servicos:
+  - Distribuição de Frutas
+communities:
+  - quilomboaraucaria

@@ -1,0 +1,13 @@
+handle: rodney
+type: person
+nome: Rodney
+role: Piloto de Drone
+tags:
+  - parceiro
+bio: ''
+location:
+  estado: SP
+  cidade: São Paulo
+  bairro: Cangaíba
+servicos:
+  - Piloto de Drone

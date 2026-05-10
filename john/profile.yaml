@@ -1,0 +1,13 @@
+handle: john
+type: person
+nome: John
+role: ''
+tags:
+  - parceiro
+  - menor
+bio: ''
+underage: true
+servicos:
+  - Futuro
+  - Filho da Aime
+parentHandle: aime

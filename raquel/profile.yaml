@@ -1,0 +1,12 @@
+handle: raquel
+type: person
+nome: Raquel
+role: Presença
+tags:
+  - parceiro
+bio: ''
+hourlyRate: 275
+servicos:
+  - Saúde Mental
+  - Psicologia Clínica
+  - Autocuidado

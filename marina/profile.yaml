@@ -1,0 +1,12 @@
+handle: marina
+type: person
+nome: Marina
+role: Cuidado
+tags:
+  - parceiro
+bio: ''
+servicos:
+  - Acompanhamento Nutricional
+  - Alfabetização
+  - Cuidado com o Idoso
+  - Reforço Escolar

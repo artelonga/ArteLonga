@@ -1,0 +1,20 @@
+name: work
+version: 1
+content_types:
+  - user-story
+  - task
+properties:
+  status:
+    kind: text
+    required: true
+  parent:
+    kind: link
+  module:
+    kind: text
+  priority:
+    kind: text
+  labels:
+    kind: list
+
+# Conteúdo parseado de markdown:
+# user-story / task: ## Given, ## When, ## Then -> {context, action, outcome}

@@ -1,0 +1,14 @@
+handle: kiyoshi
+type: person
+nome: Kiyoshi (Shin)
+role: ''
+tags:
+  - parceiro
+  - familia
+  - aposentado
+bio: ''
+aposentado: true
+servicos:
+  - Pai do Yuri
+  - Poeta
+parentHandle: yuri

@@ -1,0 +1,51 @@
+handle: alice
+type: person
+nome: Alice
+role: Movimento
+tags:
+  - parceiro
+pic: /alice/alice.png
+bioAudio: /alice/alice.ogg
+bioHidden: >-
+  ...has recently been introduced to the measurement of weight and length and enjoys working with peers, weighing
+  different objects using the scale and recording the weight of objects in her math note book. Alice places great effort
+  into everything that she works on and always asks for questions that are challenging and exciting.
+bio: >-
+  *Culture* — This is Alice's favorite area in the classroom. She is very passionate about the world around her and has
+  a real thirst for knowledge. She loves to do projects on all types of topics and she is organized and thorough in her
+  information. This year she has also been introduced to the universe, as well the passage of time. Alice's interests
+  are often heightened when she is able to make a model or display for the lovely projects which she completes and she
+  is very proud of these accomplishments. Alice always participates in group discussions and she listens attentively
+  questioning anything that she is not sure of. Alice is very interested in the world of around and she seems to have a
+  very good understanding about how different things function and why. The few projects that she has completed are
+  always interesting and informative. She is moving toward being more comfortable and confident when presenting to her
+  peers.
+servicos:
+  - Pensamento Islâmico
+  - Dança e Expressão Corporal
+essaysTitle: Ensaios · Pensamento Islâmico
+essays:
+  - titulo: ''
+    short: ''
+    long: ''
+  - titulo: ''
+    short: ''
+    long: ''
+  - titulo: ''
+    short: ''
+    long: ''
+  - titulo: ''
+    short: ''
+    long: ''
+  - titulo: ''
+    short: ''
+    long: ''
+  - titulo: ''
+    short: ''
+    long: ''
+  - titulo: ''
+    short: ''
+    long: ''
+  - titulo: ''
+    short: ''
+    long: ''
