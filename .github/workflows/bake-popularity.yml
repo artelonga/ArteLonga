@@ -1,0 +1,17 @@
+name: bake-popularity
+on:
+  schedule: [{ cron: '0 4 * * *' }]
+  workflow_dispatch: {}
+permissions: { contents: write }
+jobs:
+  bake:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          curl -fsSL "https://co.artelonga.com.br/api/v1/analytics/public/popularity?prefix=/servicos/&days=30" \
+            | jq -S '.' > assets/popularity.json
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: bake popularity.json"
+          file_pattern: assets/popularity.json

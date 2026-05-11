@@ -368,7 +368,7 @@
     ] }
   ];
   const BASE_URL = "https://artelonga.com.br";
-  function render$8() {
+  async function render$8() {
     setPageSEO({
       title: "Arte Longa — Semeando Sonhos",
       description: "Arte Longa — agência de gestão de carreira, marca e produto, tecnologia e comunicação.",
@@ -396,7 +396,16 @@
       [...AL.people, ...AL.communities].map((e) => [e.handle, e.nome])
     );
     const respNames = (handles) => (handles ?? []).map((h) => handleToNome[h] ?? h).join(", ");
-    const topo = servicos2.filter((s) => !s.parent);
+    const popularity = await fetch("/assets/popularity.json").then((r) => r.ok ? r.json() : { items: [] }).catch(() => ({ items: [] }));
+    const byPath = new Map(
+      (popularity.items ?? []).map((i) => [i.path, i.views])
+    );
+    const topo = servicos2.filter((s) => !s.parent).sort((a, b) => {
+      const va = byPath.get(`/servicos/${a.slug}/`) ?? 0;
+      const vb = byPath.get(`/servicos/${b.slug}/`) ?? 0;
+      if (va !== vb) return vb - va;
+      return a.titulo.localeCompare(b.titulo, "pt-BR");
+    });
     const byTitulo = new Map(servicos2.map((s) => [s.titulo, s]));
     const indexed = servicos2.map((s) => ({
       s,
