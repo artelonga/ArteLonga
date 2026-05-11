@@ -7,8 +7,14 @@
     <title>Contato — Arte Longa</title>
     <script src="/assets/bootstrap.js"></script>
     <style>
-        /* Critical shell CSS inlined to prevent CLS from async site.css/pages.css load.
-           Duplicates a subset of site.css/pages.css; keep in sync if those change. */
+        /* Critical shell CSS inlined to prevent CLS from async site.css/pages.css.
+           Mirrors site.css + the footer subset of pages.css. Values must match
+           exactly — diff from pages.css would itself cause a shift when pages.css
+           overrides (e.g., font-size/padding diffs nudge layout). Color values
+           omitted so pages.css can win the cascade on text colors (axe contrast).
+           Order trap: bootstrap.js's script tag is parsed BEFORE this <style>,
+           so injected <link>s end up cascaded EARLIER than this <style> block —
+           making this block win on any property declared here. */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -22,22 +28,25 @@
         }
         .site-brand { display: inline-flex; align-items: center; }
         .site-brand img { height: 36px; width: auto; display: block; }
-        .site-cta-parceiros {
-            display: inline-block; font-size: 0.7rem; letter-spacing: 0.18em;
-            text-transform: uppercase; font-weight: 700; color: #0a0a0a;
-            text-decoration: none; padding: 0.9vh 1rem;
-            border: 1px solid #0a0a0a; border-radius: 2px;
-        }
         .main { max-width: 920px; margin: 0 auto; padding: 3vh 7vw 8vh; }
-        .site-footer { padding: 2vh 5vw; text-align: center; }
-        .site-footer-inner { display: inline-flex; gap: 1rem; align-items: center; font-size: 0.8rem; }
-        .site-footer a { color: #767676; text-decoration: none; }
-        .site-footer .sep { color: #ddd; }
+        /* Footer geometry mirrors pages.css exactly — fixed bottom prevents
+           shift when pages.css applies its `position: fixed` after async load. */
+        .site-footer {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            padding: 1.6vh 7vw; border-top: 1px solid #eaeaea;
+            background: #fafafa; z-index: 50;
+        }
+        .site-footer-inner {
+            display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem;
+            font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase;
+            font-weight: 600;
+        }
         @media (max-width: 640px) {
             body { padding-bottom: 9vh; }
             .site-header { padding: 3vh 7vw 1vh; }
             .site-brand img { height: 30px; }
             .main { padding: 2vh 7vw 6vh; }
+            .site-footer { padding: 1.4vh 5vw; }
         }
         .ct-wrap { max-width: 720px; margin: 0 auto; padding: 4vh 0 6vh; }
         .ct-h1 {
