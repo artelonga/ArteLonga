@@ -7,9 +7,38 @@
     <title>Contato — Arte Longa</title>
     <script src="/assets/bootstrap.js"></script>
     <style>
-        /* Reserve footer space early to prevent CLS from pages.css dynamic load */
-        body { padding-bottom: 7vh; }
-        @media (max-width: 640px) { body { padding-bottom: 9vh; } }
+        /* Critical shell CSS inlined to prevent CLS from async site.css/pages.css load.
+           Duplicates a subset of site.css/pages.css; keep in sync if those change. */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background: #fff; color: #0a0a0a; min-height: 100vh; line-height: 1.55;
+            padding-bottom: 7vh;
+        }
+        .site-header { padding: 3vh 7vw 2vh; }
+        .site-header-inner {
+            max-width: 920px; margin: 0 auto;
+            display: flex; align-items: center; justify-content: space-between; gap: 2rem;
+        }
+        .site-brand { display: inline-flex; align-items: center; }
+        .site-brand img { height: 36px; width: auto; display: block; }
+        .site-cta-parceiros {
+            display: inline-block; font-size: 0.7rem; letter-spacing: 0.18em;
+            text-transform: uppercase; font-weight: 700; color: #0a0a0a;
+            text-decoration: none; padding: 0.9vh 1rem;
+            border: 1px solid #0a0a0a; border-radius: 2px;
+        }
+        .main { max-width: 920px; margin: 0 auto; padding: 3vh 7vw 8vh; }
+        .site-footer { padding: 2vh 5vw; text-align: center; }
+        .site-footer-inner { display: inline-flex; gap: 1rem; align-items: center; font-size: 0.8rem; }
+        .site-footer a { color: #767676; text-decoration: none; }
+        .site-footer .sep { color: #ddd; }
+        @media (max-width: 640px) {
+            body { padding-bottom: 9vh; }
+            .site-header { padding: 3vh 7vw 1vh; }
+            .site-brand img { height: 30px; }
+            .main { padding: 2vh 7vw 6vh; }
+        }
         .ct-wrap { max-width: 720px; margin: 0 auto; padding: 4vh 0 6vh; }
         .ct-h1 {
             font-size: clamp(2rem, 5vw, 3.4rem);
@@ -224,7 +253,7 @@
     <header class="site-header">
         <div class="site-header-inner">
             <a class="site-brand" href="/">
-                <img src="/logo-al.png" alt="Arte Longa" width="340" height="212">
+                <img src="/logo-al.png" alt="Arte Longa" width="58" height="36">
             </a>
             <a class="site-cta-parceiros" href="/faca-parte/">Para parceiros →</a>
         </div>
