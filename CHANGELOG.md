@@ -9,6 +9,35 @@ Each release links to a *why* (the pain or opportunity it addresses) so a reader
 
 ## [Unreleased]
 
+### Added (AL-48: Analytics activation pipeline)
+
+`assets/analytics.js` ENDPOINT ativado: eventos coletados em localStorage agora
+são enviados via batch POST para `https://co.artelonga.com.br/api/v1/telemetry/events`
+(CO-177 CORS + universe_key wired). Fila local continua como buffer; backoff
+exponencial mantém resiliência a falhas de rede.
+
+`.github/workflows/bake-popularity.yml` adicionado: roda diariamente às 04h UTC
+(e via `workflow_dispatch`) buscando
+`/api/v1/analytics/public/popularity?prefix=/servicos/&days=30` e commitando
+`assets/popularity.json` com `jq -S` (sorted keys para diff limpo). Usa
+`stefanzweifel/git-auto-commit-action@v5`; só commita se o arquivo mudou.
+
+`assets/popularity.json` adicionado como seed inicial `{ "items": [] }` para que
+a página home não quebre antes do primeiro bake nightly.
+
+`src/pages/home.ts` atualizado: `render()` passou a ser `async`. Carrega
+`/assets/popularity.json` antes de montar o grid; se ausente ou com erro HTTP,
+usa `{ items: [] }` como fallback (sort alfabético). Serviços de topo são
+ordenados por `views desc` com tie-break `localeCompare` pt-BR. `renderer.js`
+reconstruído via `npm run build:renderer`.
+
+`/analytics/` dashboard já consumia `ENDPOINT_BASE` correto e já tinha fallback
+localStorage — nenhuma mudança de JS necessária.
+
+**Por que:** CO-177/178/179/180 mergeadas em 2026-05-11 desbloqueiam todas as
+4 sub-tasks. Ranking empírico de serviços substitui ordem de inserção; telemetria
+passa a fluir em tempo real para o backend.
+
 ### Added (AL-47: SEO + public polish — structured data, OG, sitemap, robots)
 
 `src/lib/seo.ts` adicionado: helper `setPageSEO()` injeta no `<head>` canonical

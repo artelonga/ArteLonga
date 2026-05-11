@@ -44,8 +44,7 @@
     // ─── CONFIG ──────────────────────────────────────────────────────────────
     const SCHEMA_VERSION = 1;
     const SITE = "artelonga";
-    // TODO: set when artelonga/co exposes POST /events. While empty, events queue locally.
-    const ENDPOINT = "";
+    const ENDPOINT = "https://co.artelonga.com.br/api/v1/telemetry/events";
 
     // Active experiments. Add entries to launch A/B tests; weights are arbitrary integers
     // (assignment uses sum of weights as the bucket size).
