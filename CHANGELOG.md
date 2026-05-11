@@ -9,6 +9,31 @@ Each release links to a *why* (the pain or opportunity it addresses) so a reader
 
 ## [Unreleased]
 
+### Added (AL-44: Audit + automation hardening — handles + STATE auto-regen)
+
+`tools/audit-handles.mjs` adicionado: itera todas as referências de handle em
+`data.js` (service.responsavel, citacoes.autor, subMembers, parentHandle,
+communities, community.membros, parcerias.de, parcerias.contribuicoes.quem) e
+valida que cada handle resolve via `AL.get()`. Exit 1 lista cada referência
+órfã com source path. Previne typos de handle e referências a perfis removidos.
+
+`npm run audit-handles` adicionado ao `package.json`. Combo `npm run audit`
+extendido para incluir audit-handles (passa a rodar audit-shells + audit-consistency
++ audit-handles em sequência).
+
+`.github/workflows/bake-state.yml` adicionado: roda `tools/bake-state.mjs`
+no primeiro dia de cada mês (cron `0 3 1 * *`) + via `workflow_dispatch` manual.
+Commita `docs/STATE.md` automaticamente se houve drift, via
+`stefanzweifel/git-auto-commit-action@v5`. Mantém STATE.md current sem intervenção.
+
+CLAUDE.md documentado com ambos (`## Audits` + `## GitHub Actions`).
+
+**Por que:** audit-handles fecha lacuna onde typo em handle passava por todas
+as validações existentes e só explodia em runtime. STATE.md estaria stale
+indefinidamente sem o workflow de auto-regen mensal.
+
+
+
 ### Refactored (AL-27: Migrar Alice essays inline → portfolio[kind=essay] + renderEssay)
 
 `alice/profile.yaml` substituiu os campos legado `essaysTitle` + `essays[]` por

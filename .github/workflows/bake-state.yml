@@ -1,0 +1,18 @@
+name: bake-state
+on:
+  schedule: [{ cron: '0 3 1 * *' }]
+  workflow_dispatch: {}
+permissions: { contents: write }
+jobs:
+  bake:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - run: npm ci
+      - run: node tools/bake-state.mjs
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore(state): auto-bake STATE.md"
+          file_pattern: docs/STATE.md
