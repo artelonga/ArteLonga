@@ -5,9 +5,24 @@ Versioning follows [semver](https://semver.org/) (pre-1.0 — breaking changes c
 
 Each release links to a *why* (the pain or opportunity it addresses) so a reader 6 months from now can reconstruct the thinking.
 
+`AL-N` em headers de entrada refere-se a `work/artelonga/AL-N.md` — board de tarefas
+co-auto. Convenção em CLAUDE.md.
+
 ---
 
 ## [Unreleased]
+
+---
+
+## [0.13.0] — 2026-05-11
+
+**Why**. Estabelecimento do board de tarefas `work/artelonga/` (co-auto compatível)
+e onda concentrada de fundação técnica: LGPD compliance via per-handle YAML (AL-1/2/26/27/46
+fecham o ciclo content/form para todo o domínio editável), TS strict + Vite build em vez
+de renderer.js monolítico (AL-23), persistência server-side de leads (AL-4), memory system
+durável (AL-3), audit automation + STATE auto-regen (AL-44), quality gates em CI com
+Playwright + axe + Lighthouse (AL-45, AL-49), SEO baseline com JSON-LD + sitemap (AL-47),
+e ativação do endpoint de analytics + popularity ranking de serviços (AL-48).
 
 ### Fixed (AL-49: Quality budget close-the-gap — a11y contrast + SEO + CLS + perf)
 
@@ -101,41 +116,6 @@ no Google e sem preview em shares sociais. JSON-LD + OG + sitemap habilitam
 rich results (Person card, Service schema) e preview profissional em WhatsApp e
 LinkedIn sem mudança de infraestrutura (site ainda estático).
 
-### Added (AL-44: Audit + automation hardening — handles + STATE auto-regen)
-
-`tools/audit-handles.mjs` adicionado: itera todas as referências de handle em
-`data.js` (service.responsavel, citacoes.autor, subMembers, parentHandle,
-communities, community.membros, parcerias.de, parcerias.contribuicoes.quem) e
-valida que cada handle resolve via `AL.get()`. Exit 1 lista cada referência
-órfã com source path. Previne typos de handle e referências a perfis removidos.
-
-`npm run audit-handles` adicionado ao `package.json`. Combo `npm run audit`
-extendido para incluir audit-handles (passa a rodar audit-shells + audit-consistency
-+ audit-handles em sequência).
-
-`.github/workflows/bake-state.yml` adicionado: roda `tools/bake-state.mjs`
-no primeiro dia de cada mês (cron `0 3 1 * *`) + via `workflow_dispatch` manual.
-Commita `docs/STATE.md` automaticamente se houve drift, via
-`stefanzweifel/git-auto-commit-action@v5`. Mantém STATE.md current sem intervenção.
-
-CLAUDE.md documentado com ambos (`## Audits` + `## GitHub Actions`).
-
-**Por que:** audit-handles fecha lacuna onde typo em handle passava por todas
-as validações existentes e só explodia em runtime. STATE.md estaria stale
-indefinidamente sem o workflow de auto-regen mensal.
-
-### Added (AL-45: Test + quality infrastructure — Playwright + axe + Lighthouse CI)
-
-Pipeline de qualidade automática para PRs: `tests/e2e/smoke.spec.ts` cobre 9 páginas com
-Playwright (status 200, sem L-002 fallback, sem JS errors, h1 correto) + `@axe-core/playwright`
-(zero violações axe critical/serious, exceto `color-contrast` desabilitado como baseline issue).
-`.lighthouserc.js` define budget de performance/SEO/a11y. `.github/workflows/quality.yml` roda
-em todo PR e push. Baseline issue documentada: `color-contrast` generalizado no CSS (cinzas
-leves — fix em PR separado).
-
-**Por que:** regressões de UX, a11y e performance eram detectadas apenas em smoke test manual
-pós-merge. Essa pipeline unifica 3 concerns (smoke, a11y, perf) em um único gate de PR.
-
 ### Refactored (AL-46: Content/form completeness — services + missions + solutions + finances → YAML)
 
 `assets/data.js` agora tem ~90% do conteúdo AUTO-GENERATED a partir de YAMLs per-item.
@@ -165,6 +145,41 @@ Essa migração fecha o loop: toda a content layer de data.js é agora editável
 com schema validation pre-bake. Adicionar serviço = editar YAML + bake — sem edição manual
 em data.js. Mata L-021 de raiz para as 4 novas seções.
 
+### Added (AL-45: Test + quality infrastructure — Playwright + axe + Lighthouse CI)
+
+Pipeline de qualidade automática para PRs: `tests/e2e/smoke.spec.ts` cobre 9 páginas com
+Playwright (status 200, sem L-002 fallback, sem JS errors, h1 correto) + `@axe-core/playwright`
+(zero violações axe critical/serious, exceto `color-contrast` desabilitado como baseline issue).
+`.lighthouserc.js` define budget de performance/SEO/a11y. `.github/workflows/quality.yml` roda
+em todo PR e push. Baseline issue documentada: `color-contrast` generalizado no CSS (cinzas
+leves — fix em PR separado).
+
+**Por que:** regressões de UX, a11y e performance eram detectadas apenas em smoke test manual
+pós-merge. Essa pipeline unifica 3 concerns (smoke, a11y, perf) em um único gate de PR.
+
+### Added (AL-44: Audit + automation hardening — handles + STATE auto-regen)
+
+`tools/audit-handles.mjs` adicionado: itera todas as referências de handle em
+`data.js` (service.responsavel, citacoes.autor, subMembers, parentHandle,
+communities, community.membros, parcerias.de, parcerias.contribuicoes.quem) e
+valida que cada handle resolve via `AL.get()`. Exit 1 lista cada referência
+órfã com source path. Previne typos de handle e referências a perfis removidos.
+
+`npm run audit-handles` adicionado ao `package.json`. Combo `npm run audit`
+extendido para incluir audit-handles (passa a rodar audit-shells + audit-consistency
++ audit-handles em sequência).
+
+`.github/workflows/bake-state.yml` adicionado: roda `tools/bake-state.mjs`
+no primeiro dia de cada mês (cron `0 3 1 * *`) + via `workflow_dispatch` manual.
+Commita `docs/STATE.md` automaticamente se houve drift, via
+`stefanzweifel/git-auto-commit-action@v5`. Mantém STATE.md current sem intervenção.
+
+CLAUDE.md documentado com ambos (`## Audits` + `## GitHub Actions`).
+
+**Por que:** audit-handles fecha lacuna onde typo em handle passava por todas
+as validações existentes e só explodia em runtime. STATE.md estaria stale
+indefinidamente sem o workflow de auto-regen mensal.
+
 ### Refactored (AL-27: Migrar Alice essays inline → portfolio[kind=essay] + renderEssay)
 
 `alice/profile.yaml` substituiu os campos legado `essaysTitle` + `essays[]` por
@@ -179,23 +194,6 @@ enquanto drafts (L-007 não se aplica a conteúdo não publicado).
 (`PortfolioItem`). Agora poem e essay consomem a mesma infra: bake derive + dispatcher
 + URL pattern `/<handle>/<slug>/`.
 
-### Added (AL-3: Memory system — docs/LESSONS.md + docs/STATE.md + CLAUDE.md)
-
-Catálogo append-only de 21 anti-patterns extraídos do histórico de commits em
-`docs/LESSONS.md` (L-001..L-021). Snapshot auto-gerado do projeto em
-`docs/STATE.md`, produzido por `tools/bake-state.mjs` (Node.js, sem deps
-externas; determinístico no mesmo dia). Section "Lições críticas" adicionada
-ao `CLAUDE.md` com as 7 lessons mais load-bearing inline.
-
-**Por que:** padrões repetidos (DCL race, render silencioso, URL sem shell,
-dado multi-tenant) só viviam implícitos em CHANGELOG.md + commit messages. Um
-dev ou agente novo precisava ler centenas de commits pra entender convenções
-estabelecidas. Agora: 4 docs, 4 camadas mentais, sem ler 30 commits.
-
-### Added (AL-4: /contato/ persiste leads no co backend)
-
-Form de `/contato/` substitui `mailto:` por POST para `https://co.artelonga.com.br/api/v1/leads`. Submissão bem-sucedida mostra "Enviado ✓" e exibe bloco de confirmação. Falha de rede mostra "Falhou — tente de novo" + link `mailto:` como recuperação (nenhum lead perdido). Privacy notice LGPD visível antes do submit (retenção 24 meses, contato para exercício de direitos). Backend (CO-183) persiste em SQLite com `created_at`, `status='new'` e `ip_hash` (daily-salt, nunca IP bruto); dispara email notification pra `rede@artelonga.com.br`. Admin queue em `co.artelonga.com.br/admin/leads`.
-
 ### Refactored (AL-23: Migrar renderer.js para componentes TS modulares)
 
 `assets/renderer.js` (~1900 linhas de JS vanilla) extraído para módulos TypeScript estritos em `src/`. Componentes tipados com interfaces do `src/types.ts`; cada página vira um módulo independente; dispatcher com readyState check (L-001) e try/catch (L-002). Build pipeline Vite produz o bundle final `assets/renderer.js`.
@@ -209,6 +207,25 @@ Form de `/contato/` substitui `mailto:` por POST para `https://co.artelonga.com.
 - `vite.config.ts` + `vite.renderer.config.ts` — dois targets: IIFE → `assets/renderer.js`, ESM → `dist/showcase.js`
 
 **Por que:** renderer monolítico de ~1900 linhas dificultava onboarding, reuso e testes. Agora cada componente tem interface estrita compilada; bugs de shape (typo em field name, props erradas) aparecem em compile time em vez de runtime. `/design/` palette usa os mesmos componentes que o site em vez de HTML mock.
+
+### Added (AL-4: /contato/ persiste leads no co backend)
+
+Form de `/contato/` substitui `mailto:` por POST para `https://co.artelonga.com.br/api/v1/leads`. Submissão bem-sucedida mostra "Enviado ✓" e exibe bloco de confirmação. Falha de rede mostra "Falhou — tente de novo" + link `mailto:` como recuperação (nenhum lead perdido). Privacy notice LGPD visível antes do submit (retenção 24 meses, contato para exercício de direitos). Backend (CO-183) persiste em SQLite com `created_at`, `status='new'` e `ip_hash` (daily-salt, nunca IP bruto); dispara email notification pra `rede@artelonga.com.br`. Admin queue em `co.artelonga.com.br/admin/leads`.
+
+**Por que:** `mailto:` perdia leads sem feedback (usuário sem cliente de email default, falha silenciosa no envio). Persistência server-side cria queue auditável + admin dashboard + notification — sem perder nenhuma demanda nem comprometer fallback offline.
+
+### Added (AL-3: Memory system — docs/LESSONS.md + docs/STATE.md + CLAUDE.md)
+
+Catálogo append-only de anti-patterns extraídos do histórico de commits em
+`docs/LESSONS.md` (cresce ao longo do tempo; veja arquivo para conteúdo atual). Snapshot auto-gerado do projeto em
+`docs/STATE.md`, produzido por `tools/bake-state.mjs` (Node.js, sem deps
+externas; determinístico no mesmo dia). Section "Lições críticas" adicionada
+ao `CLAUDE.md` com as 7 lessons mais load-bearing inline.
+
+**Por que:** padrões repetidos (DCL race, render silencioso, URL sem shell,
+dado multi-tenant) só viviam implícitos em CHANGELOG.md + commit messages. Um
+dev ou agente novo precisava ler centenas de commits pra entender convenções
+estabelecidas. Agora: 4 docs, 4 camadas mentais, sem ler 30 commits.
 
 ### Refactored (AL-1 + AL-2: LGPD per-handle YAML migration · template)
 
@@ -230,6 +247,21 @@ Detalhes:
 - **`tools/people-order.txt` + `tools/communities-order.txt`** — ordens canônicas.
 - **`assets/data.js`** — seções `people` e `communities` marcadas `AUTO-GENERATED`; suporte a `globalThis` pra validação com Node.js.
 - **`package.json`** — `js-yaml` devDependency + scripts `bake-people`, `bake-communities`, `bake` (combo).
+
+**Por que:** dado multi-tenant (perfis de 36+ pessoas) em arquivo único violava o princípio de propriedade do LGPD — exercício do Art. 18 (acesso, correção, deleção) exige scope per-handle. Migração para `<handle>/profile.yaml` cria pasta auditável por dono, viabiliza PR delegado, e estabelece o template para os refactors subsequentes (services AL-46, portfolio AL-26/27). L-009 documentada.
+
+---
+
+## [0.12.0] — 2026-05-10
+
+**Why**. Pivot product-oriented (marketplace de serviços focado no contratante,
+em vez de catálogo institucional) + fundação de medição: home reorientada,
+analytics frontend Fase 1 (`assets/analytics.js` self-hosted com A/B framework),
+perfil editorial do Yuri ("Terra" + ShowAll mode), refactor estrutural do catálogo
+(serviceCatalog como fonte única, ponte missão↔serviço, CNAE completo cobrindo
+58 de 67 serviços), modelo financeiro alinhado em três cards (custos/meta/potencial)
+e introdução de Alice/Ramona/Miguel/Hedix como entidades novas. Trabalho concentrado
+entre 2026-04-28 e 2026-05-10 — período imediatamente anterior ao board co-auto.
 
 ### Changed (pivot product-oriented · marketplace de serviços)
 
@@ -702,6 +734,13 @@ Pós-1.0 seguiremos semver estrito (MAJOR para quebras).
 ### Changelog
 
 - Toda release tem `### Why` (a dor ou oportunidade endereçada).
-- Agrupamento padrão Keep-a-Changelog: `Added` · `Changed` · `Deprecated` · `Removed` · `Fixed` · `Security` · `Deploy`.
-- Ordem cronológica reversa (mais recente no topo).
+- Agrupamento: `Added` · `Changed` · `Deprecated` · `Removed` · `Fixed` · `Security` —
+  conforme Keep-a-Changelog 1.1.0. Extensões locais: `Refactored` (reorganização
+  sem mudança de comportamento — distinto de Changed) e `Deploy` (infra GH Pages,
+  domínio, workflows).
+- Entradas com header `AL-N` referenciam `work/artelonga/AL-N.md` e devem
+  encerrar com um bloco `**Por que:**` explicando motivação — não apenas o quê.
+- Entradas em `[Unreleased]` ficam ordenadas por AL descendente (mais recente
+  no topo).
+- Ordem cronológica reversa entre releases (release mais recente no topo).
 - Data em formato `YYYY-MM-DD`.
