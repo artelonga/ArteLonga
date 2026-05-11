@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://artelonga.com.br/sitemap.xml

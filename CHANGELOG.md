@@ -9,6 +9,35 @@ Each release links to a *why* (the pain or opportunity it addresses) so a reader
 
 ## [Unreleased]
 
+### Added (AL-47: SEO + public polish — structured data, OG, sitemap, robots)
+
+`src/lib/seo.ts` adicionado: helper `setPageSEO()` injeta no `<head>` canonical
+URL, OG meta tags (og:title, og:description, og:image, og:url, og:type,
+og:site_name), Twitter Card tags (twitter:card, twitter:title, twitter:description,
+twitter:image) e JSON-LD `<script type="application/ld+json">`. Tags anteriores
+removidas antes de cada injeção via `[data-seo]` sentinel.
+
+Cada page module (`home`, `profile`, `service`, `poem`, `essay`, `servicos`,
+`solucoes`, `recursos`, `parceiros`) chama `setPageSEO()` com schema JSON-LD
+apropriado: WebSite + Organization na home, Person/Organization no profile,
+Service no detalhe de serviço, CreativeWork no poem, Article no essay.
+
+`assets/og-default.png` criado (1200×630 branco) como fallback para OG image.
+Profile emite a foto do perfil como OG image quando `profile.yaml.pic` está
+preenchida.
+
+`tools/bake-sitemap.mjs` adicionado: carrega `assets/data.js` via `createRequire`,
+enumera todas as URLs públicas (home, pessoas, comunidades, serviços, missões,
+soluções internas, portfolio items não-draft) e gera `sitemap.xml`.
+`npm run bake-sitemap` adicionado; integrado ao combo `npm run bake`.
+
+`robots.txt` criado declarando sitemap em `https://artelonga.com.br/sitemap.xml`.
+
+**Por que:** páginas indexadas sem structured data aparecem com snippet genérico
+no Google e sem preview em shares sociais. JSON-LD + OG + sitemap habilitam
+rich results (Person card, Service schema) e preview profissional em WhatsApp e
+LinkedIn sem mudança de infraestrutura (site ainda estático).
+
 ### Added (AL-44: Audit + automation hardening — handles + STATE auto-regen)
 
 `tools/audit-handles.mjs` adicionado: itera todas as referências de handle em

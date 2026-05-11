@@ -1,5 +1,6 @@
 import { esc } from "../lib/esc";
 import { mdInline } from "../lib/markdown";
+import { setPageSEO, OG_DEFAULT_IMAGE } from "../lib/seo";
 import { avatarLg } from "../components/ProfileCard";
 import { siteHeader } from "../components/SiteHeader";
 import { siteFooter } from "../components/SiteFooter";
@@ -108,6 +109,37 @@ export function render(): void {
         : "";
 
     const isCommunity = p.type === "community";
+
+    const BASE_URL = "https://artelonga.com.br";
+    const ogImage = p.pic
+        ? (p.pic.startsWith("http") ? p.pic : `${BASE_URL}${p.pic}`)
+        : OG_DEFAULT_IMAGE;
+    const bioDesc = p.bio ? p.bio.replace(/\n/g, " ").slice(0, 200) : undefined;
+    setPageSEO({
+        title: `${p.nome} — Arte Longa`,
+        ...(bioDesc ? { description: bioDesc } : {}),
+        url: `/${p.handle}/`,
+        ogImage,
+        ogType: "profile",
+        jsonLd: isCommunity
+            ? {
+                "@context": "https://schema.org",
+                "@type": "Organization",
+                "name": p.nome,
+                "url": `${BASE_URL}/${p.handle}/`,
+                ...(ogImage !== OG_DEFAULT_IMAGE ? { "logo": ogImage } : {}),
+            }
+            : {
+                "@context": "https://schema.org",
+                "@type": "Person",
+                "name": p.nome,
+                "url": `${BASE_URL}/${p.handle}/`,
+                "image": ogImage,
+                ...(p.role ? { "jobTitle": p.role } : {}),
+                "worksFor": { "@type": "Organization", "name": "Arte Longa", "url": BASE_URL },
+            },
+    });
+
     const legadoCase = p.aposentado ?? p.emMemoria;
     const servicoLabel = isCommunity ? "Missões" : legadoCase ? "Legado" : "Serviços";
     const servicoHint = isCommunity

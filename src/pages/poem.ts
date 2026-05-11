@@ -1,6 +1,7 @@
 import { esc } from "../lib/esc";
 import { siteHeader } from "../components/SiteHeader";
 import { siteFooter } from "../components/SiteFooter";
+import { setPageSEO } from "../lib/seo";
 
 export function render(): void {
     const slug = document.body.dataset["slug"] ?? "";
@@ -12,6 +13,20 @@ export function render(): void {
     }
     const author = poem.autor ? AL.get(poem.autor) : undefined;
     document.title = `${poem.titulo}${author ? " — " + author.nome : ""} — Arte Longa`;
+
+    const BASE_URL = "https://artelonga.com.br";
+    setPageSEO({
+        title: `${poem.titulo}${author ? " — " + author.nome : ""} — Arte Longa`,
+        url: author ? `/${author.handle}/${slug}/` : `/`,
+        jsonLd: {
+            "@context": "https://schema.org",
+            "@type": "CreativeWork",
+            "name": poem.titulo,
+            ...(author
+                ? { "author": { "@type": "Person", "name": author.nome, "url": `${BASE_URL}/${author.handle}/` } }
+                : {}),
+        },
+    });
     const stanzasHtml = poem.stanzas
         .map(stz => `<p class="poem-stanza">${stz.map(esc).join("<br>")}</p>`)
         .join("");

@@ -1,6 +1,7 @@
 import { esc } from "../lib/esc";
 import { siteHeader } from "../components/SiteHeader";
 import { siteFooter } from "../components/SiteFooter";
+import { setPageSEO } from "../lib/seo";
 import type { Service, Person, Community, FaixaPreco, FaixaPlano } from "../types";
 
 const EXEMPLOS: Record<string, Array<{ name: string; url: string }>> = {
@@ -23,6 +24,27 @@ export function render(): void {
     }
 
     document.title = `${s.nome ?? s.titulo} — Serviços — Arte Longa`;
+
+    const BASE_URL = "https://artelonga.com.br";
+    const desc = s.descNossa ?? s.summary;
+    setPageSEO({
+        title: `${s.nome ?? s.titulo} — Arte Longa`,
+        ...(desc ? { description: desc } : {}),
+        url: `/servicos/${s.slug ?? ""}/`,
+        jsonLd: {
+            "@context": "https://schema.org",
+            "@type": "Service",
+            "name": s.titulo,
+            ...(desc ? { "description": desc } : {}),
+            "provider": {
+                "@type": "Organization",
+                "name": "Arte Longa",
+                "url": BASE_URL,
+            },
+            "areaServed": "Brasil",
+            "serviceType": s.titulo,
+        },
+    });
 
     const respEntities: ServiceProvider[] = (s.responsavel ?? [])
         .map(h => AL.get(h))
