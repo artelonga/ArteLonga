@@ -38,6 +38,10 @@ export function setPageSEO(opts: SEOOptions): void {
         appendSeoEl("meta", { property, content });
     }
 
+    if (description) {
+        appendSeoEl("meta", { name: "description", content: description });
+    }
+
     const tw: [string, string][] = [
         ["twitter:card", "summary_large_image"],
         ["twitter:title", title],

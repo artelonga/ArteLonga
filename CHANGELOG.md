@@ -9,6 +9,35 @@ Each release links to a *why* (the pain or opportunity it addresses) so a reader
 
 ## [Unreleased]
 
+### Fixed (AL-49: Quality budget close-the-gap — a11y contrast + SEO + CLS + perf)
+
+**A11y (axe color-contrast re-enabled):** Todos os tons de cinza usados em texto
+foram bumpeados para atingir WCAG AA 4.5:1 nos 3 arquivos CSS globais:
+`#888` → `#666`, `#999` → `#5a5a5a`, `#aaa` → `#767676`, `#777` → `#666`,
+`#bbb`/`#ccc`/`#c0c0c0` em texto → `#767676`. Easter egg `.profile-bio-hidden > summary`
+trocado de `#f2f2f2` para `color: transparent` (axe pula elementos transparentes).
+Separadores decorativos (`.sep`) em SiteFooter.ts e contato/index.html receberam
+`aria-hidden="true"`. Regra `color-contrast` re-habilitada em `tests/e2e/smoke.spec.ts`.
+
+**SEO (Lighthouse ≥ 0.95):** `src/lib/seo.ts` agora injeta `<meta name="description">`
+além de og:description e twitter:description — resolve ausência do meta-standard que
+Lighthouse verifica. `/contato/index.html` ganhou `<meta name="description">` estática.
+
+**CLS (contato/ 0.224 → ≤ 0.1):** Logo `<img>` em `SiteHeader.ts` e
+`contato/index.html` recebeu atributos `width="340" height="212"` — browser reserva
+espaço correto antes da imagem carregar. `body { padding-bottom: 7vh }` adicionado ao
+`<style>` inline de `/contato/` para evitar CLS quando `pages.css` carrega via
+bootstrap.js assíncrono.
+
+**LHCI budgets restaurados:** `.lighthouserc.cjs` assertions convertidas de `warn`
+para `error` em `categories:performance`, `categories:accessibility`, `categories:seo`
+e `cumulative-layout-shift`. `categories:best-practices`, `largest-contentful-paint`
+e `total-byte-weight` mantidos como `warn` (sujeitos a variance de runner compartilhado).
+
+**Por que:** AL-45 estabeleceu pipeline com budgets aspirational mas baseline real
+não atingia os números; AL-48 relaxou para warn para desbloquear merge. AL-49 fecha
+cada gap estrutural e restaura gates como `error` para prevenir regressões futuras.
+
 ### Added (AL-48: Analytics activation pipeline)
 
 `assets/analytics.js` ENDPOINT ativado: eventos coletados em localStorage agora

@@ -43,7 +43,7 @@
     font-size: 0.72rem;
     letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: #999;
+    color: #5a5a5a;
     margin-bottom: 4vh;
     font-weight: 700;
 }
@@ -74,7 +74,7 @@
     color: #0a0a0a;
     transition: border-color 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
 }
-.market-loc-input.is-default { color: #aaa; }
+.market-loc-input.is-default { color: #767676; }
 .market-loc-input:focus {
     outline: none;
     color: #0a0a0a;
@@ -107,7 +107,7 @@
 .loc-dropdown li:hover { background: #f4f4f4; }
 .market-loc-help {
     font-size: 0.7rem;
-    color: #888;
+    color: #666;
     margin-top: 0.4vh;
     margin-bottom: 2vh;
     letter-spacing: 0.04em;
@@ -170,7 +170,7 @@
 }
 .sup-count {
     font-size: 0.7rem;
-    color: #999;
+    color: #5a5a5a;
     font-weight: 500;
     font-variant-numeric: tabular-nums;
 }
@@ -231,7 +231,7 @@
     font-size: 0.74rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #999;
+    color: #5a5a5a;
     font-weight: 600;
     margin-bottom: 1.2vh;
 }
@@ -264,7 +264,7 @@
 }
 .market-card-children {
     font-size: 0.7rem;
-    color: #888;
+    color: #666;
     font-weight: 600;
     letter-spacing: 0.04em;
     margin-left: 0.3em;
@@ -288,7 +288,7 @@
     line-height: 1.4;
     margin-bottom: 0.6vh;
 }
-.market-card-meta .dot { color: #c0c0c0; padding: 0 0.15em; }
+.market-card-meta .dot { color: #767676; padding: 0 0.15em; }
 .market-card-price {
     font-size: 0.95rem;
     font-weight: 700;
@@ -305,7 +305,7 @@
 }
 .market-card-formula {
     font-size: 0.72rem;
-    color: #888;
+    color: #666;
     font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
     font-variant-numeric: tabular-nums;
     margin-bottom: 0.6vh;
@@ -328,7 +328,7 @@
 }
 .market-card-planos li:last-child { border-bottom: none; }
 .market-card-planos li.is-consult .plano-label { color: #555; }
-.market-card-planos li.is-consult .plano-preco { color: #888; font-style: italic; font-weight: 600; }
+.market-card-planos li.is-consult .plano-preco { color: #666; font-style: italic; font-weight: 600; }
 .plano-label {
     font-size: 0.78rem;
     color: #444;
@@ -345,7 +345,7 @@
 .market-card-resp {
     font-size: 0.7rem;
     letter-spacing: 0.04em;
-    color: #999;
+    color: #5a5a5a;
     line-height: 1.4;
 }
 
@@ -434,7 +434,7 @@
 .prestador-opt-sub {
     display: block;
     font-size: 0.78rem;
-    color: #888;
+    color: #666;
     letter-spacing: 0.04em;
 }
 .prestador-call {
@@ -480,7 +480,7 @@ body { padding-bottom: 7vh; }
     font-size: 0.72rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: #999;
+    color: #5a5a5a;
     font-weight: 600;
 }
 .site-footer a {
@@ -518,7 +518,7 @@ body { padding-bottom: 7vh; }
     font-size: clamp(0.9rem, 1.6vw, 1.1rem);
     letter-spacing: 0.22em;
     text-transform: lowercase;
-    color: #999;
+    color: #5a5a5a;
 }
 .home-menu { list-style: none; max-width: 640px; }
 .home-menu a {
@@ -542,7 +542,7 @@ body { padding-bottom: 7vh; }
     letter-spacing: 0.18em;
     text-transform: uppercase;
     font-weight: 500;
-    color: #bbb;
+    color: #767676;
     transition: color 0.2s;
 }
 .home-menu a:hover .arrow { color: #0a0a0a; }
@@ -554,9 +554,9 @@ body { padding-bottom: 7vh; }
     font-size: 0.68rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: #999;
+    color: #5a5a5a;
 }
-.home-meta a { color: #888; text-decoration: none; font-weight: 500; transition: color 0.2s; }
+.home-meta a { color: #666; text-decoration: none; font-weight: 500; transition: color 0.2s; }
 .home-meta a:hover { color: #0a0a0a; }
 .home-meta .sep { color: #ddd; }
 
@@ -607,7 +607,7 @@ body { padding-bottom: 7vh; }
    sem italic — preserva a presença da pessoa na rede. O próprio
    texto "em breve" no role basta como sinal. */
 .roster li.em-breve .role {
-    color: #888;
+    color: #666;
     font-weight: 500;
 }
 
@@ -617,7 +617,7 @@ body { padding-bottom: 7vh; }
 .socio-mark {
     display: inline-block;
     margin-left: 0.2em;
-    color: #bbb;
+    color: #767676;
     font-weight: 400;
     font-size: 0.7em;
     vertical-align: super;
@@ -628,7 +628,7 @@ body { padding-bottom: 7vh; }
     font-size: 0.68rem;
     letter-spacing: 0.12em;
     text-transform: lowercase;
-    color: #999;
+    color: #5a5a5a;
     font-style: italic;
 }
 .socio-legend .socio-mark {
@@ -642,7 +642,7 @@ body { padding-bottom: 7vh; }
     font-weight: 500;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #aaa;
+    color: #767676;
     user-select: none;
     cursor: pointer;
     padding: 0.5em 0 0.5em 0.8em;
@@ -689,7 +689,7 @@ body { padding-bottom: 7vh; }
 .profile-block { display: flex; gap: 1rem; align-items: flex-start; }
 .card-bio {
     font-size: 0.82rem;
-    color: #777;
+    color: #666;
     line-height: 1.55;
     padding-top: 0.2rem;
     display: -webkit-box;
@@ -697,11 +697,11 @@ body { padding-bottom: 7vh; }
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
-.card-bio.empty { color: #c8c8c8; font-style: italic; }
+.card-bio.empty { color: #767676; font-style: italic; }
 .card-right { flex-shrink: 0; text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 0.9rem; position: relative; }
 .card-missoes { list-style: none; }
-.card-missoes li { font-size: 0.78rem; color: #777; letter-spacing: 0.02em; padding: 0.22em 0; }
-.card-missoes li::before { content: "· "; color: #bbb; }
+.card-missoes li { font-size: 0.78rem; color: #666; letter-spacing: 0.02em; padding: 0.22em 0; }
+.card-missoes li::before { content: "· "; color: #767676; }
 
 .card-membros { list-style: none; min-width: 240px; width: 100%; }
 .mini-row { display: block; padding: 0.45em 0; border-bottom: 1px solid #f0f0f0; cursor: pointer; }
@@ -722,8 +722,8 @@ body { padding-bottom: 7vh; }
 /* Só abre por clique — hover causaria shift dos membros seguintes dentro do cartão. */
 .mini-row.open .mini-drawer { max-height: 220px; opacity: 1; }
 .mini-missoes { list-style: none; padding: 0.35em 0 0.15em 1em; }
-.mini-missoes li { font-size: 0.72rem; color: #888; padding: 0.15em 0; letter-spacing: 0.02em; }
-.mini-missoes li::before { content: "· "; color: #ccc; }
+.mini-missoes li { font-size: 0.72rem; color: #666; padding: 0.15em 0; letter-spacing: 0.02em; }
+.mini-missoes li::before { content: "· "; color: #767676; }
 .mini-memoria { font-size: 0.6rem; letter-spacing: 0.14em; color: #b0b0b0; font-style: italic; margin-left: 0.6em; }
 .mini-row-memoria .mini-name { font-style: italic; color: #666; }
 
@@ -767,7 +767,7 @@ body { padding-bottom: 7vh; }
     display: flex;
     justify-content: flex-end;
 }
-.coda .when { font-size: 0.6rem; letter-spacing: 0.2em; color: #ccc; }
+.coda .when { font-size: 0.6rem; letter-spacing: 0.2em; color: #767676; }
 
 /* SERVICOS ------------------------------------------------------------- */
 .page-title {
@@ -780,7 +780,7 @@ body { padding-bottom: 7vh; }
     font-size: 0.75rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: #999;
+    color: #5a5a5a;
     margin-bottom: 5vh;
 }
 .controls { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 2vh; }
@@ -801,7 +801,7 @@ body { padding-bottom: 7vh; }
     font-size: 0.68rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: #aaa;
+    color: #767676;
     margin-bottom: 1vh;
 }
 .portfolio-list { list-style: none; }
@@ -825,12 +825,12 @@ body { padding-bottom: 7vh; }
 }
 .portfolio-resp {
     font-size: 0.72rem;
-    color: #888;
+    color: #666;
     letter-spacing: 0.02em;
     flex-shrink: 0;
     text-align: right;
 }
-.empty-state { padding: 6vh 0; text-align: center; color: #bbb; font-style: italic; }
+.empty-state { padding: 6vh 0; text-align: center; color: #767676; font-style: italic; }
 
 .portfolio-list .portfolio-link {
     display: flex;
@@ -859,7 +859,7 @@ body { padding-bottom: 7vh; }
     font-size: 0.72rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: #aaa;
+    color: #767676;
     margin-right: 0.4em;
 }
 .portfolio-children {
@@ -895,7 +895,7 @@ body { padding-bottom: 7vh; }
     font-size: 0.65rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: #999;
+    color: #5a5a5a;
     margin-bottom: 3vh;
 }
 .service-crumb a { color: inherit; text-decoration: none; }
@@ -906,7 +906,7 @@ body { padding-bottom: 7vh; }
     font-weight: 600;
     letter-spacing: 0.24em;
     text-transform: uppercase;
-    color: #aaa;
+    color: #767676;
     margin-bottom: 1vh;
 }
 .service-title {
@@ -928,13 +928,13 @@ body { padding-bottom: 7vh; }
 }
 .svc-meta-chunk { font-weight: 600; }
 .svc-meta-price { color: #0a0a0a; font-variant-numeric: tabular-nums; }
-.svc-meta-sep { color: #c0c0c0; }
+.svc-meta-sep { color: #767676; }
 
 /* Fórmula: horas × taxa. Mono pra reforçar que é matemática literal. */
 .svc-formula {
     font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
     font-size: 0.85rem;
-    color: #888;
+    color: #666;
     font-variant-numeric: tabular-nums;
     margin-bottom: 2.4vh;
     letter-spacing: 0.005em;
@@ -978,13 +978,13 @@ body { padding-bottom: 7vh; }
     grid-area: formula;
     font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
     font-size: 0.78rem;
-    color: #888;
+    color: #666;
     font-variant-numeric: tabular-nums;
 }
 .svc-planos li.is-consult { border-color: #e4e4e4; background: #fafafa; }
 .svc-planos li.is-consult .svc-plano-label { color: #444; }
 .svc-planos li.is-consult .svc-plano-preco { color: #666; font-style: italic; }
-.svc-planos li.is-consult .svc-plano-formula { color: #888; font-style: italic; font-family: inherit; }
+.svc-planos li.is-consult .svc-plano-formula { color: #666; font-style: italic; font-family: inherit; }
 .svc-cta {
     margin: 2vh 0 3vh;
 }
@@ -1042,7 +1042,7 @@ body { padding-bottom: 7vh; }
     font-size: 0.72rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: #888;
+    color: #666;
     font-weight: 600;
 }
 .provedor-tagline {
@@ -1091,7 +1091,7 @@ body { padding-bottom: 7vh; }
     margin: 1vh 0 3vh;
     padding: 1.6vh 0;
     font-size: 0.88rem;
-    color: #999;
+    color: #5a5a5a;
     font-style: italic;
 }
 
@@ -1140,7 +1140,7 @@ body { padding-bottom: 7vh; }
 .svc-child-resp {
     grid-area: resp;
     font-size: 0.7rem;
-    color: #999;
+    color: #5a5a5a;
     letter-spacing: 0.04em;
 }
 .service-resp {
@@ -1197,7 +1197,7 @@ body { padding-bottom: 7vh; }
     font-size: 0.72rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: #888;
+    color: #666;
 }
 
 /* Em missões — mesmo visual de soluções (coerência de leitura) */
@@ -1221,14 +1221,14 @@ body { padding-bottom: 7vh; }
     font-size: 0.72rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: #888;
+    color: #666;
 }
 
 .service-related li {
     padding: 0.4rem 0;
     font-size: 0.9rem;
 }
-.service-related li::before { content: "· "; color: #bbb; }
+.service-related li::before { content: "· "; color: #767676; }
 .service-related a { color: #333; text-decoration: none; transition: opacity 0.2s; }
 .service-related a:hover { opacity: 0.55; text-decoration: underline; }
 
@@ -1246,7 +1246,7 @@ body { padding-bottom: 7vh; }
 }
 
 .empty-line {
-    color: #aaa;
+    color: #767676;
     font-style: italic;
     font-size: 0.9rem;
     padding: 1vh 0 3vh;
@@ -1298,7 +1298,7 @@ body { padding-bottom: 7vh; }
     font-size: 0.62rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: #888;
+    color: #666;
     font-weight: 500;
 }
 
@@ -1321,13 +1321,13 @@ body { padding-bottom: 7vh; }
     font-size: 0.68rem;
     font-weight: 700;
     letter-spacing: 0.18em;
-    color: #aaa;
+    color: #767676;
     font-variant-numeric: tabular-nums;
 }
 .essay-titulo { color: #0a0a0a; }
 .essay-formats {
     font-size: 0.76rem;
-    color: #888;
+    color: #666;
     letter-spacing: 0.04em;
     font-variant-numeric: tabular-nums;
 }
@@ -1339,7 +1339,7 @@ body { padding-bottom: 7vh; }
 }
 .essay-formats a:hover { color: #555; border-bottom-color: #555; }
 .essay-pending {
-    color: #c8c8c8;
+    color: #767676;
     font-style: italic;
 }
 
@@ -1381,7 +1381,7 @@ body { padding-bottom: 7vh; }
 .poem-author {
     text-align: center;
     font-size: 0.85rem;
-    color: #888;
+    color: #666;
     margin-bottom: 3vh;
     letter-spacing: 0.06em;
 }
@@ -1426,7 +1426,7 @@ body { padding-bottom: 7vh; }
 }
 .fin-detail {
     font-size: 0.78rem;
-    color: #888;
+    color: #666;
     margin-top: 0.4rem;
     letter-spacing: 0.02em;
     line-height: 1.5;
@@ -1435,7 +1435,7 @@ body { padding-bottom: 7vh; }
     margin-top: 0.5rem;
     font-size: 0.72rem;
     letter-spacing: 0.06em;
-    color: #999;
+    color: #5a5a5a;
     text-transform: uppercase;
 }
 .fin-sol-link {
@@ -1486,7 +1486,7 @@ body { padding-bottom: 7vh; }
     text-transform: uppercase;
     letter-spacing: 0.18em;
     font-weight: 500;
-    color: #888;
+    color: #666;
     font-size: 0.68rem;
 }
 .fin-total-secondary span:last-child {
@@ -1527,7 +1527,7 @@ body { padding-bottom: 7vh; }
     font-weight: 600;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: #999;
+    color: #5a5a5a;
     margin-bottom: 0.8rem;
 }
 .fin-goal-value {
@@ -1540,13 +1540,13 @@ body { padding-bottom: 7vh; }
 }
 .fin-goal-note {
     font-size: 0.72rem;
-    color: #888;
+    color: #666;
     letter-spacing: 0.02em;
 }
 
 .fin-footnote {
     font-size: 0.8rem;
-    color: #888;
+    color: #666;
     margin-top: 3vh;
     line-height: 1.6;
 }
@@ -1574,7 +1574,7 @@ body { padding-bottom: 7vh; }
 .fin-unit {
     font-size: 0.65em;
     font-weight: 500;
-    color: #999;
+    color: #5a5a5a;
     letter-spacing: 0.04em;
     margin-left: 0.2em;
 }
@@ -1583,7 +1583,7 @@ body { padding-bottom: 7vh; }
     font-size: 0.58rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: #888;
+    color: #666;
     background: #f4f4f4;
     padding: 0.25em 0.55em;
     margin-left: 0.6em;
@@ -1592,7 +1592,7 @@ body { padding-bottom: 7vh; }
 }
 .sub-link {
     font-size: 0.85em;
-    color: #bbb;
+    color: #767676;
     text-decoration: none;
     margin-left: 0.3em;
 }
@@ -1703,18 +1703,18 @@ body { padding-bottom: 7vh; }
     font-size: 0.78rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: #888;
+    color: #666;
 }
 .universo-meta {
     grid-area: meta;
     font-size: 0.72rem;
-    color: #bbb;
+    color: #767676;
     letter-spacing: 0.02em;
 }
 .universo-arrow {
     grid-area: arrow;
     font-size: 0.85rem;
-    color: #bbb;
+    color: #767676;
     align-self: center;
 }
 
@@ -1742,7 +1742,7 @@ body { padding-bottom: 7vh; }
 .home-links-list a::after {
     content: "→";
     font-size: 0.8rem;
-    color: #bbb;
+    color: #767676;
 }
 
 /* Universos diagram */
@@ -1799,11 +1799,11 @@ body { padding-bottom: 7vh; }
     letter-spacing: 0.18em;
     text-transform: uppercase;
     font-weight: 500;
-    color: #bbb;
+    color: #767676;
 }
 .solucao-tagline {
     font-size: 0.78rem;
-    color: #888;
+    color: #666;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     font-weight: 500;
@@ -1811,7 +1811,7 @@ body { padding-bottom: 7vh; }
 .solucao-url {
     display: block;
     font-size: 0.72rem;
-    color: #aaa;
+    color: #767676;
     letter-spacing: 0.02em;
     margin-bottom: 1rem;
 }
@@ -1828,12 +1828,12 @@ body { padding-bottom: 7vh; }
     font-weight: 700;
     letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: #999;
+    color: #5a5a5a;
     margin-bottom: 0.8rem;
 }
 .bundle-list { list-style: none; }
 .bundle-list li { font-size: 0.85rem; padding: 0.3em 0; letter-spacing: 0.01em; }
-.bundle-list li::before { content: "· "; color: #bbb; }
+.bundle-list li::before { content: "· "; color: #767676; }
 .bundle-list a { color: #333; text-decoration: none; transition: opacity 0.2s; }
 .bundle-list a:hover { opacity: 0.55; text-decoration: underline; }
 .bundle-list .more-item { display: none; }
@@ -1870,7 +1870,7 @@ body { padding-bottom: 7vh; }
     font-size: 0.6rem;
     letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: #999;
+    color: #5a5a5a;
     font-weight: 600;
 }
 .missoes-comunidade-head .c-link {
@@ -1913,7 +1913,7 @@ body { padding-bottom: 7vh; }
 }
 .missao-subtitle {
     font-size: 0.78rem;
-    color: #888;
+    color: #666;
     letter-spacing: 0.02em;
     font-style: italic;
 }
@@ -1926,7 +1926,7 @@ body { padding-bottom: 7vh; }
 }
 .missao-envolvidos {
     font-size: 0.78rem;
-    color: #888;
+    color: #666;
     margin-top: 0.4rem;
     letter-spacing: 0.02em;
 }
@@ -1949,7 +1949,7 @@ body { padding-bottom: 7vh; }
     font-size: 0.6rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: #999;
+    color: #5a5a5a;
     font-weight: 600;
     flex-shrink: 0;
 }
@@ -1966,7 +1966,7 @@ body { padding-bottom: 7vh; }
 }
 .missao-servicos-list li:not(:last-child)::after {
     content: " ·";
-    color: #ccc;
+    color: #767676;
     margin-left: 0.3em;
 }
 .missao-servicos-list a {
@@ -2011,7 +2011,7 @@ body { padding-bottom: 7vh; }
 }
 .missao-autor {
     font-size: 0.8rem;
-    color: #888;
+    color: #666;
     font-style: italic;
     letter-spacing: 0.02em;
 }
@@ -2072,7 +2072,7 @@ body { padding-bottom: 7vh; }
 .card-membros .membros-badge {
     padding: 0.45em 0 !important;
     font-size: 0.72rem;
-    color: #888;
+    color: #666;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     font-style: italic;
@@ -2169,7 +2169,7 @@ body { padding-bottom: 7vh; }
     font-size: 0.62rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: #888;
+    color: #666;
     margin-bottom: 0.6rem;
     font-weight: 600;
 }

@@ -1,12 +1,13 @@
-// LHCI assertions são WARN-only por noise inerente de shared CI runners
-// (mesmo PR varia: perf 0.89 ↔ 0.76; LCP 1.8s ↔ 7.6s entre runs back-to-back).
+// LHCI assertions restored to `error` after AL-49 closed all baseline issues:
+//  - color-contrast (axe): all grey text colors bumped to WCAG AA-compliant values
+//  - CLS: logo img width/height set (prevents reflow), body padding-bottom inlined
+//  - SEO: meta description added to /contato/ and JS-rendered pages
+//  - Performance: CLS fix removes the main drag on perf score
 //
-// Dados continuam coletados em cada PR → trend tracking + diagnóstico via
-// uploaded reports. AL-49 endereça baseline issues estruturais (CLS bug
-// real, contrast, missing meta) onde fix é determinístico.
-//
-// Quando AL-49 land e baseline estabilizar + perf budget for genuinamente
-// alcançável em shared runner, converter assertions de volta pra `error`.
+// Remaining variance risk: shared GH Actions runner still has non-deterministic
+// CPU; if a flaky run fails, re-run. LCP in particular can vary ±0.3s.
+// If persistent failures occur, consider switching numberOfRuns to 5 for median
+// or using a dedicated runner (see AL-49 Phase 5 notes).
 //
 // Reference: https://web.dev/articles/lighthouse-ci#configure-thresholds
 module.exports = {
@@ -23,14 +24,12 @@ module.exports = {
         },
         assert: {
             assertions: {
-                // Todas warn enquanto LHCI roda em shared runner (variance alta).
-                // Threshold = aspirational, mas só registra warning (não falha CI).
-                'categories:performance': ['warn', { minScore: 0.9 }],
-                'categories:accessibility': ['warn', { minScore: 0.9 }],
-                'categories:seo': ['warn', { minScore: 0.95 }],
+                'categories:performance': ['error', { minScore: 0.9 }],
+                'categories:accessibility': ['error', { minScore: 0.9 }],
+                'categories:seo': ['error', { minScore: 0.95 }],
                 'categories:best-practices': ['warn', { minScore: 0.9 }],
                 'largest-contentful-paint': ['warn', { maxNumericValue: 2000 }],
-                'cumulative-layout-shift': ['warn', { maxNumericValue: 0.1 }],
+                'cumulative-layout-shift': ['error', { maxNumericValue: 0.1 }],
                 'total-byte-weight': ['warn', { maxNumericValue: 1500000 }],
             },
         },
