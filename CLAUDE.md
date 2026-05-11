@@ -156,14 +156,16 @@ Para adicionar uma nova comunidade:
 ## Audits (rodar antes de PR)
 
 ```
-npm run audit              # roda os dois abaixo
+npm run audit              # roda os três abaixo
 npm run audit-shells       # cada slug em data.js tem servicos/<slug>/index.html?
 npm run audit-consistency  # profile.communities ↔ community.membros consistente?
+npm run audit-handles      # toda referência de handle em data.js resolve para perfil existente?
 npm run typecheck          # tsc --noEmit (valida src/*.ts contra openapi types)
 ```
 
 - `audit-shells` previne L-007 (URL referenciada sem shell HTML = 404).
 - `audit-consistency` previne o caso Kelly/Matheus (declarados em communities mas não em membros).
+- `audit-handles` previne typos em handles e referências a perfis removidos (service.responsavel, citacoes.autor, subMembers, parentHandle, communities, membros, parcerias).
 - `typecheck` valida que TS files (`src/`) batem com types do `src/types.ts`.
 
 **`npm run validate-yaml`** — valida cada `<handle>/profile.yaml` e `<handle>/community.yaml` contra os schemas em `openapi/artelonga.yaml#/components/schemas/{Person,Community}`. Roda **automaticamente** no início de `npm run bake-people` / `npm run bake-communities` (pre-flight: bake aborta se gap). Use direto pra checar sem rodar bake.
@@ -213,6 +215,20 @@ git commit --no-verify
 ```
 
 Lesson: `docs/LESSONS.md#L-021` — Mono incident (bio editada direto em data.js → bake sobrescreveria). Esse hook impede que repita.
+
+## GitHub Actions
+
+### `.github/workflows/bake-state.yml` — STATE.md auto-regen
+
+Roda `node tools/bake-state.mjs` no primeiro dia de cada mês (cron `0 3 1 * *`) e via `workflow_dispatch` (manual). Se `docs/STATE.md` mudou, commita automaticamente com mensagem `chore(state): auto-bake STATE.md`.
+
+**Rodar manualmente:**
+
+```bash
+gh workflow run bake-state.yml
+```
+
+Útil após mudanças estruturais que tornariam o STATE.md stale antes do próximo ciclo mensal.
 
 ## Design system
 
