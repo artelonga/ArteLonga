@@ -1,0 +1,9 @@
+titulo: Market Making Preditivo
+paraQuem: Mercados · plataformas
+digital: true
+hoursLow: 40
+hoursHigh: 400
+cnaeNovo: true
+cnae:
+  - c: 6619-3/99
+    d: Outras atividades auxiliares dos serviços financeiros

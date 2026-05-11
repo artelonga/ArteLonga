@@ -1,0 +1,11 @@
+titulo: Comunicação Científica
+paraQuem: Pesquisadores · marcas
+digital: true
+hoursLow: 5
+hoursHigh: 30
+cnaeNovo: true
+cnae:
+  - c: 8599-6/99
+    d: Outras atividades de ensino
+  - c: 5811-5/00
+    d: Edição de livros

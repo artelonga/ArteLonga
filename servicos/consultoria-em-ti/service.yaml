@@ -1,0 +1,8 @@
+titulo: Consultoria em TI
+paraQuem: Pequenas empresas · ONGs
+digital: true
+hoursLow: 4
+hoursHigh: 40
+cnae:
+  - c: 6204-0/00
+    d: Consultoria em tecnologia da informação

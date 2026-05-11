@@ -1,0 +1,9 @@
+titulo: Gestão de Logística
+paraQuem: Empresas · operações
+digital: true
+cnaeNovo: true
+cnae:
+  - c: 5229-0/01
+    d: Serviços de apoio ao transporte por táxi
+  - c: 7020-4/00
+    d: Atividades de consultoria em gestão empresarial

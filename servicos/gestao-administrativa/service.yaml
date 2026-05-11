@@ -1,0 +1,10 @@
+titulo: Gestão Administrativa
+paraQuem: Pequenas empresas
+digital: true
+hoursLow: 20
+hoursHigh: 80
+recurring: true
+cnaeNovo: true
+cnae:
+  - c: 8211-3/00
+    d: Serviços combinados de escritório e apoio administrativo

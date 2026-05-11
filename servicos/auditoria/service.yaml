@@ -1,0 +1,7 @@
+titulo: Auditoria
+paraQuem: Empresas · governança
+digital: true
+cnaeNovo: true
+cnae:
+  - c: 6920-6/02
+    d: Atividades de auditoria contábil e tributária

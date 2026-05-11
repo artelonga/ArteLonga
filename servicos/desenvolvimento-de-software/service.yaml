@@ -1,0 +1,11 @@
+titulo: Desenvolvimento de Software
+parent: Inteligência e Tecnologia
+implicitResponsavel:
+  - yuri
+paraQuem: Empresas · startups
+digital: true
+hoursLow: 80
+hoursHigh: 400
+cnae:
+  - c: 6202-3/00
+    d: Desenvolvimento e licenciamento de software customizável

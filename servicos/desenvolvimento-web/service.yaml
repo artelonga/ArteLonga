@@ -1,0 +1,13 @@
+titulo: Desenvolvimento Web
+parent: Inteligência e Tecnologia
+implicitResponsavel:
+  - yuri
+paraQuem: Empresas · estúdios
+digital: true
+hoursLow: 40
+hoursHigh: 200
+cnae:
+  - c: 6201-5/02
+    d: Web design
+  - c: 6202-3/00
+    d: Desenvolvimento e licenciamento de software customizável

@@ -1,0 +1,10 @@
+titulo: Consultoria Jurídica
+paraQuem: Pequenas empresas · pessoas
+digital: true
+hoursLow: 1
+hoursHigh: 1
+unit: hora
+cnaeNovo: true
+cnae:
+  - c: 6911-7/01
+    d: Serviços advocatícios

@@ -1,0 +1,10 @@
+titulo: Gestão Contábil
+paraQuem: Pequenas empresas · MEI
+digital: true
+hoursLow: 5
+hoursHigh: 20
+recurring: true
+cnaeNovo: true
+cnae:
+  - c: 6920-6/01
+    d: Atividades de contabilidade

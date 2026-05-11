@@ -1,0 +1,11 @@
+titulo: Hambúrguer Artesanal
+paraQuem: Bairro · delivery
+hoursLow: 0.25
+hoursHigh: 0.6
+unit: unidade
+cnaeNovo: true
+cnae:
+  - c: 5611-2/01
+    d: Restaurantes e similares
+  - c: 5620-1/04
+    d: Fornecimento de alimentos preparados preponderantemente para consumo domiciliar

@@ -1,0 +1,10 @@
+titulo: Gestão Financeira
+paraQuem: Pequenas empresas
+digital: true
+hoursLow: 8
+hoursHigh: 40
+recurring: true
+cnaeNovo: true
+cnae:
+  - c: 7020-4/00
+    d: Atividades de consultoria em gestão empresarial

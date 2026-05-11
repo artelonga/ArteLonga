@@ -1,0 +1,10 @@
+titulo: Gestão Operacional
+paraQuem: Pequenas empresas
+digital: true
+hoursLow: 20
+hoursHigh: 80
+recurring: true
+cnaeNovo: true
+cnae:
+  - c: 7020-4/00
+    d: Atividades de consultoria em gestão empresarial

@@ -44,6 +44,35 @@ leves — fix em PR separado).
 **Por que:** regressões de UX, a11y e performance eram detectadas apenas em smoke test manual
 pós-merge. Essa pipeline unifica 3 concerns (smoke, a11y, perf) em um único gate de PR.
 
+### Refactored (AL-46: Content/form completeness — services + missions + solutions + finances → YAML)
+
+`assets/data.js` agora tem ~90% do conteúdo AUTO-GENERATED a partir de YAMLs per-item.
+Quatro content types migrados do hardcode para fonte YAML editável:
+
+- **Services (89):** `servicos/<slug>/service.yaml` × 89 — `serviceCatalog` vira bloco
+  `AUTO-GENERATED:SERVICES-START/END`. `tools/bake-services.mjs` + `tools/services-order.txt`.
+- **Missions (4):** `missoes/<slug>/mission.yaml` × 4 — `missions` vira bloco
+  `AUTO-GENERATED:MISSIONS-START/END`. `tools/bake-missions.mjs` + `tools/missions-order.txt`.
+  Criadas shells HTML para as 3 missões que não tinham diretório (`gres-amazonia`,
+  `reparacao-historica`, `eventos-espacos-saberes`).
+- **Solutions (9):** `solucoes/<handle>/solution.yaml` × 9 — `solutions` vira bloco
+  `AUTO-GENERATED:SOLUTIONS-START/END`. `tools/bake-solutions.mjs` + `tools/solutions-order.txt`.
+- **Finances:** `recursos/finances.yaml` — bloco `AUTO-GENERATED:FINANCES-START/END`.
+  `tools/bake-finances.mjs`.
+
+`npm run bake` atualizado para rodar todos os 6 bakes em sequência.
+`tools/pre-commit-check.mjs` atualizado para incluir os 4 novos bakes.
+`tools/validate-yaml.mjs` estendido com suporte a `--type=service|mission|solution|finance`
+(142 arquivos validados contra `openapi/artelonga.yaml` schemas).
+Schemas `Service`, `Mission`, `Solution`, `Finances`, `Platform`, `Attachment`, `ServicePlan`
+adicionados/refinados em `openapi/artelonga.yaml`. `CLAUDE.md` atualizada com 4 novas
+seções "Como editar". V bumped para `20260511a`.
+
+**Por que:** AL-1/AL-2/AL-26 estabeleceram o pattern YAML para people/communities/portfolio.
+Essa migração fecha o loop: toda a content layer de data.js é agora editável via YAML,
+com schema validation pre-bake. Adicionar serviço = editar YAML + bake — sem edição manual
+em data.js. Mata L-021 de raiz para as 4 novas seções.
+
 ### Refactored (AL-27: Migrar Alice essays inline → portfolio[kind=essay] + renderEssay)
 
 `alice/profile.yaml` substituiu os campos legado `essaysTitle` + `essays[]` por

@@ -1,0 +1,7 @@
+titulo: Saúde Mental
+paraQuem: Adultos · adolescentes
+digital: true
+cnaeNovo: true
+cnae:
+  - c: 8650-0/03
+    d: Atividades de psicologia e psicanálise

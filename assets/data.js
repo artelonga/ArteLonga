@@ -964,136 +964,1289 @@
             .replace(/(^-|-$)/g, "");
     }
 
-    // Marcador `cnaeNovo: true` sinaliza CNAE proposto que ainda não consta do
-    // CNPJ 56.975.561/0001-60 e precisa ser adicionado via Receita Federal.
-    // Roadmap público da empresa — render pode exibir badge "a formalizar".
+    // AUTO-GENERATED: do not edit by hand. Run `node tools/bake-services.mjs`.
+    // AUTO-GENERATED:SERVICES-START
     const serviceCatalog = [
-        // ── Sub-serviços de "Inteligência e Tecnologia" (Yuri cobre a árvore) ──
-        { titulo: "Desenvolvimento de API",      parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Empresas · times técnicos", digital: true, hoursLow: 30, hoursHigh: 150, cnae: [{ c: "6202-3/00", d: "Desenvolvimento e licenciamento de software customizável" }] },
-        { titulo: "Desenvolvimento de Software", parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Empresas · startups", digital: true, hoursLow: 80, hoursHigh: 400, cnae: [{ c: "6202-3/00", d: "Desenvolvimento e licenciamento de software customizável" }] },
-        { titulo: "Desenvolvimento Web",         parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Empresas · estúdios", digital: true, hoursLow: 40, hoursHigh: 200, cnae: [{ c: "6201-5/02", d: "Web design" }, { c: "6202-3/00", d: "Desenvolvimento e licenciamento de software customizável" }] },
-        { titulo: "Nuvem",                       parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Empresas · projetos", digital: true, hoursLow: 10, hoursHigh: 80, cnae: [{ c: "6204-0/00", d: "Consultoria em TI" }, { c: "6319-4/00", d: "Provedores de conteúdo e serviços de informação na internet" }] },
-        { titulo: "Computação",                  parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Times técnicos", digital: true, hoursLow: 10, hoursHigh: 80, cnae: [{ c: "6204-0/00", d: "Consultoria em TI" }] },
-        { titulo: "Dados e Armazenamento",       parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Empresas · times de dados", digital: true, hoursLow: 15, hoursHigh: 100, cnae: [{ c: "6204-0/00", d: "Consultoria em TI" }, { c: "6319-4/00", d: "Provedores de serviços de informação na internet" }] },
-        { titulo: "Hardware",                    parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Estúdios · projetos", digital: true, hoursLow: 8, hoursHigh: 60, cnae: [{ c: "6204-0/00", d: "Consultoria em TI" }] },
-        { titulo: "Sistemas Operacionais",       parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Times técnicos", digital: true, hoursLow: 10, hoursHigh: 80, cnae: [{ c: "6204-0/00", d: "Consultoria em TI" }] },
-        { titulo: "Redes",                       parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Empresas · escritórios", digital: true, hoursLow: 8, hoursHigh: 60, cnae: [{ c: "6204-0/00", d: "Consultoria em TI" }] },
-        { titulo: "Tráfego e Crescimento",       parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Marcas · e-commerce", digital: true, hoursLow: 20, hoursHigh: 80, recurring: true, cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade" }, { c: "6319-4/00", d: "Portais, provedores de conteúdo e serviços de informação na internet" }] },
-        { titulo: "Automação de Processos",      parent: "Inteligência e Tecnologia", implicitResponsavel: ["yuri"], paraQuem: "Empresas · operações", digital: true, hoursLow: 8, hoursHigh: 20, cnaeNovo: true, cnae: [{ c: "6202-3/00", d: "Desenvolvimento e licenciamento de software customizável" }, { c: "6204-0/00", d: "Consultoria em tecnologia da informação" }] },
-
-        // ── Serviços com CNAE já formalizado no CNPJ ─────────────────────────
-        { titulo: "Alfabetização",                       paraQuem: "Crianças · adultos", hoursLow: 1, hoursHigh: 2, unit: "aula", cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino não especificadas anteriormente" }] },
-        { titulo: "Assistência Técnica",                 paraQuem: "Equipamentos · pessoas", cnae: [{ c: "9521-5/00", d: "Reparação e manutenção de equipamentos eletroeletrônicos de uso pessoal e doméstico" }] },
-        { titulo: "Babá",                                paraQuem: "Crianças · famílias", cnae: [{ c: "9700-5/00", d: "Serviços domésticos" }] },
-        { titulo: "Alimentação e Bebidas",               paraQuem: "Eventos · empresas", hoursLow: 0.35, hoursHigh: 1, unit: "pessoa", cnae: [{ c: "5620-1/02", d: "Serviços de alimentação para eventos e recepções — bufê" }] },
-        { titulo: "Hambúrguer Artesanal", paraQuem: "Bairro · delivery", hoursLow: 0.25, hoursHigh: 0.6, unit: "unidade", cnaeNovo: true, cnae: [{ c: "5611-2/01", d: "Restaurantes e similares" }, { c: "5620-1/04", d: "Fornecimento de alimentos preparados preponderantemente para consumo domiciliar" }] },
-        { titulo: "Comunicação Visual",                  paraQuem: "Eventos · marcas", digital: true, hoursLow: 8, hoursHigh: 30, cnae: [{ c: "7410-2/03", d: "Design de produto" }, { c: "7319-0/04", d: "Consultoria em publicidade" }] },
-        { titulo: "Consultoria em Moda",                 paraQuem: "Marcas · pessoas", hoursLow: 4, hoursHigh: 20, cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade" }] },
-        { titulo: "Consultoria em TI",                   paraQuem: "Pequenas empresas · ONGs", digital: true, hoursLow: 4, hoursHigh: 40, cnae: [{ c: "6204-0/00", d: "Consultoria em tecnologia da informação" }] },
-        { titulo: "Criação de Conteúdo",                 paraQuem: "Marcas · pessoas", digital: true, hoursLow: 15, hoursHigh: 60, recurring: true, cnae: [{ c: "5911-1/99", d: "Produção cinematográfica, de vídeos e TV" }, { c: "5912-0/99", d: "Pós-produção audiovisual" }] },
-        { titulo: "Dança e Expressão Corporal",          paraQuem: "Crianças · adultos", cnae: [{ c: "8592-9/01", d: "Ensino de dança" }] },
-        { titulo: "Design",                              paraQuem: "Marcas · produtos", digital: true, hoursLow: 8, hoursHigh: 60, cnae: [{ c: "7410-2/03", d: "Design de produto" }] },
-        { titulo: "Ensino, Formação e Liderança",        paraQuem: "Empresas · times", hoursLow: 2, hoursHigh: 8, unit: "sessão", cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino" }, { c: "8599-6/03", d: "Treinamento em informática" }] },
-        { titulo: "Escrita, Interpretação e Tradução",   paraQuem: "Empresas · autores", digital: true, hoursLow: 5, hoursHigh: 30, cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }, { c: "5811-5/00", d: "Edição de livros" }] },
-        { titulo: "Experiência de Usuário (UI/UX)",      paraQuem: "Produtos · apps", digital: true, hoursLow: 15, hoursHigh: 100, cnae: [{ c: "7410-2/03", d: "Design de produto" }, { c: "6201-5/02", d: "Web design" }] },
-        { titulo: "Fotografia",                          paraQuem: "Eventos · ensaios", hoursLow: 6, hoursHigh: 15, cnae: [{ c: "7420-0/01", d: "Atividades de produção de fotografias" }, { c: "7420-0/04", d: "Filmagem de festas e eventos" }] },
-        { titulo: "Piloto de Drone",                     paraQuem: "Eventos · obras · imobiliário", cnaeNovo: true, cnae: [{ c: "7420-0/02", d: "Atividades de produção de fotografias aéreas" }, { c: "5911-1/99", d: "Produção de vídeos não especificada anteriormente" }] },
-        { titulo: "Inteligência e Tecnologia",           paraQuem: "Empresas · estúdios", digital: true, hoursLow: 20, hoursHigh: 200, cnae: [{ c: "6204-0/00", d: "Consultoria em tecnologia da informação" }, { c: "6319-4/00", d: "Portais, provedores de conteúdo e serviços de informação na internet" }] },
-        { titulo: "Marketing Digital",                   paraQuem: "Marcas · pequenas empresas", digital: true, hoursLow: 20, hoursHigh: 80, recurring: true, cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade" }] },
-        { titulo: "Mentoria Espiritual",                 paraQuem: "Adultos em transição", digital: true, hoursLow: 1, hoursHigh: 2, unit: "sessão", cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino" }] },
-        { titulo: "Murais e Fachadas",                   paraQuem: "Comércio · casa", hoursLow: 16, hoursHigh: 80, cnae: [{ c: "7410-2/03", d: "Design de produto" }, { c: "7319-0/01", d: "Criação de estandes para feiras e exposições" }] },
-        { titulo: "Pensamento Islâmico",                 paraQuem: "Curiosos · estudantes", digital: true, hoursLow: 1, hoursHigh: 2, unit: "sessão", cnae: [{ c: "8592-9/99", d: "Ensino de arte e cultura não especificado anteriormente" }, { c: "8599-6/99", d: "Outras atividades de ensino" }] },
-        { titulo: "Privacidade e Segurança",             paraQuem: "Empresas · projetos sensíveis", digital: true, hoursLow: 20, hoursHigh: 80, cnae: [{ c: "6204-0/00", d: "Consultoria em tecnologia da informação" }] },
-        { titulo: "Produção Musical",                    paraQuem: "Artistas · marcas", hoursLow: 8, hoursHigh: 20, cnae: [{ c: "9001-9/02", d: "Produção musical" }, { c: "5920-1/00", d: "Atividades de gravação de som e de edição de música" }] },
-        { titulo: "Reforço Escolar",                     paraQuem: "Crianças · adolescentes", hoursLow: 1, hoursHigh: 2, unit: "aula", cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino" }] },
-        { titulo: "Stylist, Moda e Passarela",           paraQuem: "Marcas · eventos", hoursLow: 4, hoursHigh: 20, cnae: [{ c: "7319-0/04", d: "Consultoria em publicidade" }] },
-        { titulo: "Tortas Salgadas da Veh", paraQuem: "Eventos · empresas",
-          planos: [
-              { label: "Sob demanda" },
-              { label: "Semanal" },
-              { label: "Mensal" }
+        {
+          "titulo": "Desenvolvimento de API",
+          "parent": "Inteligência e Tecnologia",
+          "implicitResponsavel": [
+            "yuri"
           ],
-          cnae: [{ c: "5620-1/02", d: "Serviços de alimentação — bufê" }] },
-        { titulo: "Interpretação",                       paraQuem: "EN ↔ PT · live · simultânea", implicitResponsavel: ["yuri"], digital: true, hoursLow: 2, hoursHigh: 8, cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
-        // ── Tradução · parent + sub-pares de idiomas ──
-        // Padrão da rede: 0,003-0,005h por palavra → R\$ 0,30 – R\$ 0,50/palavra.
-        { titulo: "Tradução",                            paraQuem: "Empresas · autores · pesquisadores", digital: true, hoursLow: 0.003, hoursHigh: 0.005, unit: "palavra", cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
-        { titulo: "Tradução PT-EN",                      parent: "Tradução", implicitResponsavel: ["ramona"], paraQuem: "Português → Inglês", digital: true, hoursLow: 0.003, hoursHigh: 0.005, unit: "palavra", cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
-        { titulo: "Tradução PT-DE",                      parent: "Tradução", implicitResponsavel: ["ramona"], paraQuem: "Português → Alemão", digital: true, hoursLow: 0.003, hoursHigh: 0.005, unit: "palavra", cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
-        { titulo: "Tradução EN-DE",                      parent: "Tradução", implicitResponsavel: ["ramona"], paraQuem: "Inglês → Alemão", digital: true, hoursLow: 0.003, hoursHigh: 0.005, unit: "palavra", cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
-        { titulo: "Tradução EN-PT",                      parent: "Tradução", implicitResponsavel: ["yuri"], paraQuem: "Inglês → Português", digital: true, hoursLow: 0.003, hoursHigh: 0.005, unit: "palavra", cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
-        { titulo: "Tradução PT-Guarani",                 parent: "Tradução", implicitResponsavel: ["denise"], paraQuem: "Português → Guarani", digital: true, hoursLow: 0.003, hoursHigh: 0.005, unit: "palavra", cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
-        { titulo: "Tradução Guarani-PT",                 parent: "Tradução", implicitResponsavel: ["yuri"], paraQuem: "Guarani → Português", digital: true, hoursLow: 0.003, hoursHigh: 0.005, unit: "palavra", cnae: [{ c: "7490-1/01", d: "Serviços de tradução, interpretação e similares" }] },
-
-        // ── Gaps de missões (serviços novos criados pra fechar ponte) ────────
-        { titulo: "Educação Ambiental",                  paraQuem: "Escolas · ONGs", hoursLow: 2, hoursHigh: 8, unit: "oficina", cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino" }] },
-        { titulo: "Produção de Desfile",                 paraQuem: "Marcas · eventos", hoursLow: 40, hoursHigh: 200, cnae: [{ c: "9001-9/03", d: "Produção de espetáculos de dança" }] },
-        { titulo: "Futebol e Esporte",                   paraQuem: "Crianças · juvenis", hoursLow: 1, hoursHigh: 2, unit: "treino", cnae: [{ c: "9319-1/01", d: "Produção e promoção de eventos esportivos" }] },
-
-        // ── Correções (CNAE a formalizar — hoje no CNPJ estava errado/ausente)
-        { titulo: "Artes Visuais",                       paraQuem: "Coleções · ativações", hoursLow: 10, hoursHigh: 200, cnaeNovo: true, cnae: [{ c: "9002-7/01", d: "Atividades de artistas plásticos, jornalistas independentes e escritores" }] },
-        { titulo: "Conexões",                            paraQuem: "Empreendedores · rede", digital: true, cnaeNovo: true, cnae: [{ c: "7020-4/00", d: "Atividades de consultoria em gestão empresarial" }] },
-        { titulo: "Gestão Executiva",                    paraQuem: "Pequenas empresas", digital: true, hoursLow: 20, hoursHigh: 80, recurring: true, cnaeNovo: true, cnae: [{ c: "7020-4/00", d: "Atividades de consultoria em gestão empresarial" }] },
-        { titulo: "Grafite",                             paraQuem: "Eventos · ativações", hoursLow: 8, hoursHigh: 40, cnaeNovo: true, cnae: [{ c: "9002-7/01", d: "Atividades de artistas plásticos, jornalistas independentes e escritores" }] },
-        { titulo: "Meditação",                           paraQuem: "Iniciantes · grupos", cnaeNovo: true, cnae: [{ c: "8690-9/99", d: "Outras atividades de atenção à saúde humana" }] },
-        { titulo: "Rede de Talentos",                    paraQuem: "Empresas · contratantes", digital: true, cnaeNovo: true, cnae: [{ c: "7810-8/00", d: "Seleção e agenciamento de mão-de-obra" }] },
-
-        // ── Novos CNAEs a formalizar (antes sem classificação) ───────────────
-        { titulo: "Acompanhamento Nutricional",          paraQuem: "Adultos · esportistas",
-digital: true,           planos: [
-              { hours: 1 },
-              { label: "Semanal" },
-              { label: "Mensal" }
+          "paraQuem": "Empresas · times técnicos",
+          "digital": true,
+          "hoursLow": 30,
+          "hoursHigh": 150,
+          "cnae": [
+            {
+              "c": "6202-3/00",
+              "d": "Desenvolvimento e licenciamento de software customizável"
+            }
+          ]
+        },
+        {
+          "titulo": "Desenvolvimento de Software",
+          "parent": "Inteligência e Tecnologia",
+          "implicitResponsavel": [
+            "yuri"
           ],
-          cnaeNovo: true, cnae: [{ c: "8650-0/02", d: "Atividades de profissionais da nutrição" }] },
-        { titulo: "Autocuidado",                         paraQuem: "Adultos", digital: true, cnaeNovo: true, cnae: [{ c: "8690-9/99", d: "Outras atividades de atenção à saúde humana" }] },
-        { titulo: "Auditoria",                           paraQuem: "Empresas · governança", digital: true, cnaeNovo: true, cnae: [{ c: "6920-6/02", d: "Atividades de auditoria contábil e tributária" }] },
-        { titulo: "Comunicação Científica",              paraQuem: "Pesquisadores · marcas", digital: true, hoursLow: 5, hoursHigh: 30, cnaeNovo: true, cnae: [{ c: "8599-6/99", d: "Outras atividades de ensino" }, { c: "5811-5/00", d: "Edição de livros" }] },
-        { titulo: "Consultoria Jurídica",                paraQuem: "Pequenas empresas · pessoas", digital: true, hoursLow: 1, hoursHigh: 1, unit: "hora", cnaeNovo: true, cnae: [{ c: "6911-7/01", d: "Serviços advocatícios" }] },
-        { titulo: "Cuidado com o Idoso",                 paraQuem: "Famílias · idosos",
-          planos: [
-              { hours: 6 },
-              { label: "Semanal" },
-              { label: "Mensal" }
+          "paraQuem": "Empresas · startups",
+          "digital": true,
+          "hoursLow": 80,
+          "hoursHigh": 400,
+          "cnae": [
+            {
+              "c": "6202-3/00",
+              "d": "Desenvolvimento e licenciamento de software customizável"
+            }
+          ]
+        },
+        {
+          "titulo": "Desenvolvimento Web",
+          "parent": "Inteligência e Tecnologia",
+          "implicitResponsavel": [
+            "yuri"
           ],
-          cnaeNovo: true, cnae: [{ c: "8712-3/00", d: "Serviços de assistência à saúde prestados a pacientes fora de unidades de saúde" }] },
-        { titulo: "Desenho Botânico",                    paraQuem: "Editoras · coleções", hoursLow: 8, hoursHigh: 40, cnaeNovo: true, cnae: [{ c: "9002-7/01", d: "Atividades de artistas plásticos, jornalistas independentes e escritores" }] },
-        { titulo: "Drywall e Bioconstrução",             paraQuem: "Casa · obra", hoursLow: 20, hoursHigh: 500, cnaeNovo: true, cnae: [{ c: "4330-4/02", d: "Instalação de portas, janelas, tetos, divisórias e armários" }, { c: "4399-1/99", d: "Outros serviços especializados para construção" }] },
-        { titulo: "Gestão Administrativa",               paraQuem: "Pequenas empresas", digital: true, hoursLow: 20, hoursHigh: 80, recurring: true, cnaeNovo: true, cnae: [{ c: "8211-3/00", d: "Serviços combinados de escritório e apoio administrativo" }] },
-        { titulo: "Gestão Contábil",                     paraQuem: "Pequenas empresas · MEI", digital: true, hoursLow: 5, hoursHigh: 20, recurring: true, cnaeNovo: true, cnae: [{ c: "6920-6/01", d: "Atividades de contabilidade" }] },
-        { titulo: "Gestão Financeira",                   paraQuem: "Pequenas empresas", digital: true, hoursLow: 8, hoursHigh: 40, recurring: true, cnaeNovo: true, cnae: [{ c: "7020-4/00", d: "Atividades de consultoria em gestão empresarial" }] },
-        { titulo: "Gestão Fiscal",                       paraQuem: "Pequenas empresas · MEI", digital: true, hoursLow: 5, hoursHigh: 20, recurring: true, cnaeNovo: true, cnae: [{ c: "6920-6/01", d: "Atividades de contabilidade" }] },
-        { titulo: "Gestão Operacional",                  paraQuem: "Pequenas empresas", digital: true, hoursLow: 20, hoursHigh: 80, recurring: true, cnaeNovo: true, cnae: [{ c: "7020-4/00", d: "Atividades de consultoria em gestão empresarial" }] },
-        { titulo: "Gestão de Logística",                 paraQuem: "Empresas · operações", digital: true, cnaeNovo: true, cnae: [{ c: "5229-0/01", d: "Serviços de apoio ao transporte por táxi" }, { c: "7020-4/00", d: "Atividades de consultoria em gestão empresarial" }] },
-        { titulo: "Gestão de Vendas",                    paraQuem: "Empresas · times comerciais", digital: true, cnaeNovo: true, cnae: [{ c: "7020-4/00", d: "Atividades de consultoria em gestão empresarial" }, { c: "7319-0/04", d: "Consultoria em publicidade" }] },
-        { titulo: "Inteligência de Previsão",            paraQuem: "Empresas · fundos", digital: true, hoursLow: 40, hoursHigh: 400, cnaeNovo: true, cnae: [{ c: "7320-3/00", d: "Pesquisa de mercado e de opinião pública" }, { c: "6311-9/00", d: "Tratamento de dados, provedores de serviços de aplicação e serviços de hospedagem" }] },
-        { titulo: "Market Making Preditivo",             paraQuem: "Mercados · plataformas", digital: true, hoursLow: 40, hoursHigh: 400, cnaeNovo: true, cnae: [{ c: "6619-3/99", d: "Outras atividades auxiliares dos serviços financeiros" }] },
-        // ── Sub-serviços de "Saúde Mental" (Raquel cobre a árvore) ──
-        { titulo: "Saúde Mental",                        paraQuem: "Adultos · adolescentes", digital: true, cnaeNovo: true, cnae: [{ c: "8650-0/03", d: "Atividades de psicologia e psicanálise" }] },
-        { titulo: "Psicologia Clínica",                  parent: "Saúde Mental", paraQuem: "Adultos", digital: true, cnaeNovo: true, cnae: [{ c: "8650-0/03", d: "Atividades de psicologia e psicanálise" }] },
-        { titulo: "Psicoterapia Psicanalítica",          parent: "Saúde Mental", paraQuem: "Adultos", digital: true, hoursLow: 1, hoursHigh: 1, unit: "sessão", cnaeNovo: true, cnae: [{ c: "8650-0/03", d: "Atividades de psicologia e psicanálise" }] },
-        { titulo: "Psicologia Analítica (Junguiana)",    parent: "Saúde Mental", paraQuem: "Adultos", digital: true, hoursLow: 1, hoursHigh: 1, unit: "sessão", cnaeNovo: true, cnae: [{ c: "8650-0/03", d: "Atividades de psicologia e psicanálise" }] },
-        { titulo: "Psicologia Social e Comunitária",     parent: "Saúde Mental", paraQuem: "Grupos · ONGs", digital: true, hoursLow: 2, hoursHigh: 8, unit: "grupo", cnaeNovo: true, cnae: [{ c: "8650-0/03", d: "Atividades de psicologia e psicanálise" }] },
-        { titulo: "Yoga",                                paraQuem: "Iniciantes · turmas", cnaeNovo: true, cnae: [{ c: "9313-1/00", d: "Atividades de condicionamento físico" }, { c: "8690-9/99", d: "Outras atividades de atenção à saúde humana" }] },
-
-        // ── Gaps com CNAE a formalizar ───────────────────────────────────────
-        { titulo: "Agrofloresta",                        paraQuem: "Sítios · escolas", hoursLow: 40, hoursHigh: 400, cnaeNovo: true, cnae: [{ c: "0161-0/01", d: "Serviço de preparação de terreno, cultivo e colheita" }] },
-        { titulo: "Compostagem",                         paraQuem: "Casa · condomínios", hoursLow: 8, hoursHigh: 30, cnaeNovo: true, cnae: [{ c: "3821-1/00", d: "Tratamento e disposição de resíduos não-perigosos" }] },
-        { titulo: "Produção de Eventos",                 paraQuem: "Marcas · empresas", hoursLow: 30, hoursHigh: 150, cnaeNovo: true, cnae: [{ c: "8230-0/02", d: "Atividades de organização de feiras, congressos, exposições e festas" }] },
-
-        // ── Hidden — profissões pessoais de entes em-memória/aposentados,
-        // relações familiares e placeholders de menores. Não são serviços
-        // comerciais da rede. Filtrados de /servicos/ via publicServices().
-        { titulo: "Atriz",                 hidden: true },
-        { titulo: "Cantora",               hidden: true },
-        { titulo: "Distribuição de Frutas",hidden: true },
-        { titulo: "Filha da Bruna",        hidden: true },
-        { titulo: "Filho da Aime",         hidden: true },
-        { titulo: "Futuro",                hidden: true },
-        { titulo: "Mãe do Yuri",           hidden: true },
-        { titulo: "Pai do Yuri",           hidden: true },
-        { titulo: "Poeta",                 hidden: true }
+          "paraQuem": "Empresas · estúdios",
+          "digital": true,
+          "hoursLow": 40,
+          "hoursHigh": 200,
+          "cnae": [
+            {
+              "c": "6201-5/02",
+              "d": "Web design"
+            },
+            {
+              "c": "6202-3/00",
+              "d": "Desenvolvimento e licenciamento de software customizável"
+            }
+          ]
+        },
+        {
+          "titulo": "Nuvem",
+          "parent": "Inteligência e Tecnologia",
+          "implicitResponsavel": [
+            "yuri"
+          ],
+          "paraQuem": "Empresas · projetos",
+          "digital": true,
+          "hoursLow": 10,
+          "hoursHigh": 80,
+          "cnae": [
+            {
+              "c": "6204-0/00",
+              "d": "Consultoria em TI"
+            },
+            {
+              "c": "6319-4/00",
+              "d": "Provedores de conteúdo e serviços de informação na internet"
+            }
+          ]
+        },
+        {
+          "titulo": "Computação",
+          "parent": "Inteligência e Tecnologia",
+          "implicitResponsavel": [
+            "yuri"
+          ],
+          "paraQuem": "Times técnicos",
+          "digital": true,
+          "hoursLow": 10,
+          "hoursHigh": 80,
+          "cnae": [
+            {
+              "c": "6204-0/00",
+              "d": "Consultoria em TI"
+            }
+          ]
+        },
+        {
+          "titulo": "Dados e Armazenamento",
+          "parent": "Inteligência e Tecnologia",
+          "implicitResponsavel": [
+            "yuri"
+          ],
+          "paraQuem": "Empresas · times de dados",
+          "digital": true,
+          "hoursLow": 15,
+          "hoursHigh": 100,
+          "cnae": [
+            {
+              "c": "6204-0/00",
+              "d": "Consultoria em TI"
+            },
+            {
+              "c": "6319-4/00",
+              "d": "Provedores de serviços de informação na internet"
+            }
+          ]
+        },
+        {
+          "titulo": "Hardware",
+          "parent": "Inteligência e Tecnologia",
+          "implicitResponsavel": [
+            "yuri"
+          ],
+          "paraQuem": "Estúdios · projetos",
+          "digital": true,
+          "hoursLow": 8,
+          "hoursHigh": 60,
+          "cnae": [
+            {
+              "c": "6204-0/00",
+              "d": "Consultoria em TI"
+            }
+          ]
+        },
+        {
+          "titulo": "Sistemas Operacionais",
+          "parent": "Inteligência e Tecnologia",
+          "implicitResponsavel": [
+            "yuri"
+          ],
+          "paraQuem": "Times técnicos",
+          "digital": true,
+          "hoursLow": 10,
+          "hoursHigh": 80,
+          "cnae": [
+            {
+              "c": "6204-0/00",
+              "d": "Consultoria em TI"
+            }
+          ]
+        },
+        {
+          "titulo": "Redes",
+          "parent": "Inteligência e Tecnologia",
+          "implicitResponsavel": [
+            "yuri"
+          ],
+          "paraQuem": "Empresas · escritórios",
+          "digital": true,
+          "hoursLow": 8,
+          "hoursHigh": 60,
+          "cnae": [
+            {
+              "c": "6204-0/00",
+              "d": "Consultoria em TI"
+            }
+          ]
+        },
+        {
+          "titulo": "Tráfego e Crescimento",
+          "parent": "Inteligência e Tecnologia",
+          "implicitResponsavel": [
+            "yuri"
+          ],
+          "paraQuem": "Marcas · e-commerce",
+          "digital": true,
+          "hoursLow": 20,
+          "hoursHigh": 80,
+          "recurring": true,
+          "cnae": [
+            {
+              "c": "7319-0/04",
+              "d": "Consultoria em publicidade"
+            },
+            {
+              "c": "6319-4/00",
+              "d": "Portais, provedores de conteúdo e serviços de informação na internet"
+            }
+          ]
+        },
+        {
+          "titulo": "Automação de Processos",
+          "parent": "Inteligência e Tecnologia",
+          "implicitResponsavel": [
+            "yuri"
+          ],
+          "paraQuem": "Empresas · operações",
+          "digital": true,
+          "hoursLow": 8,
+          "hoursHigh": 20,
+          "cnaeNovo": true,
+          "cnae": [
+            {
+              "c": "6202-3/00",
+              "d": "Desenvolvimento e licenciamento de software customizável"
+            },
+            {
+              "c": "6204-0/00",
+              "d": "Consultoria em tecnologia da informação"
+            }
+          ]
+        },
+        {
+          "titulo": "Alfabetização",
+          "paraQuem": "Crianças · adultos",
+          "hoursLow": 1,
+          "hoursHigh": 2,
+          "unit": "aula",
+          "cnae": [
+            {
+              "c": "8599-6/99",
+              "d": "Outras atividades de ensino não especificadas anteriormente"
+            }
+          ]
+        },
+        {
+          "titulo": "Assistência Técnica",
+          "paraQuem": "Equipamentos · pessoas",
+          "cnae": [
+            {
+              "c": "9521-5/00",
+              "d": "Reparação e manutenção de equipamentos eletroeletrônicos de uso pessoal e doméstico"
+            }
+          ]
+        },
+        {
+          "titulo": "Babá",
+          "paraQuem": "Crianças · famílias",
+          "cnae": [
+            {
+              "c": "9700-5/00",
+              "d": "Serviços domésticos"
+            }
+          ]
+        },
+        {
+          "titulo": "Alimentação e Bebidas",
+          "paraQuem": "Eventos · empresas",
+          "hoursLow": 0.35,
+          "hoursHigh": 1,
+          "unit": "pessoa",
+          "cnae": [
+            {
+              "c": "5620-1/02",
+              "d": "Serviços de alimentação para eventos e recepções — bufê"
+            }
+          ]
+        },
+        {
+          "titulo": "Hambúrguer Artesanal",
+          "paraQuem": "Bairro · delivery",
+          "hoursLow": 0.25,
+          "hoursHigh": 0.6,
+          "unit": "unidade",
+          "cnaeNovo": true,
+          "cnae": [
+            {
+              "c": "5611-2/01",
+              "d": "Restaurantes e similares"
+            },
+            {
+              "c": "5620-1/04",
+              "d": "Fornecimento de alimentos preparados preponderantemente para consumo domiciliar"
+            }
+          ]
+        },
+        {
+          "titulo": "Comunicação Visual",
+          "paraQuem": "Eventos · marcas",
+          "digital": true,
+          "hoursLow": 8,
+          "hoursHigh": 30,
+          "cnae": [
+            {
+              "c": "7410-2/03",
+              "d": "Design de produto"
+            },
+            {
+              "c": "7319-0/04",
+              "d": "Consultoria em publicidade"
+            }
+          ]
+        },
+        {
+          "titulo": "Consultoria em Moda",
+          "paraQuem": "Marcas · pessoas",
+          "hoursLow": 4,
+          "hoursHigh": 20,
+          "cnae": [
+            {
+              "c": "7319-0/04",
+              "d": "Consultoria em publicidade"
+            }
+          ]
+        },
+        {
+          "titulo": "Consultoria em TI",
+          "paraQuem": "Pequenas empresas · ONGs",
+          "digital": true,
+          "hoursLow": 4,
+          "hoursHigh": 40,
+          "cnae": [
+            {
+              "c": "6204-0/00",
+              "d": "Consultoria em tecnologia da informação"
+            }
+          ]
+        },
+        {
+          "titulo": "Criação de Conteúdo",
+          "paraQuem": "Marcas · pessoas",
+          "digital": true,
+          "hoursLow": 15,
+          "hoursHigh": 60,
+          "recurring": true,
+          "cnae": [
+            {
+              "c": "5911-1/99",
+              "d": "Produção cinematográfica, de vídeos e TV"
+            },
+            {
+              "c": "5912-0/99",
+              "d": "Pós-produção audiovisual"
+            }
+          ]
+        },
+        {
+          "titulo": "Dança e Expressão Corporal",
+          "paraQuem": "Crianças · adultos",
+          "cnae": [
+            {
+              "c": "8592-9/01",
+              "d": "Ensino de dança"
+            }
+          ]
+        },
+        {
+          "titulo": "Design",
+          "paraQuem": "Marcas · produtos",
+          "digital": true,
+          "hoursLow": 8,
+          "hoursHigh": 60,
+          "cnae": [
+            {
+              "c": "7410-2/03",
+              "d": "Design de produto"
+            }
+          ]
+        },
+        {
+          "titulo": "Ensino, Formação e Liderança",
+          "paraQuem": "Empresas · times",
+          "hoursLow": 2,
+          "hoursHigh": 8,
+          "unit": "sessão",
+          "cnae": [
+            {
+              "c": "8599-6/99",
+              "d": "Outras atividades de ensino"
+            },
+            {
+              "c": "8599-6/03",
+              "d": "Treinamento em informática"
+            }
+          ]
+        },
+        {
+          "titulo": "Escrita, Interpretação e Tradução",
+          "paraQuem": "Empresas · autores",
+          "digital": true,
+          "hoursLow": 5,
+          "hoursHigh": 30,
+          "cnae": [
+            {
+              "c": "7490-1/01",
+              "d": "Serviços de tradução, interpretação e similares"
+            },
+            {
+              "c": "5811-5/00",
+              "d": "Edição de livros"
+            }
+          ]
+        },
+        {
+          "titulo": "Experiência de Usuário (UI/UX)",
+          "paraQuem": "Produtos · apps",
+          "digital": true,
+          "hoursLow": 15,
+          "hoursHigh": 100,
+          "cnae": [
+            {
+              "c": "7410-2/03",
+              "d": "Design de produto"
+            },
+            {
+              "c": "6201-5/02",
+              "d": "Web design"
+            }
+          ]
+        },
+        {
+          "titulo": "Fotografia",
+          "paraQuem": "Eventos · ensaios",
+          "hoursLow": 6,
+          "hoursHigh": 15,
+          "cnae": [
+            {
+              "c": "7420-0/01",
+              "d": "Atividades de produção de fotografias"
+            },
+            {
+              "c": "7420-0/04",
+              "d": "Filmagem de festas e eventos"
+            }
+          ]
+        },
+        {
+          "titulo": "Piloto de Drone",
+          "paraQuem": "Eventos · obras · imobiliário",
+          "cnaeNovo": true,
+          "cnae": [
+            {
+              "c": "7420-0/02",
+              "d": "Atividades de produção de fotografias aéreas"
+            },
+            {
+              "c": "5911-1/99",
+              "d": "Produção de vídeos não especificada anteriormente"
+            }
+          ]
+        },
+        {
+          "titulo": "Inteligência e Tecnologia",
+          "paraQuem": "Empresas · estúdios",
+          "digital": true,
+          "hoursLow": 20,
+          "hoursHigh": 200,
+          "cnae": [
+            {
+              "c": "6204-0/00",
+              "d": "Consultoria em tecnologia da informação"
+            },
+            {
+              "c": "6319-4/00",
+              "d": "Portais, provedores de conteúdo e serviços de informação na internet"
+            }
+          ]
+        },
+        {
+          "titulo": "Marketing Digital",
+          "paraQuem": "Marcas · pequenas empresas",
+          "digital": true,
+          "hoursLow": 20,
+          "hoursHigh": 80,
+          "recurring": true,
+          "cnae": [
+            {
+              "c": "7319-0/04",
+              "d": "Consultoria em publicidade"
+            }
+          ]
+        },
+        {
+          "titulo": "Mentoria Espiritual",
+          "paraQuem": "Adultos em transição",
+          "digital": true,
+          "hoursLow": 1,
+          "hoursHigh": 2,
+          "unit": "sessão",
+          "cnae": [
+            {
+              "c": "8599-6/99",
+              "d": "Outras atividades de ensino"
+            }
+          ]
+        },
+        {
+          "titulo": "Murais e Fachadas",
+          "paraQuem": "Comércio · casa",
+          "hoursLow": 16,
+          "hoursHigh": 80,
+          "cnae": [
+            {
+              "c": "7410-2/03",
+              "d": "Design de produto"
+            },
+            {
+              "c": "7319-0/01",
+              "d": "Criação de estandes para feiras e exposições"
+            }
+          ]
+        },
+        {
+          "titulo": "Pensamento Islâmico",
+          "paraQuem": "Curiosos · estudantes",
+          "digital": true,
+          "hoursLow": 1,
+          "hoursHigh": 2,
+          "unit": "sessão",
+          "cnae": [
+            {
+              "c": "8592-9/99",
+              "d": "Ensino de arte e cultura não especificado anteriormente"
+            },
+            {
+              "c": "8599-6/99",
+              "d": "Outras atividades de ensino"
+            }
+          ]
+        },
+        {
+          "titulo": "Privacidade e Segurança",
+          "paraQuem": "Empresas · projetos sensíveis",
+          "digital": true,
+          "hoursLow": 20,
+          "hoursHigh": 80,
+          "cnae": [
+            {
+              "c": "6204-0/00",
+              "d": "Consultoria em tecnologia da informação"
+            }
+          ]
+        },
+        {
+          "titulo": "Produção Musical",
+          "paraQuem": "Artistas · marcas",
+          "hoursLow": 8,
+          "hoursHigh": 20,
+          "cnae": [
+            {
+              "c": "9001-9/02",
+              "d": "Produção musical"
+            },
+            {
+              "c": "5920-1/00",
+              "d": "Atividades de gravação de som e de edição de música"
+            }
+          ]
+        },
+        {
+          "titulo": "Reforço Escolar",
+          "paraQuem": "Crianças · adolescentes",
+          "hoursLow": 1,
+          "hoursHigh": 2,
+          "unit": "aula",
+          "cnae": [
+            {
+              "c": "8599-6/99",
+              "d": "Outras atividades de ensino"
+            }
+          ]
+        },
+        {
+          "titulo": "Stylist, Moda e Passarela",
+          "paraQuem": "Marcas · eventos",
+          "hoursLow": 4,
+          "hoursHigh": 20,
+          "cnae": [
+            {
+              "c": "7319-0/04",
+              "d": "Consultoria em publicidade"
+            }
+          ]
+        },
+        {
+          "titulo": "Tortas Salgadas da Veh",
+          "paraQuem": "Eventos · empresas",
+          "planos": [
+            {
+              "label": "Sob demanda"
+            },
+            {
+              "label": "Semanal"
+            },
+            {
+              "label": "Mensal"
+            }
+          ],
+          "cnae": [
+            {
+              "c": "5620-1/02",
+              "d": "Serviços de alimentação — bufê"
+            }
+          ]
+        },
+        {
+          "titulo": "Interpretação",
+          "paraQuem": "EN ↔ PT · live · simultânea",
+          "implicitResponsavel": [
+            "yuri"
+          ],
+          "digital": true,
+          "hoursLow": 2,
+          "hoursHigh": 8,
+          "cnae": [
+            {
+              "c": "7490-1/01",
+              "d": "Serviços de tradução, interpretação e similares"
+            }
+          ]
+        },
+        {
+          "titulo": "Tradução",
+          "paraQuem": "Empresas · autores · pesquisadores",
+          "digital": true,
+          "hoursLow": 0.003,
+          "hoursHigh": 0.005,
+          "unit": "palavra",
+          "cnae": [
+            {
+              "c": "7490-1/01",
+              "d": "Serviços de tradução, interpretação e similares"
+            }
+          ]
+        },
+        {
+          "titulo": "Tradução PT-EN",
+          "parent": "Tradução",
+          "implicitResponsavel": [
+            "ramona"
+          ],
+          "paraQuem": "Português → Inglês",
+          "digital": true,
+          "hoursLow": 0.003,
+          "hoursHigh": 0.005,
+          "unit": "palavra",
+          "cnae": [
+            {
+              "c": "7490-1/01",
+              "d": "Serviços de tradução, interpretação e similares"
+            }
+          ]
+        },
+        {
+          "titulo": "Tradução PT-DE",
+          "parent": "Tradução",
+          "implicitResponsavel": [
+            "ramona"
+          ],
+          "paraQuem": "Português → Alemão",
+          "digital": true,
+          "hoursLow": 0.003,
+          "hoursHigh": 0.005,
+          "unit": "palavra",
+          "cnae": [
+            {
+              "c": "7490-1/01",
+              "d": "Serviços de tradução, interpretação e similares"
+            }
+          ]
+        },
+        {
+          "titulo": "Tradução EN-DE",
+          "parent": "Tradução",
+          "implicitResponsavel": [
+            "ramona"
+          ],
+          "paraQuem": "Inglês → Alemão",
+          "digital": true,
+          "hoursLow": 0.003,
+          "hoursHigh": 0.005,
+          "unit": "palavra",
+          "cnae": [
+            {
+              "c": "7490-1/01",
+              "d": "Serviços de tradução, interpretação e similares"
+            }
+          ]
+        },
+        {
+          "titulo": "Tradução EN-PT",
+          "parent": "Tradução",
+          "implicitResponsavel": [
+            "yuri"
+          ],
+          "paraQuem": "Inglês → Português",
+          "digital": true,
+          "hoursLow": 0.003,
+          "hoursHigh": 0.005,
+          "unit": "palavra",
+          "cnae": [
+            {
+              "c": "7490-1/01",
+              "d": "Serviços de tradução, interpretação e similares"
+            }
+          ]
+        },
+        {
+          "titulo": "Tradução PT-Guarani",
+          "parent": "Tradução",
+          "implicitResponsavel": [
+            "denise"
+          ],
+          "paraQuem": "Português → Guarani",
+          "digital": true,
+          "hoursLow": 0.003,
+          "hoursHigh": 0.005,
+          "unit": "palavra",
+          "cnae": [
+            {
+              "c": "7490-1/01",
+              "d": "Serviços de tradução, interpretação e similares"
+            }
+          ]
+        },
+        {
+          "titulo": "Tradução Guarani-PT",
+          "parent": "Tradução",
+          "implicitResponsavel": [
+            "yuri"
+          ],
+          "paraQuem": "Guarani → Português",
+          "digital": true,
+          "hoursLow": 0.003,
+          "hoursHigh": 0.005,
+          "unit": "palavra",
+          "cnae": [
+            {
+              "c": "7490-1/01",
+              "d": "Serviços de tradução, interpretação e similares"
+            }
+          ]
+        },
+        {
+          "titulo": "Educação Ambiental",
+          "paraQuem": "Escolas · ONGs",
+          "hoursLow": 2,
+          "hoursHigh": 8,
+          "unit": "oficina",
+          "cnae": [
+            {
+              "c": "8599-6/99",
+              "d": "Outras atividades de ensino"
+            }
+          ]
+        },
+        {
+          "titulo": "Produção de Desfile",
+          "paraQuem": "Marcas · eventos",
+          "hoursLow": 40,
+          "hoursHigh": 200,
+          "cnae": [
+            {
+              "c": "9001-9/03",
+              "d": "Produção de espetáculos de dança"
+            }
+          ]
+        },
+        {
+          "titulo": "Futebol e Esporte",
+          "paraQuem": "Crianças · juvenis",
+          "hoursLow": 1,
+          "hoursHigh": 2,
+          "unit": "treino",
+          "cnae": [
+            {
+              "c": "9319-1/01",
+              "d": "Produção e promoção de eventos esportivos"
+            }
+          ]
+        },
+        {
+          "titulo": "Artes Visuais",
+          "paraQuem": "Coleções · ativações",
+          "hoursLow": 10,
+          "hoursHigh": 200,
+          "cnaeNovo": true,
+          "cnae": [
+            {
+              "c": "9002-7/01",
+              "d": "Atividades de artistas plásticos, jornalistas independentes e escritores"
+            }
+          ]
+        },
+        {
+          "titulo": "Conexões",
+          "paraQuem": "Empreendedores · rede",
+          "digital": true,
+          "cnaeNovo": true,
+          "cnae": [
+            {
+              "c": "7020-4/00",
+              "d": "Atividades de consultoria em gestão empresarial"
+            }
+          ]
+        },
+        {
+          "titulo": "Gestão Executiva",
+          "paraQuem": "Pequenas empresas",
+          "digital": true,
+          "hoursLow": 20,
+          "hoursHigh": 80,
+          "recurring": true,
+          "cnaeNovo": true,
+          "cnae": [
+            {
+              "c": "7020-4/00",
+              "d": "Atividades de consultoria em gestão empresarial"
+            }
+          ]
+        },
+        {
+          "titulo": "Grafite",
+          "paraQuem": "Eventos · ativações",
+          "hoursLow": 8,
+          "hoursHigh": 40,
+          "cnaeNovo": true,
+          "cnae": [
+            {
+              "c": "9002-7/01",
+              "d": "Atividades de artistas plásticos, jornalistas independentes e escritores"
+            }
+          ]
+        },
+        {
+          "titulo": "Meditação",
+          "paraQuem": "Iniciantes · grupos",
+          "cnaeNovo": true,
+          "cnae": [
+            {
+              "c": "8690-9/99",
+              "d": "Outras atividades de atenção à saúde humana"
+            }
+          ]
+        },
+        {
+          "titulo": "Rede de Talentos",
+          "paraQuem": "Empresas · contratantes",
+          "digital": true,
+          "cnaeNovo": true,
+          "cnae": [
+            {
+              "c": "7810-8/00",
+              "d": "Seleção e agenciamento de mão-de-obra"
+            }
+          ]
+        },
+        {
+          "titulo": "Acompanhamento Nutricional",
+          "paraQuem": "Adultos · esportistas",
+          "digital": true,
+          "planos": [
+            {
+              "hours": 1
+            },
+            {
+              "label": "Semanal"
+            },
+            {
+              "label": "Mensal"
+            }
+          ],
+          "cnaeNovo": true,
+          "cnae": [
+            {
+              "c": "8650-0/02",
+              "d": "Atividades de profissionais da nutrição"
+            }
+          ]
+        },
+        {
+          "titulo": "Autocuidado",
+          "paraQuem": "Adultos",
+          "digital": true,
+          "cnaeNovo": true,
+          "cnae": [
+            {
+              "c": "8690-9/99",
+              "d": "Outras atividades de atenção à saúde humana"
+            }
+          ]
+        },
+        {
+          "titulo": "Auditoria",
+          "paraQuem": "Empresas · governança",
+          "digital": true,
+          "cnaeNovo": true,
+          "cnae": [
+            {
+              "c": "6920-6/02",
+              "d": "Atividades de auditoria contábil e tributária"
+            }
+          ]
+        },
+        {
+          "titulo": "Comunicação Científica",
+          "paraQuem": "Pesquisadores · marcas",
+          "digital": true,
+          "hoursLow": 5,
+          "hoursHigh": 30,
+          "cnaeNovo": true,
+          "cnae": [
+            {
+              "c": "8599-6/99",
+              "d": "Outras atividades de ensino"
+            },
+            {
+              "c": "5811-5/00",
+              "d": "Edição de livros"
+            }
+          ]
+        },
+        {
+          "titulo": "Consultoria Jurídica",
+          "paraQuem": "Pequenas empresas · pessoas",
+          "digital": true,
+          "hoursLow": 1,
+          "hoursHigh": 1,
+          "unit": "hora",
+          "cnaeNovo": true,
+          "cnae": [
+            {
+              "c": "6911-7/01",
+              "d": "Serviços advocatícios"
+            }
+          ]
+        },
+        {
+          "titulo": "Cuidado com o Idoso",
+          "paraQuem": "Famílias · idosos",
+          "planos": [
+            {
+              "hours": 6
+            },
+            {
+              "label": "Semanal"
+            },
+            {
+              "label": "Mensal"
+            }
+          ],
+          "cnaeNovo": true,
+          "cnae": [
+            {
+              "c": "8712-3/00",
+              "d": "Serviços de assistência à saúde prestados a pacientes fora de unidades de saúde"
+            }
+          ]
+        },
+        {
+          "titulo": "Desenho Botânico",
+          "paraQuem": "Editoras · coleções",
+          "hoursLow": 8,
+          "hoursHigh": 40,
+          "cnaeNovo": true,
+          "cnae": [
+            {
+              "c": "9002-7/01",
+              "d": "Atividades de artistas plásticos, jornalistas independentes e escritores"
+            }
+          ]
+        },
+        {
+          "titulo": "Drywall e Bioconstrução",
+          "paraQuem": "Casa · obra",
+          "hoursLow": 20,
+          "hoursHigh": 500,
+          "cnaeNovo": true,
+          "cnae": [
+            {
+              "c": "4330-4/02",
+              "d": "Instalação de portas, janelas, tetos, divisórias e armários"
+            },
+            {
+              "c": "4399-1/99",
+              "d": "Outros serviços especializados para construção"
+            }
+          ]
+        },
+        {
+          "titulo": "Gestão Administrativa",
+          "paraQuem": "Pequenas empresas",
+          "digital": true,
+          "hoursLow": 20,
+          "hoursHigh": 80,
+          "recurring": true,
+          "cnaeNovo": true,
+          "cnae": [
+            {
+              "c": "8211-3/00",
+              "d": "Serviços combinados de escritório e apoio administrativo"
+            }
+          ]
+        },
+        {
+          "titulo": "Gestão Contábil",
+          "paraQuem": "Pequenas empresas · MEI",
+          "digital": true,
+          "hoursLow": 5,
+          "hoursHigh": 20,
+          "recurring": true,
+          "cnaeNovo": true,
+          "cnae": [
+            {
+              "c": "6920-6/01",
+              "d": "Atividades de contabilidade"
+            }
+          ]
+        },
+        {
+          "titulo": "Gestão Financeira",
+          "paraQuem": "Pequenas empresas",
+          "digital": true,
+          "hoursLow": 8,
+          "hoursHigh": 40,
+          "recurring": true,
+          "cnaeNovo": true,
+          "cnae": [
+            {
+              "c": "7020-4/00",
+              "d": "Atividades de consultoria em gestão empresarial"
+            }
+          ]
+        },
+        {
+          "titulo": "Gestão Fiscal",
+          "paraQuem": "Pequenas empresas · MEI",
+          "digital": true,
+          "hoursLow": 5,
+          "hoursHigh": 20,
+          "recurring": true,
+          "cnaeNovo": true,
+          "cnae": [
+            {
+              "c": "6920-6/01",
+              "d": "Atividades de contabilidade"
+            }
+          ]
+        },
+        {
+          "titulo": "Gestão Operacional",
+          "paraQuem": "Pequenas empresas",
+          "digital": true,
+          "hoursLow": 20,
+          "hoursHigh": 80,
+          "recurring": true,
+          "cnaeNovo": true,
+          "cnae": [
+            {
+              "c": "7020-4/00",
+              "d": "Atividades de consultoria em gestão empresarial"
+            }
+          ]
+        },
+        {
+          "titulo": "Gestão de Logística",
+          "paraQuem": "Empresas · operações",
+          "digital": true,
+          "cnaeNovo": true,
+          "cnae": [
+            {
+              "c": "5229-0/01",
+              "d": "Serviços de apoio ao transporte por táxi"
+            },
+            {
+              "c": "7020-4/00",
+              "d": "Atividades de consultoria em gestão empresarial"
+            }
+          ]
+        },
+        {
+          "titulo": "Gestão de Vendas",
+          "paraQuem": "Empresas · times comerciais",
+          "digital": true,
+          "cnaeNovo": true,
+          "cnae": [
+            {
+              "c": "7020-4/00",
+              "d": "Atividades de consultoria em gestão empresarial"
+            },
+            {
+              "c": "7319-0/04",
+              "d": "Consultoria em publicidade"
+            }
+          ]
+        },
+        {
+          "titulo": "Inteligência de Previsão",
+          "paraQuem": "Empresas · fundos",
+          "digital": true,
+          "hoursLow": 40,
+          "hoursHigh": 400,
+          "cnaeNovo": true,
+          "cnae": [
+            {
+              "c": "7320-3/00",
+              "d": "Pesquisa de mercado e de opinião pública"
+            },
+            {
+              "c": "6311-9/00",
+              "d": "Tratamento de dados, provedores de serviços de aplicação e serviços de hospedagem"
+            }
+          ]
+        },
+        {
+          "titulo": "Market Making Preditivo",
+          "paraQuem": "Mercados · plataformas",
+          "digital": true,
+          "hoursLow": 40,
+          "hoursHigh": 400,
+          "cnaeNovo": true,
+          "cnae": [
+            {
+              "c": "6619-3/99",
+              "d": "Outras atividades auxiliares dos serviços financeiros"
+            }
+          ]
+        },
+        {
+          "titulo": "Saúde Mental",
+          "paraQuem": "Adultos · adolescentes",
+          "digital": true,
+          "cnaeNovo": true,
+          "cnae": [
+            {
+              "c": "8650-0/03",
+              "d": "Atividades de psicologia e psicanálise"
+            }
+          ]
+        },
+        {
+          "titulo": "Psicologia Clínica",
+          "parent": "Saúde Mental",
+          "paraQuem": "Adultos",
+          "digital": true,
+          "cnaeNovo": true,
+          "cnae": [
+            {
+              "c": "8650-0/03",
+              "d": "Atividades de psicologia e psicanálise"
+            }
+          ]
+        },
+        {
+          "titulo": "Psicoterapia Psicanalítica",
+          "parent": "Saúde Mental",
+          "paraQuem": "Adultos",
+          "digital": true,
+          "hoursLow": 1,
+          "hoursHigh": 1,
+          "unit": "sessão",
+          "cnaeNovo": true,
+          "cnae": [
+            {
+              "c": "8650-0/03",
+              "d": "Atividades de psicologia e psicanálise"
+            }
+          ]
+        },
+        {
+          "titulo": "Psicologia Analítica (Junguiana)",
+          "parent": "Saúde Mental",
+          "paraQuem": "Adultos",
+          "digital": true,
+          "hoursLow": 1,
+          "hoursHigh": 1,
+          "unit": "sessão",
+          "cnaeNovo": true,
+          "cnae": [
+            {
+              "c": "8650-0/03",
+              "d": "Atividades de psicologia e psicanálise"
+            }
+          ]
+        },
+        {
+          "titulo": "Psicologia Social e Comunitária",
+          "parent": "Saúde Mental",
+          "paraQuem": "Grupos · ONGs",
+          "digital": true,
+          "hoursLow": 2,
+          "hoursHigh": 8,
+          "unit": "grupo",
+          "cnaeNovo": true,
+          "cnae": [
+            {
+              "c": "8650-0/03",
+              "d": "Atividades de psicologia e psicanálise"
+            }
+          ]
+        },
+        {
+          "titulo": "Yoga",
+          "paraQuem": "Iniciantes · turmas",
+          "cnaeNovo": true,
+          "cnae": [
+            {
+              "c": "9313-1/00",
+              "d": "Atividades de condicionamento físico"
+            },
+            {
+              "c": "8690-9/99",
+              "d": "Outras atividades de atenção à saúde humana"
+            }
+          ]
+        },
+        {
+          "titulo": "Agrofloresta",
+          "paraQuem": "Sítios · escolas",
+          "hoursLow": 40,
+          "hoursHigh": 400,
+          "cnaeNovo": true,
+          "cnae": [
+            {
+              "c": "0161-0/01",
+              "d": "Serviço de preparação de terreno, cultivo e colheita"
+            }
+          ]
+        },
+        {
+          "titulo": "Compostagem",
+          "paraQuem": "Casa · condomínios",
+          "hoursLow": 8,
+          "hoursHigh": 30,
+          "cnaeNovo": true,
+          "cnae": [
+            {
+              "c": "3821-1/00",
+              "d": "Tratamento e disposição de resíduos não-perigosos"
+            }
+          ]
+        },
+        {
+          "titulo": "Produção de Eventos",
+          "paraQuem": "Marcas · empresas",
+          "hoursLow": 30,
+          "hoursHigh": 150,
+          "cnaeNovo": true,
+          "cnae": [
+            {
+              "c": "8230-0/02",
+              "d": "Atividades de organização de feiras, congressos, exposições e festas"
+            }
+          ]
+        },
+        {
+          "titulo": "Atriz",
+          "hidden": true
+        },
+        {
+          "titulo": "Cantora",
+          "hidden": true
+        },
+        {
+          "titulo": "Distribuição de Frutas",
+          "hidden": true
+        },
+        {
+          "titulo": "Filha da Bruna",
+          "hidden": true
+        },
+        {
+          "titulo": "Filho da Aime",
+          "hidden": true
+        },
+        {
+          "titulo": "Futuro",
+          "hidden": true
+        },
+        {
+          "titulo": "Mãe do Yuri",
+          "hidden": true
+        },
+        {
+          "titulo": "Pai do Yuri",
+          "hidden": true
+        },
+        {
+          "titulo": "Poeta",
+          "hidden": true
+        }
     ];
+    // AUTO-GENERATED:SERVICES-END
 
     // Deriva o catálogo exposto a partir de serviceCatalog + .servicos de people/communities.
     // Canonical = serviceCatalog. Responsáveis = auto-derivados. Typos em
@@ -1132,225 +2285,397 @@ digital: true,           planos: [
     }
     const services = deriveServices();
 
-    // ─── UNIVERSOS (formerly "solutions") ────────────────────────────────────
-    // Cada Universo é um projeto: pessoas unidas por um objetivo (tagline = palavra-chave).
-    // `lifecycle: "active" | "futuro"` separa em /solucoes/. `universo: true` distingue
-    // dos produtos/parcerias. Descrições longas vivem no perfil próprio do Universo,
-    // não no catálogo.
+    // AUTO-GENERATED: do not edit by hand. Run `node tools/bake-solutions.mjs`.
+    // AUTO-GENERATED:SOLUTIONS-START
     const solutions = [
         {
-            handle: "artelonga", type: "solution", nome: "Arte Longa",
-            tagline: "Humanidade",
-            url: "/artelonga/", urlLabel: "artelonga.com.br",
-            internalLink: true,
-            externalUrl: "https://artelonga.com.br",
-            lema: "Conectando pessoas.",
-            desc: "Conectando pessoas.",
-            // Hub: como o perfil é o "home" do Universo, oferece atalhos para as
-            // áreas principais. O resto (stack, serviços, etc.) já vive em /servicos/.
-            homeLinks: [
-                { label: "Sobre",     href: "/sobre/" },
-                { label: "Parceiros", href: "/parceiros/" },
-                { label: "Serviços",  href: "/servicos/" },
-                { label: "Soluções",  href: "/solucoes/" }
-            ],
-            lifecycle: "active",
-            universo: true,
-            bundledServices: "*", // all services
-            platforms: [
-                { name: "Web", status: "done", statusText: "disponível" },
-                { name: "Mobile / App", status: "wip", statusText: "Q2 2026 · em desenvolvimento" }
-            ]
+          "handle": "artelonga",
+          "type": "solution",
+          "nome": "Arte Longa",
+          "tagline": "Humanidade",
+          "url": "/artelonga/",
+          "urlLabel": "artelonga.com.br",
+          "internalLink": true,
+          "externalUrl": "https://artelonga.com.br",
+          "lema": "Conectando pessoas.",
+          "desc": "Conectando pessoas.",
+          "homeLinks": [
+            {
+              "label": "Sobre",
+              "href": "/sobre/"
+            },
+            {
+              "label": "Parceiros",
+              "href": "/parceiros/"
+            },
+            {
+              "label": "Serviços",
+              "href": "/servicos/"
+            },
+            {
+              "label": "Soluções",
+              "href": "/solucoes/"
+            }
+          ],
+          "lifecycle": "active",
+          "universo": true,
+          "bundledServices": "*",
+          "platforms": [
+            {
+              "name": "Web",
+              "status": "done",
+              "statusText": "disponível"
+            },
+            {
+              "name": "Mobile / App",
+              "status": "wip",
+              "statusText": "Q2 2026 · em desenvolvimento"
+            }
+          ]
         },
         {
-            handle: "quilomboaraucaria-solution", type: "solution", nome: "Quilombo Araucária",
-            tagline: "Terra",
-            url: "/quilomboaraucaria/", urlLabel: "quilomboaraucaria.org",
-            internalLink: true,
-            externalUrl: "https://quilomboaraucaria.org",
-            lema: "Conexão entre pessoas e a natureza.",
-            desc: "Site dinâmico que cobre autenticação, privacidade e segurança. Resistência ambiental, cultural e social — natureza, ancestralidade e tecnologia em comunhão.",
-            lifecycle: "active",
-            universo: true,
-            bundledServices: ["Desenvolvimento Web", "Privacidade e Segurança", "Artes Visuais", "Grafite", "Murais e Fachadas"],
-            platforms: [
-                { name: "Web", status: "done", statusText: "disponível" },
-                { name: "Mobile / App", status: "wip", statusText: "Q2 2026 · em desenvolvimento" }
-            ]
+          "handle": "quilomboaraucaria-solution",
+          "type": "solution",
+          "nome": "Quilombo Araucária",
+          "tagline": "Terra",
+          "url": "/quilomboaraucaria/",
+          "urlLabel": "quilomboaraucaria.org",
+          "internalLink": true,
+          "externalUrl": "https://quilomboaraucaria.org",
+          "lema": "Conexão entre pessoas e a natureza.",
+          "desc": "Site dinâmico que cobre autenticação, privacidade e segurança. Resistência ambiental, cultural e social — natureza, ancestralidade e tecnologia em comunhão.",
+          "lifecycle": "active",
+          "universo": true,
+          "bundledServices": [
+            "Desenvolvimento Web",
+            "Privacidade e Segurança",
+            "Artes Visuais",
+            "Grafite",
+            "Murais e Fachadas"
+          ],
+          "platforms": [
+            {
+              "name": "Web",
+              "status": "done",
+              "statusText": "disponível"
+            },
+            {
+              "name": "Mobile / App",
+              "status": "wip",
+              "statusText": "Q2 2026 · em desenvolvimento"
+            }
+          ]
         },
         {
-            handle: "co", type: "solution", nome: "Co",
-            tagline: "Conexão",
-            url: "/co/", urlLabel: "co.artelonga.com.br",
-            internalLink: true,
-            externalUrl: "https://co.artelonga.com.br/",
-            lema: "Organize seus Universos paralelos.",
-            desc: "Aplicação web para organização e navegação entre seus Universos.",
-            lifecycle: "futuro",
-            universo: true,
-            releaseDate: "2026-05-01",
-            // Co: Yuri fez tudo (Inteligência e Tecnologia — collapsível), Luke contribuiu Design.
-            // Igo e Mono também apoiaram (Gestão Operacional, Privacidade e Segurança).
-            bundledServices: ["Inteligência e Tecnologia", "Design", "Gestão Executiva", "Gestão Operacional", "Privacidade e Segurança"],
-            platforms: [
-                { name: "Web", status: "wip", statusText: "1 de maio de 2026" },
-                { name: "Mobile / App", status: "wip", statusText: "Q2 2026" }
-            ]
+          "handle": "co",
+          "type": "solution",
+          "nome": "Co",
+          "tagline": "Conexão",
+          "url": "/co/",
+          "urlLabel": "co.artelonga.com.br",
+          "internalLink": true,
+          "externalUrl": "https://co.artelonga.com.br/",
+          "lema": "Organize seus Universos paralelos.",
+          "desc": "Aplicação web para organização e navegação entre seus Universos.",
+          "lifecycle": "futuro",
+          "universo": true,
+          "releaseDate": "2026-05-01",
+          "bundledServices": [
+            "Inteligência e Tecnologia",
+            "Design",
+            "Gestão Executiva",
+            "Gestão Operacional",
+            "Privacidade e Segurança"
+          ],
+          "platforms": [
+            {
+              "name": "Web",
+              "status": "wip",
+              "statusText": "1 de maio de 2026"
+            },
+            {
+              "name": "Mobile / App",
+              "status": "wip",
+              "statusText": "Q2 2026"
+            }
+          ]
         },
         {
-            handle: "co-dev", type: "solution", nome: "Co Dev",
-            tagline: "Formação",
-            url: "/co-dev/", urlLabel: "em breve",
-            internalLink: true,
-            lema: "Escalabilidade desde o primeiro commit.",
-            desc: "Framework open source de desenvolvimento multi-plataforma criado in-house para escalabilidade. Cobre privacidade e segurança, desenvolvimento de API e autenticação.",
-            lifecycle: "futuro",
-            universo: true,
-            bundledServices: ["Desenvolvimento de API", "Privacidade e Segurança", "Inteligência e Tecnologia"],
-            platforms: [
-                { name: "Web", status: "wip", statusText: "em desenvolvimento" }
-            ]
+          "handle": "co-dev",
+          "type": "solution",
+          "nome": "Co Dev",
+          "tagline": "Formação",
+          "url": "/co-dev/",
+          "urlLabel": "em breve",
+          "internalLink": true,
+          "lema": "Escalabilidade desde o primeiro commit.",
+          "desc": "Framework open source de desenvolvimento multi-plataforma criado in-house para escalabilidade. Cobre privacidade e segurança, desenvolvimento de API e autenticação.",
+          "lifecycle": "futuro",
+          "universo": true,
+          "bundledServices": [
+            "Desenvolvimento de API",
+            "Privacidade e Segurança",
+            "Inteligência e Tecnologia"
+          ],
+          "platforms": [
+            {
+              "name": "Web",
+              "status": "wip",
+              "statusText": "em desenvolvimento"
+            }
+          ]
         },
         {
-            handle: "qa-dev", type: "solution", nome: "QA Dev",
-            tagline: "Tecnologia",
-            url: "/qa-dev/", urlLabel: "em breve",
-            internalLink: true,
-            lema: "Aprenda construindo.",
-            desc: "Exemplo open source derivado do template de site dinâmico do Quilombo Araucária, voltado para aprendizado. Cobre desenvolvimento web, mobile, sistemas operacionais nativos, privacidade e segurança.",
-            lifecycle: "futuro",
-            universo: true,
-            bundledServices: ["Desenvolvimento Web", "Desenvolvimento de Software", "Privacidade e Segurança", "Inteligência e Tecnologia"],
-            platforms: [
-                { name: "Web", status: "wip", statusText: "em desenvolvimento" }
-            ]
+          "handle": "qa-dev",
+          "type": "solution",
+          "nome": "QA Dev",
+          "tagline": "Tecnologia",
+          "url": "/qa-dev/",
+          "urlLabel": "em breve",
+          "internalLink": true,
+          "lema": "Aprenda construindo.",
+          "desc": "Exemplo open source derivado do template de site dinâmico do Quilombo Araucária, voltado para aprendizado. Cobre desenvolvimento web, mobile, sistemas operacionais nativos, privacidade e segurança.",
+          "lifecycle": "futuro",
+          "universo": true,
+          "bundledServices": [
+            "Desenvolvimento Web",
+            "Desenvolvimento de Software",
+            "Privacidade e Segurança",
+            "Inteligência e Tecnologia"
+          ],
+          "platforms": [
+            {
+              "name": "Web",
+              "status": "wip",
+              "statusText": "em desenvolvimento"
+            }
+          ]
         },
         {
-            handle: "yggdrasil", type: "solution", nome: "Yggdrasil",
-            tagline: "Experiência",
-            url: "/yggdrasil/", urlLabel: "lançamento · junho 2026",
-            internalLink: true,
-            lema: "Desenvolvimento de jogos sem limites.",
-            desc: "Engine de jogos completa, open source, construída em torno do Godot. Do arcade 2D aos mundos 3D — onde criadores, jogadores e universos convergem.",
-            descLong: "Yggdrasil nasce como engine de jogos de verdade: ferramentas de criação, runtime, multiplayer e distribuição na mesma plataforma open source. A interface jogável da Arte Longa deixa de ser uma camada decorativa e passa a ser um motor de jogos completo.\n\nLançamento · arcade 2D pronto para jogar\n\nNa estreia (junho de 2026), a Yggdrasil já vem com uma biblioteca de jogos arcade 2D — Snake, Tetris, Space Invaders, Pong e variações — jogáveis direto no navegador e no app. Servem como vitrine, sandbox para novos criadores e referência viva de como construir jogos sobre a engine.\n\nRoadmap · mundos 3D no horizonte\n\nA fundação 3D já vive no Godot. O passo seguinte é abrir esse caminho aos criadores: cenários 3D, espaços persistentes e mundos compartilhados. A meta é que a Yggdrasil leve do pixel ao polígono sem trocar de ferramenta — um único universo de criação, do arcade clássico ao mundo aberto.",
-            lifecycle: "futuro",
-            universo: true,
-            // Yggdrasil: Luke faz Design solo. Yuri cobre o resto (Inteligência e Tecnologia — collapsível) + Produção Musical (Antony).
-            bundledServices: ["Inteligência e Tecnologia", "Design", "Produção Musical"],
-            platforms: [
-                { name: "Web · arcade 2D", status: "wip", statusText: "junho 2026" },
-                { name: "Mobile / App · arcade 2D", status: "wip", statusText: "junho 2026" },
-                { name: "Mundos 3D", status: "wip", statusText: "no horizonte" }
-            ]
+          "handle": "yggdrasil",
+          "type": "solution",
+          "nome": "Yggdrasil",
+          "tagline": "Experiência",
+          "url": "/yggdrasil/",
+          "urlLabel": "lançamento · junho 2026",
+          "internalLink": true,
+          "lema": "Desenvolvimento de jogos sem limites.",
+          "desc": "Engine de jogos completa, open source, construída em torno do Godot. Do arcade 2D aos mundos 3D — onde criadores, jogadores e universos convergem.",
+          "descLong": "Yggdrasil nasce como engine de jogos de verdade: ferramentas de criação, runtime, multiplayer e distribuição na mesma plataforma open source. A interface jogável da Arte Longa deixa de ser uma camada decorativa e passa a ser um motor de jogos completo.\n\nLançamento · arcade 2D pronto para jogar\n\nNa estreia (junho de 2026), a Yggdrasil já vem com uma biblioteca de jogos arcade 2D — Snake, Tetris, Space Invaders, Pong e variações — jogáveis direto no navegador e no app. Servem como vitrine, sandbox para novos criadores e referência viva de como construir jogos sobre a engine.\n\nRoadmap · mundos 3D no horizonte\n\nA fundação 3D já vive no Godot. O passo seguinte é abrir esse caminho aos criadores: cenários 3D, espaços persistentes e mundos compartilhados. A meta é que a Yggdrasil leve do pixel ao polígono sem trocar de ferramenta — um único universo de criação, do arcade clássico ao mundo aberto.",
+          "lifecycle": "futuro",
+          "universo": true,
+          "bundledServices": [
+            "Inteligência e Tecnologia",
+            "Design",
+            "Produção Musical"
+          ],
+          "platforms": [
+            {
+              "name": "Web · arcade 2D",
+              "status": "wip",
+              "statusText": "junho 2026"
+            },
+            {
+              "name": "Mobile / App · arcade 2D",
+              "status": "wip",
+              "statusText": "junho 2026"
+            },
+            {
+              "name": "Mundos 3D",
+              "status": "wip",
+              "statusText": "no horizonte"
+            }
+          ]
         },
         {
-            handle: "agora", type: "solution", nome: "Ágora",
-            tagline: "Coletivo",
-            url: "/agora/", urlLabel: "em breve",
-            internalLink: true,
-            lema: "Escritório digital dos parceiros Arte Longa.",
-            desc: "Coworking digital para os parceiros Arte Longa: salas, presença, agendas e ferramentas compartilhadas em um só lugar. O dia a dia da rede acontece aqui.",
-            descLong: "A Ágora é o escritório digital da rede Arte Longa — um espaço comum onde os parceiros se encontram, conversam, planejam e tocam projetos lado a lado, mesmo distantes geograficamente.\n\nEm breve · o que a Ágora reúne\n\nSalas de trabalho persistentes, presença leve entre parceiros, agendas integradas, quadros compartilhados e atalhos para os outros Universos da rede (Co, Yggdrasil, Quilombo Araucária). O coworking físico vira coworking digital sem perder o senso de coletivo.\n\nPara quem é\n\nParceiros Arte Longa, suas comunidades e missões. A Ágora é o tecido que liga gestão, criação e operação no dia a dia da rede.",
-            lifecycle: "futuro",
-            universo: true,
-            bundledServices: ["Inteligência e Tecnologia", "Design", "Gestão Operacional", "Gestão Executiva", "Conexões"],
-            platforms: [
-                { name: "Web", status: "wip", statusText: "em breve" },
-                { name: "Mobile / App", status: "wip", statusText: "em breve" }
-            ]
+          "handle": "agora",
+          "type": "solution",
+          "nome": "Ágora",
+          "tagline": "Coletivo",
+          "url": "/agora/",
+          "urlLabel": "em breve",
+          "internalLink": true,
+          "lema": "Escritório digital dos parceiros Arte Longa.",
+          "desc": "Coworking digital para os parceiros Arte Longa: salas, presença, agendas e ferramentas compartilhadas em um só lugar. O dia a dia da rede acontece aqui.",
+          "descLong": "A Ágora é o escritório digital da rede Arte Longa — um espaço comum onde os parceiros se encontram, conversam, planejam e tocam projetos lado a lado, mesmo distantes geograficamente.\n\nEm breve · o que a Ágora reúne\n\nSalas de trabalho persistentes, presença leve entre parceiros, agendas integradas, quadros compartilhados e atalhos para os outros Universos da rede (Co, Yggdrasil, Quilombo Araucária). O coworking físico vira coworking digital sem perder o senso de coletivo.\n\nPara quem é\n\nParceiros Arte Longa, suas comunidades e missões. A Ágora é o tecido que liga gestão, criação e operação no dia a dia da rede.",
+          "lifecycle": "futuro",
+          "universo": true,
+          "bundledServices": [
+            "Inteligência e Tecnologia",
+            "Design",
+            "Gestão Operacional",
+            "Gestão Executiva",
+            "Conexões"
+          ],
+          "platforms": [
+            {
+              "name": "Web",
+              "status": "wip",
+              "statusText": "em breve"
+            },
+            {
+              "name": "Mobile / App",
+              "status": "wip",
+              "statusText": "em breve"
+            }
+          ]
         },
         {
-            handle: "shandara", type: "solution", nome: "Shandara",
-            tagline: "Imersão",
-            url: "/shandara/", urlLabel: "em construção",
-            internalLink: true,
-            lema: "Mundo modular para experiências interativas.",
-            desc: "Universo de fantasia original, profundo e expansível, projetado para ser a base de experiências interativas e narrativas, com foco em diversidade cultural e sistemas próprios de mundo.",
-            descLong: "Shandara é um mundo de fantasia criado para ser a base de experiências interativas, especialmente RPGs, mas também pode ser usado em jogos digitais, histórias e plataformas online.\n\nO que torna Shandara diferente de outros mundos de fantasia é que ele é estruturado em torno de seis forças primordiais que regem tudo: vida, matéria, tempo, transformação e energia. Essas forças moldam não apenas o ambiente, mas também as culturas, criaturas e conflitos do mundo.\n\nO mundo é habitado por várias espécies únicas, cada uma com sua própria identidade cultural, organização social e conexão com as forças fundamentais. Em vez de serem apenas variações de “raças clássicas”, cada povo de Shandara tem sua própria história, filosofia e papel ativo nos conflitos globais.\n\nO cenário também é marcado por um grande evento histórico — uma guerra que dividiu o mundo e alterou o equilíbrio entre magia, natureza e civilização — criando um ambiente cheio de tensões políticas, mistérios antigos e oportunidades narrativas.\n\nAlém disso, Shandara foi pensado desde o início como um universo modular, ou seja:\n\n• Pode ser usado como base para campanhas de RPG\n• Pode ser adaptado para plataformas digitais\n• Pode servir como template para criação de novas experiências\n\nIsso permite que ele funcione não apenas como uma história, mas como um ecossistema expansível, onde novos conteúdos, mecânicas e tecnologias podem ser integrados ao longo do tempo.",
-            lifecycle: "futuro",
-            universo: true,
-            bundledServices: ["Design", "Inteligência e Tecnologia"],
-            platforms: [
-                { name: "Mesa de RPG", status: "wip", statusText: "em construção" },
-                { name: "Plataforma digital", status: "wip", statusText: "futuro" }
-            ]
+          "handle": "shandara",
+          "type": "solution",
+          "nome": "Shandara",
+          "tagline": "Imersão",
+          "url": "/shandara/",
+          "urlLabel": "em construção",
+          "internalLink": true,
+          "lema": "Mundo modular para experiências interativas.",
+          "desc": "Universo de fantasia original, profundo e expansível, projetado para ser a base de experiências interativas e narrativas, com foco em diversidade cultural e sistemas próprios de mundo.",
+          "descLong": "Shandara é um mundo de fantasia criado para ser a base de experiências interativas, especialmente RPGs, mas também pode ser usado em jogos digitais, histórias e plataformas online.\n\nO que torna Shandara diferente de outros mundos de fantasia é que ele é estruturado em torno de seis forças primordiais que regem tudo: vida, matéria, tempo, transformação e energia. Essas forças moldam não apenas o ambiente, mas também as culturas, criaturas e conflitos do mundo.\n\nO mundo é habitado por várias espécies únicas, cada uma com sua própria identidade cultural, organização social e conexão com as forças fundamentais. Em vez de serem apenas variações de “raças clássicas”, cada povo de Shandara tem sua própria história, filosofia e papel ativo nos conflitos globais.\n\nO cenário também é marcado por um grande evento histórico — uma guerra que dividiu o mundo e alterou o equilíbrio entre magia, natureza e civilização — criando um ambiente cheio de tensões políticas, mistérios antigos e oportunidades narrativas.\n\nAlém disso, Shandara foi pensado desde o início como um universo modular, ou seja:\n\n• Pode ser usado como base para campanhas de RPG\n• Pode ser adaptado para plataformas digitais\n• Pode servir como template para criação de novas experiências\n\nIsso permite que ele funcione não apenas como uma história, mas como um ecossistema expansível, onde novos conteúdos, mecânicas e tecnologias podem ser integrados ao longo do tempo.",
+          "lifecycle": "futuro",
+          "universo": true,
+          "bundledServices": [
+            "Design",
+            "Inteligência e Tecnologia"
+          ],
+          "platforms": [
+            {
+              "name": "Mesa de RPG",
+              "status": "wip",
+              "statusText": "em construção"
+            },
+            {
+              "name": "Plataforma digital",
+              "status": "wip",
+              "statusText": "futuro"
+            }
+          ]
         },
         {
-            handle: "hedix-solution", type: "solution", nome: "Hedix",
-            tagline: "Mercados de Previsão",
-            url: "/hedix-solution/", urlLabel: "hedix.com.br",
-            internalLink: true,
-            externalUrl: "https://hedix.com.br/",
-            lema: "Liquidez e formação de preço em mercados de previsão.",
-            desc: "Formação de mercado e inteligência preditiva. Provê liquidez, forma preço e agrega sinal em mercados de previsão — onde a multidão é o oráculo.",
-            lifecycle: "active",
-            universo: false,
-            comunidade: "hedix",
-            bundledServices: ["Market Making Preditivo", "Inteligência de Previsão", "Desenvolvimento de API"],
-            platforms: [
-                { name: "Web", status: "done", statusText: "disponível" }
-            ]
+          "handle": "hedix-solution",
+          "type": "solution",
+          "nome": "Hedix",
+          "tagline": "Mercados de Previsão",
+          "url": "/hedix-solution/",
+          "urlLabel": "hedix.com.br",
+          "internalLink": true,
+          "externalUrl": "https://hedix.com.br/",
+          "lema": "Liquidez e formação de preço em mercados de previsão.",
+          "desc": "Formação de mercado e inteligência preditiva. Provê liquidez, forma preço e agrega sinal em mercados de previsão — onde a multidão é o oráculo.",
+          "lifecycle": "active",
+          "universo": false,
+          "comunidade": "hedix",
+          "bundledServices": [
+            "Market Making Preditivo",
+            "Inteligência de Previsão",
+            "Desenvolvimento de API"
+          ],
+          "platforms": [
+            {
+              "name": "Web",
+              "status": "done",
+              "statusText": "disponível"
+            }
+          ]
         }
     ];
+    // AUTO-GENERATED:SOLUTIONS-END
 
-    // ─── MISSIONS (projetos de comunidades) ──────────────────────────────────
-    // Missão = comunidade com objetivo. Tem pai (comunidade) e pode ter filhas (sub-missões).
-    // Renderizadas em /solucoes/ em uma seção dedicada — não entram no catálogo de serviços.
+    // AUTO-GENERATED: do not edit by hand. Run `node tools/bake-missions.mjs`.
+    // AUTO-GENERATED:MISSIONS-START
     const missions = [
-        // Quilombo Araucária · todas as missões sob a mesma comunidade (top-level irmãs)
-        // Campo `servicos[]`: títulos do serviceCatalog que realizam a missão.
-        // Validado em deriveServices(): typo vira console.warn.
         {
-            handle: "raizes-do-futuro", type: "mission",
-            nome: "Raízes do Futuro",
-            subtitle: "Agrofloresta · horta e compostagem",
-            comunidade: "quilomboaraucaria",
-            objetivo: "Regeneração do solo e da comunidade via agrofloresta, horta e compostagem — o futuro planta raízes agora.",
-            tags: ["terra", "sustentabilidade", "educacao"],
-            servicos: ["Agrofloresta", "Compostagem", "Educação Ambiental", "Ensino, Formação e Liderança", "Drywall e Bioconstrução"],
-            attachments: [
-                { label: "Projeto — Raízes do Futuro", url: "/missoes/raizes-do-futuro/projeto.pdf", kind: "pdf" }
-            ]
+          "handle": "raizes-do-futuro",
+          "type": "mission",
+          "nome": "Raízes do Futuro",
+          "subtitle": "Agrofloresta · horta e compostagem",
+          "comunidade": "quilomboaraucaria",
+          "objetivo": "Regeneração do solo e da comunidade via agrofloresta, horta e compostagem — o futuro planta raízes agora.",
+          "tags": [
+            "terra",
+            "sustentabilidade",
+            "educacao"
+          ],
+          "servicos": [
+            "Agrofloresta",
+            "Compostagem",
+            "Educação Ambiental",
+            "Ensino, Formação e Liderança",
+            "Drywall e Bioconstrução"
+          ],
+          "attachments": [
+            {
+              "label": "Projeto — Raízes do Futuro",
+              "url": "/missoes/raizes-do-futuro/projeto.pdf",
+              "kind": "pdf"
+            }
+          ]
         },
         {
-            handle: "gres-amazonia", type: "mission",
-            nome: "GRES Amazônia",
-            subtitle: "Escola de samba · futebol feminino e masculino para famílias de baixa renda",
-            comunidade: "quilomboaraucaria",
-            objetivo: "Cultura e Esporte Vivos.",
-            tags: ["cultura", "esporte", "social"],
-            servicos: ["Produção de Desfile", "Futebol e Esporte", "Produção Musical", "Artes Visuais", "Dança e Expressão Corporal"]
+          "handle": "gres-amazonia",
+          "type": "mission",
+          "nome": "GRES Amazônia",
+          "subtitle": "Escola de samba · futebol feminino e masculino para famílias de baixa renda",
+          "comunidade": "quilomboaraucaria",
+          "objetivo": "Cultura e Esporte Vivos.",
+          "tags": [
+            "cultura",
+            "esporte",
+            "social"
+          ],
+          "servicos": [
+            "Produção de Desfile",
+            "Futebol e Esporte",
+            "Produção Musical",
+            "Artes Visuais",
+            "Dança e Expressão Corporal"
+          ]
         },
         {
-            handle: "reparacao-historica", type: "mission",
-            nome: "Reparação Histórica",
-            subtitle: "Povos originários",
-            comunidade: "quilomboaraucaria",
-            objetivo: "\u201CA reparação à população negra e dos povos originários é urgente, é necessária, é fundamental.\u201D",
-            objetivoAutor: "bia",
-            tags: ["cultura", "justica"],
-            envolvidos: ["rogerio", "alzira"],
-            servicos: ["Mentoria Espiritual", "Ensino, Formação e Liderança"]
+          "handle": "reparacao-historica",
+          "type": "mission",
+          "nome": "Reparação Histórica",
+          "subtitle": "Povos originários",
+          "comunidade": "quilomboaraucaria",
+          "objetivo": "“A reparação à população negra e dos povos originários é urgente, é necessária, é fundamental.”",
+          "objetivoAutor": "bia",
+          "tags": [
+            "cultura",
+            "justica"
+          ],
+          "envolvidos": [
+            "rogerio",
+            "alzira"
+          ],
+          "servicos": [
+            "Mentoria Espiritual",
+            "Ensino, Formação e Liderança"
+          ]
         },
         {
-            handle: "eventos-espacos-saberes", type: "mission",
-            nome: "Eventos e Espaços de Saberes",
-            comunidade: "quilomboaraucaria",
-            objetivo: "Encontros, aulas e espaços presenciais que transmitem os saberes da rede.",
-            tags: ["educacao", "cultura", "eventos"],
-            servicos: [
-                "Produção de Eventos",
-                "Ensino, Formação e Liderança",
-                "Alfabetização",
-                "Reforço Escolar",
-                "Meditação",
-                "Pensamento Islâmico",
-                "Mentoria Espiritual",
-                "Dança e Expressão Corporal",
-                "Alimentação e Bebidas"
-            ]
+          "handle": "eventos-espacos-saberes",
+          "type": "mission",
+          "nome": "Eventos e Espaços de Saberes",
+          "comunidade": "quilomboaraucaria",
+          "objetivo": "Encontros, aulas e espaços presenciais que transmitem os saberes da rede.",
+          "tags": [
+            "educacao",
+            "cultura",
+            "eventos"
+          ],
+          "servicos": [
+            "Produção de Eventos",
+            "Ensino, Formação e Liderança",
+            "Alfabetização",
+            "Reforço Escolar",
+            "Meditação",
+            "Pensamento Islâmico",
+            "Mentoria Espiritual",
+            "Dança e Expressão Corporal",
+            "Alimentação e Bebidas"
+          ]
         }
     ];
+    // AUTO-GENERATED:MISSIONS-END
 
     // ─── INDEXES / LOOKUPS ───────────────────────────────────────────────────
     const all = [...people, ...communities, ...solutions, ...missions];
@@ -1762,160 +3087,210 @@ digital: true,           planos: [
             .filter(Boolean);
     }
 
-    // ─── FINANCES ────────────────────────────────────────────────────────────
-    // Mensal recurring + metas trimestrais. Editado manualmente aqui.
-    const finances = {
-        currency: "BRL",
-        quarter: "Q2 2026",
-        metaMensal: 25000,
-        metaQ2: 75000,
-
-        // Gastos recorrentes mensais. Total = R$ 25.000.
-        custos: [
+    // AUTO-GENERATED: do not edit by hand. Run `node tools/bake-finances.mjs`.
+    // AUTO-GENERATED:FINANCES-START
+    const finances =     {
+      "currency": "BRL",
+      "quarter": "Q2 2026",
+      "metaMensal": 25000,
+      "metaQ2": 75000,
+      "custos": [
+        {
+          "key": "socios",
+          "label": "Sócios · pro labore",
+          "value": 12000,
+          "detail": "6 pessoas × R$ 2.000",
+          "breakdown": [
             {
-                key: "socios",
-                label: "Sócios · pro labore",
-                value: 12000,
-                detail: "6 pessoas × R$ 2.000",
-                breakdown: [
-                    { label: "Yuri", value: 2000, handle: "yuri" },
-                    { label: "Igo", value: 2000, handle: "igo" },
-                    { label: "José Antônio", value: 2000, handle: "joseantonio" },
-                    { label: "Mono", value: 2000, handle: "mono" },
-                    { label: "Luke", value: 2000, handle: "luke" },
-                    { label: "Marina", value: 2000, handle: "marina" }
-                ]
+              "label": "Yuri",
+              "value": 2000,
+              "handle": "yuri"
             },
             {
-                key: "contabilidade",
-                label: "Contabilidade",
-                value: 1612,
-                detail: "1 salário mínimo · coberto pela receita de API Development (Hedix)"
+              "label": "Igo",
+              "value": 2000,
+              "handle": "igo"
             },
             {
-                key: "operacional",
-                label: "Despesas operacionais",
-                value: 1388,
-                breakdown: [
-                    { label: "Produtos", value: 500 },
-                    { label: "Serviços", value: 888 }
-                ]
+              "label": "José Antônio",
+              "value": 2000,
+              "handle": "joseantonio"
             },
             {
-                key: "coworking",
-                label: "Coworking · escritório",
-                value: 3000
+              "label": "Mono",
+              "value": 2000,
+              "handle": "mono"
             },
             {
-                key: "infra",
-                label: "Armazenamento e computação",
-                value: 2000
+              "label": "Luke",
+              "value": 2000,
+              "handle": "luke"
             },
             {
-                key: "impacto",
-                label: "Impacto ambiental, social e cultural",
-                value: 3000,
-                detail: "investimento ativo em rede — também via trabalho pro-bono"
-            },
-            {
-                key: "reserva",
-                label: "Reserva · imprevistos",
-                value: 2000,
-                detail: "buffer pra variações de receita e custos"
+              "label": "Marina",
+              "value": 2000,
+              "handle": "marina"
             }
-        ],
-
-        // Receita potencial Q2 2026. Misto de recorrente + rampa + projetos.
-        receita: {
-            // `solucoes` aponta para produtos da Arte Longa que exemplificam o
-            // serviço — dá ao visitante do /recursos/ um lugar concreto para ver.
-            recorrenteMensal: [
-                {
-                    label: "Desenvolvimento de API",
-                    client: "Hedix",
-                    detail: "16,12 h/mês × R$ 100/h — cobre a contabilidade",
-                    responsavel: "yuri",
-                    mensal: 1612,
-                    solucoes: ["hedix-solution"]
-                },
-                {
-                    label: "Consultoria em TI (outros clientes)",
-                    detail: "23,88 h/mês × R$ 100/h (40h/mês total, menos Hedix)",
-                    responsavel: "yuri",
-                    mensal: 2388,
-                    solucoes: ["co", "yggdrasil", "quilomboaraucaria-solution"]
-                },
-                {
-                    label: "Criação de Conteúdo",
-                    detail: "1 job fixo / mês",
-                    responsavel: "bruna",
-                    mensal: 1000,
-                    solucoes: ["artelonga"]
-                }
-            ],
-            rampa: [
-                {
-                    label: "Market Making (Hedix)",
-                    client: "Hedix",
-                    detail: "prediction markets — rampa de crescimento",
-                    responsavel: "yuri",
-                    meses: [
-                        { mes: "abril", value: 1000 },
-                        { mes: "maio", value: 5000 },
-                        { mes: "junho", value: 10000 }
-                    ],
-                    solucoes: ["hedix-solution"]
-                }
-            ],
-            projetos: [
-                {
-                    label: "Website estático",
-                    detail: "3 × R$ 5.000",
-                    unitValue: 5000,
-                    unidades: 3,
-                    responsavel: "yuri",
-                    solucoes: ["artelonga"]
-                },
-                {
-                    label: "Website dinâmico",
-                    detail: "1 projeto",
-                    unitValue: 15000,
-                    unidades: 1,
-                    responsavel: "yuri",
-                    solucoes: ["co", "quilomboaraucaria-solution"]
-                },
-                {
-                    label: "Interpretação",
-                    detail: "2 jobs × R$ 2.000/dia (live · simultânea)",
-                    unitValue: 2000,
-                    unidades: 2,
-                    responsavel: "yuri"
-                },
-                {
-                    label: "Consultoria avulsa",
-                    detail: "10 h × R$ 100/h (no trimestre)",
-                    unitValue: 100,
-                    unidades: 10,
-                    responsavel: "yuri"
-                },
-                {
-                    label: "Serviços",
-                    detail: "90 h × R$ 100/h · outros sócios (no trimestre)",
-                    unitValue: 100,
-                    unidades: 90
-                }
-            ],
-            // Pro-bono · não conta como receita mas é parte da atuação
-            proBono: [
-                {
-                    label: "Desenvolvimento Web — Quilombo Araucária",
-                    detail: "portfolio institucional · impacto social, ambiental e cultural",
-                    responsavel: "yuri",
-                    solucoes: ["quilomboaraucaria-solution"]
-                }
-            ]
+          ]
+        },
+        {
+          "key": "contabilidade",
+          "label": "Contabilidade",
+          "value": 1612,
+          "detail": "1 salário mínimo · coberto pela receita de API Development (Hedix)"
+        },
+        {
+          "key": "operacional",
+          "label": "Despesas operacionais",
+          "value": 1388,
+          "breakdown": [
+            {
+              "label": "Produtos",
+              "value": 500
+            },
+            {
+              "label": "Serviços",
+              "value": 888
+            }
+          ]
+        },
+        {
+          "key": "coworking",
+          "label": "Coworking · escritório",
+          "value": 3000
+        },
+        {
+          "key": "infra",
+          "label": "Armazenamento e computação",
+          "value": 2000
+        },
+        {
+          "key": "impacto",
+          "label": "Impacto ambiental, social e cultural",
+          "value": 3000,
+          "detail": "investimento ativo em rede — também via trabalho pro-bono"
+        },
+        {
+          "key": "reserva",
+          "label": "Reserva · imprevistos",
+          "value": 2000,
+          "detail": "buffer pra variações de receita e custos"
         }
+      ],
+      "receita": {
+        "recorrenteMensal": [
+          {
+            "label": "Desenvolvimento de API",
+            "client": "Hedix",
+            "detail": "16,12 h/mês × R$ 100/h — cobre a contabilidade",
+            "responsavel": "yuri",
+            "mensal": 1612,
+            "solucoes": [
+              "hedix-solution"
+            ]
+          },
+          {
+            "label": "Consultoria em TI (outros clientes)",
+            "detail": "23,88 h/mês × R$ 100/h (40h/mês total, menos Hedix)",
+            "responsavel": "yuri",
+            "mensal": 2388,
+            "solucoes": [
+              "co",
+              "yggdrasil",
+              "quilomboaraucaria-solution"
+            ]
+          },
+          {
+            "label": "Criação de Conteúdo",
+            "detail": "1 job fixo / mês",
+            "responsavel": "bruna",
+            "mensal": 1000,
+            "solucoes": [
+              "artelonga"
+            ]
+          }
+        ],
+        "rampa": [
+          {
+            "label": "Market Making (Hedix)",
+            "client": "Hedix",
+            "detail": "prediction markets — rampa de crescimento",
+            "responsavel": "yuri",
+            "meses": [
+              {
+                "mes": "abril",
+                "value": 1000
+              },
+              {
+                "mes": "maio",
+                "value": 5000
+              },
+              {
+                "mes": "junho",
+                "value": 10000
+              }
+            ],
+            "solucoes": [
+              "hedix-solution"
+            ]
+          }
+        ],
+        "projetos": [
+          {
+            "label": "Website estático",
+            "detail": "3 × R$ 5.000",
+            "unitValue": 5000,
+            "unidades": 3,
+            "responsavel": "yuri",
+            "solucoes": [
+              "artelonga"
+            ]
+          },
+          {
+            "label": "Website dinâmico",
+            "detail": "1 projeto",
+            "unitValue": 15000,
+            "unidades": 1,
+            "responsavel": "yuri",
+            "solucoes": [
+              "co",
+              "quilomboaraucaria-solution"
+            ]
+          },
+          {
+            "label": "Interpretação",
+            "detail": "2 jobs × R$ 2.000/dia (live · simultânea)",
+            "unitValue": 2000,
+            "unidades": 2,
+            "responsavel": "yuri"
+          },
+          {
+            "label": "Consultoria avulsa",
+            "detail": "10 h × R$ 100/h (no trimestre)",
+            "unitValue": 100,
+            "unidades": 10,
+            "responsavel": "yuri"
+          },
+          {
+            "label": "Serviços",
+            "detail": "90 h × R$ 100/h · outros sócios (no trimestre)",
+            "unitValue": 100,
+            "unidades": 90
+          }
+        ],
+        "proBono": [
+          {
+            "label": "Desenvolvimento Web — Quilombo Araucária",
+            "detail": "portfolio institucional · impacto social, ambiental e cultural",
+            "responsavel": "yuri",
+            "solucoes": [
+              "quilomboaraucaria-solution"
+            ]
+          }
+        ]
+      }
     };
+    // AUTO-GENERATED:FINANCES-END
 
     function missionBySlug(slug) { return missions.find(m => m.handle === slug); }
     function topLevelMissions() { return missions.filter(m => !m.parentMission); }

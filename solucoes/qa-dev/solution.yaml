@@ -1,0 +1,22 @@
+handle: qa-dev
+type: solution
+nome: QA Dev
+tagline: Tecnologia
+url: /qa-dev/
+urlLabel: em breve
+internalLink: true
+lema: Aprenda construindo.
+desc: >-
+  Exemplo open source derivado do template de site dinâmico do Quilombo Araucária, voltado para aprendizado. Cobre
+  desenvolvimento web, mobile, sistemas operacionais nativos, privacidade e segurança.
+lifecycle: futuro
+universo: true
+bundledServices:
+  - Desenvolvimento Web
+  - Desenvolvimento de Software
+  - Privacidade e Segurança
+  - Inteligência e Tecnologia
+platforms:
+  - name: Web
+    status: wip
+    statusText: em desenvolvimento

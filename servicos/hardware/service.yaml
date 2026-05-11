@@ -1,0 +1,11 @@
+titulo: Hardware
+parent: Inteligência e Tecnologia
+implicitResponsavel:
+  - yuri
+paraQuem: Estúdios · projetos
+digital: true
+hoursLow: 8
+hoursHigh: 60
+cnae:
+  - c: 6204-0/00
+    d: Consultoria em TI

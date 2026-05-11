@@ -1,0 +1,8 @@
+titulo: Compostagem
+paraQuem: Casa · condomínios
+hoursLow: 8
+hoursHigh: 30
+cnaeNovo: true
+cnae:
+  - c: 3821-1/00
+    d: Tratamento e disposição de resíduos não-perigosos

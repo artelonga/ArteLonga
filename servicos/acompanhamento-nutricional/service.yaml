@@ -1,0 +1,11 @@
+titulo: Acompanhamento Nutricional
+paraQuem: Adultos · esportistas
+digital: true
+planos:
+  - hours: 1
+  - label: Semanal
+  - label: Mensal
+cnaeNovo: true
+cnae:
+  - c: 8650-0/02
+    d: Atividades de profissionais da nutrição

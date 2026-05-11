@@ -1,0 +1,10 @@
+titulo: Cuidado com o Idoso
+paraQuem: Famílias · idosos
+planos:
+  - hours: 6
+  - label: Semanal
+  - label: Mensal
+cnaeNovo: true
+cnae:
+  - c: 8712-3/00
+    d: Serviços de assistência à saúde prestados a pacientes fora de unidades de saúde

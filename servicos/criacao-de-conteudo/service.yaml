@@ -1,0 +1,11 @@
+titulo: Criação de Conteúdo
+paraQuem: Marcas · pessoas
+digital: true
+hoursLow: 15
+hoursHigh: 60
+recurring: true
+cnae:
+  - c: 5911-1/99
+    d: Produção cinematográfica, de vídeos e TV
+  - c: 5912-0/99
+    d: Pós-produção audiovisual

@@ -1,0 +1,11 @@
+titulo: Redes
+parent: Inteligência e Tecnologia
+implicitResponsavel:
+  - yuri
+paraQuem: Empresas · escritórios
+digital: true
+hoursLow: 8
+hoursHigh: 60
+cnae:
+  - c: 6204-0/00
+    d: Consultoria em TI

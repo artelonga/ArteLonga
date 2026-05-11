@@ -1,0 +1,8 @@
+titulo: Agrofloresta
+paraQuem: Sítios · escolas
+hoursLow: 40
+hoursHigh: 400
+cnaeNovo: true
+cnae:
+  - c: 0161-0/01
+    d: Serviço de preparação de terreno, cultivo e colheita

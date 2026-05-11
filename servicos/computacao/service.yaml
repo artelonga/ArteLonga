@@ -1,0 +1,11 @@
+titulo: Computação
+parent: Inteligência e Tecnologia
+implicitResponsavel:
+  - yuri
+paraQuem: Times técnicos
+digital: true
+hoursLow: 10
+hoursHigh: 80
+cnae:
+  - c: 6204-0/00
+    d: Consultoria em TI

@@ -1,0 +1,8 @@
+titulo: Produção de Eventos
+paraQuem: Marcas · empresas
+hoursLow: 30
+hoursHigh: 150
+cnaeNovo: true
+cnae:
+  - c: 8230-0/02
+    d: Atividades de organização de feiras, congressos, exposições e festas

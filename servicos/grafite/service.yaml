@@ -1,0 +1,8 @@
+titulo: Grafite
+paraQuem: Eventos · ativações
+hoursLow: 8
+hoursHigh: 40
+cnaeNovo: true
+cnae:
+  - c: 9002-7/01
+    d: Atividades de artistas plásticos, jornalistas independentes e escritores

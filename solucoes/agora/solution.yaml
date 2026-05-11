@@ -1,0 +1,44 @@
+handle: agora
+type: solution
+nome: Ágora
+tagline: Coletivo
+url: /agora/
+urlLabel: em breve
+internalLink: true
+lema: Escritório digital dos parceiros Arte Longa.
+desc: >-
+  Coworking digital para os parceiros Arte Longa: salas, presença, agendas e ferramentas compartilhadas em um só lugar.
+  O dia a dia da rede acontece aqui.
+descLong: >-
+  A Ágora é o escritório digital da rede Arte Longa — um espaço comum onde os parceiros se encontram, conversam,
+  planejam e tocam projetos lado a lado, mesmo distantes geograficamente.
+
+
+  Em breve · o que a Ágora reúne
+
+
+  Salas de trabalho persistentes, presença leve entre parceiros, agendas integradas, quadros compartilhados e atalhos
+  para os outros Universos da rede (Co, Yggdrasil, Quilombo Araucária). O coworking físico vira coworking digital sem
+  perder o senso de coletivo.
+
+
+  Para quem é
+
+
+  Parceiros Arte Longa, suas comunidades e missões. A Ágora é o tecido que liga gestão, criação e operação no dia a dia
+  da rede.
+lifecycle: futuro
+universo: true
+bundledServices:
+  - Inteligência e Tecnologia
+  - Design
+  - Gestão Operacional
+  - Gestão Executiva
+  - Conexões
+platforms:
+  - name: Web
+    status: wip
+    statusText: em breve
+  - name: Mobile / App
+    status: wip
+    statusText: em breve

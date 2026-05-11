@@ -1,0 +1,11 @@
+titulo: Psicologia Social e Comunitária
+parent: Saúde Mental
+paraQuem: Grupos · ONGs
+digital: true
+hoursLow: 2
+hoursHigh: 8
+unit: grupo
+cnaeNovo: true
+cnae:
+  - c: 8650-0/03
+    d: Atividades de psicologia e psicanálise
