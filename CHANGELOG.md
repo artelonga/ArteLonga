@@ -32,7 +32,17 @@ CLAUDE.md documentado com ambos (`## Audits` + `## GitHub Actions`).
 as validações existentes e só explodia em runtime. STATE.md estaria stale
 indefinidamente sem o workflow de auto-regen mensal.
 
+### Added (AL-45: Test + quality infrastructure — Playwright + axe + Lighthouse CI)
 
+Pipeline de qualidade automática para PRs: `tests/e2e/smoke.spec.ts` cobre 9 páginas com
+Playwright (status 200, sem L-002 fallback, sem JS errors, h1 correto) + `@axe-core/playwright`
+(zero violações axe critical/serious, exceto `color-contrast` desabilitado como baseline issue).
+`.lighthouserc.js` define budget de performance/SEO/a11y. `.github/workflows/quality.yml` roda
+em todo PR e push. Baseline issue documentada: `color-contrast` generalizado no CSS (cinzas
+leves — fix em PR separado).
+
+**Por que:** regressões de UX, a11y e performance eram detectadas apenas em smoke test manual
+pós-merge. Essa pipeline unifica 3 concerns (smoke, a11y, perf) em um único gate de PR.
 
 ### Refactored (AL-27: Migrar Alice essays inline → portfolio[kind=essay] + renderEssay)
 

@@ -280,3 +280,57 @@ Quando criar componente novo:
 - Refactor que toca mesma região → menos rebase.
 
 Convenção é guideline, não regra rígida. Princípio: **rastreabilidade vem dos conventional commits**, PRs são unidades de review/deploy.
+
+## Quality gates
+
+Pipeline de qualidade automática: `.github/workflows/quality.yml` roda em todo PR e push.
+
+```bash
+npm test            # Playwright smoke + a11y (9 páginas, local com servidor auto-start)
+```
+
+### Stack
+
+| Ferramenta | O que verifica |
+|---|---|
+| **Playwright** (`tests/e2e/smoke.spec.ts`) | Status 200, sem L-002 fallback, sem console errors, h1 presente |
+| **@axe-core/playwright** | Zero violações axe critical/serious (WCAG 2.0 A + AA) |
+| **Lighthouse CI** (`.lighthouserc.js`) | Performance, SEO, a11y scores + métricas de Core Web Vitals |
+
+### Budget (bloqueia merge se ultrapassar)
+
+| Métrica | Limite |
+|---|---|
+| LCP | < 2.0s |
+| CLS | < 0.1 |
+| Lighthouse Performance | ≥ 90 |
+| Lighthouse SEO | ≥ 95 |
+| Lighthouse Accessibility | ≥ 90 |
+| Axe critical/serious violations | 0 |
+| Total byte weight | < 500 KB (warn) |
+
+### Ativar branch protection (uma vez, pelo owner)
+
+Em GitHub → Settings → Branches → Branch protection rules → `main`:
+- ☑ Require status checks to pass: selecionar `quality`
+- ☑ Require branches to be up to date before merging
+
+### Rodar localmente
+
+```bash
+npm test                    # inicia servidor automático, roda todos os testes
+npx playwright test --ui    # modo interativo com UI do Playwright
+npx @lhci/cli autorun       # Lighthouse (requer servidor em localhost:8000)
+```
+
+### Artefatos de falha
+
+Em PR com falha, GitHub Action sobe `quality-artifacts` contendo:
+- `test-results/` — Playwright traces + screenshots
+- Lighthouse report (via temporary-public-storage URL no log)
+
+### Baseline issues conhecidas (a corrigir em PRs separados)
+
+| Regra axe | Impacto | Situação |
+|---|---|---|
+| `color-contrast` | serious | Site usa cinzas leves (#aaa, #999, #bbb) que não atingem 4.5:1 — desabilitado no smoke test; fix de CSS em PR separado |
