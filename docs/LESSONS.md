@@ -535,11 +535,49 @@ commit `6279adc7`.
 
 ---
 
+## L-023: LHCI assertions como blocking gate em shared CI runner = false positives
+
+**Anti-pattern:** treat Lighthouse CI assertions (`'error'` level) como
+blocking PR gate em runner shared (GitHub Actions ubuntu-latest, etc).
+
+**Why broke:** mesmo SHA back-to-back varia significativamente:
+- run 1: perf 0.89, LCP 1.8s
+- run 2 (mesmo código): perf 0.76, LCP 7.6s
+- run 3: perf 0.83, LCP 3.2s
+
+CPU steal time, neighbor noise, network jitter, cold cache no Chrome
+launch — combinação amplifica variance em metrics sensitive a timing
+(LCP, FCP, TBT). Score categories (derivados) propagam o noise. PR
+sem mudança de código pode falhar; PR com regressão real pode passar.
+
+**Mitigação:**
+1. **LHCI = trend tracking + diagnóstico**, não gate. Assertions
+   `'warn'` only. Dados continuam coletados, uploaded reports
+   acessíveis pra investigação manual.
+2. **Real perf gates** ficam em: dedicated runner (auto-hosted),
+   `larger-runners` (paga), ou RUM (real user monitoring) em prod.
+3. Se gate é mandatório em CI shared, considerar:
+   - Só estrutural (não-temporal): `total-byte-weight`,
+     `categories:seo`, `categories:accessibility`. Esses são
+     determinísticos por SHA.
+   - Skip metrics temporal: LCP, FCP, TBT, TTI, perf score.
+
+**Quando aplicar:** sempre que adicionar Lighthouse CI a um projeto
+com runners shared. Default to `'warn'`. Só sobe pra `'error'` em
+métricas estruturais OU após confirmar variance < 5% em 5 runs
+back-to-back do mesmo SHA.
+
+**Incident:** PR #54 (AL-48) — 3 runs back-to-back falharam com
+métricas diferentes. Fix em commit `79826352` (assertions → warn).
+AL-49 Phase 5 considera re-enable após baseline issues fechadas.
+
+---
+
 ## Convenção de manutenção
 
 - Adicionar entrada em LESSONS.md quando commit `fix:` ou `refactor:`
   ensinou algo generalizável (não trivial, não óbvio).
-- Sintaxe: L-NNN, próximo número livre (atualmente 23).
+- Sintaxe: L-NNN, próximo número livre (atualmente 24).
 - Não remover entradas. Marcar `~~strikethrough~~` + nota se obsoleta.
 - PR template (futuro) pode incluir checkbox "L-NNN adicionada".
 
@@ -558,3 +596,4 @@ commit `6279adc7`.
 - **Scope/YAGNI:** L-020
 - **Auto-generated drift:** L-021
 - **Tooling/build config:** L-022
+- **CI infrastructure noise:** L-023
