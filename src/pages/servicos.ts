@@ -3,8 +3,15 @@ import { norm } from "../lib/norm";
 import { siteHeader } from "../components/SiteHeader";
 import { siteFooter } from "../components/SiteFooter";
 import { ctaLead, modalContact } from "../lib/ui";
+import { setPageSEO } from "../lib/seo";
 
 export function render(): void {
+    setPageSEO({
+        title: "Serviços — Arte Longa",
+        description: "Catálogo completo de serviços da rede Arte Longa.",
+        url: "/servicos/",
+    });
+
     const AL = window.AL;
     const servicos = AL.publicServices();
     const handleToNome = Object.fromEntries(

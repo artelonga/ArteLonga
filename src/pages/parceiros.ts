@@ -4,11 +4,18 @@ import { siteFooter } from "../components/SiteFooter";
 import { ProfileCard } from "../components/ProfileCard";
 import { avatarSm } from "../components/ProfileCard";
 import { ctaLead, modalContact, wireModal, wirePopover } from "../lib/ui";
+import { setPageSEO } from "../lib/seo";
 import type { Person, Community } from "../types";
 
 type RosterEntity = Person | Community;
 
 export function render(): void {
+    setPageSEO({
+        title: "Parceiros — Arte Longa",
+        description: "Conheça os profissionais e comunidades parceiras da rede Arte Longa.",
+        url: "/parceiros/",
+    });
+
     const h = (location.hash || "").toLowerCase();
     if (h === "#todos" || h === "#showall") {
         renderParceirosShowAll();

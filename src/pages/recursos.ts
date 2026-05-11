@@ -1,9 +1,16 @@
 import { esc } from "../lib/esc";
 import { siteHeader } from "../components/SiteHeader";
 import { siteFooter } from "../components/SiteFooter";
+import { setPageSEO } from "../lib/seo";
 import type { FinanceCostItem, FinanceRecurrentItem, FinanceRampaItem, FinanceProjectItem, FinanceProBonoItem } from "../types";
 
 export function render(): void {
+    setPageSEO({
+        title: "Recursos — Arte Longa",
+        description: "Transparência financeira: receita, custos e metas da Arte Longa.",
+        url: "/recursos/",
+    });
+
     const AL = window.AL;
     const f = AL.finances;
     const fmt = (n: number): string =>

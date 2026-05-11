@@ -1,9 +1,16 @@
 import { esc } from "../lib/esc";
 import { siteHeader } from "../components/SiteHeader";
 import { ctaLead, modalContact, wireModal } from "../lib/ui";
+import { setPageSEO } from "../lib/seo";
 import type { Solution } from "../types";
 
 export function render(): void {
+    setPageSEO({
+        title: "Soluções — Arte Longa",
+        description: "Universos e soluções desenvolvidas pela Arte Longa.",
+        url: "/solucoes/",
+    });
+
     const AL = window.AL;
 
     const renderRow = (s: Solution): string => {

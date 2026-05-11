@@ -9,6 +9,7 @@ import { SearchInput } from "../components/SearchInput";
 import { LocationInput } from "../components/LocationInput";
 import { EmptyState } from "../components/EmptyState";
 import type { Service } from "../types";
+import { setPageSEO, OG_DEFAULT_IMAGE } from "../lib/seo";
 
 const SUPERCATS: Array<{ id: string; label: string; titles: string[] }> = [
     { id: "eventos", label: "Eventos", titles: [
@@ -65,7 +66,31 @@ const SUPERCATS: Array<{ id: string; label: string; titles: string[] }> = [
     ]},
 ];
 
+const BASE_URL = "https://artelonga.com.br";
+
 export function render(): void {
+    setPageSEO({
+        title: "Arte Longa — Semeando Sonhos",
+        description: "Arte Longa — agência de gestão de carreira, marca e produto, tecnologia e comunicação.",
+        url: "/",
+        jsonLd: [
+            {
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                "name": "Arte Longa",
+                "url": BASE_URL,
+            },
+            {
+                "@context": "https://schema.org",
+                "@type": "Organization",
+                "name": "Arte Longa",
+                "url": BASE_URL,
+                "logo": OG_DEFAULT_IMAGE,
+                "description": "Arte Longa — agência de gestão de carreira, marca e produto, tecnologia e comunicação.",
+            },
+        ],
+    });
+
     const AL = window.AL;
     const servicos = AL.publicServices();
     const handleToNome = Object.fromEntries(

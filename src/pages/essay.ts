@@ -3,6 +3,7 @@ import { esc } from "../lib/esc";
 import { mdInline } from "../lib/markdown";
 import { siteHeader } from "../components/SiteHeader";
 import { siteFooter } from "../components/SiteFooter";
+import { setPageSEO } from "../lib/seo";
 
 export function render(): void {
     const handle = document.body.dataset["handle"] ?? "";
@@ -20,6 +21,23 @@ export function render(): void {
     const backHref = person ? `/${esc(person.handle)}/` : "/";
     const backLabel = person ? `← voltar a ${esc(person.nome)}` : "← voltar";
     document.title = `${essay.titulo}${person ? " — " + person.nome : ""} — Arte Longa`;
+
+    const BASE_URL = "https://artelonga.com.br";
+    const essayDesc = essay.body ? essay.body.replace(/\n/g, " ").slice(0, 200) : undefined;
+    setPageSEO({
+        title: `${essay.titulo}${person ? " — " + person.nome : ""} — Arte Longa`,
+        ...(essayDesc ? { description: essayDesc } : {}),
+        url: person ? `/${person.handle}/${slug}/` : `/`,
+        jsonLd: {
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": essay.titulo,
+            ...(person
+                ? { "author": { "@type": "Person", "name": person.nome, "url": `${BASE_URL}/${person.handle}/` } }
+                : {}),
+            "publisher": { "@type": "Organization", "name": "Arte Longa", "url": BASE_URL },
+        },
+    });
     const bodyHtml = essay.body ? `<div class="essay-body">${mdInline(essay.body)}</div>` : "";
     document.body.innerHTML = `
         ${siteHeader()}
