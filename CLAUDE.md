@@ -170,6 +170,25 @@ npm run typecheck          # tsc --noEmit (valida src/*.ts contra openapi types)
 
 Todos exitam com código 1 se gap detectado. Listam exatamente o que está faltando.
 
+## Fluxo co-auto → PR (owner approves)
+
+Política: **agentes não auto-mergeiam**. Cada AL vira PR que owner revisa antes de mergear.
+
+```bash
+co-auto --task AL-N           # cria branch local, commita, NÃO push
+npm run ship                  # push + abre PR no GitHub (NÃO merge)
+# owner revisa em https://github.com/artelonga/ArteLonga/pull/<N>
+# owner aprova: gh pr merge <N> --squash --delete-branch
+# ou owner rejeita: gh pr close <N>
+```
+
+`npm run ship` (`tools/al-ship.mjs`):
+- `git push -u origin <branch>` (set upstream se primeira vez).
+- Detecta se já existe PR aberta — se sim, mostra URL e sai.
+- Caso contrário, abre PR via `gh pr create` com title + body do último commit + checklist de revisão.
+
+Agentes (Claude/co-auto) **não rodam** `gh pr merge`. Owner aprova.
+
 ## Pre-commit hook (L-021 prevention)
 
 `.husky/pre-commit` roda `tools/pre-commit-check.mjs` em todo `git commit`. Checa que `assets/data.js` está em sync com os YAMLs source-of-truth (snapshot + bake + compare). Falha com instruções se drift detectado.

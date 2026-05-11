@@ -25,6 +25,7 @@
     "audit": "npm run audit-shells && npm run audit-consistency",
     "typecheck": "tsc --noEmit",
     "pre-commit": "node tools/pre-commit-check.mjs",
+    "ship": "node tools/al-ship.mjs",
     "prepare": "husky"
   }
 }
