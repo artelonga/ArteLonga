@@ -1,0 +1,8 @@
+titulo: Artes Visuais
+paraQuem: Coleções · ativações
+hoursLow: 10
+hoursHigh: 200
+cnaeNovo: true
+cnae:
+  - c: 9002-7/01
+    d: Atividades de artistas plásticos, jornalistas independentes e escritores

@@ -1,0 +1,8 @@
+titulo: Piloto de Drone
+paraQuem: Eventos · obras · imobiliário
+cnaeNovo: true
+cnae:
+  - c: 7420-0/02
+    d: Atividades de produção de fotografias aéreas
+  - c: 5911-1/99
+    d: Produção de vídeos não especificada anteriormente

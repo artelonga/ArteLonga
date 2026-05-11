@@ -1,0 +1,12 @@
+titulo: Tradução PT-DE
+parent: Tradução
+implicitResponsavel:
+  - ramona
+paraQuem: Português → Alemão
+digital: true
+hoursLow: 0.003
+hoursHigh: 0.005
+unit: palavra
+cnae:
+  - c: 7490-1/01
+    d: Serviços de tradução, interpretação e similares

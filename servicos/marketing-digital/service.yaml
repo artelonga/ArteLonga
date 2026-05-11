@@ -1,0 +1,9 @@
+titulo: Marketing Digital
+paraQuem: Marcas · pequenas empresas
+digital: true
+hoursLow: 20
+hoursHigh: 80
+recurring: true
+cnae:
+  - c: 7319-0/04
+    d: Consultoria em publicidade

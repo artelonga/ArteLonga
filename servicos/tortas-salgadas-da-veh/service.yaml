@@ -1,0 +1,9 @@
+titulo: Tortas Salgadas da Veh
+paraQuem: Eventos · empresas
+planos:
+  - label: Sob demanda
+  - label: Semanal
+  - label: Mensal
+cnae:
+  - c: 5620-1/02
+    d: Serviços de alimentação — bufê

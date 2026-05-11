@@ -1,0 +1,10 @@
+titulo: Inteligência e Tecnologia
+paraQuem: Empresas · estúdios
+digital: true
+hoursLow: 20
+hoursHigh: 200
+cnae:
+  - c: 6204-0/00
+    d: Consultoria em tecnologia da informação
+  - c: 6319-4/00
+    d: Portais, provedores de conteúdo e serviços de informação na internet

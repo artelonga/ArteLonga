@@ -1,0 +1,23 @@
+handle: hedix-solution
+type: solution
+nome: Hedix
+tagline: Mercados de Previsão
+url: /hedix-solution/
+urlLabel: hedix.com.br
+internalLink: true
+externalUrl: https://hedix.com.br/
+lema: Liquidez e formação de preço em mercados de previsão.
+desc: >-
+  Formação de mercado e inteligência preditiva. Provê liquidez, forma preço e agrega sinal em mercados de previsão —
+  onde a multidão é o oráculo.
+lifecycle: active
+universo: false
+comunidade: hedix
+bundledServices:
+  - Market Making Preditivo
+  - Inteligência de Previsão
+  - Desenvolvimento de API
+platforms:
+  - name: Web
+    status: done
+    statusText: disponível

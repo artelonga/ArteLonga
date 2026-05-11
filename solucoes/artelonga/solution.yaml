@@ -1,0 +1,29 @@
+handle: artelonga
+type: solution
+nome: Arte Longa
+tagline: Humanidade
+url: /artelonga/
+urlLabel: artelonga.com.br
+internalLink: true
+externalUrl: https://artelonga.com.br
+lema: Conectando pessoas.
+desc: Conectando pessoas.
+homeLinks:
+  - label: Sobre
+    href: /sobre/
+  - label: Parceiros
+    href: /parceiros/
+  - label: Serviços
+    href: /servicos/
+  - label: Soluções
+    href: /solucoes/
+lifecycle: active
+universo: true
+bundledServices: "*"
+platforms:
+  - name: Web
+    status: done
+    statusText: disponível
+  - name: Mobile / App
+    status: wip
+    statusText: Q2 2026 · em desenvolvimento

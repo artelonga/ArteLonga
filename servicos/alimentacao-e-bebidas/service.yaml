@@ -1,0 +1,8 @@
+titulo: Alimentação e Bebidas
+paraQuem: Eventos · empresas
+hoursLow: 0.35
+hoursHigh: 1
+unit: pessoa
+cnae:
+  - c: 5620-1/02
+    d: Serviços de alimentação para eventos e recepções — bufê

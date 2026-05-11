@@ -1,0 +1,9 @@
+titulo: Gestão de Vendas
+paraQuem: Empresas · times comerciais
+digital: true
+cnaeNovo: true
+cnae:
+  - c: 7020-4/00
+    d: Atividades de consultoria em gestão empresarial
+  - c: 7319-0/04
+    d: Consultoria em publicidade

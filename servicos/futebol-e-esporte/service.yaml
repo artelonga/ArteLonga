@@ -1,0 +1,8 @@
+titulo: Futebol e Esporte
+paraQuem: Crianças · juvenis
+hoursLow: 1
+hoursHigh: 2
+unit: treino
+cnae:
+  - c: 9319-1/01
+    d: Produção e promoção de eventos esportivos

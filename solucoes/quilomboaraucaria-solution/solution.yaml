@@ -1,0 +1,27 @@
+handle: quilomboaraucaria-solution
+type: solution
+nome: Quilombo Araucária
+tagline: Terra
+url: /quilomboaraucaria/
+urlLabel: quilomboaraucaria.org
+internalLink: true
+externalUrl: https://quilomboaraucaria.org
+lema: Conexão entre pessoas e a natureza.
+desc: >-
+  Site dinâmico que cobre autenticação, privacidade e segurança. Resistência ambiental, cultural e social — natureza,
+  ancestralidade e tecnologia em comunhão.
+lifecycle: active
+universo: true
+bundledServices:
+  - Desenvolvimento Web
+  - Privacidade e Segurança
+  - Artes Visuais
+  - Grafite
+  - Murais e Fachadas
+platforms:
+  - name: Web
+    status: done
+    statusText: disponível
+  - name: Mobile / App
+    status: wip
+    statusText: Q2 2026 · em desenvolvimento

@@ -1,0 +1,13 @@
+titulo: Dados e Armazenamento
+parent: Inteligência e Tecnologia
+implicitResponsavel:
+  - yuri
+paraQuem: Empresas · times de dados
+digital: true
+hoursLow: 15
+hoursHigh: 100
+cnae:
+  - c: 6204-0/00
+    d: Consultoria em TI
+  - c: 6319-4/00
+    d: Provedores de serviços de informação na internet

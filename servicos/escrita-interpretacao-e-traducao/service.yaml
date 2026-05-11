@@ -1,0 +1,10 @@
+titulo: Escrita, Interpretação e Tradução
+paraQuem: Empresas · autores
+digital: true
+hoursLow: 5
+hoursHigh: 30
+cnae:
+  - c: 7490-1/01
+    d: Serviços de tradução, interpretação e similares
+  - c: 5811-5/00
+    d: Edição de livros

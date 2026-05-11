@@ -126,7 +126,11 @@ components:
           type: string
         url:
           type: string
-      required: [label, url]
+          description: URL or path (used by Person.homeLinks).
+        href:
+          type: string
+          description: URL or path (used by Solution.homeLinks).
+      required: [label]
 
     PortfolioPoem:
       type: object
@@ -382,7 +386,7 @@ components:
           minimum: 0
         unit:
           type: string
-          enum: [hora, palavra, pessoa, unidade, aula, sessão]
+          enum: [hora, palavra, pessoa, unidade, aula, sessão, oficina, torta, diária, treino, grupo, consulta]
         responsavel:
           type: array
           items:
@@ -400,7 +404,275 @@ components:
         cnaeNovo:
           type: boolean
           default: false
+        hidden:
+          type: boolean
+          default: false
+          description: If true, not shown in /servicos/ (personal/family relations).
+        planos:
+          type: array
+          description: Named pricing plans for this service.
+          items:
+            $ref: "#/components/schemas/ServicePlan"
+        attachments:
+          type: array
+          items:
+            $ref: "#/components/schemas/Attachment"
       required: [titulo]
+
+    ServicePlan:
+      type: object
+      properties:
+        label:
+          type: string
+        hours:
+          type: number
+          minimum: 0
+        unit:
+          type: string
+
+    Attachment:
+      type: object
+      properties:
+        label:
+          type: string
+        url:
+          type: string
+        kind:
+          type: string
+          enum: [pdf, link]
+      required: [label, url, kind]
+
+    Platform:
+      type: object
+      properties:
+        name:
+          type: string
+        status:
+          type: string
+          enum: [done, wip]
+        statusText:
+          type: string
+      required: [name, status]
+
+    Mission:
+      type: object
+      properties:
+        handle:
+          $ref: "#/components/schemas/Handle"
+        type:
+          type: string
+          enum: [mission]
+        nome:
+          type: string
+        subtitle:
+          type: string
+        comunidade:
+          $ref: "#/components/schemas/Handle"
+        objetivo:
+          type: string
+        objetivoAutor:
+          $ref: "#/components/schemas/Handle"
+        tags:
+          type: array
+          items:
+            type: string
+        servicos:
+          type: array
+          items:
+            type: string
+            description: Service title reference (soft link to serviceCatalog).
+        envolvidos:
+          type: array
+          items:
+            $ref: "#/components/schemas/Handle"
+        parentMission:
+          $ref: "#/components/schemas/Handle"
+        attachments:
+          type: array
+          items:
+            $ref: "#/components/schemas/Attachment"
+      required: [handle, type, nome, comunidade]
+
+    Solution:
+      type: object
+      properties:
+        handle:
+          $ref: "#/components/schemas/Handle"
+        type:
+          type: string
+          enum: [solution]
+        nome:
+          type: string
+        tagline:
+          type: string
+        url:
+          type: string
+        urlLabel:
+          type: string
+        internalLink:
+          type: boolean
+          default: false
+        externalUrl:
+          type: string
+        lema:
+          type: string
+        desc:
+          type: string
+        descLong:
+          type: string
+          description: Long-form description (markdown-lite).
+        lifecycle:
+          type: string
+          enum: [active, futuro]
+        universo:
+          type: boolean
+          default: false
+        comunidade:
+          $ref: "#/components/schemas/Handle"
+        releaseDate:
+          type: string
+          description: ISO-8601 date string.
+        bundledServices:
+          description: '"*" for all services, or array of service titles.'
+          oneOf:
+            - type: string
+              enum: ["*"]
+            - type: array
+              items:
+                type: string
+        platforms:
+          type: array
+          items:
+            $ref: "#/components/schemas/Platform"
+        homeLinks:
+          type: array
+          items:
+            $ref: "#/components/schemas/HomeLink"
+      required: [handle, type, nome, lifecycle]
+
+    FinanceCost:
+      type: object
+      properties:
+        key:
+          type: string
+        label:
+          type: string
+        value:
+          type: number
+        detail:
+          type: string
+        breakdown:
+          type: array
+          items:
+            type: object
+            properties:
+              label:
+                type: string
+              value:
+                type: number
+              handle:
+                $ref: "#/components/schemas/Handle"
+      required: [key, label, value]
+
+    FinanceRecurrentItem:
+      type: object
+      properties:
+        label:
+          type: string
+        client:
+          type: string
+        detail:
+          type: string
+        responsavel:
+          $ref: "#/components/schemas/Handle"
+        mensal:
+          type: number
+        solucoes:
+          type: array
+          items:
+            $ref: "#/components/schemas/Handle"
+      required: [label, mensal]
+
+    FinanceRampaItem:
+      type: object
+      properties:
+        label:
+          type: string
+        client:
+          type: string
+        detail:
+          type: string
+        responsavel:
+          $ref: "#/components/schemas/Handle"
+        meses:
+          type: array
+          items:
+            type: object
+            properties:
+              mes:
+                type: string
+              value:
+                type: number
+        solucoes:
+          type: array
+          items:
+            $ref: "#/components/schemas/Handle"
+      required: [label]
+
+    FinanceProject:
+      type: object
+      properties:
+        label:
+          type: string
+        detail:
+          type: string
+        unitValue:
+          type: number
+        unidades:
+          type: number
+        responsavel:
+          $ref: "#/components/schemas/Handle"
+        solucoes:
+          type: array
+          items:
+            $ref: "#/components/schemas/Handle"
+      required: [label]
+
+    Finances:
+      type: object
+      properties:
+        currency:
+          type: string
+        quarter:
+          type: string
+        metaMensal:
+          type: number
+        metaQ2:
+          type: number
+        custos:
+          type: array
+          items:
+            $ref: "#/components/schemas/FinanceCost"
+        receita:
+          type: object
+          properties:
+            recorrenteMensal:
+              type: array
+              items:
+                $ref: "#/components/schemas/FinanceRecurrentItem"
+            rampa:
+              type: array
+              items:
+                $ref: "#/components/schemas/FinanceRampaItem"
+            projetos:
+              type: array
+              items:
+                $ref: "#/components/schemas/FinanceProject"
+            proBono:
+              type: array
+              items:
+                $ref: "#/components/schemas/FinanceProject"
+      required: [currency, quarter, custos, receita]
 
     UniverseData:
       description: Shape do `window.AL` exposed pelo renderer (data.js).

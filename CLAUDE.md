@@ -151,7 +151,61 @@ Para adicionar uma nova comunidade:
 3. Adicione o handle em `tools/communities-order.txt` na posição desejada.
 4. Rode `npm run bake-communities`.
 
-> **Tip:** `npm run bake` roda os dois bakes em sequência (people + communities).
+> **Tip:** `npm run bake` roda todos os bakes em sequência (people + communities + services + missions + solutions + finances).
+
+## Como editar um serviço
+
+A seção `serviceCatalog` em `assets/data.js` é **AUTO-GENERATED** — não edite diretamente.
+
+1. Edite `servicos/<slug>/service.yaml` (ex: `servicos/desenvolvimento-web/service.yaml`).
+2. Rode `node tools/bake-services.mjs` (ou `npm run bake-services`) para regenerar `assets/data.js`.
+3. Bumpe `V` em `assets/bootstrap.js` para invalidar o cache do GitHub Pages.
+4. Commit: `refactor(servico): atualiza <slug>`.
+
+Para adicionar um novo serviço:
+1. Crie a pasta `servicos/<slug>/` com `index.html` (copie de outro serviço).
+2. Crie `servicos/<slug>/service.yaml` com o campo obrigatório (`titulo`).
+3. Adicione o slug em `tools/services-order.txt` na posição desejada.
+4. Rode `npm run bake-services`.
+
+## Como editar uma missão
+
+A seção `missions` em `assets/data.js` é **AUTO-GENERATED** — não edite diretamente.
+
+1. Edite `missoes/<slug>/mission.yaml` (ex: `missoes/raizes-do-futuro/mission.yaml`).
+2. Rode `node tools/bake-missions.mjs` (ou `npm run bake-missions`) para regenerar `assets/data.js`.
+3. Bumpe `V` em `assets/bootstrap.js` para invalidar o cache do GitHub Pages.
+4. Commit: `refactor(missao): atualiza <slug>`.
+
+Para adicionar uma nova missão:
+1. Crie a pasta `missoes/<slug>/` com `index.html` (copie de outro handle).
+2. Crie `missoes/<slug>/mission.yaml` com os campos obrigatórios (`handle`, `type`, `nome`, `comunidade`).
+3. Adicione o slug em `tools/missions-order.txt` na posição desejada.
+4. Rode `npm run bake-missions`.
+
+## Como editar uma solução/universo
+
+A seção `solutions` em `assets/data.js` é **AUTO-GENERATED** — não edite diretamente.
+
+1. Edite `solucoes/<handle>/solution.yaml` (ex: `solucoes/co/solution.yaml`).
+2. Rode `node tools/bake-solutions.mjs` (ou `npm run bake-solutions`) para regenerar `assets/data.js`.
+3. Bumpe `V` em `assets/bootstrap.js` para invalidar o cache do GitHub Pages.
+4. Commit: `refactor(solucao): atualiza <handle>`.
+
+Para adicionar uma nova solução:
+1. Crie a pasta `solucoes/<handle>/` com `index.html` (copie de outro handle).
+2. Crie `solucoes/<handle>/solution.yaml` com os campos obrigatórios (`handle`, `type`, `nome`, `lifecycle`).
+3. Adicione o handle em `tools/solutions-order.txt` na posição desejada.
+4. Rode `npm run bake-solutions`.
+
+## Como editar as finanças
+
+O bloco `finances` em `assets/data.js` é **AUTO-GENERATED** — não edite diretamente.
+
+1. Edite `recursos/finances.yaml`.
+2. Rode `node tools/bake-finances.mjs` (ou `npm run bake-finances`) para regenerar `assets/data.js`.
+3. Bumpe `V` em `assets/bootstrap.js` para invalidar o cache do GitHub Pages.
+4. Commit: `refactor(financas): atualiza finances.yaml`.
 
 ## Audits (rodar antes de PR)
 
@@ -168,7 +222,7 @@ npm run typecheck          # tsc --noEmit (valida src/*.ts contra openapi types)
 - `audit-handles` previne typos em handles e referências a perfis removidos (service.responsavel, citacoes.autor, subMembers, parentHandle, communities, membros, parcerias).
 - `typecheck` valida que TS files (`src/`) batem com types do `src/types.ts`.
 
-**`npm run validate-yaml`** — valida cada `<handle>/profile.yaml` e `<handle>/community.yaml` contra os schemas em `openapi/artelonga.yaml#/components/schemas/{Person,Community}`. Roda **automaticamente** no início de `npm run bake-people` / `npm run bake-communities` (pre-flight: bake aborta se gap). Use direto pra checar sem rodar bake.
+**`npm run validate-yaml`** — valida todos os YAMLs source-of-truth contra `openapi/artelonga.yaml#/components/schemas/{Person,Community,Service,Mission,Solution,Finances}`. Roda **automaticamente** antes de cada bake (pre-flight). Use direto pra checar sem rodar bake.
 
 Todos exitam com código 1 se gap detectado. Listam exatamente o que está faltando.
 

@@ -1,0 +1,13 @@
+titulo: Nuvem
+parent: Inteligência e Tecnologia
+implicitResponsavel:
+  - yuri
+paraQuem: Empresas · projetos
+digital: true
+hoursLow: 10
+hoursHigh: 80
+cnae:
+  - c: 6204-0/00
+    d: Consultoria em TI
+  - c: 6319-4/00
+    d: Provedores de conteúdo e serviços de informação na internet

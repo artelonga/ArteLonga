@@ -1,0 +1,14 @@
+titulo: Tráfego e Crescimento
+parent: Inteligência e Tecnologia
+implicitResponsavel:
+  - yuri
+paraQuem: Marcas · e-commerce
+digital: true
+hoursLow: 20
+hoursHigh: 80
+recurring: true
+cnae:
+  - c: 7319-0/04
+    d: Consultoria em publicidade
+  - c: 6319-4/00
+    d: Portais, provedores de conteúdo e serviços de informação na internet

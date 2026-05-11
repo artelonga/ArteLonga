@@ -1,0 +1,47 @@
+handle: yggdrasil
+type: solution
+nome: Yggdrasil
+tagline: Experiência
+url: /yggdrasil/
+urlLabel: lançamento · junho 2026
+internalLink: true
+lema: Desenvolvimento de jogos sem limites.
+desc: >-
+  Engine de jogos completa, open source, construída em torno do Godot. Do arcade 2D aos mundos 3D — onde criadores,
+  jogadores e universos convergem.
+descLong: >-
+  Yggdrasil nasce como engine de jogos de verdade: ferramentas de criação, runtime, multiplayer e distribuição na mesma
+  plataforma open source. A interface jogável da Arte Longa deixa de ser uma camada decorativa e passa a ser um motor de
+  jogos completo.
+
+
+  Lançamento · arcade 2D pronto para jogar
+
+
+  Na estreia (junho de 2026), a Yggdrasil já vem com uma biblioteca de jogos arcade 2D — Snake, Tetris, Space Invaders,
+  Pong e variações — jogáveis direto no navegador e no app. Servem como vitrine, sandbox para novos criadores e
+  referência viva de como construir jogos sobre a engine.
+
+
+  Roadmap · mundos 3D no horizonte
+
+
+  A fundação 3D já vive no Godot. O passo seguinte é abrir esse caminho aos criadores: cenários 3D, espaços persistentes
+  e mundos compartilhados. A meta é que a Yggdrasil leve do pixel ao polígono sem trocar de ferramenta — um único
+  universo de criação, do arcade clássico ao mundo aberto.
+lifecycle: futuro
+universo: true
+bundledServices:
+  - Inteligência e Tecnologia
+  - Design
+  - Produção Musical
+platforms:
+  - name: Web · arcade 2D
+    status: wip
+    statusText: junho 2026
+  - name: Mobile / App · arcade 2D
+    status: wip
+    statusText: junho 2026
+  - name: Mundos 3D
+    status: wip
+    statusText: no horizonte

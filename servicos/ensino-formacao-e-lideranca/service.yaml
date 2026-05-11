@@ -1,0 +1,10 @@
+titulo: Ensino, Formação e Liderança
+paraQuem: Empresas · times
+hoursLow: 2
+hoursHigh: 8
+unit: sessão
+cnae:
+  - c: 8599-6/99
+    d: Outras atividades de ensino
+  - c: 8599-6/03
+    d: Treinamento em informática

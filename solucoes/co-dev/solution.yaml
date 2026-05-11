@@ -1,0 +1,21 @@
+handle: co-dev
+type: solution
+nome: Co Dev
+tagline: Formação
+url: /co-dev/
+urlLabel: em breve
+internalLink: true
+lema: Escalabilidade desde o primeiro commit.
+desc: >-
+  Framework open source de desenvolvimento multi-plataforma criado in-house para escalabilidade. Cobre privacidade e
+  segurança, desenvolvimento de API e autenticação.
+lifecycle: futuro
+universo: true
+bundledServices:
+  - Desenvolvimento de API
+  - Privacidade e Segurança
+  - Inteligência e Tecnologia
+platforms:
+  - name: Web
+    status: wip
+    statusText: em desenvolvimento

@@ -1,0 +1,11 @@
+titulo: Psicoterapia Psicanalítica
+parent: Saúde Mental
+paraQuem: Adultos
+digital: true
+hoursLow: 1
+hoursHigh: 1
+unit: sessão
+cnaeNovo: true
+cnae:
+  - c: 8650-0/03
+    d: Atividades de psicologia e psicanálise

@@ -1,0 +1,14 @@
+titulo: Automação de Processos
+parent: Inteligência e Tecnologia
+implicitResponsavel:
+  - yuri
+paraQuem: Empresas · operações
+digital: true
+hoursLow: 8
+hoursHigh: 20
+cnaeNovo: true
+cnae:
+  - c: 6202-3/00
+    d: Desenvolvimento e licenciamento de software customizável
+  - c: 6204-0/00
+    d: Consultoria em tecnologia da informação

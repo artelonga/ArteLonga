@@ -12,8 +12,7 @@
  *   4. Em caso de mismatch: restaura snapshot, falha com instruções.
  *
  * Bake só toca os blocos entre AUTO-GENERATED:*-START/END.
- * Edições manuais em outras seções de data.js (services, missions,
- * universos) são preservadas e não disparam falha.
+ * Todas as seções content de data.js agora são AUTO-GENERATED.
  *
  * Uso:
  *   node tools/pre-commit-check.mjs
@@ -40,6 +39,10 @@ const before = fs.readFileSync(DATA_JS, "utf8");
 try {
     execSync("node tools/bake-people.mjs", { cwd: ROOT, stdio: "ignore" });
     execSync("node tools/bake-communities.mjs", { cwd: ROOT, stdio: "ignore" });
+    execSync("node tools/bake-services.mjs", { cwd: ROOT, stdio: "ignore" });
+    execSync("node tools/bake-missions.mjs", { cwd: ROOT, stdio: "ignore" });
+    execSync("node tools/bake-solutions.mjs", { cwd: ROOT, stdio: "ignore" });
+    execSync("node tools/bake-finances.mjs", { cwd: ROOT, stdio: "ignore" });
 } catch (e) {
     console.error("[pre-commit-check] FAIL: bake error.");
     console.error(e.message);
@@ -63,8 +66,10 @@ console.error("");
 console.error("❌ assets/data.js está dessincronizado dos YAMLs source-of-truth.");
 console.error("");
 console.error("   Possíveis causas:");
-console.error("   (a) Você editou um <handle>/profile.yaml ou <handle>/community.yaml");
-console.error("       e esqueceu de rodar `npm run bake`.");
+console.error("   (a) Você editou um YAML source-of-truth e esqueceu de rodar `npm run bake`.");
+console.error("       YAMLs: <handle>/profile.yaml, <handle>/community.yaml,");
+console.error("              servicos/<slug>/service.yaml, missoes/<slug>/mission.yaml,");
+console.error("              solucoes/<handle>/solution.yaml, recursos/finances.yaml");
 console.error("   (b) Você editou data.js DIRETAMENTE no bloco AUTO-GENERATED:*-START/END.");
 console.error("       Esse bloco é regenerado pelo bake — qualquer edição manual seria");
 console.error("       silenciosamente sobrescrita. Mova o conteúdo pro YAML correspondente.");

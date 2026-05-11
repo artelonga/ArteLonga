@@ -1,0 +1,10 @@
+titulo: Drywall e Bioconstrução
+paraQuem: Casa · obra
+hoursLow: 20
+hoursHigh: 500
+cnaeNovo: true
+cnae:
+  - c: 4330-4/02
+    d: Instalação de portas, janelas, tetos, divisórias e armários
+  - c: 4399-1/99
+    d: Outros serviços especializados para construção
