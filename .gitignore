@@ -43,6 +43,11 @@ web/data/
 # Obsidian
 .obsidian/
 
+# Playwright / Lighthouse artifacts
+test-results/
+playwright-report/
+.lighthouseci/
+
 # Temporary / scratch
 tmp/
 scratch/

@@ -1,0 +1,21 @@
+name: quality
+on: [pull_request, push]
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - run: npm ci
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npx serve . -p 8000 &
+      - run: sleep 2
+      - name: Playwright smoke + a11y
+        run: BASE_URL=http://localhost:8000 npx playwright test
+      - name: Lighthouse CI
+        run: npx @lhci/cli@latest autorun
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with: { name: quality-artifacts, path: test-results/ }
