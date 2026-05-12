@@ -61,10 +61,51 @@ body {
     padding: 3vh 7vw 8vh;
 }
 
+.site-header-nav {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-shrink: 0;
+}
+
+.site-cta-entrar {
+    display: inline-block;
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #444;
+    text-decoration: none;
+}
+.site-cta-entrar:hover { color: #c0392b; }
+
+.al-auth-greeting {
+    font-size: 0.78rem;
+    color: #555;
+    letter-spacing: 0.03em;
+}
+
+.al-auth-logout {
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #c0392b;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 0.6rem;
+}
+.al-auth-logout:hover { text-decoration: underline; }
+
 @media (max-width: 640px) {
     .site-header { padding: 3vh 7vw 1vh; }
     .site-brand img { height: 30px; }
     .site-tagline { font-size: 0.6rem; letter-spacing: 0.18em; }
     .site-cta-parceiros { font-size: 0.62rem; padding: 0.8vh 0.7rem; letter-spacing: 0.14em; }
     .main { padding: 2vh 7vw 6vh; }
+    .site-header-nav { gap: 0.6rem; }
+    .al-auth-greeting { font-size: 0.72rem; }
 }

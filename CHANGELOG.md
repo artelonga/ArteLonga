@@ -12,6 +12,30 @@ co-auto. Convenção em CLAUDE.md.
 
 ## [Unreleased]
 
+### Added (AL-50: signup form — email magic-code flow com CO account)
+
+Nova página `/entrar/` com fluxo de autenticação em dois passos: email → código mágico de 6 dígitos.
+Integra com o endpoint CO-205 (`/api/v1/auth/onboard-with-email`) já live em `co.artelonga.com.br`.
+Ao confirmar o código, um cookie de sessão é setado no domínio `.artelonga.com.br`, dando acesso ao
+ecossistema CO (co.artelonga.com.br, quilomboaraucaria.org via SSO bridge). Origin `artelonga` é
+enviado para analytics e tracking de campanhas.
+
+**`/entrar/index.html`** (NEW): dois painéis alternados — passo 1 (email + Google OAuth) e passo 2
+(código + reenvio com cooldown de 60s + editar email). Estilos inline seguindo o padrão `.fp-form`
+da `/faca-parte/`. Carrega `al-signup.js` via `<script defer>`. Mobile responsive ≤ 768px.
+
+**`assets/al-signup.js`** (NEW): módulo vanilla JS que orquestra todo o fluxo — POST para
+`onboard-with-email`, transição email→code, POST para `verify`, redirect para `/` no sucesso,
+inline error sem roundtrip para email inválido, cooldown de reenvio, Google OAuth start.
+Na carga da página, verifica `/auth/me` e redireciona para `/` se já autenticado.
+
+**Header auth indicator**: `SiteHeader.ts` ganhou `#al-header-auth` placeholder e `initHeaderAuth()`.
+Na home, após o render, faz fetch de `/api/v1/auth/me` — se logado mostra "Olá, {nome} · Sair",
+se deslogado mostra "Entrar →" apontando para `/entrar/`. Logout chama `POST /auth/logout` e recarrega.
+
+**`assets/site.css`**: novos seletores `.site-header-nav`, `.site-cta-entrar`, `.al-auth-greeting`,
+`.al-auth-logout` para suportar o estado de autenticação no header da home.
+
 ---
 
 ## [0.13.0] — 2026-05-11

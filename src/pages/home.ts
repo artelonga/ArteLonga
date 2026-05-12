@@ -1,7 +1,7 @@
 import { esc } from "../lib/esc";
 import { norm } from "../lib/norm";
 import { ANGLICISM_MAP } from "../lib/anglicism";
-import { siteHeader } from "../components/SiteHeader";
+import { siteHeader, initHeaderAuth } from "../components/SiteHeader";
 import { siteFooter } from "../components/SiteFooter";
 import { ServiceCard } from "../components/ServiceCard";
 import { FilterChip } from "../components/FilterChip";
@@ -353,4 +353,5 @@ export async function render(): Promise<void> {
 
     applyFilter();
     input.focus();
+    void initHeaderAuth();
 }
