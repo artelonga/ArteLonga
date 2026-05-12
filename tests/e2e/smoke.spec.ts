@@ -33,11 +33,8 @@ for (const p of pages) {
         await expect(page.locator('h1')).toContainText(p.h1);
 
         // A11y: block on critical/serious only; moderate/minor documented separately.
-        // color-contrast disabled: site uses light grays (#aaa, #999, #bbb) that fail
-        // WCAG 2 AA — known baseline issue, tracked for fix in a separate CSS PR.
         const results = await new AxeBuilder({ page })
             .withTags(['wcag2a', 'wcag2aa'])
-            .disableRules(['color-contrast'])
             .analyze();
         const blockers = results.violations.filter(
             v => v.impact === 'critical' || v.impact === 'serious',

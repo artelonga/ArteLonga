@@ -112,7 +112,7 @@
   function siteHeader() {
     return `<header class="site-header">
         <div class="site-header-inner">
-            <a class="site-brand" href="/"><img src="/logo-al.png" alt="Arte Longa"></a>
+            <a class="site-brand" href="/"><img src="/logo-al.png" alt="Arte Longa" width="58" height="36"></a>
             <a class="site-cta-parceiros" href="/faca-parte/">Para parceiros →</a>
         </div>
     </header>`;
@@ -121,9 +121,9 @@
     return `<footer class="site-footer">
         <div class="site-footer-inner">
             <a href="/parceiros/">Parceiros</a>
-            <span class="sep">·</span>
+            <span class="sep" aria-hidden="true">·</span>
             <a href="/sobre/">Sobre</a>
-            <span class="sep">·</span>
+            <span class="sep" aria-hidden="true">·</span>
             <a href="/proximos-passos/">Próximos passos</a>
         </div>
     </footer>`;
@@ -231,6 +231,9 @@
     if (description) og.push(["og:description", description]);
     for (const [property, content] of og) {
       appendSeoEl("meta", { property, content });
+    }
+    if (description) {
+      appendSeoEl("meta", { name: "description", content: description });
     }
     const tw = [
       ["twitter:card", "summary_large_image"],

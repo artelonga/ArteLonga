@@ -4,7 +4,7 @@
 .avatar-sm, .avatar-lg {
     border-radius: 50%;
     background: #f2f2f2;
-    color: #a0a0a0;
+    color: #666;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -44,7 +44,7 @@ body.em-memoria-profile .avatar-lg img {
 .section-header .label {
     font-size: 0.65rem;
     letter-spacing: 0.18em;
-    color: #999;
+    color: #5a5a5a;
     text-transform: uppercase;
 }
 
@@ -74,7 +74,7 @@ body.em-memoria-profile .avatar-lg img {
     font-weight: 500;
     letter-spacing: 0.14em;
     text-transform: lowercase;
-    color: #aaa;
+    color: #767676;
     margin-left: 0.8em;
     font-style: italic;
 }
@@ -95,7 +95,7 @@ body.em-memoria-profile .avatar-lg img {
     font-weight: 500;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: #bbb;
+    color: #767676;
     flex-shrink: 0;
 }
 .missao-link:hover .missao-arrow { color: #0a0a0a; }
@@ -103,7 +103,7 @@ body.em-memoria-profile .avatar-lg img {
 /* Counter (inline under role) ------------------------------------------ */
 .profile-counter, .profile-counter-static {
     font-size: 0.72rem;
-    color: #888;
+    color: #666;
     letter-spacing: 0.06em;
     font-variant-numeric: tabular-nums;
     margin: 0.4rem 0 1.2rem;
@@ -130,7 +130,7 @@ body.em-memoria-profile .avatar-lg img {
     font-weight: 500;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: #999;
+    color: #5a5a5a;
     margin-bottom: 0.5rem;
 }
 .profile-bio-title {
@@ -141,7 +141,7 @@ body.em-memoria-profile .avatar-lg img {
     color: #222;
 }
 .profile-bio { font-size: 1rem; color: #333; max-width: 55ch; }
-.profile-bio.empty { color: #c0c0c0; font-style: italic; }
+.profile-bio.empty { color: #767676; font-style: italic; }
 .profile-bio + .profile-bio { margin-top: 1rem; }
 blockquote.profile-bio-quote {
     margin: 1.25rem 0 1rem;
@@ -162,7 +162,7 @@ blockquote.profile-bio-quote em { font-style: normal; }
 .profile-bio-hidden > summary {
     list-style: none;
     cursor: pointer;
-    color: #f2f2f2;
+    color: transparent;
     font-size: 0.9rem;
     user-select: none;
     transition: color 0.2s ease;
@@ -170,8 +170,8 @@ blockquote.profile-bio-quote em { font-style: normal; }
 }
 .profile-bio-hidden > summary::-webkit-details-marker { display: none; }
 .profile-bio-hidden > summary:hover,
-.profile-bio-hidden > summary:focus-visible { color: #888; }
-.profile-bio-hidden[open] > summary { color: #c8c8c8; margin-bottom: 0.4rem; }
+.profile-bio-hidden > summary:focus-visible { color: #666; }
+.profile-bio-hidden[open] > summary { color: #767676; margin-bottom: 0.4rem; }
 .profile-bio-hidden > p {
     font-size: 1rem;
     color: #333;
@@ -230,7 +230,7 @@ blockquote.profile-bio-quote em { font-style: normal; }
 
 /* Parceiros · ShowAll mode (flat, alfabético, sem hierarquia) */
 .show-all-intro {
-    color: #999;
+    color: #5a5a5a;
     font-size: 0.85rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -260,7 +260,7 @@ blockquote.profile-bio-quote em { font-style: normal; }
     letter-spacing: 0.08em;
     text-transform: uppercase;
 }
-.show-all-toggle a { color: #999; text-decoration: none; }
+.show-all-toggle a { color: #5a5a5a; text-decoration: none; }
 .show-all-toggle a:hover { color: #222; }
 
 /* Bio links — editorial, subtle (dotted underline that solidifies on hover).
@@ -296,7 +296,7 @@ blockquote.profile-bio-quote a:hover {
 }
 .citacao-texto em { font-style: normal; }
 .citacao-attrib {
-    color: #777;
+    color: #666;
     font-size: 0.9rem;
 }
 .citacao-attrib a { color: inherit; }
@@ -313,7 +313,7 @@ a.al-em-breve:hover { color: #222; text-decoration-style: solid; }
 a.al-em-breve::after {
     content: " ↗";
     font-size: 0.75em;
-    color: #999;
+    color: #5a5a5a;
 }
 
 /* Em-breve modal (lazy-mounted on first click) */
@@ -349,7 +349,7 @@ a.al-em-breve::after {
     border: 0;
     font-size: 1.5rem;
     line-height: 1;
-    color: #999;
+    color: #5a5a5a;
     cursor: pointer;
 }
 .al-modal-close:hover { color: #222; }
@@ -362,14 +362,14 @@ a.al-em-breve::after {
     font-size: 0.75rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: #999;
+    color: #5a5a5a;
 }
 
 .em-breve-note {
     margin-top: 3vh;
     padding: 2vh 2rem;
     background: #fafafa;
-    color: #aaa;
+    color: #767676;
     font-size: 0.85rem;
     font-style: italic;
     text-align: center;
@@ -379,7 +379,7 @@ a.al-em-breve::after {
     padding: 1.5vh 2rem;
     border-top: 1px solid #eaeaea;
     border-bottom: 1px solid #eaeaea;
-    color: #888;
+    color: #666;
     font-size: 0.85rem;
     letter-spacing: 0.04em;
     text-align: center;
@@ -477,7 +477,7 @@ a.al-em-breve::after {
 }
 .modal-servico-resp {
     font-size: 0.78rem;
-    color: #888;
+    color: #666;
     letter-spacing: 0.04em;
     text-align: center;
     margin-bottom: 2rem;
@@ -493,7 +493,7 @@ a.al-em-breve::after {
     font-size: 0.7rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: #888;
+    color: #666;
     margin-bottom: 0.6rem;
 }
 .modal-email {
@@ -550,7 +550,7 @@ a.al-em-breve::after {
 }
 @keyframes wip-pulse { 0%,100% { opacity: .35; } 50% { opacity: 1; } }
 .platform-name { font-weight: 700; color: #0a0a0a; }
-.platform-status { color: #888; font-weight: 400; }
+.platform-status { color: #666; font-weight: 400; }
 
 @media (max-width: 640px) {
     .profile-hero { flex-direction: column; gap: 1.5rem; }

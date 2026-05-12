@@ -573,11 +573,46 @@ AL-49 Phase 5 considera re-enable após baseline issues fechadas.
 
 ---
 
+## L-024: `<img width=N height=M>` deve refletir dimensões *renderizadas*, não intrínsecas
+
+**Anti-pattern:** declarar `width` e `height` em `<img>` usando as
+dimensões intrínsecas do arquivo (ex.: PNG é 340x212) quando o CSS
+vai redimensionar pra muito menor (`.brand img { height: 36px; width: auto }`).
+
+**Why broke:** browser usa width/height attrs pra reservar layout box
+*antes* de aplicar CSS final ou carregar a imagem. Se attrs = 340x212
+mas CSS rendered = ~58x36, o box reservado é gigante e depois encolhe
+quando CSS chega — shift maciço (CLS 0.224 em /contato/ pós-AL-49).
+
+A intuição comum ("declare the file's real dimensions for browser hint")
+é o oposto do correto pra layout reservation. O attr serve a aspect-ratio,
+mas o box-size literal vem dos valores absolutos quando CSS ainda não
+aplicou.
+
+**Mitigação:**
+1. Declarar `width`/`height` que correspondem ao tamanho *renderizado*
+   pelo CSS (ex.: 58x36 quando `height: 36px` é a regra final).
+2. Aspect ratio precisa bater (58/36 ≈ 1.611 vs 340/212 = 1.604 — OK).
+3. Se layout shell carrega via JS-injected stylesheet, inline o critical
+   CSS do shell no `<head>` da página para evitar período "sem CSS"
+   onde só os attrs ditam o box-size.
+
+**Quando aplicar:** qualquer `<img>` onde CSS final difere
+significativamente do tamanho intrínseco do arquivo. Comum em logos
+PNG/SVG exportados em "retina" (2x/3x) e renderizados em 1x.
+
+**Incident:** AL-49 commit `d97c27c9` adicionou `width="340" height="212"`
+ao logo "para reservar espaço antes da imagem carregar". CLS no /contato/
+piorou de ~0.15 estimado para 0.224 deterministic. Fix em PR #55 follow-up:
+`width="58" height="36"` matching CSS `.site-brand img { height: 36px }`.
+
+---
+
 ## Convenção de manutenção
 
 - Adicionar entrada em LESSONS.md quando commit `fix:` ou `refactor:`
   ensinou algo generalizável (não trivial, não óbvio).
-- Sintaxe: L-NNN, próximo número livre (atualmente 24).
+- Sintaxe: L-NNN, próximo número livre (atualmente 25).
 - Não remover entradas. Marcar `~~strikethrough~~` + nota se obsoleta.
 - PR template (futuro) pode incluir checkbox "L-NNN adicionada".
 
@@ -597,3 +632,4 @@ AL-49 Phase 5 considera re-enable após baseline issues fechadas.
 - **Auto-generated drift:** L-021
 - **Tooling/build config:** L-022
 - **CI infrastructure noise:** L-023
+- **CLS / layout reservation:** L-024
