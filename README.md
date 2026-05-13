@@ -83,3 +83,13 @@ PRs bem-vindos. Convenção:
 - **Never force push to `main`**; nunca `--no-verify` no commit (pre-commit hook é load-bearing — vide L-021).
 
 Detalhes em `CLAUDE.md#convenção-de-pr`.
+
+## Licença
+
+Copyright (C) 2026 Arte Longa.
+
+Todo conteúdo e código deste repositório está licenciado sob a **[GNU Affero General Public License v3.0 ou posterior](LICENSE)** (`SPDX-License-Identifier: AGPL-3.0-or-later`).
+
+A AGPL é forte copyleft com cláusula de "uso em rede como distribuição": se você modifica este código e o roda como serviço de rede, você precisa oferecer o código-fonte aos usuários dessa rede — não basta evitar redistribuir o binário. Aplicar AGPL ao conteúdo (markdown, YAML, imagens) é incomum mas legalmente válido; significa que remixar o conteúdo em obras fechadas não é permitido.
+
+Forks, contribuições e usos comerciais são bem-vindos sob esses termos.
