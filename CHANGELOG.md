@@ -12,6 +12,14 @@ co-auto. Convenção em CLAUDE.md.
 
 ## [Unreleased]
 
+## [0.14.0] — 2026-05-13
+
+**Why**. AL-50 abre a porta de entrada do ecossistema: artelonga.com.br vira surface de signup
+de verdade, não só vitrine. O fluxo magic-code lança o visitante direto em uma conta CO com
+sessão compartilhada no domínio `.artelonga.com.br`, então quem entra pela home já chega logado
+em co.artelonga.com.br e quilomboaraucaria.org (SSO via CO-205). Sem o form, o backend de
+autenticação (CO-205, deployed) não tinha caller — agora tem.
+
 ### Added (AL-50: signup form — email magic-code flow com CO account)
 
 Nova página `/entrar/` com fluxo de autenticação em dois passos: email → código mágico de 6 dígitos.
