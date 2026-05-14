@@ -1,6 +1,19 @@
 {
-  "as_of": "2026-05-13T11:39:19.851455311+00:00",
-  "items": [],
+  "as_of": "2026-05-14T06:47:02.173691240+00:00",
+  "items": [
+    {
+      "path": "/servicos/gestao-administrativa/",
+      "slug": "gestao-administrativa",
+      "views": 1,
+      "visitors": 1
+    },
+    {
+      "path": "/servicos/producao-musical/",
+      "slug": "producao-musical",
+      "views": 1,
+      "visitors": 1
+    }
+  ],
   "prefix": "/servicos/",
   "window_days": 30
 }
