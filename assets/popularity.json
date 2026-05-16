@@ -1,6 +1,12 @@
 {
-  "as_of": "2026-05-15T06:56:22.104242597+00:00",
+  "as_of": "2026-05-16T06:22:18.490006033+00:00",
   "items": [
+    {
+      "path": "/servicos/alimentacao-e-bebidas/",
+      "slug": "alimentacao-e-bebidas",
+      "views": 1,
+      "visitors": 1
+    },
     {
       "path": "/servicos/autocuidado/",
       "slug": "autocuidado",
