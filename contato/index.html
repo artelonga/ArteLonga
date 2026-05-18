@@ -466,9 +466,13 @@
                         mode: "cors"
                     });
                     if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                    if (typeof window.AL_track === 'function')
+                        window.AL_track('lead_submit', { servico: servico || null, parceiro: parceiro || null, channel: canal });
                     submit.textContent = "Enviado ✓";
                     success.classList.add("on");
                 } catch (err) {
+                    if (typeof window.AL_track === 'function')
+                        window.AL_track('lead_submit_failed', { servico: servico || null, parceiro: parceiro || null, channel: canal });
                     console.error("lead submit failed:", err);
                     submit.textContent = "Falhou — tente de novo";
                     submit.disabled = false;
