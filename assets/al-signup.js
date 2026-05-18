@@ -1,5 +1,9 @@
 const CO_BASE = 'https://co.artelonga.com.br';
 
+function _track(name, props) {
+    if (typeof window.AL_track === 'function') window.AL_track(name, props || {});
+}
+
 const form = document.getElementById('al-signup');
 const codeStep = document.getElementById('al-code-step');
 const emailStep = document.getElementById('al-email-step');
@@ -29,6 +33,7 @@ form?.addEventListener('submit', async (e) => {
         });
         if (!r.ok) throw new Error('send failed');
         _email = email;
+        _track('signup_request', {});
         emailStep.hidden = true;
         codeStep.hidden = false;
         document.getElementById('al-code-target').textContent = email;
@@ -58,9 +63,11 @@ document.getElementById('al-verify-form')?.addEventListener('submit', async (e) 
             body: JSON.stringify({ email: _email, code }),
         });
         if (!r.ok) throw new Error('verify failed');
+        _track('signup_verify_success', {});
         // Cookie now set on .artelonga.com.br — page can detect via /auth/me
         window.location.href = '/';
     } catch (e) {
+        _track('signup_verify_failed', {});
         const errEl2 = document.getElementById('al-verify-error');
         errEl2.textContent = 'Código inválido ou expirado.';
         errEl2.hidden = false;
@@ -99,6 +106,7 @@ resendBtn?.addEventListener('click', () => {
 
 // Google sign-in button
 document.getElementById('al-google-btn')?.addEventListener('click', () => {
+    _track('signup_google_start', {});
     const returnTo = encodeURIComponent(window.location.origin + '/');
     window.location.href =
         `${CO_BASE}/api/v1/auth/google/start?origin=artelonga&return_to=${returnTo}`;
