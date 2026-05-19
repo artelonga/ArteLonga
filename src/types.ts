@@ -1,71 +1,42 @@
 /**
  * Types do universe artelonga.
  *
- * Geradas/mantidas a partir de `openapi/artelonga.yaml`. Quando bumparmos
- * `openapi-typescript` como devDep, esse arquivo passa a ser auto-gerado
- * via `npm run gen-types`. Por ora é hand-written espelhando o spec.
- *
- * **Não importar runtime data daqui** — só types. Runtime helpers vivem
- * em `src/data.ts` (a chegar) que tipa `window.AL`.
+ * Os tipos que espelham `openapi/artelonga.yaml` são re-exportados de
+ * `src/types.gen.ts` (auto-gerado por `npm run gen-types`). Tipos
+ * UI-only sem equivalente no schema OpenAPI ficam aqui hand-written.
  */
 
-/** Slug-style identifier (lowercase + dashes). */
-export type Handle = string;
+import type { components } from "./types.gen";
 
-export type EntityType = "person" | "business" | "community" | "reference";
+// ── Re-exports dos tipos gerados via openapi-typescript ───────────────────
 
-export type Tag =
-    | "fundador"
-    | "parceiro"
-    | "comunidade"
-    | "em-memoria"
-    | "guardiao"
-    | "familia"
-    | "contabilidade"
-    | "alimentacao";
+export type Handle = components["schemas"]["Handle"];
+export type EntityType = components["schemas"]["EntityType"];
+export type Tag = components["schemas"]["Tag"];
+export type Citacao = components["schemas"]["Citacao"];
+export type HomeLink = components["schemas"]["HomeLink"];
+export type PortfolioPoem = components["schemas"]["PortfolioPoem"];
+export type PortfolioEssay = components["schemas"]["PortfolioEssay"];
+export type PortfolioItem = components["schemas"]["PortfolioItem"];
+export type Contacts = components["schemas"]["Contacts"];
+export type Person = components["schemas"]["Person"];
+export type Parceria = components["schemas"]["Parceria"];
+export type Community = components["schemas"]["Community"];
+export type CnaeEntry = components["schemas"]["CnaeEntry"];
+export type Service = components["schemas"]["Service"];
+export type Mission = components["schemas"]["Mission"];
+export type Solution = components["schemas"]["Solution"];
+export type Attachment = components["schemas"]["Attachment"];
+export type Finances = components["schemas"]["Finances"];
 
-export type Unit = "hora" | "palavra" | "pessoa" | "unidade" | "aula" | "sessão";
+// Finance aliases: nomes históricos mapeados para schemas OpenAPI.
+export type FinanceCostItem = components["schemas"]["FinanceCost"];
+export type FinanceRecurrentItem = components["schemas"]["FinanceRecurrentItem"];
+export type FinanceRampaItem = components["schemas"]["FinanceRampaItem"];
+export type FinanceProjectItem = components["schemas"]["FinanceProject"];
+export type FinanceProBonoItem = components["schemas"]["FinanceProBono"];
 
-export type ParceriaTipo = "pro-bono" | "paga" | "troca";
-
-export interface Citacao {
-    texto: string;
-    autor?: Handle;
-    autorNome?: string;
-    autorEmBreve?: { title: string };
-    obra?: string;
-    data?: string; // ISO date
-    url?: string;
-}
-
-export interface HomeLink {
-    label: string;
-    url: string;
-}
-
-/**
- * Item autoral (poema, ensaio, etc) que vive em `<handle>/profile.yaml#portfolio`.
- * Renderizado em `/<handle>/<slug>/` via dispatch `data-page="poem"|"essay"`.
- */
-export interface PortfolioPoem {
-    kind: "poem";
-    slug: string;
-    titulo: string;
-    autor?: Handle;
-    stanzas: string[][];
-    draft?: boolean;
-}
-
-export interface PortfolioEssay {
-    kind: "essay";
-    slug: string;
-    titulo: string;
-    short?: string;
-    body?: string;
-    draft?: boolean;
-}
-
-export type PortfolioItem = PortfolioPoem | PortfolioEssay;
+// ── Tipos UI-only sem equivalente no schema OpenAPI ───────────────────────
 
 export interface EssayItem {
     titulo?: string;
@@ -73,222 +44,11 @@ export interface EssayItem {
     long?: string;
 }
 
-export interface Contacts {
-    tagline?: string;
-    email?: string;
-    whatsapp?: string;
-    whatsappDisplay?: string;
-    instagram?: string;
-    site?: string;
-}
-
-export interface CnaeEntry {
-    c: string; // codigo
-    d: string; // descricao
-}
-
-export interface Person {
-    handle: Handle;
-    type: "person" | "business" | "reference";
-    nome: string;
-    role?: string;
-    tags?: Tag[];
-    pic?: string | null;
-    birthDate?: string;
-    deathDate?: string;
-    bioTitle?: string;
-    bioCurta?: string;
-    bio?: string;
-    bioHidden?: string;
-    bioAudio?: string;
-    citacoes?: Citacao[];
-    servicos?: string[]; // titulos de service
-    subMembers?: Handle[];
-    communities?: Handle[];
-    contacts?: Contacts;
-    homeLinks?: HomeLink[];
-    portfolio?: PortfolioItem[];
-    essays?: EssayItem[];
-    essaysTitle?: string;
-    emMemoria?: boolean;
-    emBreve?: boolean;
-    aposentado?: boolean;
-    underage?: boolean;
-    muted?: boolean;
-    referenceOnly?: boolean;
-    externalUrl?: string;
-    site?: string;
-}
-
-export interface Contribuicao {
-    quem: Handle;
-    oque: string;
-}
-
-export interface Parceria {
-    de: Handle;
-    tipo: ParceriaTipo;
-    descricao?: string;
-    contribuicoes?: Contribuicao[];
-}
-
-export interface Community {
-    handle: Handle;
-    type: "community";
-    nome: string;
-    role?: string;
-    tags?: Tag[];
-    pic?: string | null;
-    tagline?: string;
-    bio?: string;
-    bioCurta?: string;
-    externalUrl?: string;
-    site?: string;
-    servicos?: string[];
-    membros?: Handle[];
-    parcerias?: Parceria[];
-    sectionBreak?: boolean;
-    muted?: boolean;
-    emBreve?: boolean;
-    emMemoria?: boolean;
-}
-
-export interface Service {
-    titulo: string;
-    slug?: string; // auto-derived
-    parent?: string; // titulo do parent
-    paraQuem?: string;
-    digital?: boolean;
-    recurring?: boolean;
-    hoursLow?: number;
-    hoursHigh?: number;
-    unit?: Unit;
-    responsavel?: Handle[];
-    implicitResponsavel?: Handle[];
-    cnae?: CnaeEntry[];
-    cnaeNovo?: boolean;
-    children?: string[]; // titulos de children
-    descNossa?: string;
-    summary?: string;
-    nome?: string;
-    attachments?: Array<{ kind?: string; label: string; url: string }>;
-}
-
 export interface DefaultLocation {
     estado: string;
     cidade: string;
     bairro: string;
 }
-
-// ── Mission types ──────────────────────────────────────────────────────────
-
-export interface Mission {
-    handle: string;
-    nome: string;
-    subtitle?: string;
-    objetivo?: string;
-    objetivoAutor?: Handle;
-    comunidade?: Handle;
-    displayAtRoot?: boolean;
-    attachments?: Array<{ kind?: string; label: string; url: string }>;
-    envolvidos?: Handle[];
-    servicos?: string[];
-}
-
-// ── Solution types ─────────────────────────────────────────────────────────
-
-export interface SolutionPlatform {
-    name: string;
-    status: string;
-    statusText: string;
-}
-
-export interface Solution {
-    handle: Handle;
-    type: "solution";
-    nome: string;
-    tagline?: string;
-    desc?: string;
-    descLong?: string;
-    url?: string;
-    urlLabel?: string;
-    internalLink?: boolean;
-    universo?: boolean;
-    lifecycle?: "active" | "futuro";
-    platforms?: SolutionPlatform[];
-    bundledServices?: string[] | "*";
-    externalUrl?: string;
-}
-
-// ── Finance types ──────────────────────────────────────────────────────────
-
-export interface FinanceCostBreakdown {
-    label: string;
-    value: number;
-    handle?: Handle;
-}
-
-export interface FinanceCostItem {
-    label: string;
-    value: number;
-    detail?: string;
-    breakdown?: FinanceCostBreakdown[];
-}
-
-export interface FinanceRecurrentItem {
-    label: string;
-    mensal: number;
-    detail: string;
-    responsavel: Handle;
-    client?: string;
-    solucoes?: Handle[];
-}
-
-export interface FinanceRampaMes {
-    mes: string;
-    value: number;
-}
-
-export interface FinanceRampaItem {
-    label: string;
-    detail: string;
-    responsavel: Handle;
-    client?: string;
-    meses: FinanceRampaMes[];
-    solucoes?: Handle[];
-}
-
-export interface FinanceProjectItem {
-    label: string;
-    detail: string;
-    unitValue: number;
-    unidades: number;
-    responsavel?: Handle;
-    solucoes?: Handle[];
-}
-
-export interface FinanceProBonoItem {
-    label: string;
-    detail: string;
-    responsavel: Handle;
-    solucoes?: Handle[];
-}
-
-export interface FinanceReceita {
-    recorrenteMensal: FinanceRecurrentItem[];
-    rampa: FinanceRampaItem[];
-    projetos: FinanceProjectItem[];
-    proBono: FinanceProBonoItem[];
-}
-
-export interface Finances {
-    quarter: string;
-    metaQ2: number;
-    custos: FinanceCostItem[];
-    receita: FinanceReceita;
-}
-
-// ── FaixaPreco ────────────────────────────────────────────────────────────
 
 export interface FaixaPlano {
     label: string;

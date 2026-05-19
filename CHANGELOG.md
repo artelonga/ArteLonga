@@ -12,6 +12,21 @@ co-auto. Convenção em CLAUDE.md.
 
 ## [Unreleased]
 
+### Added (AL-55: OpenAPI codegen para src/types.ts)
+
+`openapi-typescript` adicionado como devDep. `npm run gen-types` gera `src/types.gen.ts` a partir de
+`openapi/artelonga.yaml` (single source of truth). `src/types.ts` reduzido a re-exports dos tipos
+gerados + tipos UI-only sem equivalente no schema (`FaixaPreco`, `FaixaPlano`, `EssayItem`,
+`DefaultLocation`, `UniverseData`). `npm run gen-types` integrado ao início de `npm run bake`.
+Pre-commit hook estendido para detectar drift entre `openapi/artelonga.yaml` e `src/types.gen.ts`.
+
+OpenAPI schema também corrigido: campos faltantes adicionados a `Person` (`deathDate`, `bioHidden`,
+`bioAudio`, `emBreve`, `aposentado`, `underage`, `muted`, `site`, `essaysTitle`), `Community`
+(`bioCurta`, `muted`, `emBreve`, `emMemoria`), `Service` (`children`, `descNossa`, `summary`,
+`nome`), `Contacts` (`whatsappDisplay`, `instagram`), `PortfolioPoem` (`autor`); campos `required`
+ajustados nos schemas de finance (`FinanceCost.breakdown`, `FinanceRecurrentItem`,
+`FinanceRampaItem`, `FinanceProject`); novo schema `FinanceProBono` para itens pro-bono.
+
 ### Added (AL-50: signup form — email magic-code flow com CO account)
 
 Nova página `/entrar/` com fluxo de autenticação em dois passos: email → código mágico de 6 dígitos.

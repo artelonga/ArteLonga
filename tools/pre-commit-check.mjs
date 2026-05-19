@@ -31,6 +31,42 @@ import url from "node:url";
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
 const DATA_JS = path.join(ROOT, "assets/data.js");
+const TYPES_GEN = path.join(ROOT, "src/types.gen.ts");
+
+// ── Part 1: Check types.gen.ts sync with openapi/artelonga.yaml ──────────
+
+const typesGenBefore = fs.existsSync(TYPES_GEN) ? fs.readFileSync(TYPES_GEN, "utf8") : "";
+
+try {
+    execSync("npm run gen-types", { cwd: ROOT, stdio: "ignore" });
+} catch (e) {
+    console.error("[pre-commit-check] FAIL: gen-types error.");
+    console.error(e.message);
+    if (typesGenBefore) fs.writeFileSync(TYPES_GEN, typesGenBefore);
+    process.exit(2);
+}
+
+const typesGenAfter = fs.readFileSync(TYPES_GEN, "utf8");
+
+if (typesGenBefore !== typesGenAfter) {
+    // Restore snapshot
+    if (typesGenBefore) fs.writeFileSync(TYPES_GEN, typesGenBefore);
+    else fs.unlinkSync(TYPES_GEN);
+
+    console.error("");
+    console.error("❌ src/types.gen.ts está dessincronizado de openapi/artelonga.yaml.");
+    console.error("");
+    console.error("   Você editou o openapi/artelonga.yaml e esqueceu de rodar `npm run gen-types`.");
+    console.error("");
+    console.error("   Fix:");
+    console.error("       npm run gen-types");
+    console.error("       git add src/types.gen.ts");
+    console.error("       git commit (de novo)");
+    console.error("");
+    process.exit(1);
+}
+
+// ── Part 2: Check assets/data.js sync with YAML source-of-truth ──────────
 
 // 1. Snapshot
 const before = fs.readFileSync(DATA_JS, "utf8");
