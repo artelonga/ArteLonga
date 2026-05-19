@@ -1,0 +1,34 @@
+folder: solucoes
+title: Soluções
+description: >
+  Universos e soluções desenvolvidas pela Arte Longa.
+  Cada entrada é um arquivo `solution.yaml` dentro de `solucoes/<handle>/`.
+
+schema:
+  openapi: openapi/artelonga.yaml
+  component: Solution
+  entry_file: solution.yaml
+
+bake:
+  script: tools/bake-solutions.mjs
+  npm_run: bake-solutions
+  order_file: tools/solutions-order.txt
+  target_section: solutions
+
+renderer:
+  catalog:
+    page: src/pages/solucoes.ts
+    data_page: solucoes
+    url: /solucoes/
+
+how_to_edit:
+  - "Edite `solucoes/<handle>/solution.yaml`."
+  - "Rode `npm run bake-solutions` para regenerar `assets/data.js`."
+  - "Bumpe `V` em `assets/bootstrap.js` para invalidar o cache do GitHub Pages."
+  - "Commit: `refactor(solucao): atualiza <handle>`."
+
+how_to_add:
+  - "Crie a pasta `solucoes/<handle>/` com `index.html` (copie de outro handle)."
+  - "Crie `solucoes/<handle>/solution.yaml` com os campos obrigatórios (`handle`, `type`, `nome`, `lifecycle`)."
+  - "Adicione o handle em `tools/solutions-order.txt` na posição desejada."
+  - "Rode `npm run bake-solutions`."

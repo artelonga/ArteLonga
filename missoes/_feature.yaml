@@ -1,0 +1,39 @@
+folder: missoes
+title: Missões
+description: >
+  Missões ativas lideradas ou apoiadas por comunidades parceiras.
+  Cada entrada é um arquivo `mission.yaml` dentro de `missoes/<slug>/`.
+
+schema:
+  openapi: openapi/artelonga.yaml
+  component: Mission
+  entry_file: mission.yaml
+
+bake:
+  script: tools/bake-missions.mjs
+  npm_run: bake-missions
+  order_file: tools/missions-order.txt
+  target_section: missions
+
+renderer:
+  detail:
+    page: "(sem renderer dedicado — data-page=\"missao\" não está no dispatcher)"
+    data_page: missao
+    url: /missoes/<slug>/
+  embedded:
+    - page: src/pages/profile.ts
+      context: missions section within member profiles
+    - page: src/pages/parceiros.ts
+      context: mission cards within community pages
+
+how_to_edit:
+  - "Edite `missoes/<slug>/mission.yaml`."
+  - "Rode `npm run bake-missions` para regenerar `assets/data.js`."
+  - "Bumpe `V` em `assets/bootstrap.js` para invalidar o cache do GitHub Pages."
+  - "Commit: `refactor(missao): atualiza <slug>`."
+
+how_to_add:
+  - "Crie a pasta `missoes/<slug>/` com `index.html` (copie de outro handle)."
+  - "Crie `missoes/<slug>/mission.yaml` com os campos obrigatórios (`handle`, `type`, `nome`, `comunidade`)."
+  - "Adicione o slug em `tools/missions-order.txt` na posição desejada."
+  - "Rode `npm run bake-missions`."
