@@ -1,0 +1,968 @@
+{
+  "aime": [
+    {
+      "from": "john",
+      "nome": "John",
+      "type": "person",
+      "via": "parentHandle"
+    }
+  ],
+  "alice": [
+    {
+      "from": "danca-e-expressao-corporal",
+      "nome": "Dança e Expressão Corporal",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "pensamento-islamico",
+      "nome": "Pensamento Islâmico",
+      "type": "service",
+      "via": "responsavel"
+    }
+  ],
+  "alicia": [
+    {
+      "from": "filha-da-bruna",
+      "nome": "Filha da Bruna",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "futuro",
+      "nome": "Futuro",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "bruna",
+      "nome": "Bruna",
+      "type": "person",
+      "via": "subMembers"
+    }
+  ],
+  "alzira": [
+    {
+      "from": "mentoria-espiritual",
+      "nome": "Mentoria Espiritual",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "quilomboaraucaria",
+      "nome": "Quilombo Araucária",
+      "type": "community",
+      "via": "membros"
+    },
+    {
+      "from": "reparacao-historica",
+      "nome": "Reparação Histórica",
+      "type": "mission",
+      "via": "envolvidos"
+    }
+  ],
+  "antony": [
+    {
+      "from": "producao-musical",
+      "nome": "Produção Musical",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "quilomboaraucaria",
+      "nome": "Quilombo Araucária",
+      "type": "community",
+      "via": "membros"
+    }
+  ],
+  "artelonga": [
+    {
+      "from": "quilomboaraucaria",
+      "nome": "Quilombo Araucária",
+      "type": "community",
+      "via": "parcerias"
+    }
+  ],
+  "bia": [
+    {
+      "from": "quilomboaraucaria",
+      "nome": "Quilombo Araucária",
+      "type": "community",
+      "via": "membros"
+    },
+    {
+      "from": "reparacao-historica",
+      "nome": "Reparação Histórica",
+      "type": "mission",
+      "via": "envolvidos"
+    }
+  ],
+  "bruna": [
+    {
+      "from": "comunicacao-visual",
+      "nome": "Comunicação Visual",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "criacao-de-conteudo",
+      "nome": "Criação de Conteúdo",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "marketing-digital",
+      "nome": "Marketing Digital",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "producao-de-eventos",
+      "nome": "Produção de Eventos",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "alicia",
+      "nome": "Alicia",
+      "type": "person",
+      "via": "parentHandle"
+    },
+    {
+      "from": "quilomboaraucaria",
+      "nome": "Quilombo Araucária",
+      "type": "community",
+      "via": "membros"
+    },
+    {
+      "from": "quilomboaraucaria",
+      "nome": "Quilombo Araucária",
+      "type": "community",
+      "via": "parcerias"
+    }
+  ],
+  "carlinhos": [
+    {
+      "from": "distribuicao-de-frutas",
+      "nome": "Distribuição de Frutas",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "quilomboaraucaria",
+      "nome": "Quilombo Araucária",
+      "type": "community",
+      "via": "membros"
+    }
+  ],
+  "denise": [
+    {
+      "from": "traducao-pt-guarani",
+      "nome": "Tradução PT-Guarani",
+      "type": "service",
+      "via": "responsavel"
+    }
+  ],
+  "hedix": [
+    {
+      "from": "desenvolvimento-de-api",
+      "nome": "Desenvolvimento de API",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "inteligencia-de-previsao",
+      "nome": "Inteligência de Previsão",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "market-making-preditivo",
+      "nome": "Market Making Preditivo",
+      "type": "service",
+      "via": "responsavel"
+    }
+  ],
+  "hfsassociados": [
+    {
+      "from": "consultoria-juridica",
+      "nome": "Consultoria Jurídica",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "gestao-contabil",
+      "nome": "Gestão Contábil",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "gestao-fiscal",
+      "nome": "Gestão Fiscal",
+      "type": "service",
+      "via": "responsavel"
+    }
+  ],
+  "igo": [
+    {
+      "from": "conexoes",
+      "nome": "Conexões",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "gestao-operacional",
+      "nome": "Gestão Operacional",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "quilomboaraucaria",
+      "nome": "Quilombo Araucária",
+      "type": "community",
+      "via": "membros"
+    },
+    {
+      "from": "quilomboaraucaria",
+      "nome": "Quilombo Araucária",
+      "type": "community",
+      "via": "parcerias"
+    }
+  ],
+  "joao": [
+    {
+      "from": "psicologia-analitica",
+      "nome": "Psicologia Analítica (Junguiana)",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "psicologia-clinica",
+      "nome": "Psicologia Clínica",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "psicologia-social-e-comunitaria",
+      "nome": "Psicologia Social e Comunitária",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "psicoterapia-psicanalitica",
+      "nome": "Psicoterapia Psicanalítica",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "saude-mental",
+      "nome": "Saúde Mental",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "quilomboaraucaria",
+      "nome": "Quilombo Araucária",
+      "type": "community",
+      "via": "membros"
+    }
+  ],
+  "john": [
+    {
+      "from": "filho-da-aime",
+      "nome": "Filho da Aime",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "futuro",
+      "nome": "Futuro",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "aime",
+      "nome": "Aime",
+      "type": "person",
+      "via": "subMembers"
+    }
+  ],
+  "joseantonio": [
+    {
+      "from": "gestao-administrativa",
+      "nome": "Gestão Administrativa",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "gestao-financeira",
+      "nome": "Gestão Financeira",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "mentoria-espiritual",
+      "nome": "Mentoria Espiritual",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "quilomboaraucaria",
+      "nome": "Quilombo Araucária",
+      "type": "community",
+      "via": "membros"
+    }
+  ],
+  "karina": [
+    {
+      "from": "fotografia",
+      "nome": "Fotografia",
+      "type": "service",
+      "via": "responsavel"
+    }
+  ],
+  "kayra": [
+    {
+      "from": "consultoria-em-moda",
+      "nome": "Consultoria em Moda",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "rede-de-talentos",
+      "nome": "Rede de Talentos",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "stylist-moda-e-passarela",
+      "nome": "Stylist, Moda e Passarela",
+      "type": "service",
+      "via": "responsavel"
+    }
+  ],
+  "kelly": [
+    {
+      "from": "baba",
+      "nome": "Babá",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "quilomboaraucaria",
+      "nome": "Quilombo Araucária",
+      "type": "community",
+      "via": "membros"
+    }
+  ],
+  "ken": [
+    {
+      "from": "alimentacao-e-bebidas",
+      "nome": "Alimentação e Bebidas",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "quilomboaraucaria",
+      "nome": "Quilombo Araucária",
+      "type": "community",
+      "via": "membros"
+    }
+  ],
+  "kiyoshi": [
+    {
+      "from": "pai-do-yuri",
+      "nome": "Pai do Yuri",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "poeta",
+      "nome": "Poeta",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "yuri",
+      "nome": "Yuri",
+      "type": "person",
+      "via": "subMembers"
+    }
+  ],
+  "leaoxiii": [
+    {
+      "from": "yuri",
+      "nome": "Yuri",
+      "type": "person",
+      "via": "citacoes"
+    }
+  ],
+  "luke": [
+    {
+      "from": "design",
+      "nome": "Design",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "experiencia-de-usuario",
+      "nome": "Experiência de Usuário (UI/UX)",
+      "type": "service",
+      "via": "responsavel"
+    }
+  ],
+  "mara-brandao": [
+    {
+      "from": "quilomboaraucaria",
+      "nome": "Quilombo Araucária",
+      "type": "community",
+      "via": "membros"
+    }
+  ],
+  "marina": [
+    {
+      "from": "acompanhamento-nutricional",
+      "nome": "Acompanhamento Nutricional",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "alfabetizacao",
+      "nome": "Alfabetização",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "cuidado-com-o-idoso",
+      "nome": "Cuidado com o Idoso",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "reforco-escolar",
+      "nome": "Reforço Escolar",
+      "type": "service",
+      "via": "responsavel"
+    }
+  ],
+  "matheus": [
+    {
+      "from": "assistencia-tecnica",
+      "nome": "Assistência Técnica",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "quilomboaraucaria",
+      "nome": "Quilombo Araucária",
+      "type": "community",
+      "via": "membros"
+    }
+  ],
+  "mono": [
+    {
+      "from": "consultoria-em-ti",
+      "nome": "Consultoria em TI",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "privacidade-e-seguranca",
+      "nome": "Privacidade e Segurança",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "quilomboaraucaria",
+      "nome": "Quilombo Araucária",
+      "type": "community",
+      "via": "membros"
+    },
+    {
+      "from": "quilomboaraucaria",
+      "nome": "Quilombo Araucária",
+      "type": "community",
+      "via": "parcerias"
+    }
+  ],
+  "quilomboaraucaria": [
+    {
+      "from": "agrofloresta",
+      "nome": "Agrofloresta",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "compostagem",
+      "nome": "Compostagem",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "educacao-ambiental",
+      "nome": "Educação Ambiental",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "futebol-e-esporte",
+      "nome": "Futebol e Esporte",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "producao-de-desfile",
+      "nome": "Produção de Desfile",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "rogerio",
+      "nome": "Rogério",
+      "type": "person",
+      "via": "communities"
+    },
+    {
+      "from": "alzira",
+      "nome": "Alzira",
+      "type": "person",
+      "via": "communities"
+    },
+    {
+      "from": "joao",
+      "nome": "João",
+      "type": "person",
+      "via": "communities"
+    },
+    {
+      "from": "antony",
+      "nome": "Antony",
+      "type": "person",
+      "via": "communities"
+    },
+    {
+      "from": "bia",
+      "nome": "Bia",
+      "type": "person",
+      "via": "communities"
+    },
+    {
+      "from": "ken",
+      "nome": "Ken",
+      "type": "person",
+      "via": "communities"
+    },
+    {
+      "from": "quinho",
+      "nome": "Quinho",
+      "type": "person",
+      "via": "communities"
+    },
+    {
+      "from": "tiao",
+      "nome": "Tião",
+      "type": "person",
+      "via": "communities"
+    },
+    {
+      "from": "veh",
+      "nome": "Veh",
+      "type": "person",
+      "via": "communities"
+    },
+    {
+      "from": "matheus",
+      "nome": "Matheus",
+      "type": "person",
+      "via": "communities"
+    },
+    {
+      "from": "kelly",
+      "nome": "Kelly",
+      "type": "person",
+      "via": "communities"
+    },
+    {
+      "from": "carlinhos",
+      "nome": "Carlinhos",
+      "type": "person",
+      "via": "communities"
+    },
+    {
+      "from": "mara-brandao",
+      "nome": "Mara Brandão",
+      "type": "person",
+      "via": "communities"
+    },
+    {
+      "from": "raizes-do-futuro",
+      "nome": "Raízes do Futuro",
+      "type": "mission",
+      "via": "comunidade"
+    },
+    {
+      "from": "gres-amazonia",
+      "nome": "GRES Amazônia",
+      "type": "mission",
+      "via": "comunidade"
+    },
+    {
+      "from": "reparacao-historica",
+      "nome": "Reparação Histórica",
+      "type": "mission",
+      "via": "comunidade"
+    },
+    {
+      "from": "eventos-espacos-saberes",
+      "nome": "Eventos e Espaços de Saberes",
+      "type": "mission",
+      "via": "comunidade"
+    }
+  ],
+  "quinho": [
+    {
+      "from": "artes-visuais",
+      "nome": "Artes Visuais",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "grafite",
+      "nome": "Grafite",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "murais-e-fachadas",
+      "nome": "Murais e Fachadas",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "quilomboaraucaria",
+      "nome": "Quilombo Araucária",
+      "type": "community",
+      "via": "membros"
+    }
+  ],
+  "ramona": [
+    {
+      "from": "traducao-en-de",
+      "nome": "Tradução EN-DE",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "traducao-pt-de",
+      "nome": "Tradução PT-DE",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "traducao-pt-en",
+      "nome": "Tradução PT-EN",
+      "type": "service",
+      "via": "responsavel"
+    }
+  ],
+  "raquel": [
+    {
+      "from": "autocuidado",
+      "nome": "Autocuidado",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "psicologia-clinica",
+      "nome": "Psicologia Clínica",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "saude-mental",
+      "nome": "Saúde Mental",
+      "type": "service",
+      "via": "responsavel"
+    }
+  ],
+  "retro-umarizal": [
+    {
+      "from": "alimentacao-e-bebidas",
+      "nome": "Alimentação e Bebidas",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "hamburguer-artesanal",
+      "nome": "Hambúrguer Artesanal",
+      "type": "service",
+      "via": "responsavel"
+    }
+  ],
+  "rodney": [
+    {
+      "from": "piloto-de-drone",
+      "nome": "Piloto de Drone",
+      "type": "service",
+      "via": "responsavel"
+    }
+  ],
+  "rogerio": [
+    {
+      "from": "mentoria-espiritual",
+      "nome": "Mentoria Espiritual",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "quilomboaraucaria",
+      "nome": "Quilombo Araucária",
+      "type": "community",
+      "via": "membros"
+    },
+    {
+      "from": "reparacao-historica",
+      "nome": "Reparação Histórica",
+      "type": "mission",
+      "via": "envolvidos"
+    }
+  ],
+  "soninha": [
+    {
+      "from": "atriz",
+      "nome": "Atriz",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "cantora",
+      "nome": "Cantora",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "mae-do-yuri",
+      "nome": "Mãe do Yuri",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "yuri",
+      "nome": "Yuri",
+      "type": "person",
+      "via": "subMembers"
+    }
+  ],
+  "syl": [
+    {
+      "from": "autocuidado",
+      "nome": "Autocuidado",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "comunicacao-cientifica",
+      "nome": "Comunicação Científica",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "danca-e-expressao-corporal",
+      "nome": "Dança e Expressão Corporal",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "desenho-botanico",
+      "nome": "Desenho Botânico",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "meditacao",
+      "nome": "Meditação",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "yoga",
+      "nome": "Yoga",
+      "type": "service",
+      "via": "responsavel"
+    }
+  ],
+  "tiao": [
+    {
+      "from": "drywall-e-bioconstrucao",
+      "nome": "Drywall e Bioconstrução",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "quilomboaraucaria",
+      "nome": "Quilombo Araucária",
+      "type": "community",
+      "via": "membros"
+    }
+  ],
+  "veh": [
+    {
+      "from": "alimentacao-e-bebidas",
+      "nome": "Alimentação e Bebidas",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "tortas-salgadas-da-veh",
+      "nome": "Tortas Salgadas da Veh",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "quilomboaraucaria",
+      "nome": "Quilombo Araucária",
+      "type": "community",
+      "via": "membros"
+    }
+  ],
+  "yuri": [
+    {
+      "from": "assistencia-tecnica",
+      "nome": "Assistência Técnica",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "automacao-de-processos",
+      "nome": "Automação de Processos",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "computacao",
+      "nome": "Computação",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "dados-e-armazenamento",
+      "nome": "Dados e Armazenamento",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "desenvolvimento-de-api",
+      "nome": "Desenvolvimento de API",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "desenvolvimento-de-software",
+      "nome": "Desenvolvimento de Software",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "desenvolvimento-web",
+      "nome": "Desenvolvimento Web",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "ensino-formacao-e-lideranca",
+      "nome": "Ensino, Formação e Liderança",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "escrita-interpretacao-e-traducao",
+      "nome": "Escrita, Interpretação e Tradução",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "gestao-executiva",
+      "nome": "Gestão Executiva",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "hardware",
+      "nome": "Hardware",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "inteligencia-e-tecnologia",
+      "nome": "Inteligência e Tecnologia",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "interpretacao",
+      "nome": "Interpretação",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "nuvem",
+      "nome": "Nuvem",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "redes",
+      "nome": "Redes",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "sistemas-operacionais",
+      "nome": "Sistemas Operacionais",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "traducao-en-pt",
+      "nome": "Tradução EN-PT",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "traducao-guarani-pt",
+      "nome": "Tradução Guarani-PT",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "trafego-e-crescimento",
+      "nome": "Tráfego e Crescimento",
+      "type": "service",
+      "via": "responsavel"
+    },
+    {
+      "from": "kiyoshi",
+      "nome": "Kiyoshi (Shin)",
+      "type": "person",
+      "via": "parentHandle"
+    },
+    {
+      "from": "soninha",
+      "nome": "Soninha",
+      "type": "person",
+      "via": "parentHandle"
+    },
+    {
+      "from": "quilomboaraucaria",
+      "nome": "Quilombo Araucária",
+      "type": "community",
+      "via": "membros"
+    },
+    {
+      "from": "quilomboaraucaria",
+      "nome": "Quilombo Araucária",
+      "type": "community",
+      "via": "parcerias"
+    }
+  ]
+}

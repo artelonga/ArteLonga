@@ -761,6 +761,33 @@ components:
           required: [recorrenteMensal, rampa, projetos, proBono]
       required: [currency, quarter, metaQ2, custos, receita]
 
+    BacklinkEntry:
+      type: object
+      description: Referência reversa — indica que `from` menciona o handle alvo.
+      properties:
+        from:
+          type: string
+          description: Handle ou slug da entidade que referencia.
+        nome:
+          type: string
+          description: Nome de exibição da entidade que referencia.
+        type:
+          type: string
+          enum: [person, community, service, mission, solution]
+          description: Tipo da entidade que referencia.
+        via:
+          type: string
+          description: Campo pelo qual a referência é feita (ex. "membros", "responsavel").
+      required: [from, nome, type, via]
+
+    BacklinkIndex:
+      type: object
+      description: Mapa de handle → lista de referências reversas. Gerado por bake-backlinks.mjs em assets/backlinks.json.
+      additionalProperties:
+        type: array
+        items:
+          $ref: "#/components/schemas/BacklinkEntry"
+
     UniverseData:
       description: Shape do `window.AL` exposed pelo renderer (data.js).
       type: object

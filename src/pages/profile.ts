@@ -12,6 +12,7 @@ import type {
     Parceria,
     EssayItem,
     PortfolioPoem,
+    BacklinkEntry,
 } from "../types";
 
 const REDE_EMAIL = "rede@artelonga.com.br";
@@ -49,7 +50,7 @@ interface RenderableProfile {
     parcerias?: Parceria[];
 }
 
-export function render(): void {
+export async function render(): Promise<void> {
     const handle = document.body.dataset["handle"] ?? "";
     const AL = window.AL;
     const raw = AL.get(handle);
@@ -202,6 +203,65 @@ export function render(): void {
     `;
 
     if (tickFn) tickFn();
+
+    void injectBacklinks(handle);
+}
+
+// ── Backlinks ─────────────────────────────────────────────────────────────
+
+const BACKLINKS_MAX = 10;
+
+async function injectBacklinks(handle: string): Promise<void> {
+    let entries: BacklinkEntry[];
+    try {
+        const resp = await fetch("/assets/backlinks.json");
+        if (!resp.ok) return;
+        const data = await resp.json() as Record<string, BacklinkEntry[]>;
+        entries = data[handle] ?? [];
+    } catch {
+        return;
+    }
+    if (!entries.length) return;
+    const html = buildBacklinksHtml(entries);
+    const back = document.querySelector<HTMLElement>("a.back");
+    if (back) back.insertAdjacentHTML("beforebegin", html);
+}
+
+function backlinksUrl(e: BacklinkEntry): string {
+    if (e.type === "service") return `/servicos/${esc(e.from)}/`;
+    if (e.type === "mission") return `/missoes/${esc(e.from)}/`;
+    return `/${esc(e.from)}/`;
+}
+
+function backlinkTypeLabel(type: string): string {
+    const map: Record<string, string> = {
+        service: "serviço",
+        person: "pessoa",
+        community: "comunidade",
+        mission: "missão",
+        solution: "solução",
+    };
+    return map[type] ?? type;
+}
+
+function buildBacklinksHtml(entries: BacklinkEntry[]): string {
+    const visible = entries.slice(0, BACKLINKS_MAX);
+    const items = visible
+        .map(e => {
+            const label = backlinkTypeLabel(e.type);
+            return `<li><a href="${backlinksUrl(e)}">${esc(e.nome)}</a> <span class="section-hint">${label}</span></li>`;
+        })
+        .join("");
+    const extra = entries.length > BACKLINKS_MAX
+        ? ` <span class="section-hint">+${entries.length - BACKLINKS_MAX} mais</span>`
+        : "";
+    const count = entries.length;
+    return `<section class="section backlinks-section">
+        <details class="backlinks-details">
+            <summary>Mencionado em <strong>${count}</strong> referência${count !== 1 ? "s" : ""}${extra}</summary>
+            <ul class="backlinks-list">${items}</ul>
+        </details>
+    </section>`;
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────

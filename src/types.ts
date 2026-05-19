@@ -28,6 +28,7 @@ export type Mission = components["schemas"]["Mission"];
 export type Solution = components["schemas"]["Solution"];
 export type Attachment = components["schemas"]["Attachment"];
 export type Finances = components["schemas"]["Finances"];
+export type BacklinkEntry = components["schemas"]["BacklinkEntry"];
 
 // Finance aliases: nomes históricos mapeados para schemas OpenAPI.
 export type FinanceCostItem = components["schemas"]["FinanceCost"];

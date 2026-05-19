@@ -440,6 +440,24 @@ export interface components {
                 proBono: components["schemas"]["FinanceProBono"][];
             };
         };
+        /** @description Referência reversa — indica que `from` menciona o handle alvo. */
+        BacklinkEntry: {
+            /** @description Handle ou slug da entidade que referencia. */
+            from: string;
+            /** @description Nome de exibição da entidade que referencia. */
+            nome: string;
+            /**
+             * @description Tipo da entidade que referencia.
+             * @enum {string}
+             */
+            type: "person" | "community" | "service" | "mission" | "solution";
+            /** @description Campo pelo qual a referência é feita (ex. "membros", "responsavel"). */
+            via: string;
+        };
+        /** @description Mapa de handle → lista de referências reversas. Gerado por bake-backlinks.mjs em assets/backlinks.json. */
+        BacklinkIndex: {
+            [key: string]: components["schemas"]["BacklinkEntry"][];
+        };
         /** @description Shape do `window.AL` exposed pelo renderer (data.js). */
         UniverseData: {
             people: components["schemas"]["Person"][];

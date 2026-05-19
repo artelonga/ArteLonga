@@ -79,6 +79,7 @@ try {
     execSync("node tools/bake-missions.mjs", { cwd: ROOT, stdio: "ignore" });
     execSync("node tools/bake-solutions.mjs", { cwd: ROOT, stdio: "ignore" });
     execSync("node tools/bake-finances.mjs", { cwd: ROOT, stdio: "ignore" });
+    execSync("node tools/bake-backlinks.mjs", { cwd: ROOT, stdio: "ignore" });
 } catch (e) {
     console.error("[pre-commit-check] FAIL: bake error.");
     console.error(e.message);
