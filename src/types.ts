@@ -347,9 +347,21 @@ export interface UniverseData {
     poemBySlug(slug: string): PortfolioPoem | undefined;
 }
 
+// ── Lead ──────────────────────────────────────────────────────────────────
+
+export interface Lead {
+    nome: string | null;
+    email: string | null;
+    telefone: string | null;
+    mensagem: string;
+    servico_titulo: string | null;
+    parceiro_handle: string | null;
+}
+
 declare global {
     interface Window {
         AL: UniverseData;
+        AL_track?: (event: string, props?: Record<string, unknown>) => void;
     }
 }
 
