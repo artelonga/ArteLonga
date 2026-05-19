@@ -8,6 +8,7 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: '20' }
       - run: npm ci
+      - run: npm run audit-storage-keys
       - run: npm run build
       - run: npx playwright install --with-deps chromium
       - run: npx serve . -p 8000 &
