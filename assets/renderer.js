@@ -9,7 +9,8 @@
     profile: () => Promise.resolve().then(() => profile),
     service: () => Promise.resolve().then(() => service),
     poem: () => Promise.resolve().then(() => poem),
-    essay: () => Promise.resolve().then(() => essay)
+    essay: () => Promise.resolve().then(() => essay),
+    contato: () => Promise.resolve().then(() => contato)
   };
   function dispatch() {
     const page = document.body.dataset["page"];
@@ -397,7 +398,7 @@
     ] }
   ];
   const BASE_URL = "https://artelonga.com.br";
-  async function render$8() {
+  async function render$9() {
     setPageSEO({
       title: "Arte Longa — Semeando Sonhos",
       description: "Arte Longa — agência de gestão de carreira, marca e produto, tecnologia e comunicação.",
@@ -656,7 +657,7 @@
   }
   const home = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
     __proto__: null,
-    render: render$8
+    render: render$9
   }, Symbol.toStringTag, { value: "Module" }));
   function ProfileCard(props) {
     const e = props.entity;
@@ -679,7 +680,7 @@
     var _a;
     return ((_a = (s ?? "?").trim()[0]) == null ? void 0 : _a.toUpperCase()) ?? "?";
   }
-  const REDE_EMAIL$1 = "rede@artelonga.com.br";
+  const REDE_EMAIL$2 = "rede@artelonga.com.br";
   function ctaLead(copy, btnLabel) {
     return `<div class="lead-magnet">
     <h3>${esc(copy.title)}</h3>
@@ -693,7 +694,7 @@
     <div class="modal-card" style="text-align:center;">
       ${label}
       <div class="modal-contact-label">Escreva para</div>
-      <div class="modal-email">${REDE_EMAIL$1}</div>
+      <div class="modal-email">${REDE_EMAIL$2}</div>
       <button class="modal-close" type="button">Fechar</button>
     </div>
   </div>`;
@@ -744,7 +745,7 @@
       if (e.key === "Escape") closeAll();
     });
   }
-  function render$7() {
+  function render$8() {
     setPageSEO({
       title: "Parceiros — Arte Longa",
       description: "Conheça os profissionais e comunidades parceiras da rede Arte Longa.",
@@ -753,10 +754,10 @@
     const h = (location.hash || "").toLowerCase();
     if (h === "#todos" || h === "#showall") {
       renderParceirosShowAll();
-      window.addEventListener("hashchange", render$7);
+      window.addEventListener("hashchange", render$8);
       return;
     }
-    window.addEventListener("hashchange", render$7);
+    window.addEventListener("hashchange", render$8);
     renderParceiros();
   }
   function renderParceirosShowAll() {
@@ -910,9 +911,9 @@
   }
   const parceiros = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
     __proto__: null,
-    render: render$7
+    render: render$8
   }, Symbol.toStringTag, { value: "Module" }));
-  function render$6() {
+  function render$7() {
     var _a;
     setPageSEO({
       title: "Serviços — Arte Longa",
@@ -1004,9 +1005,9 @@
   }
   const servicos = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
     __proto__: null,
-    render: render$6
+    render: render$7
   }, Symbol.toStringTag, { value: "Module" }));
-  function render$5() {
+  function render$6() {
     setPageSEO({
       title: "Soluções — Arte Longa",
       description: "Universos e soluções desenvolvidas pela Arte Longa.",
@@ -1104,9 +1105,9 @@
   }
   const solucoes = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
     __proto__: null,
-    render: render$5
+    render: render$6
   }, Symbol.toStringTag, { value: "Module" }));
-  function render$4() {
+  function render$5() {
     setPageSEO({
       title: "Recursos — Arte Longa",
       description: "Transparência financeira: receita, custos e metas da Arte Longa.",
@@ -1288,7 +1289,7 @@
   }
   const recursos = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
     __proto__: null,
-    render: render$4
+    render: render$5
   }, Symbol.toStringTag, { value: "Module" }));
   function mdInline(s) {
     return esc(s).replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (_, label, title) => {
@@ -1300,8 +1301,8 @@
       return `<a href="${href}"${external ? ' target="_blank" rel="noopener"' : ""}>${text}</a>`;
     }).replace(/\*([^*\n]+)\*/g, "<em>$1</em>");
   }
-  const REDE_EMAIL = "rede@artelonga.com.br";
-  function render$3() {
+  const REDE_EMAIL$1 = "rede@artelonga.com.br";
+  function render$4() {
     var _a;
     const handle = document.body.dataset["handle"] ?? "";
     const AL = window.AL;
@@ -1588,7 +1589,7 @@
     if (p.site) {
       return `<section class="section"><h2>Contato e Parcerias</h2><ul><li><a href="${esc(p.site)}" target="_blank" rel="noopener">${esc(p.site)}</a></li></ul></section>`;
     }
-    return `<section class="section"><h2>Contato e Parcerias</h2><ul><li><span class="email-display">${REDE_EMAIL}</span></li></ul></section>`;
+    return `<section class="section"><h2>Contato e Parcerias</h2><ul><li><span class="email-display">${REDE_EMAIL$1}</span></li></ul></section>`;
   }
   function buildParceriasHtml(p) {
     var _a;
@@ -1611,7 +1612,7 @@
   }
   const profile = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
     __proto__: null,
-    render: render$3
+    render: render$4
   }, Symbol.toStringTag, { value: "Module" }));
   const EXEMPLOS = {
     "Desenvolvimento Web": [{ name: "Quilombo Araucária", url: "/quilomboaraucaria/" }],
@@ -1620,7 +1621,7 @@
     "Privacidade e Segurança": [{ name: "Quilombo Araucária", url: "/quilomboaraucaria/" }],
     "Criação de Conteúdo": [{ name: "Quilombo Araucária", url: "/relatos/" }]
   };
-  function render$2() {
+  function render$3() {
     const slug = document.body.dataset["slug"] ?? "";
     const AL = window.AL;
     const s = AL.serviceBySlug(slug);
@@ -1783,9 +1784,9 @@
   }
   const service = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
     __proto__: null,
-    render: render$2
+    render: render$3
   }, Symbol.toStringTag, { value: "Module" }));
-  function render$1() {
+  function render$2() {
     const slug = document.body.dataset["slug"] ?? "";
     const AL = window.AL;
     const poem2 = AL.poemBySlug(slug);
@@ -1823,9 +1824,9 @@
   }
   const poem = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
     __proto__: null,
-    render: render$1
+    render: render$2
   }, Symbol.toStringTag, { value: "Module" }));
-  function render() {
+  function render$1() {
     var _a;
     const handle = document.body.dataset["handle"] ?? "";
     const slug = document.body.dataset["slug"] ?? "";
@@ -1869,6 +1870,167 @@
     `;
   }
   const essay = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+    __proto__: null,
+    render: render$1
+  }, Symbol.toStringTag, { value: "Module" }));
+  const CO_LEADS_URL = "https://co.artelonga.com.br/api/v1/leads";
+  const REDE_EMAIL = "rede@artelonga.com.br";
+  function render() {
+    const params = new URLSearchParams(location.search);
+    const servico = (params.get("servico") ?? "").trim();
+    const parceiro = (params.get("parceiro") ?? "").trim();
+    const ctxHtml = servico ? `<div class="ct-context" id="ct-context">
+                <strong id="ct-context-title">Sobre ${esc(servico)}</strong>${parceiro ? `<span id="ct-context-detail"> · com ${esc(parceiro)}</span>` : ""}
+           </div>` : `<div class="ct-context is-hidden" id="ct-context"></div>`;
+    const defaultPlaceholder = servico ? `Descreva o que precisa de ${esc(servico)}…` : "Descreva a demanda, contexto, prazo se houver…";
+    document.body.innerHTML = `
+        ${siteHeader()}
+        <main class="main">
+            <div class="ct-wrap">
+                <h1 class="ct-h1">Descreva o seu problema.</h1>
+                <p class="ct-tagline">Encontramos a solução.</p>
+                ${ctxHtml}
+                <form class="ct-form" id="contato-form" novalidate>
+                    <input type="hidden" id="ct-servico-hidden" name="servico_ref" value="${esc(servico)}">
+                    <input type="hidden" id="ct-parceiro-hidden" name="parceiro_ref" value="${esc(parceiro)}">
+                    <div class="ct-field">
+                        <label for="ct-nome">Nome</label>
+                        <input type="text" id="ct-nome" name="nome" required autocomplete="name">
+                    </div>
+                    <div class="ct-field">
+                        <label for="ct-precisa">O que você precisa</label>
+                        <textarea id="ct-precisa" name="precisa" placeholder="${defaultPlaceholder}" required></textarea>
+                    </div>
+                    <div class="ct-field">
+                        <label>Onde acontece</label>
+                        <div class="ct-modo-pills" role="radiogroup" aria-label="Modo">
+                            <label><input type="radio" name="modo" value="fisico" checked><span>Físico</span></label>
+                            <label><input type="radio" name="modo" value="digital"><span>Digital</span></label>
+                        </div>
+                        <div class="ct-loc-grid" id="ct-loc-grid">
+                            <input type="text" id="ct-estado" name="estado" placeholder="Estado" autocomplete="address-level1">
+                            <input type="text" id="ct-cidade" name="cidade" placeholder="Cidade" autocomplete="address-level2">
+                            <input type="text" id="ct-bairro" name="bairro" placeholder="Bairro" autocomplete="address-level3">
+                        </div>
+                    </div>
+                    <div class="ct-field">
+                        <label>Como prefere ser contatado</label>
+                        <div class="ct-radio-group">
+                            <label><input type="radio" name="canal" value="email" required><span>Email</span></label>
+                            <label><input type="radio" name="canal" value="whatsapp" required><span>WhatsApp</span></label>
+                            <label><input type="radio" name="canal" value="outro" required><span>Outro</span></label>
+                        </div>
+                    </div>
+                    <div class="ct-field">
+                        <label for="ct-contato">Contato</label>
+                        <input type="text" id="ct-contato" name="contato" placeholder="Email, WhatsApp ou link" required>
+                    </div>
+                    <p class="ct-privacy">Seus dados são armazenados em servidor seguro por até 24 meses. Direitos LGPD: acesso, correção ou deleção em <a href="mailto:${esc(REDE_EMAIL)}">${esc(REDE_EMAIL)}</a>.</p>
+                    <button type="submit" class="ct-submit">Enviar →</button>
+                    <div class="ct-fallback" id="ct-fallback">
+                        Falha na conexão. <a href="#" id="ct-fallback-link">Clique aqui para enviar por email</a>.
+                    </div>
+                    <div class="ct-success" id="ct-success">
+                        <strong>Recebemos.</strong> Em até 48h alguém da rede entra em contato pelo canal que você passou.
+                    </div>
+                </form>
+                <a class="back" href="/">← voltar</a>
+            </div>
+        </main>
+        ${siteFooter()}
+    `;
+    wireForm(servico, parceiro);
+  }
+  function wireForm(servico, parceiro) {
+    const locGrid = document.getElementById("ct-loc-grid");
+    document.querySelectorAll('input[name="modo"]').forEach((r) => {
+      r.addEventListener("change", () => {
+        if (!locGrid) return;
+        locGrid.classList.toggle("is-hidden", r.value === "digital" && r.checked);
+      });
+    });
+    const form = document.getElementById("contato-form");
+    const successEl = document.getElementById("ct-success");
+    const fallbackDiv = document.getElementById("ct-fallback");
+    const fallbackLink = document.getElementById("ct-fallback-link");
+    if (!form) return;
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      void submitForm(form, servico, parceiro, successEl, fallbackDiv, fallbackLink);
+    });
+  }
+  async function submitForm(form, servico, parceiro, successEl, fallbackDiv, fallbackLink) {
+    var _a, _b;
+    const d = new FormData(form);
+    const get = (k) => (d.get(k) ?? "").trim();
+    const nome = get("nome");
+    const precisaVal = get("precisa");
+    const canal = get("canal");
+    const contato2 = get("contato");
+    if (!nome || !precisaVal || !canal || !contato2) {
+      form.reportValidity();
+      return;
+    }
+    const submit = form.querySelector(".ct-submit");
+    if (submit) {
+      submit.disabled = true;
+      submit.textContent = "Enviando…";
+    }
+    if (fallbackDiv) fallbackDiv.classList.remove("on");
+    const canalLabel = canal === "email" ? "Email" : canal === "whatsapp" ? "WhatsApp" : "Outro";
+    const modo = get("modo") || "fisico";
+    const localLabel = modo === "digital" ? "Digital" : `Físico · ${get("bairro") || "—"} · ${get("cidade") || "—"} · ${get("estado") || "—"}`;
+    const mensagem = [
+      `Demanda: ${precisaVal}`,
+      `Local: ${localLabel}`,
+      `Canal preferido: ${canalLabel}`,
+      `Contato: ${contato2}`
+    ].join("\n");
+    const payload = {
+      nome: nome || null,
+      email: canal === "email" ? contato2 : null,
+      telefone: canal === "whatsapp" ? contato2 : null,
+      mensagem,
+      servico_titulo: servico || null,
+      parceiro_handle: parceiro || null
+    };
+    try {
+      const r = await fetch(CO_LEADS_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+        credentials: "omit",
+        mode: "cors"
+      });
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      (_a = window.AL_track) == null ? void 0 : _a.call(window, "lead_submit", { servico: servico || null, parceiro: parceiro || null, channel: canal });
+      if (submit) submit.textContent = "Enviado ✓";
+      if (successEl) successEl.classList.add("on");
+    } catch (err) {
+      (_b = window.AL_track) == null ? void 0 : _b.call(window, "lead_submit_failed", { servico: servico || null, parceiro: parceiro || null, channel: canal });
+      console.error("lead submit failed:", err);
+      if (submit) {
+        submit.textContent = "Falhou — tente de novo";
+        submit.disabled = false;
+      }
+      if (fallbackLink) fallbackLink.href = buildMailto(servico, parceiro, nome, precisaVal, localLabel, canalLabel, contato2);
+      if (fallbackDiv) fallbackDiv.classList.add("on");
+    }
+  }
+  function buildMailto(servico, parceiro, nome, precisa, localLabel, canalLabel, contato2) {
+    const subject = servico ? `Demanda · ${servico} · ${nome}` : `Demanda · ${nome}`;
+    const body = [
+      `Nome: ${nome}`,
+      servico ? `Serviço de interesse: ${servico}` : "",
+      parceiro ? `Parceiro de interesse: ${parceiro}` : "",
+      `Demanda: ${precisa}`,
+      `Local: ${localLabel}`,
+      `Canal preferido: ${canalLabel}`,
+      `Contato: ${contato2}`
+    ].filter(Boolean).join("\n");
+    return `mailto:${REDE_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  }
+  const contato = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
     __proto__: null,
     render
   }, Symbol.toStringTag, { value: "Module" }));
