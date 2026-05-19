@@ -121,6 +121,33 @@ const patched = original.slice(0, blockStart) + newBlock + "\n" + original.slice
 fs.writeFileSync(DATA_JS, patched, "utf8");
 console.log(`[bake-missions] Wrote ${DATA_JS}`);
 
+// ── Write per-collection file ─────────────────────────────────────────────────
+const MISSIONS_FILE = path.join(root, "assets", "data.missions.js");
+const missFileLines = [
+    "/* Arte Longa · missions data module",
+    " * AUTO-GENERATED: do not edit by hand. Run `node tools/bake-missions.mjs`.",
+    " */",
+    "(function (global) {",
+    '    "use strict";',
+    "    global.AL = global.AL || {};",
+    "    " + START_MARKER,
+    "    global.AL.missions = [",
+];
+for (let i = 0; i < missions.length; i++) {
+    const block = serializeEntry(missions[i]);
+    const indented = block.split("\n").map(l => "        " + l).join("\n");
+    const comma = i < missions.length - 1 ? "," : "";
+    missFileLines.push(indented + comma);
+}
+missFileLines.push(
+    "    ];",
+    "    " + END_MARKER,
+    "})(typeof window !== \"undefined\" ? window : globalThis);",
+    ""
+);
+fs.writeFileSync(MISSIONS_FILE, missFileLines.join("\n"), "utf8");
+console.log(`[bake-missions] Wrote ${MISSIONS_FILE}`);
+
 // ── Validate ──────────────────────────────────────────────────────────────────
 try {
     execSync(`node -e "require('${DATA_JS}')"`, { stdio: "pipe" });

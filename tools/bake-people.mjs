@@ -182,6 +182,45 @@ patched = patched.slice(0, poemsBlockStart) + poemsBlock + '\n' + patched.slice(
 fs.writeFileSync(DATA_JS, patched, 'utf8');
 console.log(`[bake-people] Wrote ${DATA_JS} (${people.length} people, ${poemsDerived.length} poems)`);
 
+// ── Write per-collection file ─────────────────────────────────────────────────
+const PEOPLE_FILE = path.join(root, 'assets', 'data.people.js');
+const peopleFileLines = [
+    '/* Arte Longa · people data module',
+    ' * AUTO-GENERATED: do not edit by hand. Run `node tools/bake-people.mjs`.',
+    ' */',
+    '(function (global) {',
+    '    "use strict";',
+    '    global.AL = global.AL || {};',
+    '    ' + START_MARKER,
+    '    global.AL.people = [',
+];
+for (let i = 0; i < people.length; i++) {
+    const block = serializeEntry(people[i]);
+    const indented = block.split('\n').map(l => '        ' + l).join('\n');
+    const comma = i < people.length - 1 ? ',' : '';
+    peopleFileLines.push(indented + comma);
+}
+peopleFileLines.push(
+    '    ];',
+    '    ' + END_MARKER,
+    '    ' + POEMS_START_MARKER,
+    '    global.AL.poems = [',
+);
+for (let i = 0; i < poemsDerived.length; i++) {
+    const block = JSON.stringify(poemsDerived[i], null, 2);
+    const indented = block.split('\n').map(l => '        ' + l).join('\n');
+    const comma = i < poemsDerived.length - 1 ? ',' : '';
+    peopleFileLines.push(indented + comma);
+}
+peopleFileLines.push(
+    '    ];',
+    '    ' + POEMS_END_MARKER,
+    '})(typeof window !== "undefined" ? window : globalThis);',
+    ''
+);
+fs.writeFileSync(PEOPLE_FILE, peopleFileLines.join('\n'), 'utf8');
+console.log(`[bake-people] Wrote ${PEOPLE_FILE}`);
+
 // ── Validate ─────────────────────────────────────────────────────────────────
 try {
     execSync(`node -e "require('${DATA_JS}')"`, { stdio: 'pipe' });

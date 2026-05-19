@@ -12,10 +12,15 @@
 //
 // Ordem: CSS first (blocking, paint-relevant), depois scripts.
 // Scripts usam async=false pra executar na ordem de inserção no DOM
-// (data.js define window.AL; renderer.js consome). defer não funciona
-// em script dinâmico — async=false é o equivalente correto.
+// (data files definem window.AL.*; data.core.js consome e exporta; renderer.js renderiza).
+// defer não funciona em script dinâmico — async=false é o equivalente correto.
+//
+// Per-page loading: bootstrap runs in <head> before <body> is parsed, so
+// data-page attribute on <body> is not readable here. URL path is used to
+// select the minimal data modules for each known page type. Unknown paths
+// fall back to loading all modules (safe for profile, poem, essay pages).
 (function () {
-    var V = "20260519b";
+    var V = "20260519c";
     var head = document.head;
 
     ["site.css", "components.css", "pages.css"].forEach(function (name) {
@@ -25,7 +30,55 @@
         head.appendChild(link);
     });
 
-    ["analytics.js", "data.js", "renderer.js"].forEach(function (name) {
+    // ── Per-page data module selection ───────────────────────────────────────
+    var DATA = {
+        people:      "data.people.js",
+        communities: "data.communities.js",
+        services:    "data.services.js",
+        solutions:   "data.solutions.js",
+        missions:    "data.missions.js",
+        finances:    "data.finances.js"
+    };
+    var ALL = [DATA.people, DATA.communities, DATA.services, DATA.solutions, DATA.missions, DATA.finances];
+
+    var p = window.location.pathname.replace(/\/index\.html$/, "/");
+    var segs = p.split("/").filter(Boolean);
+    var dataFiles;
+
+    if (p === "/" || p === "") {
+        // home: people + communities + services + finances (no solutions/missions/poems)
+        dataFiles = [DATA.people, DATA.communities, DATA.services, DATA.finances];
+    } else if (p === "/parceiros/") {
+        // parceiros: people + communities + finances (isSocio, roster)
+        dataFiles = [DATA.people, DATA.communities, DATA.finances];
+    } else if (p === "/servicos/") {
+        // servicos catalog: people + communities + services
+        dataFiles = [DATA.people, DATA.communities, DATA.services];
+    } else if (segs[0] === "servicos" && segs.length >= 2) {
+        // service detail: people + communities + services + finances (pricing)
+        dataFiles = [DATA.people, DATA.communities, DATA.services, DATA.finances];
+    } else if (p === "/solucoes/") {
+        // solucoes: only solutions
+        dataFiles = [DATA.solutions];
+    } else if (p === "/recursos/") {
+        // recursos: finances + people (nomeOf handles)
+        dataFiles = [DATA.people, DATA.finances];
+    } else if (p === "/contato/") {
+        // contato: no data needed
+        dataFiles = [];
+    } else if (segs[0] === "missoes" && segs.length >= 2) {
+        // missao detail: people + communities + services + missions
+        dataFiles = [DATA.people, DATA.communities, DATA.services, DATA.missions];
+    } else if (segs.length >= 2 && ["servicos", "missoes", "solucoes", "parceiros",
+                                    "recursos", "contato", "design"].indexOf(segs[0]) === -1) {
+        // poem or essay page (/<handle>/<slug>/) — only needs people (poems are in people module)
+        dataFiles = [DATA.people];
+    } else {
+        // default: all modules (profile pages, sobre, etc.)
+        dataFiles = ALL;
+    }
+
+    ["analytics.js"].concat(dataFiles, ["data.core.js", "renderer.js"]).forEach(function (name) {
         var s = document.createElement("script");
         s.src = "/assets/" + name + "?v=" + V;
         s.async = false;

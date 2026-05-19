@@ -116,6 +116,33 @@ const patched = original.slice(0, blockStart) + newBlock + "\n" + original.slice
 fs.writeFileSync(DATA_JS, patched, "utf8");
 console.log(`[bake-services] Wrote ${DATA_JS}`);
 
+// ── Write per-collection file ─────────────────────────────────────────────────
+const SERVICES_FILE = path.join(root, "assets", "data.services.js");
+const svcFileLines = [
+    "/* Arte Longa · serviceCatalog data module",
+    " * AUTO-GENERATED: do not edit by hand. Run `node tools/bake-services.mjs`.",
+    " */",
+    "(function (global) {",
+    '    "use strict";',
+    "    global.AL = global.AL || {};",
+    "    " + START_MARKER,
+    "    global.AL.serviceCatalog = [",
+];
+for (let i = 0; i < services.length; i++) {
+    const block = serializeEntry(services[i]);
+    const indented = block.split("\n").map(l => "        " + l).join("\n");
+    const comma = i < services.length - 1 ? "," : "";
+    svcFileLines.push(indented + comma);
+}
+svcFileLines.push(
+    "    ];",
+    "    " + END_MARKER,
+    "})(typeof window !== \"undefined\" ? window : globalThis);",
+    ""
+);
+fs.writeFileSync(SERVICES_FILE, svcFileLines.join("\n"), "utf8");
+console.log(`[bake-services] Wrote ${SERVICES_FILE}`);
+
 // ── Validate ──────────────────────────────────────────────────────────────────
 try {
     execSync(`node -e "require('${DATA_JS}')"`, { stdio: "pipe" });
