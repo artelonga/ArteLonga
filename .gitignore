@@ -54,3 +54,4 @@ scratch/
 *.tmp
 *.bak
 *.swp
+.worktrees/
