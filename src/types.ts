@@ -118,10 +118,42 @@ export interface Lead {
     parceiro_handle: string | null;
 }
 
+// ── Analytics public API ──────────────────────────────────────────────────
+
+export interface ALAnalyticsInfo {
+    sid: string;
+    vid: string;
+    schema: number;
+    queueSize: number;
+    endpoint: string | null;
+    experiments: Record<string, string>;
+    utm: Record<string, string> | null;
+    optedOut: boolean;
+    reason?: string;
+}
+
+export interface ALAnalyticsAPI {
+    sid: string;
+    vid: string;
+    schema: number;
+    optedOut?: boolean;
+    queueSize(): number;
+    flush(): Promise<void>;
+    info(): ALAnalyticsInfo;
+    optOut(): void;
+    optIn(): void;
+}
+
+export interface ALExperimentsAPI {
+    variant(expId: string): string | null;
+}
+
 declare global {
     interface Window {
         AL: UniverseData;
         AL_track?: (event: string, props?: Record<string, unknown>) => void;
+        AL_analytics?: ALAnalyticsAPI;
+        AL_experiments?: ALExperimentsAPI;
     }
 }
 

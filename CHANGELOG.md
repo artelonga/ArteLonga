@@ -12,6 +12,18 @@ co-auto. Convenção em CLAUDE.md.
 
 ## [Unreleased]
 
+### Refactored (AL-56: Migrar analytics.js e al-signup.js para TypeScript)
+
+`assets/analytics.js` e `assets/al-signup.js` migrados de vanilla JS para TypeScript em
+`src/runtime/analytics.ts` e `src/runtime/al-signup.ts`. Comportamento em runtime preservado
+bit-a-bit — ambos compilados para IIFE via novo `vite.runtime.config.ts` (lib mode, sem
+minificação). `build:runtime` adicionado ao `package.json`; integrado ao `npm run build`.
+
+APIs públicas (`window.AL_track`, `window.AL_analytics`, `window.AL_experiments`) tipadas em
+`src/types.ts` como interfaces `ALAnalyticsAPI`, `ALAnalyticsInfo`, `ALExperimentsAPI` com
+declaração global no `Window`. `analytics.ts` importa `STORAGE_KEYS` de `src/lib/storage-keys`
+(AL-53), eliminando strings mágicas. `V` bumped em `bootstrap.js`.
+
 ### Added (AL-55: OpenAPI codegen para src/types.ts)
 
 `openapi-typescript` adicionado como devDep. `npm run gen-types` gera `src/types.gen.ts` a partir de

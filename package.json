@@ -15,8 +15,9 @@
     "vite": "^6.3.5"
   },
   "scripts": {
-    "build": "vite build --config vite.renderer.config.ts && vite build",
+    "build": "vite build --config vite.renderer.config.ts && vite build --config vite.runtime.config.ts && vite build",
     "build:renderer": "vite build --config vite.renderer.config.ts",
+    "build:runtime": "vite build --config vite.runtime.config.ts",
     "build:showcase": "vite build",
     "dev": "vite",
     "validate-yaml": "node tools/validate-yaml.mjs",
