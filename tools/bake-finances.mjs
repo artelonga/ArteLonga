@@ -83,6 +83,26 @@ const patched = original.slice(0, blockStart) + newBlock + "\n" + original.slice
 fs.writeFileSync(DATA_JS, patched, "utf8");
 console.log(`[bake-finances] Wrote ${DATA_JS}`);
 
+// ── Write per-collection file ─────────────────────────────────────────────────
+const FINANCES_FILE = path.join(root, "assets", "data.finances.js");
+const finSerialized = JSON.stringify(finances, null, 2);
+const finIndented = finSerialized.split("\n").map(l => "    " + l).join("\n");
+const finFileContent = [
+    "/* Arte Longa · finances data module",
+    " * AUTO-GENERATED: do not edit by hand. Run `node tools/bake-finances.mjs`.",
+    " */",
+    "(function (global) {",
+    '    "use strict";',
+    "    global.AL = global.AL || {};",
+    "    " + START_MARKER,
+    "    global.AL.finances = " + finIndented + ";",
+    "    " + END_MARKER,
+    "})(typeof window !== \"undefined\" ? window : globalThis);",
+    ""
+].join("\n");
+fs.writeFileSync(FINANCES_FILE, finFileContent, "utf8");
+console.log(`[bake-finances] Wrote ${FINANCES_FILE}`);
+
 // ── Validate ──────────────────────────────────────────────────────────────────
 try {
     execSync(`node -e "require('${DATA_JS}')"`, { stdio: "pipe" });

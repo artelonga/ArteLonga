@@ -124,6 +124,33 @@ const patched = original.slice(0, blockStart) + newBlock + '\n' + original.slice
 fs.writeFileSync(DATA_JS, patched, 'utf8');
 console.log(`[bake-communities] Wrote ${DATA_JS}`);
 
+// ── Write per-collection file ─────────────────────────────────────────────────
+const COMMUNITIES_FILE = path.join(root, 'assets', 'data.communities.js');
+const commFileLines = [
+    '/* Arte Longa · communities data module',
+    ' * AUTO-GENERATED: do not edit by hand. Run `node tools/bake-communities.mjs`.',
+    ' */',
+    '(function (global) {',
+    '    "use strict";',
+    '    global.AL = global.AL || {};',
+    '    ' + START_MARKER,
+    '    global.AL.communities = [',
+];
+for (let i = 0; i < communities.length; i++) {
+    const block = serializeEntry(communities[i]);
+    const indented = block.split('\n').map(l => '        ' + l).join('\n');
+    const comma = i < communities.length - 1 ? ',' : '';
+    commFileLines.push(indented + comma);
+}
+commFileLines.push(
+    '    ];',
+    '    ' + END_MARKER,
+    '})(typeof window !== "undefined" ? window : globalThis);',
+    ''
+);
+fs.writeFileSync(COMMUNITIES_FILE, commFileLines.join('\n'), 'utf8');
+console.log(`[bake-communities] Wrote ${COMMUNITIES_FILE}`);
+
 // ── Validate ─────────────────────────────────────────────────────────────────
 try {
     execSync(`node -e "require('${DATA_JS}')"`, { stdio: 'pipe' });

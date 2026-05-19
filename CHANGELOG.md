@@ -12,6 +12,21 @@ co-auto. Convenção em CLAUDE.md.
 
 ## [Unreleased]
 
+### Refactored (AL-54: Split assets/data.js into per-collection modules)
+
+`assets/data.js` (3372 LOC, 122KB) dividido em seis módulos independentes:
+`data.people.js`, `data.communities.js`, `data.services.js`, `data.solutions.js`,
+`data.missions.js` e `data.finances.js` — cada um auto-gerado pelo bake script correspondente.
+`data.core.js` (hand-maintained) lê de `window.AL.*` e exporta todas as funções e derivações.
+
+`bootstrap.js` atualizado com lógica URL-based: carrega apenas os módulos que cada página
+precisa. Exemplos: `/` carrega people + communities + services + finances + core (105KB, -14%);
+`/solucoes/` carrega só solutions + core (37KB, -70%); `/contato/` carrega só core (24KB, -80%).
+
+`window.AL` API surface preservada integralmente — comportamento runtime idêntico.
+Todos os seis bake scripts atualizados para dual-write (data.js + arquivo per-collection).
+Pre-commit hook estendido para verificar drift em ambos os formatos. `V` bumped em `bootstrap.js`.
+
 ### Refactored (AL-56: Migrar analytics.js e al-signup.js para TypeScript)
 
 `assets/analytics.js` e `assets/al-signup.js` migrados de vanilla JS para TypeScript em
