@@ -1,0 +1,38 @@
+folder: servicos
+title: Serviços
+description: >
+  Catálogo de serviços oferecidos por membros da Arte Longa.
+  Cada entrada é um arquivo `service.yaml` dentro de `servicos/<slug>/`.
+
+schema:
+  openapi: openapi/artelonga.yaml
+  component: Service
+  entry_file: service.yaml
+
+bake:
+  script: tools/bake-services.mjs
+  npm_run: bake-services
+  order_file: tools/services-order.txt
+  target_section: serviceCatalog
+
+renderer:
+  catalog:
+    page: src/pages/servicos.ts
+    data_page: servicos
+    url: /servicos/
+  detail:
+    page: src/pages/service.ts
+    data_page: service
+    url: /servicos/<slug>/
+
+how_to_edit:
+  - "Edite `servicos/<slug>/service.yaml`."
+  - "Rode `npm run bake-services` para regenerar `assets/data.js`."
+  - "Bumpe `V` em `assets/bootstrap.js` para invalidar o cache do GitHub Pages."
+  - "Commit: `refactor(servico): atualiza <slug>`."
+
+how_to_add:
+  - "Crie a pasta `servicos/<slug>/` com `index.html` (copie de outro serviço)."
+  - "Crie `servicos/<slug>/service.yaml` com o campo obrigatório (`titulo`)."
+  - "Adicione o slug em `tools/services-order.txt` na posição desejada."
+  - "Rode `npm run bake-services`."

@@ -21,6 +21,7 @@ Para entrar no projeto, leia nessa ordem:
 | `src/types.ts` | **TypeScript types** espelhando o openapi schema | Quando escrever TS |
 | `CHANGELOG.md` | Histórico narrativo por release com o "why" | Quando precisar contexto histórico |
 | `work/artelonga/AL-N.md` | **Backlog co-auto** — tasks abertas (todo) + done retroativas | Pegar próximo trabalho |
+| `<folder>/_feature.yaml` | **Manifesto de feature** — schema, bake script, renderer e instruções de "como adicionar" por pasta cross-cutting (`servicos/`, `solucoes/`, `missoes/`) | Quando for adicionar/editar entradas nessas pastas |
 | Esse `CLAUDE.md` | Stack, conventions, V bumping, como editar | Sempre carregado pelo agente |
 
 ## Rodar localmente
@@ -155,48 +156,42 @@ Para adicionar uma nova comunidade:
 
 ## Como editar um serviço
 
+> Instruções completas (schema, bake, renderer, how_to_add) em **`servicos/_feature.yaml`**.
+
 A seção `serviceCatalog` em `assets/data.js` é **AUTO-GENERATED** — não edite diretamente.
 
-1. Edite `servicos/<slug>/service.yaml` (ex: `servicos/desenvolvimento-web/service.yaml`).
-2. Rode `node tools/bake-services.mjs` (ou `npm run bake-services`) para regenerar `assets/data.js`.
-3. Bumpe `V` em `assets/bootstrap.js` para invalidar o cache do GitHub Pages.
+1. Edite `servicos/<slug>/service.yaml`.
+2. Rode `npm run bake-services` para regenerar `assets/data.js`.
+3. Bumpe `V` em `assets/bootstrap.js`.
 4. Commit: `refactor(servico): atualiza <slug>`.
 
-Para adicionar um novo serviço:
-1. Crie a pasta `servicos/<slug>/` com `index.html` (copie de outro serviço).
-2. Crie `servicos/<slug>/service.yaml` com o campo obrigatório (`titulo`).
-3. Adicione o slug em `tools/services-order.txt` na posição desejada.
-4. Rode `npm run bake-services`.
+Para adicionar: siga `how_to_add` em `servicos/_feature.yaml`.
 
 ## Como editar uma missão
 
+> Instruções completas (schema, bake, renderer, how_to_add) em **`missoes/_feature.yaml`**.
+
 A seção `missions` em `assets/data.js` é **AUTO-GENERATED** — não edite diretamente.
 
-1. Edite `missoes/<slug>/mission.yaml` (ex: `missoes/raizes-do-futuro/mission.yaml`).
-2. Rode `node tools/bake-missions.mjs` (ou `npm run bake-missions`) para regenerar `assets/data.js`.
-3. Bumpe `V` em `assets/bootstrap.js` para invalidar o cache do GitHub Pages.
+1. Edite `missoes/<slug>/mission.yaml`.
+2. Rode `npm run bake-missions` para regenerar `assets/data.js`.
+3. Bumpe `V` em `assets/bootstrap.js`.
 4. Commit: `refactor(missao): atualiza <slug>`.
 
-Para adicionar uma nova missão:
-1. Crie a pasta `missoes/<slug>/` com `index.html` (copie de outro handle).
-2. Crie `missoes/<slug>/mission.yaml` com os campos obrigatórios (`handle`, `type`, `nome`, `comunidade`).
-3. Adicione o slug em `tools/missions-order.txt` na posição desejada.
-4. Rode `npm run bake-missions`.
+Para adicionar: siga `how_to_add` em `missoes/_feature.yaml`.
 
 ## Como editar uma solução/universo
 
+> Instruções completas (schema, bake, renderer, how_to_add) em **`solucoes/_feature.yaml`**.
+
 A seção `solutions` em `assets/data.js` é **AUTO-GENERATED** — não edite diretamente.
 
-1. Edite `solucoes/<handle>/solution.yaml` (ex: `solucoes/co/solution.yaml`).
-2. Rode `node tools/bake-solutions.mjs` (ou `npm run bake-solutions`) para regenerar `assets/data.js`.
-3. Bumpe `V` em `assets/bootstrap.js` para invalidar o cache do GitHub Pages.
+1. Edite `solucoes/<handle>/solution.yaml`.
+2. Rode `npm run bake-solutions` para regenerar `assets/data.js`.
+3. Bumpe `V` em `assets/bootstrap.js`.
 4. Commit: `refactor(solucao): atualiza <handle>`.
 
-Para adicionar uma nova solução:
-1. Crie a pasta `solucoes/<handle>/` com `index.html` (copie de outro handle).
-2. Crie `solucoes/<handle>/solution.yaml` com os campos obrigatórios (`handle`, `type`, `nome`, `lifecycle`).
-3. Adicione o handle em `tools/solutions-order.txt` na posição desejada.
-4. Rode `npm run bake-solutions`.
+Para adicionar: siga `how_to_add` em `solucoes/_feature.yaml`.
 
 ## Como editar as finanças
 
