@@ -1,6 +1,12 @@
 {
-  "as_of": "2026-05-19T07:46:49.761255700+00:00",
+  "as_of": "2026-05-20T07:43:48.379218873+00:00",
   "items": [
+    {
+      "path": "/servicos/",
+      "slug": "",
+      "views": 1,
+      "visitors": 1
+    },
     {
       "path": "/servicos/alimentacao-e-bebidas/",
       "slug": "alimentacao-e-bebidas",
@@ -22,6 +28,18 @@
     {
       "path": "/servicos/producao-musical/",
       "slug": "producao-musical",
+      "views": 1,
+      "visitors": 1
+    },
+    {
+      "path": "/servicos/psicologia-social-e-comunitaria/",
+      "slug": "psicologia-social-e-comunitaria",
+      "views": 1,
+      "visitors": 1
+    },
+    {
+      "path": "/servicos/saude-mental/",
+      "slug": "saude-mental",
       "views": 1,
       "visitors": 1
     }
