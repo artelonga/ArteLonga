@@ -104,6 +104,9 @@ document.addEventListener("DOMContentLoaded", () => {
     titulo: "Desenvolvimento Web",
     slug: "desenvolvimento-web",
     digital: true,
+    recurring: false,
+    cnaeNovo: false,
+    hidden: false,
     responsavel: []
   };
   mount(
@@ -118,6 +121,9 @@ document.addEventListener("DOMContentLoaded", () => {
     titulo: "Mentoria Espiritual",
     slug: "mentoria-espiritual",
     digital: true,
+    recurring: false,
+    cnaeNovo: false,
+    hidden: false,
     responsavel: []
   };
   mount(
@@ -134,7 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     })
   );
-  const fakeConsult = { titulo: "Babá", slug: "baba", responsavel: [] };
+  const fakeConsult = { titulo: "Babá", slug: "baba", digital: false, recurring: false, cnaeNovo: false, hidden: false, responsavel: [] };
   mount(
     "service-card-consult",
     ServiceCard({
