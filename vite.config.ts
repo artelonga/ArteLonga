@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   build: {
-    outDir: "dist",
+    outDir: "assets",
     emptyOutDir: false,
     rollupOptions: {
       input: { showcase: "src/showcase.ts" },

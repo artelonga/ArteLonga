@@ -43,6 +43,9 @@ web/data/
 # Obsidian
 .obsidian/
 
+# Vite build artifacts
+dist/
+
 # Playwright / Lighthouse artifacts
 test-results/
 playwright-report/
