@@ -12,6 +12,22 @@ co-auto. Convenção em CLAUDE.md.
 
 ## [Unreleased]
 
+## [0.14.0] — 2026-05-20 — Phase C wave 4-8 close (modular data, TypeScript runtime, OpenAPI codegen, signup integration, dist cleanup)
+
+### Theme
+
+Phase C of the cross-repo refactor lands ten user-stories (AL-51 through AL-60) into a single semver-meaningful release. Three converging threads:
+
+1. **Modular data layer** (AL-53, AL-54) — `assets/data.js` (3372 LOC) split into six per-collection modules; bootstrap loads only what each page needs (`/solucoes/` drops 70% of payload).
+2. **TypeScript runtime + OpenAPI as single source of truth** (AL-55, AL-56) — `analytics.js` + `al-signup.js` migrated to TS; `openapi/artelonga.yaml` drives `src/types.gen.ts` via `npm run gen-types`; pre-commit hook detects drift.
+3. **Auth + ecosystem integration** (AL-50, AL-51, AL-52, AL-57, AL-58, AL-59, AL-60) — `/entrar/` signup flow bridges to CO via email magic-code, dist artifacts dropped from version control, analytics aligned with `STORAGE_KEYS` from AL-53.
+
+### Why
+
+ArteLonga was the largest non-CO repo in the audit (74 .js files, hand-maintained data, no type system). Phase C made the site (a) faster to render (per-page bundles), (b) safe to evolve (TS + OpenAPI), (c) auth-ready against the broader CO ecosystem. Release-tag aligns the deploy with the ecosystem-wide integration verification milestone.
+
+
+
 ### Refactored (AL-54: Split assets/data.js into per-collection modules)
 
 `assets/data.js` (3372 LOC, 122KB) dividido em seis módulos independentes:
