@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-05-20T07:43:48.379218873+00:00",
+  "as_of": "2026-05-21T07:55:11.106310758+00:00",
   "items": [
     {
       "path": "/servicos/",
@@ -22,6 +22,12 @@
     {
       "path": "/servicos/gestao-administrativa/",
       "slug": "gestao-administrativa",
+      "views": 1,
+      "visitors": 1
+    },
+    {
+      "path": "/servicos/gestao-de-vendas/",
+      "slug": "gestao-de-vendas",
       "views": 1,
       "visitors": 1
     },
