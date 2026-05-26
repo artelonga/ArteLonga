@@ -1,10 +1,16 @@
 {
-  "as_of": "2026-05-25T08:22:28.266054360+00:00",
+  "as_of": "2026-05-26T07:50:11.978977418+00:00",
   "items": [
     {
       "path": "/servicos/",
       "slug": "",
-      "views": 1,
+      "views": 4,
+      "visitors": 2
+    },
+    {
+      "path": "/servicos/traducao-en-pt/",
+      "slug": "traducao-en-pt",
+      "views": 3,
       "visitors": 1
     },
     {
