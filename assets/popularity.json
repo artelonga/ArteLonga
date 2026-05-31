@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-05-30T06:46:08.848735926+00:00",
+  "as_of": "2026-05-31T07:46:57.011177219+00:00",
   "items": [
     {
       "path": "/servicos/",
@@ -22,6 +22,12 @@
     {
       "path": "/servicos/autocuidado/",
       "slug": "autocuidado",
+      "views": 1,
+      "visitors": 1
+    },
+    {
+      "path": "/servicos/computacao/",
+      "slug": "computacao",
       "views": 1,
       "visitors": 1
     },
