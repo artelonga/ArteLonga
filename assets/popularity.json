@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-05-31T07:46:57.011177219+00:00",
+  "as_of": "2026-06-01T09:27:31.515311799+00:00",
   "items": [
     {
       "path": "/servicos/",
@@ -26,8 +26,20 @@
       "visitors": 1
     },
     {
+      "path": "/servicos/automacao-de-processos/",
+      "slug": "automacao-de-processos",
+      "views": 1,
+      "visitors": 1
+    },
+    {
       "path": "/servicos/computacao/",
       "slug": "computacao",
+      "views": 1,
+      "visitors": 1
+    },
+    {
+      "path": "/servicos/comunicacao-visual/",
+      "slug": "comunicacao-visual",
       "views": 1,
       "visitors": 1
     },
