@@ -1,4 +1,4 @@
-# Estado do projeto · 2026-05-10
+# Estado do projeto · 2026-06-01
 
 > Snapshot auto-gerado por `tools/bake-state.mjs` — não editar à mão.
 > Para um dev novo (ou agente AI) entender em 10 minutos: o que é, como
@@ -172,45 +172,87 @@ Memory system:
 
 ## Última release
 
-## [0.11.0] — 2026-04-19
+## [0.14.0] — 2026-05-20 — Phase C wave 4-8 close (modular data, TypeScript runtime, OpenAPI codegen, signup integration, dist cleanup)
 
-**Why**. Duas frentes convergindo. **(1) Narrativa**: Co ganhou identidade própria ("Rede Social Web") distinta do slogan abstrato da Arte Longa ("Rede do Futuro"), e a Arte Longa passou a se posicionar por uma pergunta — *"Por que precisamos de uma Rede do Futuro?" → Comunidade.* A descrição do Co virou uma cadência em C: *Comunidade. Consciência Coletiva. Colaborar. Compartilhar. Comunicar. Coinventar.* **(2) Ergonomia**: o `/parceiros/` estava distraindo — cartões expandindo inline empurravam o layout inteiro. Migramos para popover flutuante, cartão menor, e serviços atrás de um botão "Ver Serviços" (revelação progressiva em vez de ruído de base). Mesma cura no `/servicos/` para o drawer de filhos do guarda-chuva (Inteligência e Tecnologia). Bônus: atribuição de autoria (Bia na Reparação Histórica) virou padrão reutilizável para citações.
+### Theme
 
-### Added
-- **Solução · pergunta/resposta** (`solution.pergunta` + `respostaChave`). Arte Longa: *"Por que precisamos de uma Rede do Futuro?" / "Comunidade."*
-- **Tráfego e Crescimento** (sub-serviço de Inteligência e Tecnologia, Yuri) — antes contemplado como "Analytics e Growth" no rascunho 0.7 e removido; agora volta com nome português.
-- **João** (`joao`) — parceiro do Quilombo Araucária · Saúde Mental.
-- **Parcerias pro-bono** como estrutura de dados (`community.parcerias: [{ de, tipo, descricao, contribuicoes }]`). QA renderiza "Parceria · Arte Longa (pro-bono)" com contribuições discriminadas por pessoa.
-- **Atribuição de autoria** (`mission.objetivoAutor`). Reparação Histórica cita Bia — *"A reparação à população negra e dos povos originários é urgente, é necessária, é fundamental."*
-- **Missão · Visão · Valores** em `/sobre/` (âncora `#manifesto`). Valores podem carregar `referencia` (obra + data + autor-link).
-- **Entidade de referência** — flag `referenceOnly: true` marca pessoas históricas (citáveis mas fora de parceiros/serviços/soluções). Primeiro caso: **Papa Leão XIII** (`leaoxiii`, em memória, *Rerum Novarum · 15 de maio de 1891*).
-- **Conexões** (novo título para "Rede de Parcerias" · Igo) — termo mais enxuto e consistente com a linguagem do site.
+Phase C of the cross-repo refactor lands ten user-stories (AL-51 through AL-60) into a single semver-meaningful release. Three converging threads:
 
-### Changed
-- **Co · tagline** → `Rede Social Web` (antes: "Rede do Futuro" — devolvido ao conceito guarda-chuva da Arte Longa).
-- **Co · descrição** → `Comunidade. Consciência Coletiva. Colaborar. Compartilhar. Comunicar. Coinventar.` (Coinventar no infinitivo).
-- **Co · bundledServices** → Inteligência e Tecnologia, Design, Gestão Executiva, Gestão Operacional, Privacidade e Segurança. Design agora co-ownership Luke + Yuri.
-- **Yggdrasil · bundledServices** → Inteligência e Tecnologia, Design, Produção Musical (Design solo Luke).
-- **/parceiros/** — cartões hover encolheram; serviços saíram do corpo do cartão para trás do botão "Ver Serviços" (popover flutuante, `position: absolute`, sem deslocar layout).
-- **/parceiros/ comunidades** — lista curta + badge não-clicável `+ N membros` + único CTA `Ver Mais →` apontando para o perfil interno (`/quilomboaraucaria/`). Antes havia dois "Ver Mais" confusos.
-- **/servicos/ filhos** — drawer de sub-serviços virou popover flutuante (mesmo padrão dos parceiros). "+N" não estoura mais o título.
-- **/solucoes/** — cards não listam mais `bundledServices` (ficará em páginas dedicadas por solução no próximo passo).
-- **em memória / aposentado** — rótulo "Serviços" no perfil substituído por **Legado** (hint: "serviços prestados · em memória" / "· aposentado").
-- **QA missões** achatadas: Raízes do Futuro = Agrofloresta (mesma entidade, subtítulo "Agrofloresta · horta e compostagem"); GRES Amazônia e Reparação Histórica promovidas a top-level (irmãs, não filhas).
-- **/sobre/** — removidos labels laterais redundantes "DADOS CADASTRAIS" e "SEDE". "classificação oficial" (CNAE) mantido por ser informativo.
-- Cache-buster `?v=20260430`.
+1. **Modular data layer** (AL-53, AL-54) — `assets/data.js` (3372 LOC) split into six per-collection modules; bootstrap loads only what each page needs (`/solucoes/` drops 70% of payload).
+2. **TypeScript runtime + OpenAPI as single source of truth** (AL-55, AL-56) — `analytics.js` + `al-signup.js` migrated to TS; `openapi/artelonga.yaml` drives `src/types.gen.ts` via `npm run gen-types`; pre-commit hook detects drift.
+3. **Auth + ecosystem integration** (AL-50, AL-51, AL-52, AL-57, AL-58, AL-59, AL-60) — `/entrar/` signup flow bridges to CO via email magic-code, dist artifacts dropped from version control, analytics aligned with `STORAGE_KEYS` from AL-53.
 
-### Removed
-- Raquel: `Terapia Comportamental` (não faz parte do escopo dela).
-- Serviço `Rede Social` — não existe como item de catálogo; inferido da composição (IT + Design + Comunicação).
+### Why
 
-### Schema
-`AL.version` → `2.1`:
-- `solution.pergunta` / `solution.respostaChave` (ambos opcionais).
-- `mission.objetivoAutor` (handle de pessoa).
-- `community.parcerias[]` com `{de, tipo, descricao, contribuicoes[{quem, oque}]}`.
-- `person.referenceOnly` (booleano, exclui de rosters/catálogos).
-- `pagina.valores[]` com `{titulo, texto, referencia?:{obra, data, autor, url}}`.
+ArteLonga was the largest non-CO repo in the audit (74 .js files, hand-maintained data, no type system). Phase C made the site (a) faster to render (per-page bundles), (b) safe to evolve (TS + OpenAPI), (c) auth-ready against the broader CO ecosystem. Release-tag aligns the deploy with the ecosystem-wide integration verification milestone.
+
+
+
+### Refactored (AL-54: Split assets/data.js into per-collection modules)
+
+`assets/data.js` (3372 LOC, 122KB) dividido em seis módulos independentes:
+`data.people.js`, `data.communities.js`, `data.services.js`, `data.solutions.js`,
+`data.missions.js` e `data.finances.js` — cada um auto-gerado pelo bake script correspondente.
+`data.core.js` (hand-maintained) lê de `window.AL.*` e exporta todas as funções e derivações.
+
+`bootstrap.js` atualizado com lógica URL-based: carrega apenas os módulos que cada página
+precisa. Exemplos: `/` carrega people + communities + services + finances + core (105KB, -14%);
+`/solucoes/` carrega só solutions + core (37KB, -70%); `/contato/` carrega só core (24KB, -80%).
+
+`window.AL` API surface preservada integralmente — comportamento runtime idêntico.
+Todos os seis bake scripts atualizados para dual-write (data.js + arquivo per-collection).
+Pre-commit hook estendido para verificar drift em ambos os formatos. `V` bumped em `bootstrap.js`.
+
+### Refactored (AL-56: Migrar analytics.js e al-signup.js para TypeScript)
+
+`assets/analytics.js` e `assets/al-signup.js` migrados de vanilla JS para TypeScript em
+`src/runtime/analytics.ts` e `src/runtime/al-signup.ts`. Comportamento em runtime preservado
+bit-a-bit — ambos compilados para IIFE via novo `vite.runtime.config.ts` (lib mode, sem
+minificação). `build:runtime` adicionado ao `package.json`; integrado ao `npm run build`.
+
+APIs públicas (`window.AL_track`, `window.AL_analytics`, `window.AL_experiments`) tipadas em
+`src/types.ts` como interfaces `ALAnalyticsAPI`, `ALAnalyticsInfo`, `ALExperimentsAPI` com
+declaração global no `Window`. `analytics.ts` importa `STORAGE_KEYS` de `src/lib/storage-keys`
+(AL-53), eliminando strings mágicas. `V` bumped em `bootstrap.js`.
+
+### Added (AL-55: OpenAPI codegen para src/types.ts)
+
+`openapi-typescript` adicionado como devDep. `npm run gen-types` gera `src/types.gen.ts` a partir de
+`openapi/artelonga.yaml` (single source of truth). `src/types.ts` reduzido a re-exports dos tipos
+gerados + tipos UI-only sem equivalente no schema (`FaixaPreco`, `FaixaPlano`, `EssayItem`,
+`DefaultLocation`, `UniverseData`). `npm run gen-types` integrado ao início de `npm run bake`.
+Pre-commit hook estendido para detectar drift entre `openapi/artelonga.yaml` e `src/types.gen.ts`.
+
+OpenAPI schema também corrigido: campos faltantes adicionados a `Person` (`deathDate`, `bioHidden`,
+`bioAudio`, `emBreve`, `aposentado`, `underage`, `muted`, `site`, `essaysTitle`), `Community`
+(`bioCurta`, `muted`, `emBreve`, `emMemoria`), `Service` (`children`, `descNossa`, `summary`,
+`nome`), `Contacts` (`whatsappDisplay`, `instagram`), `PortfolioPoem` (`autor`); campos `required`
+ajustados nos schemas de finance (`FinanceCost.breakdown`, `FinanceRecurrentItem`,
+`FinanceRampaItem`, `FinanceProject`); novo schema `FinanceProBono` para itens pro-bono.
+
+### Added (AL-50: signup form — email magic-code flow com CO account)
+
+Nova página `/entrar/` com fluxo de autenticação em dois passos: email → código mágico de 6 dígitos.
+Integra com o endpoint CO-205 (`/api/v1/auth/onboard-with-email`) já live em `co.artelonga.com.br`.
+Ao confirmar o código, um cookie de sessão é setado no domínio `.artelonga.com.br`, dando acesso ao
+ecossistema CO (co.artelonga.com.br, quilomboaraucaria.org via SSO bridge). Origin `artelonga` é
+enviado para analytics e tracking de campanhas.
+
+**`/entrar/index.html`** (NEW): dois painéis alternados — passo 1 (email + Google OAuth) e passo 2
+(código + reenvio com cooldown de 60s + editar email). Estilos inline seguindo o padrão `.fp-form`
+da `/faca-parte/`. Carrega `al-signup.js` via `<script defer>`. Mobile responsive ≤ 768px.
+
+**`assets/al-signup.js`** (NEW): módulo vanilla JS que orquestra todo o fluxo — POST para
+`onboard-with-email`, transição email→code, POST para `verify`, redirect para `/` no sucesso,
+inline error sem roundtrip para email inválido, cooldown de reenvio, Google OAuth start.
+Na carga da página, verifica `/auth/me` e redireciona para `/` se já autenticado.
+
+**Header auth indicator**: `SiteHeader.ts` ganhou `#al-header-auth` placeholder e `initHeaderAuth()`.
+Na home, após o render, faz fetch de `/api/v1/auth/me` — se logado mostra "Olá, {nome} · Sair",
+se deslogado mostra "Entrar →" apontando para `/entrar/`. Logout chama `POST /auth/logout` e recarrega.
+
+**`assets/site.css`**: novos seletores `.site-header-nav`, `.site-cta-entrar`, `.al-auth-greeting`,
+`.al-auth-logout` para suportar o estado de autenticação no header da home.
 
 ---
 
@@ -218,118 +260,11 @@ Memory system:
 
 ## Recentes feats (últimos 30 dias)
 
-- feat: AL-17 + AL-25 + AL-26 + AL-23 (consolidated) (#43) (3b9b583c)
-- feat(AL-22): TS foundation + OpenAPI spec + /design/ palette (#42) (36beee62)
-- feat(home): badge "online" no card pra servicos digitais (a46fdd8f)
-- feat(alice): bio com easter egg [...] + áudio inline (132819cc)
-- feat(faca-parte): direitos do sócio + remuneração 128h × R$ 100 = R$ 12.800 (e855dd17)
-- feat(contato): /contato/ form pra cliente · CTAs de serviço apontam pra ele (59f573ef)
-- feat: Interpretação · /index/ sitemap · analytics fallback local (c72d13a9)
-- feat(home): filtro "Prestados pela Arte Longa" · só sócios responsáveis (3bca9efc)
-- feat(ux): page summaries · home / parceiros / recursos (cee78f55)
-- feat(sobre): seção Bio antes de História · manifesto da rede (daf7a64b)
-- feat: /legal/ mapeia conceitos da rede contra Lei 14.133/2021 (89798cd0)
-- feat(servicos): sub-serviços visíveis na página do parent + badge "+N" no card (2b08ad5c)
-- feat: Tradução com sub-pares de idiomas · Denise (Guarani) · backlink home (d0c84d1a)
-- feat: copy/UI overhaul · 3 location inputs full-width · anglicism map · faca-parte form (d491f052)
-- feat(home): busca primeiro · localização free-text · flag digital · sem tagline (b91f94f6)
-- feat(analytics): página pública /analytics/ · noindex · in-house telemetry (cf0cdeb7)
-- feat(home): filtro Estado · Cidade · Bairro · default SP/SP/Jardim Umarizal (c31d94a2)
-- feat(manifesto): missão "conectar parceiros a clientes" · visão "rede social profissional" (f8de942e)
-- feat(schema): docs/SCHEMA.md · AL.portfolio* · fix Rodney 404 (35abe1db)
-- feat(header): "Para parceiros" como botão fixo no header · footer enxuto (07bf6bbd)
-- feat: Sob demanda flat · Rodney/Piloto de Drone · /faca-parte/ vira form (06d99ca0)
-- feat(catalog): adiciona Auditoria (Sob consulta) e Automação de Processos (Yuri, 8-20h) (1e9eac29)
-- feat(planos): aplicar em ofertas Arte Longa-padronizadas · psi volta a Sob consulta (add2039b)
-- feat(planos): pacotes nomeados (semanal/mensal/etc.) como feature default (bb64a9b1)
-- feat(precos): só sócios têm preço calculado · não-sócios = Sob consulta (4a5b67c3)
-- feat(parceiros): canal direto por prestador · landing /faca-parte/ (5ff7dab6)
-- feat(precos): preço dinâmico por horas × taxa · CTA prestador · Saúde Mental como pai (ebdd4c38)
-- feat(home): hero novo · busca dinâmica · supercats · footer global (c47445e6)
-- feat(home): marketplace landing focado no contratante · ICP Jardim Umarizal (0063016b)
-- feat(oportunidade): Co como plataforma para academia (pesquisa · ensino · extensão) (564d019a)
-- feat(oportunidade): receita em três fontes · BRL · Co como hub de comm (7f87a96e)
-- feat(oportunidade): tese de descentralização e marco GPL Q2 (1163eb32)
-- feat(perfil): poema "Inocência" sob /kiyoshi/ (0d2f7564)
-- feat(analytics): identidade compartilhada entre subdomínios + click_app (e2570ea8)
-- feat(brand): favicon a partir do L do logo (22a14480)
-- feat(sobre): seção História + call-to-action Oportunidade (1a7a66c1)
-- feat(solucoes): hub Arte Longa · meta no catálogo · perfil de Hedix interno (d6c9cb9f)
-- feat(diagram): identidade ilustrada · mesh em tempo real (sem AUTH/setas) (b4fb7d6e)
-- feat(solucoes): Universos · ativos vs futuro · diagrama de arquitetura (1217e832)
-- feat(yuri/showall): descrição inicial · jacdias link · ShowAll agrupado · UX editorial (99c8844f)
-- feat(yuri): revisão da bio + ShowAll mode em /parceiros/ (5c2586b1)
-- feat(site): perfil yuri "Terra" + analytics self-hosted + A/B + modal em-breve (c295352e)
-- feat(sylvia): Syl Saghira — bio completa, role Cientista-artista, 3 servicos novos (afecf151)
-- feat(quilomboaraucaria): adiciona Rogerio, Alzira e Joao aos membros de QA (37040b8c)
-- feat(parceiro): Joao — bio completa + 4 servicos novos de psicologia (499f652c)
-- feat(parceiro): Retro Umarizal Burger & Chopp — perfil + cardapio (35b54623)
-- feat(parceiro): Retro Burger — hambúrgueres artesanais (f75a2052)
-- feat(catalogo): CNAE completo + gaps de missoes + cleanup (3/3) (2ce7ae97)
-- feat(catalogo): ponte missao <-> servico (Commit 2/3) (d0a0254f)
-- feat(hedix): Desenvolvimento de API em servicos + bundledServices (7b73c719)
-- feat(solucoes): Hedix - Market Making em Mercados de Previsao (0433d57f)
-- feat(parceiros): Miguel (Futuro) (23233739)
-- feat(joseantonio): adiciona Mentoria Espiritual (be843383)
-- feat(analytics): beacon self-hosted (Fase 1 frontend) (eec7a2d9)
-- feat(alice): adiciona pfp (a230fd4a)
-- feat(parceiros): Alice (Movimento) e Ramona (Internalizacao) (bd0095af)
-- feat(recursos): fecha gap com Servicos + 3-card alinhamento Q2 (7e2f9903)
-- feat(parceiros): marcador de socio + reorder Marina/Karina (9ed47c0b)
-- feat(sobre): manifesto enxuto + tipografia unificada (1a1076e3)
-- feat(content): novas pessoas, parceria QA pro-bono, catálogo refatorado (f180da5c)
-- feat(ui): floating hover card + popover pattern + schema v2.1 (417e4f7a)
-- feat(recursos): modelo de negócio detalhado com receita projetada (ab22378d)
-- feat(recursos): adiciona /recursos — transparência financeira (21d9eead)
-- feat(content): fotos yuri/qa/luke, resumo + PDF Raízes do Futuro, CTA enxuto, b&w (5bd5d79f)
-- feat(site): contadores de idade, produtos digitais, desenvolvimento web (d34423fa)
-- feat(parceiros): Kiyoshi (Shin) e Soninha sob Yuri (24203fb6)
-- feat(parceiros): adiciona Rogério e Alzira abaixo de Raquel (e2fda6fc)
-- feat(parceiros): adiciona Sylvia, Raquel, Alicia sob Bruna, John sob Aime (6e459f3a)
-- feat(site): estrutura inicial — home, parceiros, produtos e serviços, sobre (99256f70)
+_(nenhum no período)_
 
 ## Recentes fixes (últimos 30 dias)
 
-- fix: shells faltantes + Kelly/Matheus em quilombo + audit guards (#41) (e8c0fa23)
-- fix(home): chip counts atualizam ao filtrar por nome (e58a3653)
-- fix(renderer): try/catch no dispatch evita blank page silencioso (f6d33a35)
-- fix(bootstrap): renderer roda mesmo se DCL ja passou (251d7bfe)
-- fix(contato): pills toggle físico/digital + rename /index/ → /mapa/ (4e89a4ad)
-- fix: contato hero · físico/digital · analytics empty state enxuto (7616a4ba)
-- fix(recursos): fecha gap custos × meta · clarifica Interpretação vs Tradução (e6765060)
-- fix(planos): planos sem hours mostram "Sob consulta" (era "Sob demanda") (1f3c7059)
-- fix(catalog): Sylvia services todos viram Sob consulta (1e72a891)
-- fix: 6 service shells faltando que retornavam 404 (2f5593ab)
-- fix(precos): fórmula por palavra ilegível · vira "Tarifa-base R\$ 100/h" (1b6fea8a)
-- fix(precos): per-unit (palavra) usa rate da rede · ignora non-sócio rule (e7eb082e)
-- fix(home): dropdown próprio em vez de datalist · só valores do DB (9f65ee7a)
-- fix(home): 3 inputs separados (Estado · Cidade · Bairro) · default cinza · CTA empty (954f9f39)
-- fix(faca-parte): tira anglicismos · "Padrão da rede, defina a sua" (2d5bbdc8)
-- fix(faca-parte): "Como funciona" em 6 cards enxutos · gestão = preço de parceiro (a4872294)
-- fix: GNU GPL Q2 volta · /faca-parte/ corrige copy · footer fixo (c8c3420c)
-- fix(home): label "Para parceiros" visível no CTA secundário (6148ead7)
-- fix(tortas): Sob demanda também Sob consulta · cliente fala com Veh direto (91abdcd8)
-- fix: Sob demanda computa hours · Semanal/Mensal Sob consulta · 404 dos serviços novos (785e5075)
-- fix(precos): reverter flat R\$ 1.000 (era typo) · tudo em hours × R\$ 100/h (3a8e6df6)
-- fix(oportunidade): renomear "The Universe" para "O Universo" e enxugar lista de templates (4d79dcf1)
-- fix(perfil): grafia guarani na bio do Yuri (38f20bae)
-- fix(valores): título opcional · Desenvolvimento Sustentável só com texto (b3056499)
-- fix(valores): texto do valor Desenvolvimento Sustentável (c2d79555)
-- fix(sobre): História antes de Manifesto (9d5322ba)
-- fix(solucoes): title volta a ser "Soluções" (não "Universos") (3f80a664)
-- fix(home-links): uma linha por item · seta ao final (6a061977)
-- fix(modal): remove "em breve" duplicado — só footer EM BREVE permanece (94c1470c)
-- fix(yuri): pequenas quebras na estrofe "Não se esquece de respirar" (7d1a97ef)
-- fix(html): corrige titulo das paginas (era "U<handle>") em 21 perfis (4f84585b)
-- fix(roster): adiciona Joao ao rosterOrder (top-level apos Miguel) (32ac322e)
-- fix(servicos): remove nota "a formalizar" da pagina do servico (ee98c9d2)
-- fix(recursos): Market Making rampa tambem aponta hedix-solution (af0f6596)
-- fix(recursos): API Development aponta para hedix-solution (9f808a0a)
-- fix: publica alice.png + corrige role da Ramona (4c857a82)
-- fix: Aime nao e "em memoria" + exemplos estatico/dinamico invertidos (3f0ff581)
-- fix(parceiros): asterisco de socio visivel (estava somido no flex) (c65e156b)
-- fix(sobre): Rerum Novarum subtitulo completo + UAT alinhada (93b8ebb6)
-- fix(profile): contador de idade em anos/meses/dias, minutos em movimento (f6ae52ae)
+_(nenhum no período)_
 
 ---
 
@@ -339,8 +274,9 @@ Tasks abertas em `work/artelonga/`:
 
 | Task | Status | Resumo |
 |---|---|---|
-| AL-4 | aberto | /contato/ persiste leads no co backend (substituir mailto) |
-| AL-26 | em andamento | Portfolio abstraction: poemas + ensaios em profile.yaml.portfolio |
+| AL-64 | aberto | Epic — Funnel observability |
+| AL-65 | aberto | Epic — Page-shell hygiene |
+| AL-66 | aberto | Epic — Type + key centralization |
 
 ---
 
@@ -400,7 +336,7 @@ Detalhes em `docs/LESSONS.md`.
 
 ## Métricas
 
-- Total de commits: 163
+- Total de commits: 1
 - Membros catalogados: 36 (AL-1)
 - Comunidades: 3 (AL-2)
 - Serviços no catálogo: ~50 top-level + sub-serviços
