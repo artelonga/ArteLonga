@@ -3,9 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Yuri — Arte Longa</title>
-<script src="/assets/bootstrap.js"></script>
+<title>Yuri — Índice</title>
+<meta name="description" content="Índice pessoal de Yuri: dias, referências (músicas, poemas, vídeos, páginas) e notas — com a linha do tempo da rede.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<!-- self-contained: carrega o jardim direto (NÃO via bootstrap.js), pra servir também
+     em yuri.artelonga.com.br pelo app artelonga-neuro (host-routing). -->
+<link rel="stylesheet" href="/yuri/garden.css?v=20260601u">
 </head>
-<body data-page="profile" data-handle="yuri">
+<body>
+<div class="wrap">
+  <header class="site-head">
+    <a class="home" href="?"><h1>yuri</h1></a>
+    <div id="langtoggle" class="langtoggle" aria-label="idioma / language"></div>
+  </header>
+  <nav class="topnav">
+    <a id="nav-portfolio" href="?e=portfolio">Portfólio</a>
+    <a id="nav-resume" href="/yuri/resume/pt/">Currículo <span class="pdf">PDF</span></a>
+  </nav>
+  <main id="app"></main>
+</div>
+<script src="/yuri/system-graph.js?v=20260601u"></script>
+<script src="/yuri/garden.js?v=20260601u"></script>
 </body>
 </html>
