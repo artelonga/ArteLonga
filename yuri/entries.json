@@ -1,0 +1,243 @@
+{
+  "generated": "static",
+  "count": 9,
+  "entries": [
+    {
+      "slug": "portfolio",
+      "path": "/yuri/refs/portfolio.md",
+      "folder": "refs",
+      "type": "portfolio",
+      "kind": "systems",
+      "lang": "en",
+      "tkey": "portfolio",
+      "category": "systems",
+      "title": "ArteLonga — System Portfolio",
+      "author": "yuri",
+      "mine": true,
+      "created": null,
+      "added": "2026-06-01",
+      "date": null,
+      "published": true,
+      "tags": [
+        "rust",
+        "node",
+        "fly.io",
+        "infra"
+      ],
+      "media": [],
+      "caderno": null,
+      "pagina": null,
+      "snippet": "A network of web services developed by **ArteLonga** — it builds **co** and distributes the whole network to whoever arrives. Each one is li"
+    },
+    {
+      "slug": "portfolio.pt",
+      "path": "/yuri/refs/portfolio.pt.md",
+      "folder": "refs",
+      "type": "portfolio",
+      "kind": "systems",
+      "lang": "pt-BR",
+      "tkey": "portfolio",
+      "category": "systems",
+      "title": "ArteLonga — Portfólio de Sistemas",
+      "author": "yuri",
+      "mine": true,
+      "created": null,
+      "added": "2026-06-01",
+      "date": null,
+      "published": true,
+      "tags": [
+        "rust",
+        "node",
+        "fly.io",
+        "infra"
+      ],
+      "media": [],
+      "caderno": null,
+      "pagina": null,
+      "snippet": "Uma rede de serviços web desenvolvida pela **ArteLonga** — ela cria o **co** e distribui a rede inteira pra quem chega. Cada um está no ar; "
+    },
+    {
+      "slug": "rerum-novarum",
+      "path": "/yuri/refs/rerum-novarum.md",
+      "folder": "refs",
+      "type": "ref",
+      "kind": "creative",
+      "lang": "pt-BR",
+      "tkey": "rerum-novarum",
+      "category": "citação",
+      "title": "Rerum Novarum",
+      "author": "Leão XIII",
+      "mine": false,
+      "created": "1891",
+      "added": "2026-06-01",
+      "date": null,
+      "published": true,
+      "tags": [
+        "citação",
+        "encíclica"
+      ],
+      "media": [
+        {
+          "kind": "url",
+          "url": "https://www.vatican.va/content/leo-xiii/pt/encyclicals/documents/hf_l-xiii_enc_15051891_rerum-novarum.html"
+        }
+      ],
+      "caderno": null,
+      "pagina": null,
+      "snippet": "A terceira utilidade (*d'A Economia como meio de conciliação de Classes*) será a suspensão do movimento de emigração; ninguém, com efeito, quereria trocar por uma região estrangeira a sua pátria e a sua terra natal, se nesta encontrasse os meios de levar uma vida mais tolerável."
+    },
+    {
+      "slug": "voar-livre",
+      "path": "/yuri/refs/voar-livre.md",
+      "folder": "refs",
+      "type": "ref",
+      "kind": "creative",
+      "lang": "pt-BR",
+      "tkey": "voar-livre",
+      "category": "citação",
+      "title": "Pra onde você voaria se fosse livre?",
+      "author": "Yuri",
+      "mine": true,
+      "created": "2015",
+      "added": "2026-06-01",
+      "date": null,
+      "published": true,
+      "tags": [
+        "citação"
+      ],
+      "media": [],
+      "caderno": null,
+      "pagina": null,
+      "snippet": "Pra onde você voaria se fosse livre?"
+    },
+    {
+      "slug": "terra",
+      "path": "/yuri/escrita/terra.md",
+      "folder": "escrita",
+      "type": "poem",
+      "kind": "creative",
+      "lang": "pt-BR",
+      "tkey": "terra",
+      "category": "escrita",
+      "title": "Terra",
+      "author": "yuri",
+      "mine": true,
+      "created": null,
+      "added": "2026-06-01",
+      "date": null,
+      "published": true,
+      "tags": [],
+      "media": [],
+      "caderno": null,
+      "pagina": null,
+      "snippet": "Filho de Kiyoshi e Soninha e fascinado por todos que me inspiram"
+    },
+    {
+      "slug": "2026-05-31",
+      "path": "/yuri/dias/2026-05-31.md",
+      "folder": "dias",
+      "type": "dia",
+      "kind": "creative",
+      "lang": "pt-BR",
+      "tkey": "2026-05-31",
+      "category": null,
+      "title": "2026-05-31",
+      "author": "yuri",
+      "mine": true,
+      "created": null,
+      "added": "2026-05-31",
+      "date": "2026-05-31",
+      "published": true,
+      "tags": [],
+      "media": [],
+      "caderno": null,
+      "pagina": null,
+      "snippet": ""
+    },
+    {
+      "slug": "grace-kelly",
+      "path": "/yuri/refs/grace-kelly.md",
+      "folder": "refs",
+      "type": "song",
+      "kind": "creative",
+      "lang": "pt-BR",
+      "tkey": "grace-kelly",
+      "category": "music",
+      "title": "Grace Kelly",
+      "author": "Mika",
+      "mine": false,
+      "created": "2007",
+      "added": "2026-05-31",
+      "date": null,
+      "published": true,
+      "tags": [
+        "pop",
+        "mika"
+      ],
+      "media": [
+        {
+          "kind": "youtube",
+          "url": "https://www.youtube.com/watch?v=0CGVgAYJyjk"
+        }
+      ],
+      "caderno": null,
+      "pagina": null,
+      "snippet": "The last time we talked, Mr. Smith, you reduced me to tears · I promise you, it won't happen again"
+    },
+    {
+      "slug": "virtual-insanity",
+      "path": "/yuri/refs/virtual-insanity.md",
+      "folder": "refs",
+      "type": "song",
+      "kind": "creative",
+      "lang": "pt-BR",
+      "tkey": "virtual-insanity",
+      "category": "music",
+      "title": "Virtual Insanity",
+      "author": "Jamiroquai",
+      "mine": false,
+      "created": "1996",
+      "added": "2026-05-31",
+      "date": null,
+      "published": true,
+      "tags": [
+        "funk",
+        "jamiroquai"
+      ],
+      "media": [
+        {
+          "kind": "youtube",
+          "url": "https://www.youtube.com/watch?v=4JkIs37a2JE"
+        }
+      ],
+      "caderno": null,
+      "pagina": null,
+      "snippet": "Virtual insanity is what we're living in · Yeah! · Well, It's alright now"
+    },
+    {
+      "slug": "maes",
+      "path": "/yuri/escrita/maes.md",
+      "folder": "escrita",
+      "type": "poem",
+      "kind": "creative",
+      "lang": "pt-BR",
+      "tkey": "maes",
+      "category": "escrita",
+      "title": "Mães",
+      "author": "yuri",
+      "mine": true,
+      "created": "2026-05-10",
+      "added": "2026-05-10",
+      "date": null,
+      "published": true,
+      "tags": [
+        "poesia",
+        "mães"
+      ],
+      "media": [],
+      "caderno": null,
+      "pagina": null,
+      "snippet": "Tudo em casa deixou de ser asséptico,"
+    }
+  ]
+}

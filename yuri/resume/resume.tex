@@ -1,0 +1,85 @@
+% Yuri Y. Vieira Sugano — résumé (EN, web/data-oriented, one page).
+% Merge of two prior LaTeX résumés; image-logo header replaced by text links so it
+% compiles cleanly anywhere (Overleaf etc.). PT version to follow.
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[top=0.6in, bottom=0.6in, left=0.9in, right=0.9in]{geometry}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\usepackage[colorlinks=true, linkcolor=lightblue, urlcolor=lightblue]{hyperref}
+\usepackage{graphicx}
+\graphicspath{{icons/}}   % coloque github.png, linkedin.png, site.png em yuri/resume/icons/
+
+\definecolor{darktext}{RGB}{0, 51, 102}
+\definecolor{lightblue}{RGB}{66, 139, 202}
+
+\titleformat{\section}{\large\bfseries\color{darktext}}{}{0em}{}[\titlerule]
+\titlespacing{\section}{0pt}{6pt}{3pt}
+\setlist[itemize]{leftmargin=1.2em, topsep=2pt, itemsep=1pt, parsep=0pt}
+\setlength{\parindent}{0pt}
+
+\begin{document}
+
+\begin{center}
+  {\LARGE \color{darktext} \textbf{Yuri Y. Vieira Sugano}}\\[2pt]
+  \textit{R. Jaracatiá 305, São Paulo, Brazil \;|\; (11) 99647-6219 \;|\;
+  \href{mailto:yuri@artelonga.com.br}{yuri@artelonga.com.br}}\\[2pt]
+  \href{https://github.com/yurisugano}{\includegraphics[height=0.45cm]{github.png}} \quad
+  \href{https://www.linkedin.com/in/yuri-sugano-a55304153/}{\includegraphics[height=0.45cm]{linkedin.png}} \quad
+  \href{https://artelonga.com.br/}{\includegraphics[height=0.45cm]{site.png}}
+\end{center}
+
+\vspace{2pt}
+Software \& data engineer and neuroscientist. Builds and ships full-stack web services solo
+(Rust/Axum, SvelteKit, Node), with deep data/ML experience (Python, Spark, NLP). All systems in production.
+
+\section*{Experience}
+\textbf{Founder} — \href{https://artelonga.com.br/}{ArteLonga} \hfill 2024--present\\
+Web services for small businesses --- 6 production deployments (Rust/Node on Fly.io).\\[3pt]
+\textbf{Quant} — PointSet Technologies \hfill 2024--2026\\
+Quantitative systems and intelligence for financial markets.\\[3pt]
+\textbf{Senior Data Scientist} — Propz \hfill 2023--2024\\
+Project leadership and technical architecture for retail/business analytics on big-data systems
+(Apache Spark, Delta Lake); aligned business priorities to delivery.\\[3pt]
+\textbf{Research Technician} — University of Chicago, Neurobiology \hfill 2018--2023\\
+Data acquisition, processing and interpretation; team and project management; teaching and
+science communication.\\[3pt]
+\textit{Earlier:} Statistics Tutor, U.\ of Chicago (2019--2020); Lab Manager, U.\ of Chicago
+(2015--2017); Research Assistant, Instituto Butantan — FAPESP scholar (2012--2013).
+
+\section*{Education}
+\textbf{B.A.\ Neuroscience} (concentration in Chemistry), University of Chicago, 2018--2022 ---
+GPA 3.7/4.0. Focus: social-behavior neuroscience.
+
+\section*{Skills}
+\textbf{Languages:} Python, R, JavaScript/TypeScript, Rust, Scala, SQL.\\
+\textbf{Data \& ML:} Apache Spark, Delta Lake, scikit-learn, TensorFlow, spaCy, UMAP, DBSCAN, OpenCV.\\
+\textbf{Web \& Infra:} SvelteKit, Axum, Node; Docker, Fly.io, Git, Jenkins, Azure; AWS (S3, EC2, EMR, QuickSight), GCP.\\
+\textbf{Tools:} Markdown, LaTeX, Vim, Obsidian, Quartz.
+
+\section*{Technical Portfolio}
+\href{https://co.artelonga.com.br}{\textbf{co}} --- collaborative content platform, real-time sync
+\hfill \textit{Rust/Axum, SvelteKit, LiteFS}\\
+\href{https://rfq.artelonga.com.br}{\textbf{rfq}} --- real-time RFQ pricing engine (Avellaneda-Stoikov)
+\hfill \textit{Rust/Axum}\\
+\href{https://yggdrasil.artelonga.com.br}{\textbf{yggdrasil}} --- Godot 4 / WASM game host
+\hfill \textit{Rust/Axum, WASM}\\
+\href{https://github.com/yurisugano/SensorySpeech}{\textbf{SensorySpeech}} --- NLP for sensory
+descriptions \hfill \textit{Python, scikit-learn, spaCy, UMAP, DBSCAN}\\
+\href{https://github.com/yurisugano/ProprioSuite}{\textbf{ProprioSuite}} --- proprioceptive
+testing toolkit \hfill \textit{Python, TensorFlow, SQL, OpenCV}\\
+\href{https://github.com/yurisugano/Bystander-Effect-Rat-Analysis}{\textbf{Bystander Effect in Rats}}
+--- statistical analysis of social behavior \hfill \textit{R, data mining}
+
+\section*{Selected Publications \& Patent}
+\begin{itemize}
+  \item \href{https://doi.org/10.1101/2022.07.01.498150}{Vieira Sugano, Y.\,Y., et al.\ (2022). Helping can be motivated by non-affective cues in rats. \textit{bioRxiv}}.
+  \item \href{https://doi.org/10.1126/sciadv.abb4205}{Havlik, J.\,L., Vieira Sugano, Y.\,Y., et al.\ (2020). The bystander effect in rats. \textit{Science Advances}}.
+  \item Madelaire, C.\,B., Vieira Sugano, Y.\,Y., et al.\ (2020). Challenges of dehydration in invasive toads. \textit{Behavioral Ecology and Sociobiology}.
+  \item \textbf{Patent:} \href{https://patents.google.com/patent/US11589798B2/en}{Theseometer for Measuring Proprioception Performance} — US 11,589,798 B2, University of Chicago.
+\end{itemize}
+
+\vspace{2pt}\textit{\small Full bibliography \& references: \href{https://neuro.artelonga.com.br/2026-05-29/}{neuro.artelonga.com.br/2026-05-29}.}
+
+\end{document}

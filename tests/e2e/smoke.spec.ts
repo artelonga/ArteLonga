@@ -6,7 +6,7 @@ const BASE = process.env['BASE_URL'] || 'http://localhost:8000';
 const pages = [
     { path: '/', h1: /Serviços|Marketplace/ },
     { path: '/parceiros/', h1: /Arte Longa é/ },
-    { path: '/yuri/', h1: /Yuri/ },
+    { path: '/yuri/', h1: /yuri/i },
     { path: '/yuri/maes/', h1: /Mães/ },
     { path: '/kiyoshi/inocencia/', h1: /Inocência/ },
     { path: '/quilomboaraucaria/', h1: /Quilombo/ },
