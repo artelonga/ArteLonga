@@ -1,7 +1,97 @@
 {
   "generated": "static",
-  "count": 9,
+  "count": 14,
   "entries": [
+    {
+      "slug": "bystander-rats",
+      "path": "/yuri/refs/bystander-rats.md",
+      "folder": "refs",
+      "type": "paper",
+      "kind": "systems",
+      "lang": "en",
+      "tkey": "bystander-rats",
+      "category": "publicação",
+      "title": "The Bystander Effect in Rats",
+      "author": "Havlik, Vieira Sugano et al.",
+      "mine": true,
+      "created": "2020",
+      "added": "2026-06-01",
+      "date": null,
+      "published": true,
+      "tags": [
+        "neurociência",
+        "publicação"
+      ],
+      "media": [
+        {
+          "kind": "url",
+          "url": "https://doi.org/10.1126/sciadv.abb4205"
+        }
+      ],
+      "caderno": null,
+      "pagina": null,
+      "snippet": "Havlik, J. L., Vieira Sugano, Y. Y., Jacobi, M. C., et al. (2020). *Science Advances*, 6(28), eabb4205."
+    },
+    {
+      "slug": "dehydration-toads",
+      "path": "/yuri/refs/dehydration-toads.md",
+      "folder": "refs",
+      "type": "paper",
+      "kind": "systems",
+      "lang": "en",
+      "tkey": "dehydration-toads",
+      "category": "publicação",
+      "title": "Challenges of Dehydration in Invasive Toads",
+      "author": "Madelaire, Vieira Sugano et al.",
+      "mine": true,
+      "created": "2020",
+      "added": "2026-06-01",
+      "date": null,
+      "published": true,
+      "tags": [
+        "biologia",
+        "publicação"
+      ],
+      "media": [
+        {
+          "kind": "url",
+          "url": "https://www.jstor.org/stable/48727773"
+        }
+      ],
+      "caderno": null,
+      "pagina": null,
+      "snippet": "Madelaire, C. B., Vieira Sugano, Y. Y., et al. (2020). *Behavioral Ecology and Sociobiology*."
+    },
+    {
+      "slug": "helping-rats",
+      "path": "/yuri/refs/helping-rats.md",
+      "folder": "refs",
+      "type": "paper",
+      "kind": "systems",
+      "lang": "en",
+      "tkey": "helping-rats",
+      "category": "publicação",
+      "title": "Helping Can Be Motivated by Non-Affective Cues in Rats",
+      "author": "Vieira Sugano et al.",
+      "mine": true,
+      "created": "2022",
+      "added": "2026-06-01",
+      "date": null,
+      "published": true,
+      "tags": [
+        "neurociência",
+        "publicação"
+      ],
+      "media": [
+        {
+          "kind": "url",
+          "url": "https://doi.org/10.1101/2022.07.01.498150"
+        }
+      ],
+      "caderno": null,
+      "pagina": null,
+      "snippet": "Vieira Sugano, Y. Y., Shan, H., Molasky, N. M. R., & Mason, P. (2022). *bioRxiv* (preprint)."
+    },
     {
       "slug": "portfolio",
       "path": "/yuri/refs/portfolio.md",
@@ -57,6 +147,36 @@
       "snippet": "Uma rede de serviços web desenvolvida pela **ArteLonga** — ela cria o **co** e distribui a rede inteira pra quem chega. Cada um está no ar; "
     },
     {
+      "slug": "proprioception-thesis",
+      "path": "/yuri/refs/proprioception-thesis.md",
+      "folder": "refs",
+      "type": "paper",
+      "kind": "systems",
+      "lang": "en",
+      "tkey": "proprioception-thesis",
+      "category": "tese",
+      "title": "Uncovering Human Proprioceptive Function and Malfunction",
+      "author": "Vieira Sugano",
+      "mine": true,
+      "created": "2022",
+      "added": "2026-06-01",
+      "date": null,
+      "published": true,
+      "tags": [
+        "tese",
+        "propriocepção"
+      ],
+      "media": [
+        {
+          "kind": "url",
+          "url": "/yuri/uncovering-human-proprioceptive-function-and-malfunction.pdf"
+        }
+      ],
+      "caderno": null,
+      "pagina": null,
+      "snippet": "Senior thesis, B.S. Neuroscience — University of Chicago (2022)."
+    },
+    {
       "slug": "rerum-novarum",
       "path": "/yuri/refs/rerum-novarum.md",
       "folder": "refs",
@@ -85,6 +205,36 @@
       "caderno": null,
       "pagina": null,
       "snippet": "A terceira utilidade (*d'A Economia como meio de conciliação de Classes*) será a suspensão do movimento de emigração; ninguém, com efeito, quereria trocar por uma região estrangeira a sua pátria e a sua terra natal, se nesta encontrasse os meios de levar uma vida mais tolerável."
+    },
+    {
+      "slug": "theseometer-patent",
+      "path": "/yuri/refs/theseometer-patent.md",
+      "folder": "refs",
+      "type": "paper",
+      "kind": "systems",
+      "lang": "en",
+      "tkey": "theseometer-patent",
+      "category": "patente",
+      "title": "Theseometer for Measuring Proprioception Performance",
+      "author": "Mason, Vieira Sugano, Hilvert, Riley",
+      "mine": true,
+      "created": "2023",
+      "added": "2026-06-01",
+      "date": null,
+      "published": true,
+      "tags": [
+        "patente",
+        "propriocepção"
+      ],
+      "media": [
+        {
+          "kind": "url",
+          "url": "https://patents.google.com/patent/US11589798B2/en"
+        }
+      ],
+      "caderno": null,
+      "pagina": null,
+      "snippet": "Patente US 11.589.798 B2 — University of Chicago (2023)."
     },
     {
       "slug": "voar-livre",
