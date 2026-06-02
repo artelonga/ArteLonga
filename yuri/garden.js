@@ -50,6 +50,21 @@
     if (nr){ if(nr.childNodes[0]) nr.childNodes[0].nodeValue = L().nav_resume + " ";
       nr.setAttribute("href", LANG==="pt-BR" ? "/yuri/resume/pt/" : "/yuri/resume/"); }   // résumé bilíngue existente
     renderLangToggle();
+    renderIdentity();
+  }
+  // tira de identidade (preserva elementos do perfil): papel "Sementes", contador
+  // de aparições e links pra Terra (bio) + serviços de yuri na rede.
+  function renderIdentity(){
+    var head = document.querySelector(".site-head"); if(!head) return;
+    var el = document.getElementById("identity");
+    if(!el){ el=document.createElement("div"); el.id="identity"; el.className="identity";
+      head.parentNode.insertBefore(el, head.nextSibling); }
+    var srv = "https://artelonga.com.br/servicos/?author=yuri";
+    el.innerHTML =
+      '<span class="role">Sementes</span>'+
+      '<a class="ident-link count" href="'+srv+'" target="_blank" rel="noopener">'+(LANG==="pt-BR"?"23 aparições na rede":"23 appearances in the network")+'</a>'+
+      '<a class="ident-link" href="?e=terra">Terra</a>'+
+      '<a class="ident-link" href="'+srv+'" target="_blank" rel="noopener">'+(LANG==="pt-BR"?"serviços":"services")+'</a>';
   }
   function renderLangToggle(){
     var box = document.getElementById("langtoggle"); if (!box) return;
@@ -247,11 +262,41 @@
     if(e&&BY[e])renderEntry(e);else renderIndex();
   }
 
+  // ── fonte de conteúdo (CO-merge) ──────────────────────────────────────────
+  // Fonte da verdade futura: o universo yuri no co (vault Obsidian → co). Por ora,
+  // tenta o co (entries publicadas) e, em qualquer falha (401/CORS/rede), cai no
+  // estático /yuri/entries.json. Quando o co expor anon-published + CORS, ativa só.
+  var CO_ENTRIES = "https://co.artelonga.com.br/api/v1/universes/yuri/entries?published=true";
+  function mapCo(payload){                      // best-effort: aceita {entries:[]} ou []
+    var arr = Array.isArray(payload) ? payload : (payload && payload.entries) || [];
+    return arr.map(function(e){
+      if(!e || !(e.slug || e.id)) return null;
+      return { slug:e.slug||e.id, type:e.type||"ref", kind:e.kind||"creative",
+        lang:e.lang||"pt-BR", tkey:e.tkey||e.slug||e.id, category:e.category||null,
+        title:e.title||e.titulo||e.slug, author:e.author||e.autor||null,
+        created:e.created||null, added:e.added||e.date||null, date:e.date||null,
+        tags:e.tags||[], media:e.media||[], snippet:e.snippet||"",
+        path:e.path||null, body:e.body||null, _co:true };
+    }).filter(Boolean);
+  }
+  function loadEntries(){
+    var staticP = fetch("/yuri/entries.json",{cache:"no-cache"}).then(function(r){return r.json();}).then(function(d){return d.entries||[];});
+    return staticP.then(function(base){
+      return fetch(CO_ENTRIES,{mode:"cors"}).then(function(r){return r.ok?r.json():null;}).then(function(co){
+        var ce = co ? mapCo(co) : [];
+        if(!ce.length) return base;
+        var bySlug={}; base.forEach(function(e){bySlug[e.slug]=e;});       // co acrescenta/atualiza por slug
+        ce.forEach(function(e){bySlug[e.slug]=e;});
+        return Object.keys(bySlug).map(function(k){return bySlug[k];});
+      }).catch(function(){ return base; });                                 // co indisponível → estático
+    });
+  }
+
   document.addEventListener("DOMContentLoaded",function(){
     APP=document.getElementById("app");
     applyChrome();
-    fetch("/yuri/entries.json",{cache:"no-cache"}).then(function(r){return r.json();}).then(function(d){
-      DATA=d.entries||[];DATA.forEach(function(e){BY[e.slug]=e;});route();
+    loadEntries().then(function(entries){
+      DATA=entries;DATA.forEach(function(e){BY[e.slug]=e;});route();
     }).catch(function(){APP.innerHTML='<p class="empty">'+L().loadfail+'</p>';});
   });
 })();

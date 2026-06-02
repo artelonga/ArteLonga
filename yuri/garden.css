@@ -10,6 +10,13 @@ a{color:inherit}
 .site-head a.home{text-decoration:none}
 .site-head .sub{font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3)}
 
+/* tira de identidade (papel · aparições · Terra · serviços) — elementos do perfil */
+.identity{display:flex;flex-wrap:wrap;align-items:center;gap:.45rem .7rem;margin-top:.7rem;font-family:var(--mono);font-size:.72rem}
+.identity .role{letter-spacing:.1em;text-transform:uppercase;font-size:.62rem;color:#fff;background:var(--accent);border-radius:999px;padding:.2rem .6rem}
+.identity .ident-link{color:var(--ink2);text-decoration:none;border-bottom:1px solid var(--line)}
+.identity .ident-link:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.identity .ident-link.count{color:var(--ink3)}
+
 /* nav superior — destaques (portfolio, résumé) */
 .topnav{display:flex;gap:.6rem;margin-top:1rem;flex-wrap:wrap}
 .topnav a{font-family:var(--mono);font-size:.78rem;letter-spacing:.04em;text-decoration:none;color:var(--ink);

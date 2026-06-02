@@ -1,6 +1,6 @@
 {
   "generated": "static",
-  "count": 7,
+  "count": 9,
   "entries": [
     {
       "slug": "portfolio",
@@ -55,6 +55,60 @@
       "caderno": null,
       "pagina": null,
       "snippet": "Uma rede de serviços web desenvolvida pela **ArteLonga** — ela cria o **co** e distribui a rede inteira pra quem chega. Cada um está no ar; "
+    },
+    {
+      "slug": "rerum-novarum",
+      "path": "/yuri/refs/rerum-novarum.md",
+      "folder": "refs",
+      "type": "ref",
+      "kind": "creative",
+      "lang": "pt-BR",
+      "tkey": "rerum-novarum",
+      "category": "citação",
+      "title": "Rerum Novarum",
+      "author": "Leão XIII",
+      "mine": false,
+      "created": "1891",
+      "added": "2026-06-01",
+      "date": null,
+      "published": true,
+      "tags": [
+        "citação",
+        "encíclica"
+      ],
+      "media": [
+        {
+          "kind": "url",
+          "url": "https://www.vatican.va/content/leo-xiii/pt/encyclicals/documents/hf_l-xiii_enc_15051891_rerum-novarum.html"
+        }
+      ],
+      "caderno": null,
+      "pagina": null,
+      "snippet": "A terceira utilidade (*d'A Economia como meio de conciliação de Classes*) será a suspensão do movimento de emigração; ninguém, com efeito, quereria trocar por uma região estrangeira a sua pátria e a sua terra natal, se nesta encontrasse os meios de levar uma vida mais tolerável."
+    },
+    {
+      "slug": "voar-livre",
+      "path": "/yuri/refs/voar-livre.md",
+      "folder": "refs",
+      "type": "ref",
+      "kind": "creative",
+      "lang": "pt-BR",
+      "tkey": "voar-livre",
+      "category": "citação",
+      "title": "Pra onde você voaria se fosse livre?",
+      "author": "Yuri",
+      "mine": true,
+      "created": "2015",
+      "added": "2026-06-01",
+      "date": null,
+      "published": true,
+      "tags": [
+        "citação"
+      ],
+      "media": [],
+      "caderno": null,
+      "pagina": null,
+      "snippet": "Pra onde você voaria se fosse livre?"
     },
     {
       "slug": "terra",
