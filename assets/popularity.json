@@ -1,11 +1,11 @@
 {
-  "as_of": "2026-06-01T09:27:31.515311799+00:00",
+  "as_of": "2026-06-02T08:38:33.821838754+00:00",
   "items": [
     {
       "path": "/servicos/",
       "slug": "",
-      "views": 4,
-      "visitors": 2
+      "views": 8,
+      "visitors": 4
     },
     {
       "path": "/servicos/traducao-en-pt/",
@@ -52,6 +52,12 @@
     {
       "path": "/servicos/gestao-administrativa/",
       "slug": "gestao-administrativa",
+      "views": 1,
+      "visitors": 1
+    },
+    {
+      "path": "/servicos/gestao-de-logistica/",
+      "slug": "gestao-de-logistica",
       "views": 1,
       "visitors": 1
     },
