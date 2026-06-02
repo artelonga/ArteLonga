@@ -279,8 +279,10 @@
         path:e.path||null, body:e.body||null, _co:true };
     }).filter(Boolean);
   }
+  var CO_ENABLED = false;   // ligar quando o co expor anon-published + CORS (evita erro CORS no console até lá)
   function loadEntries(){
     var staticP = fetch("/yuri/entries.json",{cache:"no-cache"}).then(function(r){return r.json();}).then(function(d){return d.entries||[];});
+    if(!CO_ENABLED) return staticP;
     return staticP.then(function(base){
       return fetch(CO_ENTRIES,{mode:"cors"}).then(function(r){return r.ok?r.json():null;}).then(function(co){
         var ce = co ? mapCo(co) : [];
