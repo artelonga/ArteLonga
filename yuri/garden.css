@@ -1,5 +1,5 @@
 /* yuri/site/garden.css — índice pessoal (yuri.artelonga.com.br). Estático, vanilla. */
-:root{ --ink:#161413; --ink2:#5b5450; --ink3:#938b85; --line:#e7e1da; --bg:#fbf9f6; --bg2:#fff;
+:root{ --ink:#161413; --ink2:#5b5450; --ink3:#6f6760; --line:#e7e1da; --bg:#fbf9f6; --bg2:#fff;
   --accent:#9a3b2e; --mono:'Space Mono',ui-monospace,monospace; }
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
