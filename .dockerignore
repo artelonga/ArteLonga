@@ -9,3 +9,11 @@ design/
 .obsidian/
 data/
 *.pptx
+
+# build-context bloat — surfaces image só precisa de tools/surfaces-server.mjs + yuri/ (servido).
+# Estes não são servidos por nenhuma superfície; cortam ~550M do contexto/imagem → deploy bem mais rápido.
+node_modules
+yuri/neuro/IMG_*.png
+playwright-report
+test-results
+tests

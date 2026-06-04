@@ -1,0 +1,175 @@
+# DNS / Hostinger — Propagation & Architecture Findings
+
+**Domain analyzed:** `artelonga.com.br`
+**Date:** 2026-06-02
+**Method:** read-only `dig`/`whois` measurement (no load testing). Push-delay
+measured via a single timestamped record change + authoritative polling.
+
+---
+
+## TL;DR
+
+- "Propagation" is a misnomer: changes are near-instant at the authoritative
+  layer. Perceived delay = **old cached records expiring** (governed by the
+  *previous* record's TTL), not the provider distributing anything.
+- **Hostinger's authoritative DNS runs on Cloudflare anycast** (`dns-parking.com`
+  → `162.159.24.201` / `162.159.25.42`, `CLOUDFLARENET`). Serving latency ~24 ms.
+  The serving layer is **not** a bottleneck.
+- **DNSSEC is NOT enabled** on the zone — the most significant security gap.
+- The only delay genuinely attributable to Hostinger is the **control-panel →
+  authoritative push delay**, which must be measured empirically (script below).
+
+---
+
+## Measured state
+
+| Item | Value | Source |
+|---|---|---|
+| Nameservers | `ns1/ns2.dns-parking.com` | `dig NS` |
+| NS IPs | `162.159.24.201`, `162.159.25.42` | `dig +short` |
+| NS network owner | **Cloudflare, Inc. (CLOUDFLARENET)** | `whois` |
+| Authoritative latency | 22–25 ms steady (93 ms cold) | `dig +stats` x10 |
+| SOA | `2026052904 10000 2400 604800 600` | `dig SOA` |
+| Apex A | GitHub Pages `185.199.108–111.153` | `dig A` |
+| `www` | CNAME → `artelonga.github.io` (TTL 300) | `dig` |
+| MX | `smtp.google.com` (Google Workspace) | `dig MX` |
+| SPF | `v=spf1 include:_spf.mail.hostinger.com ~all` | `dig TXT` |
+| DNSSEC | **absent** (no DS, no DNSKEY, no AD flag) | `dig DS/DNSKEY` |
+
+### TTL budget (worst-case stale windows)
+
+| Record | TTL | Worst-case delay on change |
+|---|---|---|
+| apex A | 3600s | up to 1 h |
+| www CNAME | 300s | up to 5 min |
+| NS delegation (parent `.com.br`) | 3600s | up to 1 h |
+| Negative cache (SOA minimum) | 600s | new names lag up to 10 min |
+
+---
+
+## Change lifecycle (e.g. new CNAME)
+
+1. Submit change (hPanel / Hostinger API)
+2. Hostinger control plane writes the zone — **push delay starts here**
+3. Zone distributed to Cloudflare anycast fleet — **push delay ends, live globally**
+4. Recursive resolvers pick it up **only after the old TTL expires**
+5. Resolver caches new value for its TTL
+6. OS stub / browser cache adds 30–300 s
+7. End user sees the change
+
+Dominant delay = step 2→4 (Hostinger) **plus** the *old* TTL (your choice).
+
+---
+
+## Bottleneck attribution
+
+| Stage | Owner | Verdict |
+|---|---|---|
+| Panel → authoritative push | **Hostinger** | the only real unknown — measure it |
+| Authoritative serving | Cloudflare | excellent (anycast, ~24 ms) |
+| Resolver cache expiry | You (TTLs) | apex A=3600 is conservative |
+| Negative caching | Hostinger (600s fixed) | new subdomains lag ≤10 min |
+| Parent delegation | Registro.br | only relevant when switching providers |
+| OS/browser stub | End user | out of scope |
+
+---
+
+## Constructive-criticism items for Hostinger
+
+1. **No DNSSEC** on free dns-parking zones → exposes customers to spoofing /
+   cache poisoning. Highest-priority gap.
+2. **Fixed 600s negative-cache TTL** — fine, but undocumented; surprises users
+   adding new subdomains.
+3. **Only 2 nameservers, same netblock** — anycast mitigates, but no provider
+   diversity; no secondary-DNS / AXFR option on entry tiers.
+4. **Push-delay opacity** — no SLA or status signal for "your change is live."
+   Users can't distinguish push delay from TTL caching, leading to misattributed
+   "Hostinger is slow" complaints (when serving is actually Cloudflare-fast).
+
+## Recommendations for *our* setup
+
+- Lower apex A TTL to 300s a day before any planned change, then restore.
+- Enable DNSSEC if/when Hostinger exposes it for `.com.br`.
+- Add a `CAA` record pinning the issuing CA (e.g. Let's Encrypt / GitHub's).
+
+---
+
+## Live measurement results
+
+Test record `proptest-*.quilomboaraucaria.org` TXT (ttl 300), 2026-06-02,
+via `create-and-measure.sh` (clock offset +8.6 ms at run time).
+
+| Metric | Value | Interpretation |
+|---|---|---|
+| API round-trip (validate→ACK) | 0.699 s | client→Hostinger control plane |
+| **Push delay (t_ack → authoritative)** | **0.169 s** | effectively instant — Cloudflare-anycast serving |
+| Dry-run validate | HTTP 200 | `validateDNSRecordsV1` works as a pre-check |
+| Convergence across public resolvers | TBD | run `measure-dns-propagation.sh` (Phase 2) |
+
+**Conclusion:** the authoritative push is **not** the bottleneck (sub-200 ms).
+Any user-perceived "propagation" delay is downstream — resolver TTL caching and,
+for new names, the 600 s negative-cache window. This confirms the §3 finding and
+reframes the constructive criticism: Hostinger's serving is fast; the gap is
+*UX transparency* (no signal distinguishing "pushed" from "cached").
+
+---
+
+## Dataset & statistics (Tableau-ready)
+
+Generated by `generate_dataset.py` (deterministic; pure stdlib). Schema in
+`data/DATA_DICTIONARY.md`.
+
+| File | Grain |
+|---|---|
+| `data/funnel_stages.csv` | one row per funnel event `e0`–`e20` (counts) |
+| `data/funnel_metrics.csv` | one row per ratio metric × CI method (with stats) |
+
+**Observed first-party result (inbox, 2026-06-02):**
+
+| Metric | k/n | Rate | 95% CI (Wilson) | 95% CI (Wald) |
+|---|---|---|---|---|
+| Email open rate | 31/77 | 40.26% | [30.02%, 51.42%] | [29.31%, 51.21%] |
+
+Report **Wilson** at this n; SE = 5.59 pts. The ±~10.7-pt interval means one
+inbox sample cannot separate a 30% from a 51% true rate — treat as a prior, not
+a verdict. See `data/DATA_DICTIONARY.md` for validity notes.
+
+---
+
+## References & sources
+
+**Citation keys** (referenced from `source_ref` in the dataset):
+
+- `INBOX-2026-06-02` — first-party count of Hostinger emails in owner's inbox
+  (77 delivered, 31 opened), taken 2026-06-02.
+- `DNS-MEASURE` — live `dig` measurements via `measure-dns-propagation.sh`
+  (authoritative push delay + resolver convergence). Pending record creation.
+
+**Live measurements taken (this analysis, 2026-06-02), reproducible via CLI:**
+
+| Observation | Command |
+|---|---|
+| NS / SOA / A / MX / TXT | `dig {NS,SOA,A,MX,TXT} artelonga.com.br` |
+| NS run on Cloudflare anycast | `whois 162.159.24.201` → `CLOUDFLARENET` |
+| Auth latency ~24 ms | `dig @ns1.dns-parking.com … +stats` ×10 |
+| DNSSEC absent | `dig DS/DNSKEY artelonga.com.br`; no `ad` flag from `@1.1.1.1` |
+| Parent delegation TTL 3600 | `dig @b.dns.br artelonga.com.br NS +noall +authority` |
+| Negative-cache TTL 600 | SOA `MINIMUM` field |
+
+**Standards / methodology:**
+
+- RFC 1034 / 1035 — DNS concepts and TTL semantics.
+- RFC 2308 — *Negative Caching of DNS Queries* (the SOA `MINIMUM` → negative TTL).
+- RFC 4033–4035 — DNSSEC (basis for the "zone unsigned" finding).
+- RFC 6844 / 8659 — CAA records.
+- Wilson, E.B. (1927) — score interval for a binomial proportion.
+- Shadish, Cook & Campbell (2002) — *Experimental and Quasi-Experimental
+  Designs*; the four validity types used in the experiment framework.
+
+**Hostinger Horizons (product flow — custom domain / SSL / CDN automation):**
+
+- Hostinger Horizons (official) — https://www.hostinger.com/horizons
+- Hostinger Horizons Review 2026, Cybernews —
+  https://cybernews.com/ai-tools/hostinger-horizons-review/
+- Hostinger Horizons AI App Generator Guide, HostingSeekers —
+  https://www.hostingseekers.com/blog/hostinger-horizons-ai-app-generator/

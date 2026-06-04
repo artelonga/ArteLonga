@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>telemetria · universe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#161413;--ink2:#5b5450;--ink3:#6f6760;--line:#e7e1da;--bg:#fbf9f6;--bg2:#fff;
+    --accent:#9a3b2e;--up:#3a7d44;--down:#9a3b2e;--neu:#6f6760;--mono:'Space Mono',ui-monospace,monospace}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:var(--mono);background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:820px;margin:0 auto;padding:1.2rem 1.2rem 4rem}
+  .bar{display:flex;align-items:center;gap:.8rem;font-size:.78rem;padding:.4rem 0 1rem}
+  .bar a{color:var(--ink2);text-decoration:none}.bar a:hover{color:var(--ink)}.bar .sp{flex:1}
+  h1{font-size:1.4rem;letter-spacing:-.01em;margin-bottom:.2rem}
+  .sub{color:var(--ink3);font-size:.78rem;margin-bottom:1.2rem}
+  .principle{font-size:.74rem;color:var(--ink2);background:var(--bg2);border:1px solid var(--line);border-left:3px solid var(--accent);
+    border-radius:8px;padding:.7rem .9rem;margin-bottom:1.4rem;line-height:1.6}
+  .principle b{color:var(--ink)}
+  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;margin-bottom:1.2rem}
+  @media(max-width:620px){.cards{grid-template-columns:repeat(2,1fr)}}
+  .card{border:1px solid var(--line);border-radius:10px;background:var(--bg2);padding:.7rem .8rem;text-align:center}
+  .card b{display:block;font-size:1.5rem;letter-spacing:-.02em}
+  .card span{font-size:.64rem;letter-spacing:.04em;color:var(--ink3);text-transform:uppercase}
+  h2{font-size:.95rem;margin:1.4rem 0 .5rem;border-bottom:1px solid var(--line);padding-bottom:.3rem}
+  .bars{display:flex;flex-direction:column;gap:.4rem}
+  .row{display:grid;grid-template-columns:90px 1fr 46px;align-items:center;gap:.6rem;font-size:.78rem}
+  .row .lab{color:var(--ink2)}.row .num{text-align:right;color:var(--ink3)}
+  .track{height:14px;background:var(--bg);border:1px solid var(--line);border-radius:999px;overflow:hidden}
+  .fill{height:100%;border-radius:999px}
+  .fill.up{background:var(--up)}.fill.down{background:var(--down)}.fill.neu{background:var(--neu)}
+  .fill.host{background:#673de6}
+  .tbl{width:100%;border-collapse:collapse;font-size:.76rem}
+  .tbl td,.tbl th{text-align:left;padding:.35rem .5rem;border-bottom:1px solid var(--line);vertical-align:top}
+  .tbl th{color:var(--ink3);font-weight:700;font-size:.66rem;text-transform:uppercase}
+  .pill{display:inline-block;font-size:.62rem;font-weight:700;border-radius:999px;padding:.08rem .5rem;letter-spacing:.03em}
+  .pill.ok{background:#e6f1e8;color:var(--up)}.pill.failed{background:#f6e7e4;color:var(--down)}.pill.pending{background:#efece7;color:var(--ink3)}
+  .pill.on{background:#e6f1e8;color:var(--up)}.pill.off{background:#f6e7e4;color:var(--down)}
+  .s{font-size:1rem}.s.up{color:var(--up)}.s.down{color:var(--down)}.s.neu{color:var(--ink3)}
+  .co{border:1px dashed var(--line);border-radius:8px;padding:.7rem .9rem;font-size:.74rem;color:var(--ink2);margin-top:.4rem}
+  .co b{color:var(--ink)}
+  .muted{color:var(--ink3);font-size:.74rem}
+  .btn{font-family:var(--mono);font-size:.72rem;font-weight:700;border:1px solid var(--line);background:var(--bg2);color:var(--ink2);
+    border-radius:999px;padding:.3rem .8rem;cursor:pointer}.btn:hover{border-color:var(--ink3);color:var(--ink)}
+  .empty{color:var(--ink3);font-style:italic;padding:.6rem 0}
+  code{background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:.05rem .3rem;font-size:.72rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="bar"><a href="/yuri/">← yuri</a><span class="sp"></span><button class="btn" id="refresh">recarregar ↻</button></div>
+  <h1 id="title">telemetria</h1>
+  <div class="sub" id="sub">carregando…</div>
+
+  <div class="principle">
+    <b>A universe é dona da sua telemetria.</b> Estes números vêm do <b>estado da própria universe</b>
+    (<code>/api/telemetry</code> deste surface + as surfaces irmãs, agregadas server-side) — <b>nunca</b> lendo do co.
+    O co é só <b>alvo de broadcast</b>, consentido a cada envio; abaixo mostramos o status do broadcast e o que verificar lá.
+  </div>
+
+  <div class="cards" id="cards"></div>
+
+  <h2>sentimento</h2>
+  <div class="bars" id="sentiment"></div>
+
+  <h2>broadcast pro co <span class="muted" id="codurable"></span></h2>
+  <div class="bars" id="broadcast"></div>
+  <div class="co" id="coverify"></div>
+
+  <h2>surfaces da universe</h2>
+  <table class="tbl" id="surfaces"><thead><tr><th>surface</th><th>eventos</th><th>durável</th><th>status</th></tr></thead><tbody></tbody></table>
+
+  <h2>páginas (top)</h2>
+  <div class="bars" id="pages"></div>
+
+  <h2>recentes</h2>
+  <table class="tbl" id="recent"><thead><tr><th></th><th>quando</th><th>página</th><th>mensagem</th><th>co</th></tr></thead><tbody></tbody></table>
+</div>
+<script>
+(function(){
+  var $=function(s){return document.querySelector(s);};
+  var esc=function(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});};
+  function bar(cls,lab,n,max){var pct=max>0?Math.round(n/max*100):0;
+    return '<div class="row"><span class="lab">'+esc(lab)+'</span><div class="track"><div class="fill '+cls+'" style="width:'+pct+'%"></div></div><span class="num">'+n+'</span></div>';}
+  function when(t){if(!t)return"?";var d=new Date(t);var diff=(Date.now()-d.getTime())/1000;
+    if(diff<90)return"agora";if(diff<3600)return Math.floor(diff/60)+"min";if(diff<86400)return Math.floor(diff/3600)+"h";
+    return d.toISOString().slice(0,10);}
+  function smark(s){return s>0?'<span class="s up">▲</span>':s<0?'<span class="s down">▼</span>':'<span class="s neu">•</span>';}
+
+  function render(d){
+    $("#title").textContent="telemetria · "+(d.universe||"?");
+    $("#sub").innerHTML="estado da universe <b>"+esc(d.universe)+"</b> · fonte: "+esc(d.source||"universe-state")+
+      ' · <span class="pill '+(d.durable?"on":"off")+'">'+(d.durable?"durável (volume)":"efêmero (sem volume)")+'</span>';
+    var bc=d.broadcast||{ok:0,failed:0,pending:0};
+    var cards=[["total",d.total||0,""],["👍",(d.bySentiment||{}).up||0,"up"],["confirmado co",bc.ok||0,""],["surfaces",(d.surfaces||[]).length,""]];
+    $("#cards").innerHTML=cards.map(function(c){return '<div class="card"><b>'+c[1]+'</b><span>'+esc(c[0])+'</span></div>';}).join("");
+
+    var se=d.bySentiment||{up:0,neutral:0,down:0};var sm=Math.max(se.up,se.neutral,se.down,1);
+    $("#sentiment").innerHTML=bar("up","👍 positivo",se.up,sm)+bar("neu","• neutro",se.neutral,sm)+bar("down","👎 negativo",se.down,sm);
+
+    var bm=Math.max(bc.ok,bc.failed,bc.pending,1);
+    $("#broadcast").innerHTML=bar("up","✓ ok",bc.ok,bm)+bar("down","✗ falhou",bc.failed,bm)+bar("neu","… pendente",bc.pending,bm);
+    var co=d.co||{};
+    $("#coverify").innerHTML="<b>verificar no co:</b> "+esc(co.verify||"")+"<br><span class='muted'>endpoint <code>"+esc(co.endpoint||"")+
+      "</code> · papel: "+esc(co.role||"broadcast-target")+" · leitura: "+(co.read?"sim":"não (desacoplado)")+"</span>";
+
+    var surf=d.surfaces||[];
+    $("#surfaces tbody").innerHTML=surf.length?surf.map(function(s){
+      return "<tr><td>"+esc(s.surface)+(s.self?' <span class="muted">(este)</span>':"")+"</td><td>"+(s.total!=null?s.total:"—")+
+        "</td><td>"+(s.durable?'<span class="pill on">sim</span>':'<span class="pill off">não</span>')+
+        "</td><td>"+(s.ok?'<span class="pill ok">ok</span>':'<span class="pill failed">'+esc(s.status||s.error||"offline")+"</span>")+"</td></tr>";
+    }).join(""):'<tr><td colspan="4" class="empty">nenhuma</td></tr>';
+
+    var pg=d.pages||[];var pm=pg.length?pg[0].n:1;
+    $("#pages").innerHTML=pg.length?pg.map(function(p){return bar("host",p.page||"?",p.n,pm);}).join(""):'<div class="empty">sem dados ainda</div>';
+
+    var rc=d.recent||[];
+    $("#recent tbody").innerHTML=rc.length?rc.map(function(r){
+      var b=(r.broadcast&&r.broadcast.co)||"pending";
+      return "<tr><td>"+smark(r.sentiment)+"</td><td>"+esc(when(r.t))+"</td><td>"+esc(r.page||"?")+
+        "</td><td>"+esc(r.message||"")+"</td><td><span class='pill "+b+"'>"+esc(b)+"</span></td></tr>";
+    }).join(""):'<tr><td colspan="5" class="empty">nada coletado ainda</td></tr>';
+  }
+
+  function load(){
+    $("#sub").textContent="carregando…";
+    fetch("/api/telemetry").then(function(r){return r.json();}).then(render).catch(function(e){
+      $("#sub").innerHTML='<span class="pill failed">erro</span> '+esc(e&&e.message);
+    });
+  }
+  $("#refresh").onclick=load; load();
+})();
+</script>
+</body>
+</html>

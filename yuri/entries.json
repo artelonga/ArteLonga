@@ -101,7 +101,7 @@
       "lang": "en",
       "tkey": "portfolio",
       "category": "systems",
-      "title": "ArteLonga — System Portfolio",
+      "title": "Technical Portfolio",
       "author": "yuri",
       "mine": true,
       "created": null,
@@ -117,7 +117,7 @@
       "media": [],
       "caderno": null,
       "pagina": null,
-      "snippet": "A network of web services developed by **ArteLonga** — it builds **co** and distributes the whole network to whoever arrives. Each one is li"
+      "snippet": "ArteLonga (2024) builds co: one identity, one bill, storage and compute as a service — free software handed to whoever arrives, from a quilo"
     },
     {
       "slug": "portfolio.pt",
@@ -128,7 +128,7 @@
       "lang": "pt-BR",
       "tkey": "portfolio",
       "category": "systems",
-      "title": "ArteLonga — Portfólio de Sistemas",
+      "title": "Portfólio Técnico",
       "author": "yuri",
       "mine": true,
       "created": null,
@@ -144,7 +144,7 @@
       "media": [],
       "caderno": null,
       "pagina": null,
-      "snippet": "Uma rede de serviços web desenvolvida pela **ArteLonga** — ela cria o **co** e distribui a rede inteira pra quem chega. Cada um está no ar; "
+      "snippet": "A ArteLonga (2024) constrói o co: uma identidade, uma fatura, storage e compute como serviço — software livre entregue a quem chega, de um q"
     },
     {
       "slug": "proprioception-thesis",
@@ -204,7 +204,7 @@
       ],
       "caderno": null,
       "pagina": null,
-      "snippet": "A terceira utilidade (*d'A Economia como meio de conciliação de Classes*) será a suspensão do movimento de emigração; ninguém, com efeito, quereria trocar por uma região estrangeira a sua pátria e a sua terra natal, se nesta encontrasse os meios de levar uma vida mais tolerável."
+      "snippet": "A terceira utilidade (d'A Economia como meio de conciliação de Classes) será a suspensão do movimento de emigração; ninguém, com efeito, quereria trocar por uma região estrangeira a sua pátria e a sua terra natal, se nesta encontrasse os meios de levar uma vida mais tolerável."
     },
     {
       "slug": "theseometer-patent",
