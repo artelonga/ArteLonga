@@ -52,31 +52,59 @@ async function teleSave(ev) {
   try { await appendFile(TELE_FILE, JSON.stringify(ev) + "\n"); }
   catch (e) { console.log("[TELE] write-failed " + (e && e.message)); }
 }
+function refDomain(r) {           // domínio do referrer externo (ignora same-site/vazio)
+  if (!r) return null;
+  try { const h = new URL(r).hostname; if (!h || /(^|\.)artelonga\.com\.br$/.test(h)) return null; return h; } catch (e) { return null; }
+}
+function topN(obj, n, keyName) {
+  return Object.keys(obj).map(k => { const o = { n: obj[k] }; o[keyName] = k; return o; }).sort((a, b) => b.n - a.n).slice(0, n);
+}
+// telemetria GA-like: 3 tipos — pageview (acesso), interaction (clique), feedback (consentido).
 function teleAgg(events) {
-  const bySent = { up: 0, neutral: 0, down: 0 }, byPage = {}, bc = { ok: 0, failed: 0, pending: 0 };
-  events.forEach(e => {
-    bySent[e.sentiment > 0 ? "up" : e.sentiment < 0 ? "down" : "neutral"]++;
-    const p = e.page || "?"; byPage[p] = (byPage[p] || 0) + 1;
-    const st = (e.broadcast && e.broadcast.co) || "pending"; if (bc[st] != null) bc[st]++;
-  });
+  const fb = events.filter(e => (e.kind || "feedback") === "feedback");
+  const pv = events.filter(e => e.kind === "pageview");
+  const ix = events.filter(e => e.kind === "interaction");
+  const bySent = { up: 0, neutral: 0, down: 0 }, bc = { ok: 0, failed: 0, pending: 0 };
+  fb.forEach(e => { bySent[e.sentiment > 0 ? "up" : e.sentiment < 0 ? "down" : "neutral"]++; const st = (e.broadcast && e.broadcast.co) || "pending"; if (bc[st] != null) bc[st]++; });
+  const sess = {}, refs = {}, pvPages = {};
+  pv.forEach(e => { if (e.session) sess[e.session] = 1; const r = refDomain(e.referrer); if (r) refs[r] = (refs[r] || 0) + 1; const p = e.page || "?"; pvPages[p] = (pvPages[p] || 0) + 1; });
+  const tgt = {}; let outbound = 0;
+  ix.forEach(e => { if (e.outbound) outbound++; const k = e.target || e.action || "?"; tgt[k] = (tgt[k] || 0) + 1; });
   return {
-    total: events.length, bySentiment: bySent, broadcast: bc,
-    pages: Object.keys(byPage).map(k => ({ page: k, n: byPage[k] })).sort((a, b) => b.n - a.n).slice(0, 12),
-    recent: events.slice(-20).reverse().map(e => ({ t: e.t, page: e.page, sentiment: e.sentiment, message: (e.message || "").slice(0, 280), broadcast: e.broadcast, surface: SURFACE }))
+    total: events.length,
+    access: { pageviews: pv.length, sessions: Object.keys(sess).length, topPages: topN(pvPages, 12, "page"), referrers: topN(refs, 8, "ref") },
+    interactions: { total: ix.length, outbound: outbound, topTargets: topN(tgt, 10, "target") },
+    feedback: { total: fb.length, bySentiment: bySent, broadcast: bc,
+      recent: fb.slice(-20).reverse().map(e => ({ t: e.t, page: e.page, sentiment: e.sentiment, message: (e.message || "").slice(0, 280), broadcast: e.broadcast, surface: SURFACE })) },
+    recent: events.slice(-25).reverse().map(e => ({ t: e.t, kind: e.kind || "feedback", page: e.page, sentiment: e.sentiment, action: e.action, target: e.target, outbound: e.outbound, message: (e.message || "").slice(0, 140), surface: SURFACE }))
   };
 }
-function teleCombine(aggs) {     // soma agregados de várias surfaces da MESMA universe
-  const out = { total: 0, bySentiment: { up: 0, neutral: 0, down: 0 }, broadcast: { ok: 0, failed: 0, pending: 0 }, pages: {}, recent: [] };
+function mergeCounts(dst, list, keyName) { (list || []).forEach(x => { dst[x[keyName]] = (dst[x[keyName]] || 0) + x.n; }); }
+function teleCombine(aggs) {      // soma agregados de várias surfaces da MESMA universe
+  const out = { total: 0,
+    access: { pageviews: 0, sessions: 0, _pages: {}, _refs: {} },
+    interactions: { total: 0, outbound: 0, _tgt: {} },
+    feedback: { total: 0, bySentiment: { up: 0, neutral: 0, down: 0 }, broadcast: { ok: 0, failed: 0, pending: 0 }, recent: [] },
+    recent: [] };
   aggs.forEach(a => {
     if (!a) return;
     out.total += a.total || 0;
-    ["up", "neutral", "down"].forEach(k => out.bySentiment[k] += (a.bySentiment && a.bySentiment[k]) || 0);
-    ["ok", "failed", "pending"].forEach(k => out.broadcast[k] += (a.broadcast && a.broadcast[k]) || 0);
-    (a.pages || []).forEach(p => { out.pages[p.page] = (out.pages[p.page] || 0) + p.n; });
+    const ac = a.access || {}, ix = a.interactions || {}, fb = a.feedback || {};
+    out.access.pageviews += ac.pageviews || 0; out.access.sessions += ac.sessions || 0;
+    mergeCounts(out.access._pages, ac.topPages, "page"); mergeCounts(out.access._refs, ac.referrers, "ref");
+    out.interactions.total += ix.total || 0; out.interactions.outbound += ix.outbound || 0;
+    mergeCounts(out.interactions._tgt, ix.topTargets, "target");
+    out.feedback.total += fb.total || 0;
+    ["up", "neutral", "down"].forEach(k => out.feedback.bySentiment[k] += (fb.bySentiment && fb.bySentiment[k]) || 0);
+    ["ok", "failed", "pending"].forEach(k => out.feedback.broadcast[k] += (fb.broadcast && fb.broadcast[k]) || 0);
+    (fb.recent || []).forEach(r => out.feedback.recent.push(r));
     (a.recent || []).forEach(r => out.recent.push(r));
   });
-  out.pages = Object.keys(out.pages).map(k => ({ page: k, n: out.pages[k] })).sort((a, b) => b.n - a.n).slice(0, 12);
-  out.recent = out.recent.sort((a, b) => (a.t < b.t ? 1 : -1)).slice(0, 20);
+  out.access.topPages = topN(out.access._pages, 12, "page"); delete out.access._pages;
+  out.access.referrers = topN(out.access._refs, 8, "ref"); delete out.access._refs;
+  out.interactions.topTargets = topN(out.interactions._tgt, 10, "target"); delete out.interactions._tgt;
+  out.feedback.recent = out.feedback.recent.sort((a, b) => (a.t < b.t ? 1 : -1)).slice(0, 20);
+  out.recent = out.recent.sort((a, b) => (a.t < b.t ? 1 : -1)).slice(0, 25);
   return out;
 }
 
@@ -124,6 +152,24 @@ const server = http.createServer(async (req, res) => {
       } catch (e) { ev.broadcast.co = "failed"; ev.broadcast.error = String(e && e.message).slice(0, 120); console.log("[FEEDBACK] co-forward-failed " + (e && e.message)); }
       await teleSave(ev);   // estado DA universe — fonte da verdade
       res.writeHead(200, { "content-type": "application/json" }); res.end(JSON.stringify({ ok: true, broadcast: ev.broadcast.co }));
+    });
+    return;
+  }
+
+  // acesso/interação (GA-like): pageview + clique. Estado DA universe; NÃO vai pro co
+  // (só feedback, consentido, é broadcastado). O beacon respeita DNT no cliente.
+  if (req.method === "POST" && url === "/api/track") {
+    let body = "";
+    req.on("data", c => { body += c; if (body.length > 8192) req.destroy(); });
+    req.on("end", async () => {
+      let d; try { d = JSON.parse(body || "{}"); } catch (e) { d = {}; }
+      const kind = d.kind === "interaction" ? "interaction" : "pageview";
+      const ev = { t: d.t || new Date().toISOString(), universe: UNIVERSE, kind: kind,
+        page: d.page || null, referrer: d.referrer || null, session: d.session || null,
+        action: d.action || null, target: d.target ? String(d.target).slice(0, 200) : null,
+        outbound: !!d.outbound, lang: d.lang || null, vw: d.vw || null };
+      await teleSave(ev);
+      res.writeHead(204); res.end();
     });
     return;
   }
