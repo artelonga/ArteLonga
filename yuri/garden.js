@@ -11,14 +11,14 @@
 
   // ── i18n (chrome da UI; o conteúdo vem dos entries) ──
   var STR = {
-    "pt-BR": { systems:"Sistemas", creative:"Criativo", search:"buscar…",
+    "pt-BR": { systems:"Portfólio Técnico", creative:"Criativo", search:"buscar…",
       cat:"categoria", type:"tipo", author:"autor", index:"← índice",
       count:function(n){return n+" entrada"+(n===1?"":"s");},
       notfound:"Entrada não encontrada.", empty:"nada por aqui ainda.",
       loadfail:"Falha ao carregar o índice.", nav_portfolio:"Portfólio", nav_resume:"Currículo",
       sub:"índice · dias · referências · notas",
       intro:"Alquimista. Conduzindo o futuro da tecnologia a partir da ancestralidade. Escrevendo inteligência biológica e de máquina. Pela livre expressão de ser." },
-    "en": { systems:"Systems", creative:"Creative", search:"search…",
+    "en": { systems:"Technical Portfolio", creative:"Creative", search:"search…",
       cat:"category", type:"type", author:"author", index:"← index",
       count:function(n){return n+" "+(n===1?"entry":"entries");},
       notfound:"Entry not found.", empty:"nothing here yet.",
@@ -50,21 +50,6 @@
     if (nr){ if(nr.childNodes[0]) nr.childNodes[0].nodeValue = L().nav_resume + " ";
       nr.setAttribute("href", LANG==="pt-BR" ? "/yuri/resume/pt/" : "/yuri/resume/"); }   // résumé bilíngue existente
     renderLangToggle();
-    renderIdentity();
-  }
-  // tira de identidade (preserva elementos do perfil): papel "Sementes", contador
-  // de aparições e links pra Terra (bio) + serviços de yuri na rede.
-  function renderIdentity(){
-    var head = document.querySelector(".site-head"); if(!head) return;
-    var el = document.getElementById("identity");
-    if(!el){ el=document.createElement("div"); el.id="identity"; el.className="identity";
-      head.parentNode.insertBefore(el, head.nextSibling); }
-    var srv = "https://artelonga.com.br/servicos/?author=yuri";
-    el.innerHTML =
-      '<span class="role">Sementes</span>'+
-      '<a class="ident-link count" href="'+srv+'" target="_blank" rel="noopener">'+(LANG==="pt-BR"?"23 aparições na rede":"23 appearances in the network")+'</a>'+
-      '<a class="ident-link" href="?e=terra">Terra</a>'+
-      '<a class="ident-link" href="'+srv+'" target="_blank" rel="noopener">'+(LANG==="pt-BR"?"serviços":"services")+'</a>';
   }
   function renderLangToggle(){
     var box = document.getElementById("langtoggle"); if (!box) return;
@@ -172,32 +157,40 @@
         var meta=[];meta.push(e.type);if(e.category)meta.push(L().cat+": "+e.category);if(e.author)meta.push(e.author);
         if(e.created)meta.push(e.created);if(e.added&&e.added!==e.created)meta.push("add "+e.added);
         if(e.type==="nota"&&(e.caderno||e.pagina!=null))meta.push("caderno "+(e.caderno||"?")+(e.pagina!=null?" · p."+e.pagina:""));
-        // portfolio: banner de candidatura (Hostinger) + linha do tempo viva acima do texto (fallback)
-        var graph="";
+        // portfolio: as duas linhas do tempo vivas acima do texto (banner Hostinger vive em /yuri/hostinger/)
+        // tabs (padrão) ou empilhado A/B (?layout=stacked ou window.YURI_STACKED) — duas linhas de uma vez
+        var graph="", ghlinks="", stacked=false;
         if(e.type==="portfolio"){
-          var JOB="https://jobs.ashbyhq.com/hostinger/1e28a4d4-0988-4dfb-9c90-9bc413d5c99f";
-          var RH=(LANG==="pt-BR"?"/yuri/resume/pt/":"/yuri/resume/");
-          var hb=(LANG==="pt-BR")
-            ? '<div class="hostinger-banner"><div class="hb-hi"><b>Labas!</b> 🇱🇹</div>'+
-              '<h2 class="hb-title">Portfólio para a vaga de <b>Data Analyst</b> na Hostinger</h2>'+
-              '<p class="hb-sub">Conheço a Hostinger primeiro como <b>usuário fiel</b> — DNS e hospedagem de toda esta rede — e agora me candidato como <b>membro técnico</b>. Cada capítulo da linha do tempo abaixo mostra uma competência que a vaga pede.</p>'+
-              '<div class="hb-links"><a class="hb-btn primary" href="'+JOB+'" target="_blank" rel="noopener">a vaga ↗</a>'+
-              '<a class="hb-btn" href="'+RH+'">currículo</a>'+
-              '<a class="hb-btn" href="https://www.hostinger.com/principles" target="_blank" rel="noopener">princípios da Hostinger ↗</a></div></div>'
-            : '<div class="hostinger-banner"><div class="hb-hi"><b>Labas!</b> 🇱🇹</div>'+
-              '<h2 class="hb-title">Portfolio for the <b>Data Analyst</b> role at Hostinger</h2>'+
-              '<p class="hb-sub">I know Hostinger first as an <b>avid user</b> — DNS and hosting for this whole network — and now I\'m applying as a <b>technical member</b>. Each chapter in the timeline below shows a skill this role needs.</p>'+
-              '<div class="hb-links"><a class="hb-btn primary" href="'+JOB+'" target="_blank" rel="noopener">the role ↗</a>'+
-              '<a class="hb-btn" href="'+RH+'">résumé</a>'+
-              '<a class="hb-btn" href="https://www.hostinger.com/principles" target="_blank" rel="noopener">Hostinger principles ↗</a></div></div>';
-          graph=hb+'<div class="sysgraph" id="sysgraph"></div>';
+          stacked = (new URL(location.href).searchParams.get("layout")==="stacked") || window.YURI_STACKED===true;
+          graph = stacked
+            ? '<div class="sysgraph" id="sysgraph-web"></div><div class="sysgraph" id="sysgraph-data"></div>'
+            : '<div class="sysgraph" id="sysgraph"></div>';
+          // dois GitHubs no topo, reforçando o split: pessoal (Dados) · rede (Sistemas/Web)
+          var gl=(LANG==="pt-BR")
+            ? {lead:"github:", me:"(eu · Dados)", net:"(a rede · Sistemas)"}
+            : {lead:"github:", me:"(me · Data)", net:"(the network · Systems)"};
+          ghlinks='<div class="gh-links">'+
+            '<span class="gh-lead">'+esc(gl.lead)+'</span>'+
+            '<a class="gh-link gh-me" href="https://github.com/yurisugano" target="_blank" rel="noopener">yurisugano <span>'+esc(gl.me)+'</span></a>'+
+            '<span class="gh-sep">·</span>'+
+            '<a class="gh-link gh-net" href="https://github.com/artelonga" target="_blank" rel="noopener">artelonga <span>'+esc(gl.net)+'</span></a>'+
+            '</div>';
         }
         APP.innerHTML='<article class="entry"><div class="crumb"><a href="?">'+L().index+'</a></div>'+
           '<div class="meta">'+meta.map(esc).join('<span>·</span> ')+'</div>'+
           '<h1 class="title">'+esc(e.title)+'</h1>'+
-          graph+mediaHtml(e.media)+'<div class="body">'+html+'</div></article>';
+          ghlinks+graph+mediaHtml(e.media)+'<div class="body">'+html+'</div></article>';
         document.title=e.title+" — Yuri";
-        if(e.type==="portfolio"&&window.SystemGraph){var g=document.getElementById("sysgraph");if(g)window.SystemGraph.mount(g,{lang:LANG});}
+        if(e.type==="portfolio"&&window.SystemGraph){
+          if(stacked){
+            var gw=document.getElementById("sysgraph-web"),gd=document.getElementById("sysgraph-data");
+            if(gw)window.SystemGraph.mount(gw,{lang:LANG,track:"web",tabs:false});
+            if(gd)window.SystemGraph.mount(gd,{lang:LANG,track:"data",tabs:false});
+          } else {
+            var track=new URL(location.href).searchParams.get("track")||"data";
+            var g=document.getElementById("sysgraph");if(g)window.SystemGraph.mount(g,{lang:LANG,track:track});
+          }
+        }
       });
     });
   }
@@ -259,7 +252,7 @@
     var u=new URL(location.href);
     var e=u.searchParams.get("e");
     if(!e){var seg=location.pathname.split("/").filter(Boolean).pop();if(seg&&BY[seg])e=seg;}  // /2026-05-31 quando houver fallback
-    if(e&&BY[e])renderEntry(e);else renderIndex();
+    if(e&&BY[e])renderEntry(e);else renderIndex();  // home = índice (layout artelonga); o portfólio fica linkado no topnav
   }
 
   // ── fonte de conteúdo (CO-merge) ──────────────────────────────────────────
@@ -296,6 +289,20 @@
 
   document.addEventListener("DOMContentLoaded",function(){
     APP=document.getElementById("app");
+    // Superfície standalone (yuri.artelonga.com.br) serve só /yuri/* — qualquer link
+    // root-relative pra outra seção (/parceiros/, /comunidades/…) 404a. Reescreve esses
+    // pra URL absoluta de artelonga.com.br (preserva #fragment). No site principal, no-op.
+    if(location.hostname!=="artelonga.com.br"){
+      var absify=function(){
+        var as=APP.querySelectorAll('a[href^="/"]:not([href^="/yuri/"])');
+        for(var i=0;i<as.length;i++){
+          var h=as[i].getAttribute("href");
+          if(/^\/\//.test(h))continue;                         // protocol-relative: deixa
+          as[i].setAttribute("href","https://artelonga.com.br"+h);
+        }
+      };
+      new MutationObserver(absify).observe(APP,{childList:true,subtree:true});
+    }
     applyChrome();
     loadEntries().then(function(entries){
       DATA=entries;DATA.forEach(function(e){BY[e.slug]=e;});route();

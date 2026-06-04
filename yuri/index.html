@@ -3,6 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
+<script>
+  /* artelonga.com.br/yuri (GitHub Pages) → canônico em yuri.artelonga.com.br (a surface).
+     Só no domínio principal; na surface (yuri.*) é no-op. Preserva path/query/hash. */
+  (function(){var h=location.hostname;if(h==="artelonga.com.br"||h==="www.artelonga.com.br"){
+    location.replace("https://yuri.artelonga.com.br"+location.pathname+location.search+location.hash);}})();
+</script>
 <title>Yuri — Índice</title>
 <meta name="description" content="Índice pessoal de Yuri: dias, referências (músicas, poemas, vídeos, páginas) e notas — com a linha do tempo da rede.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -10,7 +16,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <!-- self-contained: carrega o jardim direto (NÃO via bootstrap.js), pra servir também
      em yuri.artelonga.com.br pelo app artelonga-neuro (host-routing). -->
-<link rel="stylesheet" href="/yuri/garden.css?v=20260601x">
+<link rel="stylesheet" href="/yuri/garden.css?v=20260603n">
 </head>
 <body>
 <div class="wrap">
@@ -24,7 +30,9 @@
   </nav>
   <main id="app"></main>
 </div>
-<script src="/yuri/system-graph.js?v=20260601u"></script>
-<script src="/yuri/garden.js?v=20260601w"></script>
+<script src="/yuri/system-graph.js?v=20260603n"></script>
+<script src="/yuri/garden.js?v=20260604a"></script>
+<script src="/yuri/chat.js?v=20260601a" defer></script>
+<script src="/yuri/feedback.js?v=20260602f" defer></script>
 </body>
 </html>

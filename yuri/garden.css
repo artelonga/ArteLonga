@@ -143,8 +143,29 @@ a{color:inherit}
 .hb-btn.primary{background:var(--hg);color:#fff}
 .hb-btn.primary:hover{background:#5530c4}
 
+/* GitHub split — pessoal (Dados) · rede (Sistemas/Web), no topo do portfólio */
+.gh-links{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem .55rem;margin:.9rem 0 .2rem;
+  font-family:var(--mono);font-size:.8rem}
+.gh-links .gh-lead{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3)}
+.gh-link{text-decoration:none;color:var(--ink);border:1px solid var(--ink);border-radius:999px;
+  padding:.32rem .8rem;background:var(--bg2);letter-spacing:.01em;transition:background .12s,color .12s}
+.gh-link span{font-size:.6rem;letter-spacing:.04em;color:var(--ink3);margin-left:.3rem}
+.gh-link.gh-net{border-color:var(--accent);color:var(--accent)}
+.gh-link.gh-net span{color:var(--accent);opacity:.7}
+.gh-link.gh-me:hover{background:var(--ink);color:#fff}
+.gh-link.gh-me:hover span{color:#fff}
+.gh-link.gh-net:hover{background:var(--accent);color:#fff}
+.gh-link.gh-net:hover span{color:#fff}
+.gh-links .gh-sep{color:var(--ink3)}
+
 /* System Portfolio — LINHA DO TEMPO viva (grafo que cresce por slide) */
 .sysgraph{width:100%;margin:1.1rem 0 1.4rem;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+/* tabs das duas faixas (Sistemas / Web · Dados) */
+.sg-tabs{display:flex;gap:.4rem;padding:.55rem .7rem;border-bottom:1px solid var(--line);background:var(--bg)}
+.sg-tab{font-family:var(--mono);font-size:.72rem;font-weight:700;letter-spacing:.02em;cursor:pointer;
+  padding:.4rem .8rem;border:1px solid var(--line);border-radius:999px;background:var(--bg2);color:var(--ink2)}
+.sg-tab:hover{border-color:var(--ink3);color:var(--ink)}
+.sg-tab.on{background:var(--ink);border-color:var(--ink);color:#fff}
 .sg-canvas-wrap{position:relative;width:100%;height:500px;touch-action:none;
   background:radial-gradient(120% 120% at 50% 42%, #fff 0%, var(--bg2) 55%, #f4efe9 100%)}
 .sg-canvas-wrap canvas{display:block;width:100%;height:100%;cursor:grab}
@@ -154,7 +175,7 @@ a{color:inherit}
   border:1px solid var(--line);border-radius:50%;background:rgba(255,253,250,.9);color:var(--ink);cursor:pointer;
   box-shadow:0 3px 12px rgba(0,0,0,.12);backdrop-filter:blur(2px)}
 .sg-ov:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
-.sg-ov-prev{left:.7rem} .sg-ov-next{right:.7rem}
+.sg-ov-prev{left:1rem} .sg-ov-next{right:1rem}
 .sg-ov:disabled{opacity:0;pointer-events:none}
 /* painel da linha do tempo (anos + descrição + controles) */
 .sg-time{border-top:1px solid var(--line);background:var(--bg2);padding:.6rem .9rem 1rem}
@@ -169,10 +190,46 @@ a{color:inherit}
 .sg-pyear{font-family:var(--mono);font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
 .sg-ptitle{font-family:var(--mono);font-size:1.3rem;letter-spacing:-.01em;margin:.2rem 0 .5rem;color:var(--ink)}
 .sg-pbody{font-size:.92rem;line-height:1.6;color:var(--ink2);max-width:64ch}
+.sg-prefs{margin-top:.7rem;font-family:var(--mono);font-size:.72rem;color:var(--ink3);line-height:1.85;max-width:66ch}
+.sg-prefs b{color:var(--ink2);text-transform:uppercase;letter-spacing:.08em;font-size:.6rem;margin-right:.35rem}
+.sg-prefs a{color:var(--accent);text-decoration:none}
+.sg-prefs a:hover{text-decoration:underline}
 .sg-stats{margin-top:.9rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(6.5rem,1fr));gap:.6rem}
 .sg-stat{border:1px solid var(--line);border-radius:8px;padding:.5rem .65rem;background:#fff}
 .sg-stat b{display:block;font-family:var(--mono);font-size:1.25rem;color:var(--accent);letter-spacing:-.01em}
 .sg-stat span{font-size:.62rem;letter-spacing:.03em;color:var(--ink3)}
+/* growth panel (hoje): totais + curva commits/PRs/parceiros ao longo do tempo */
+.sg-growthbox{margin-top:.9rem}
+.sg-gtot{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem}
+.sg-stat.hover-list{position:relative;cursor:default}
+.sg-stat.hover-list b{cursor:help}
+.sg-names{display:none;position:absolute;left:0;bottom:calc(100% + 6px);z-index:6;width:max-content;max-width:240px;
+  font-family:var(--mono);font-size:.64rem;font-style:normal;line-height:1.5;color:var(--ink);
+  background:#fff;border:1px solid var(--line);border-radius:7px;padding:.45rem .6rem;box-shadow:0 6px 18px rgba(0,0,0,.14)}
+.sg-stat.hover-list:hover .sg-names{display:block}
+.sg-names a{color:var(--accent);text-decoration:none}
+.sg-names a:hover{text-decoration:underline}
+.sg-gwrap{position:relative;margin-top:.8rem}
+.sg-growth{display:block;width:100%;height:90px;border:1px solid var(--line);border-radius:8px;background:#fff;padding:2px}
+.sg-growth .sg-ghit{cursor:crosshair}
+.sg-growth .sg-gcursor{stroke:var(--ink3);stroke-width:1;stroke-dasharray:2 2;opacity:.55;pointer-events:none}
+.sg-gtip{position:absolute;top:-2px;z-index:7;transform:translateY(-100%);min-width:118px;pointer-events:none;
+  font-family:var(--mono);font-size:.6rem;line-height:1.5;color:var(--ink);
+  background:#fff;border:1px solid var(--line);border-radius:7px;padding:.4rem .55rem;box-shadow:0 6px 18px rgba(0,0,0,.16)}
+.sg-gtip b{font-weight:700}
+.sg-gtip > b{display:block;color:var(--accent);letter-spacing:.04em;margin-bottom:.2rem}
+.sg-gtip span{display:flex;align-items:center;gap:.3rem;white-space:nowrap}
+.sg-gtip span i{display:inline-block;width:9px;height:3px;border-radius:2px;flex:none}
+.sg-gtip span b{margin-left:auto;color:var(--ink)}
+.sg-gcap{margin-top:.45rem;font-family:var(--mono);font-size:.56rem;line-height:1.45;color:var(--ink3);font-style:italic}
+.sg-glabels{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.58rem;color:var(--ink3);margin-top:.2rem}
+.sg-gaxis{position:relative;height:.95rem;margin-top:.15rem}
+.sg-gaxis span{position:absolute;transform:translateX(-50%);font-family:var(--mono);font-size:.55rem;color:var(--ink3);white-space:nowrap}
+.sg-growth .sg-gmark{stroke:#c25a48;stroke-dasharray:2 3;opacity:.55}
+.sg-glegend .sg-proj{color:var(--ink3);font-style:italic}
+.sg-glegend i.sg-iproj{background:repeating-linear-gradient(90deg,#b7b1a9 0,#b7b1a9 4px,transparent 4px,transparent 7px);border-radius:0}
+.sg-glegend{margin-top:.5rem;display:flex;flex-wrap:wrap;gap:.3rem 1rem;font-family:var(--mono);font-size:.62rem;color:var(--ink2);align-items:center}
+.sg-glegend i{display:inline-block;width:14px;height:3px;border-radius:2px;margin-right:.25rem;vertical-align:middle}
 /* mini bar chart de crescimento (commits · PRs · parceiros) */
 .sg-chart{margin-top:.9rem;display:flex;flex-direction:column;gap:.5rem}
 .sg-bar{display:grid;grid-template-columns:5.2rem 1fr auto;align-items:center;gap:.6rem}
@@ -193,15 +250,13 @@ a{color:inherit}
   background:rgba(255,253,250,.82);border:1px solid var(--line);border-radius:7px;padding:.45rem .6rem;backdrop-filter:blur(2px)}
 .sg-legend span{display:flex;align-items:center;gap:.4rem;white-space:nowrap}
 .sg-legend i{display:inline-block;flex:none}
-.sg-legend i.d{width:12px;height:12px;border-radius:50%}
-.sg-legend i.d.root{background:var(--ink);border:1px solid #000}
-.sg-legend i.d.hub{background:var(--accent)}
-.sg-legend i.d.universe{background:#fbeae6;border:2px solid var(--accent)}
-.sg-legend i.d.infra{background:#e7eef7;border:2px solid #3a6ea5;box-shadow:0 0 4px rgba(58,110,165,.6)}
-.sg-legend i.d.partner{background:#f1ede8;border:2px dashed var(--ink3)}
-.sg-legend i.l{width:16px;height:0;border-top-width:2px}
-.sg-legend i.l.auth{border-top:2px solid var(--ink)}
-.sg-legend i.l.link{border-top:2px dashed var(--accent)}
+/* swatches = a mesma linguagem dos nós: preenchimento · borda (5 categorias) */
+.sg-legend i.d{width:13px;height:13px;border-radius:50%}
+.sg-legend i.d.origin{background:var(--ink);border:1px solid #000}
+.sg-legend i.d.system{background:#fffdfa;border:2px solid var(--ink)}
+.sg-legend i.d.organizacao{background:#fffdfa;border:2px dashed var(--ink3)}
+.sg-legend i.d.lead{background:#fffdfa;border:2px dotted #4f9e6f}
+.sg-legend i.d.work{width:9px;height:9px;background:#9a948d;border:1px solid var(--ink2)}  /* ponto */
 .sg-hint{position:absolute;right:.7rem;bottom:.55rem;font-family:var(--mono);font-size:.58rem;
   letter-spacing:.02em;color:var(--ink3);background:rgba(255,253,250,.7);border-radius:6px;padding:.2rem .45rem;pointer-events:none}
 .sg-tip{position:absolute;max-width:248px;z-index:3;font-size:.78rem;line-height:1.45;
@@ -216,10 +271,48 @@ a{color:inherit}
 .sg-tip .sg-role-root{background:#000;color:#fff}
 .sg-tip .sg-role-infra{background:#3a6ea5;color:#fff}
 .sg-tip span{display:block;margin-top:.4rem;color:#ece6df;font-size:.76rem}
+.sg-tip .sg-fig{display:block;margin-top:.5rem;width:100%;max-width:180px;height:auto;border-radius:6px;background:#fff;border:1px solid rgba(255,255,255,.14)}
 .sg-tip .sg-stack{margin-top:.4rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.02em;color:#b7d6c4}
 .sg-tip.pin{outline:2px solid var(--accent)}
-@media (max-width:560px){.sysgraph{height:440px}.sg-legend{font-size:.54rem}}
+.sg-tip .sg-prev-card{display:flex;align-items:center;gap:.4rem;margin-top:.5rem;padding:.3rem .45rem;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:7px;
+  text-decoration:none;font-family:var(--mono);font-size:.62rem;white-space:nowrap}
+.sg-tip .sg-prev-card:hover{background:rgba(255,255,255,.16);text-decoration:none}
+.sg-tip .sg-prev-card img{flex:0 0 auto;border-radius:3px;background:#fff}
+.sg-tip .sg-prev-host{display:inline;margin:0;color:#ffd9d0;overflow:hidden;text-overflow:ellipsis}
+.sg-tip .sg-repo{display:inline-flex;align-items:center;margin-top:.4rem;padding:.3rem .45rem;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:7px;
+  text-decoration:none;font-family:var(--mono);font-size:.62rem;white-space:nowrap;color:#ffd9d0}
+.sg-tip .sg-repo:hover{background:rgba(255,255,255,.16);text-decoration:none}
+/* mobile: o grafo tem altura fixa, mas a .sysgraph cresce com o conteúdo pra
+   NÃO clipar o painel de descrição (.sg-pyear/.sg-ptitle/.sg-pbody) abaixo do canvas */
+@media (max-width:560px){.sysgraph{height:auto;overflow:visible}.sg-canvas-wrap{border-radius:10px 10px 0 0;overflow:hidden}.sg-legend{font-size:.54rem}}
 
 /* poema (AL-61) — preserva quebras e estrofes */
 .entry.poem h1.title{margin-bottom:.4rem}
 .poembody .stanza{margin:1.1rem 0;font-size:1.08rem;line-height:1.7;max-width:54ch}
+
+/* chat widget (yuri/chat.js) — gated off até co ter provider acessível */
+.chat-fab{position:fixed;right:18px;bottom:18px;width:46px;height:46px;border-radius:50%;border:none;
+  background:var(--accent);color:#fff;font:700 1.2rem/1 var(--mono);cursor:pointer;z-index:50;
+  box-shadow:0 4px 14px rgba(0,0,0,.18)}
+.chat-fab.on{background:var(--ink)}
+.chat-panel{position:fixed;right:18px;bottom:74px;width:min(360px,calc(100vw - 36px));height:min(460px,70vh);
+  background:var(--bg2);border:1px solid var(--line);border-radius:12px;display:flex;flex-direction:column;
+  overflow:hidden;z-index:50;box-shadow:0 8px 30px rgba(0,0,0,.16)}
+.chat-head{display:flex;align-items:center;justify-content:space-between;padding:.6rem .8rem;border-bottom:1px solid var(--line)}
+.chat-title{font:700 .72rem/1 var(--mono);letter-spacing:.04em;color:var(--ink2);text-transform:uppercase}
+.chat-x{border:none;background:none;font-size:1.2rem;line-height:1;color:var(--ink2);cursor:pointer}
+.chat-log{flex:1;overflow-y:auto;padding:.8rem;display:flex;flex-direction:column;gap:.55rem}
+.chat-msg{max-width:85%;padding:.5rem .7rem;border-radius:10px;font-size:.86rem;white-space:pre-wrap;word-wrap:break-word}
+.chat-user{align-self:flex-end;background:var(--accent);color:#fff;border-bottom-right-radius:3px}
+.chat-assistant{align-self:flex-start;background:var(--bg);border:1px solid var(--line);border-bottom-left-radius:3px}
+.chat-form{display:flex;gap:.4rem;padding:.6rem;border-top:1px solid var(--line)}
+.chat-input{flex:1;border:1px solid var(--line);border-radius:8px;padding:.5rem .6rem;font-size:.86rem;font-family:inherit}
+.chat-input:focus{outline:2px solid var(--accent);outline-offset:-1px}
+.chat-send{border:none;background:var(--accent);color:#fff;border-radius:8px;padding:0 .8rem;font-size:1rem;cursor:pointer}
+
+/* rodapé do índice — link de serviços (substitui a antiga tira de identidade) */
+.index-foot{margin:2rem 0 .5rem;padding-top:1rem;border-top:1px solid var(--line);text-align:center}
+.index-foot a{font-family:var(--mono);font-size:.8rem;color:var(--ink2);text-decoration:none}
+.index-foot a:hover{color:var(--ink)}
