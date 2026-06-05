@@ -114,13 +114,53 @@
         .ts-bar {
             fill: #0a0a0a;
             transition: fill 0.15s ease;
+            cursor: pointer;
         }
         .ts-bar:hover { fill: #c0392b; }
+        .ts-bar.is-selected { fill: #c0392b; }
         .ts-axis-label {
             font-size: 9px;
             fill: #999;
             font-family: inherit;
         }
+        .ts-month-label {
+            font-size: 10px;
+            fill: #666;
+            font-weight: 700;
+            font-family: inherit;
+        }
+        .ts-readout {
+            font-size: 0.8rem;
+            color: #444;
+            font-variant-numeric: tabular-nums;
+            font-weight: 600;
+            min-height: 1.3em;
+            margin-bottom: 0.6vh;
+        }
+        .ts-readout .muted { color: #aaa; font-weight: 400; }
+        .day-filter {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin: 0.6vh 0 1.4vh;
+            font-size: 0.8rem;
+            flex-wrap: wrap;
+        }
+        .day-filter .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            background: #0a0a0a;
+            color: #fff;
+            border-radius: 999px;
+            padding: 0.5vh 0.85rem;
+            font-weight: 600;
+        }
+        .day-filter .chip button {
+            background: none; border: none; color: #fff; cursor: pointer;
+            font-size: 1rem; line-height: 1; padding: 0; font-weight: 700;
+        }
+        .day-filter .note { color: #999; }
 
         /* Tables */
         .a-table {
@@ -278,7 +318,9 @@
 
             <section class="a-section">
                 <h2>Visualizações ao longo do tempo</h2>
+                <div class="ts-readout" id="ts-readout"><span class="muted">Passe o mouse sobre uma barra · clique pra filtrar os dados abaixo por dia</span></div>
                 <div id="ts-host"></div>
+                <div class="day-filter" id="day-filter"></div>
             </section>
 
             <section class="a-section">
@@ -321,13 +363,20 @@
             "use strict";
             const ENDPOINT_BASE = "https://co.artelonga.com.br/api/v1/analytics/public";
             let activeDays = 30;
+            let selectedBucket = null;   // dia selecionado no gráfico (filtro), ou null
+            let lastTimeseries = [];     // último timeseries renderizado (p/ re-highlight)
 
             const $ = id => document.getElementById(id);
             const fmt = n => Number(n || 0).toLocaleString("pt-BR");
 
             // ─── FETCH ───────────────────────────────────────────────────────
-            async function fetchSummary(days) {
-                const url = `${ENDPOINT_BASE}/summary?days=${encodeURIComponent(days)}`;
+            // from/to são forward-compatible: o co ainda os ignora; quando passar a
+            // honrar (slice por dia), o filtro de clique usa o backend automaticamente
+            // (feature-detect em pickDay). Até lá, o fallback é client-side via /recent.
+            async function fetchSummary(days, from, to) {
+                let url = `${ENDPOINT_BASE}/summary?days=${encodeURIComponent(days)}`;
+                if (from) url += `&from=${encodeURIComponent(from)}`;
+                if (to) url += `&to=${encodeURIComponent(to)}`;
                 const res = await fetch(url, { credentials: "omit", mode: "cors" });
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 return res.json();
@@ -351,6 +400,7 @@
                 $("kpi-countries-sub").textContent = data.cities != null        ? `${fmt(data.cities)} cidades`     : "";
             }
             function renderTimeseries(host, ts) {
+                lastTimeseries = ts || [];
                 if (!ts || !ts.length) {
                     host.innerHTML = `<div class="empty-state">Sem dados pra esse intervalo.</div>`;
                     return;
@@ -363,19 +413,49 @@
                     const x = P + i * bw + bw * 0.15;
                     const y = H - P - h;
                     const w = bw * 0.7;
-                    return `<rect class="ts-bar" x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}">
-                        <title>${escapeHtml(p.bucket)}: ${fmt(p.count)} visualizações</title>
+                    const sel = p.bucket === selectedBucket ? " is-selected" : "";
+                    return `<rect class="ts-bar${sel}" data-bucket="${escapeHtml(p.bucket)}" data-count="${p.count || 0}" x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}">
+                        <title>${escapeHtml(fullDate(p.bucket))}: ${fmt(p.count)} visualizações</title>
                     </rect>`;
                 }).join("");
-                const labels = ts.length <= 14
-                    ? ts.map((p, i) => {
+                // Eixo X: um rótulo por MÊS (no primeiro bucket de cada mês). Para janelas
+                // curtas (≤14 dias) cai pra rótulos diários (dd/mm), que cabem sem poluir.
+                let labels;
+                if (ts.length <= 14) {
+                    labels = ts.map((p, i) => {
                         const cx = P + i * bw + bw / 2;
                         return `<text class="ts-axis-label" x="${cx.toFixed(1)}" y="${H - 8}" text-anchor="middle">${escapeHtml(shortDate(p.bucket))}</text>`;
-                      }).join("")
-                    : "";
+                    }).join("");
+                } else {
+                    let prevMonth = null;
+                    labels = ts.map((p, i) => {
+                        const d = new Date(`${p.bucket}T00:00:00`);
+                        if (isNaN(d.getTime())) return "";
+                        const key = d.getFullYear() * 12 + d.getMonth();
+                        if (key === prevMonth) return "";
+                        prevMonth = key;
+                        const cx = P + i * bw + bw / 2;
+                        const lab = d.toLocaleDateString("pt-BR", { month: "short" }).replace(".", "")
+                            + (d.getMonth() === 0 ? ` ${d.getFullYear()}` : "");
+                        return `<text class="ts-month-label" x="${cx.toFixed(1)}" y="${H - 8}" text-anchor="middle">${escapeHtml(lab)}</text>`;
+                    }).join("");
+                }
                 host.innerHTML = `<svg class="ts-chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Visualizações ao longo do tempo">
                     ${bars}${labels}
                 </svg>`;
+                // hover → leitura exata da data; clique → filtra dados abaixo por dia
+                const readout = $("ts-readout");
+                host.querySelectorAll("rect.ts-bar").forEach(rect => {
+                    rect.addEventListener("mouseenter", () => {
+                        if (readout) readout.innerHTML = `<strong>${escapeHtml(fullDate(rect.dataset.bucket))}</strong> · ${fmt(rect.dataset.count)} visualizações`;
+                    });
+                    rect.addEventListener("click", () => pickDay(rect.dataset.bucket));
+                });
+                if (readout) host.onmouseleave = () => {   // propriedade (não addEventListener) p/ não acumular em re-render
+                    readout.innerHTML = selectedBucket
+                        ? `<strong>${escapeHtml(fullDate(selectedBucket))}</strong> · filtrando dados abaixo`
+                        : `<span class="muted">Passe o mouse sobre uma barra · clique pra filtrar os dados abaixo por dia</span>`;
+                };
             }
             function renderTopPages(host, pages) {
                 if (!pages || !pages.length) {
@@ -507,6 +587,12 @@
                 if (isNaN(d.getTime())) return s;
                 return d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
             }
+            function fullDate(s) {
+                if (!s) return "";
+                const d = new Date(`${s}T00:00:00`);
+                if (isNaN(d.getTime())) return s;
+                return d.toLocaleDateString("pt-BR", { day: "numeric", month: "short", year: "numeric" }).replace(/\./g, "");
+            }
             function shortTime(ts) {
                 if (!ts) return "";
                 const d = new Date(typeof ts === "number" ? ts : ts);
@@ -519,9 +605,78 @@
                 return [city, country].filter(Boolean).join(" · ");
             }
 
+            // ─── DAY FILTER (clique no gráfico) ──────────────────────────────
+            function dayOf(ts) {
+                const d = new Date(typeof ts === "number" ? ts : Number(ts));
+                return isNaN(d.getTime()) ? "" : d.toISOString().slice(0, 10);
+            }
+            function renderDayFilter() {
+                const el = $("day-filter");
+                if (!el) return;
+                if (!selectedBucket) { el.innerHTML = ""; return; }
+                el.innerHTML = `<span class="chip">📅 ${escapeHtml(fullDate(selectedBucket))} <button id="day-clear" title="limpar filtro" aria-label="limpar filtro do dia">✕</button></span>
+                    <span class="note">dados abaixo filtrados por este dia</span>`;
+                const b = document.getElementById("day-clear");
+                if (b) b.onclick = clearDay;
+            }
+            function clearDay() {
+                selectedBucket = null;
+                renderDayFilter();
+                load(activeDays);
+            }
+            async function pickDay(bucket) {
+                if (selectedBucket === bucket) { clearDay(); return; }   // clicar de novo = desliga
+                selectedBucket = bucket;
+                renderDayFilter();
+                renderTimeseries($("ts-host"), lastTimeseries);          // re-highlight da barra
+                // 1) tenta fatiar no backend (forward-compatible). Detecta suporte:
+                //    timeseries de 1 bucket == dia pedido → co honrou ?from/&to.
+                try {
+                    const s = await fetchSummary(activeDays, bucket, bucket);
+                    if (s && Array.isArray(s.timeseries) && s.timeseries.length === 1 && s.timeseries[0].bucket === bucket) {
+                        renderKPIs(s);
+                        renderTopPages($("top-pages-host"), s.top_pages);
+                        renderGeo($("geo-host"), s.geo);
+                        const rec = await fetchRecent(50).catch(() => ({ events: [] }));
+                        renderRecent($("recent-host"), (rec.events || []).filter(e => dayOf(e.ts) === bucket));
+                        return;
+                    }
+                } catch (_) {}
+                // 2) fallback client-side via /recent (co ainda não fatia por dia)
+                await dayFromRecent(bucket);
+            }
+            async function dayFromRecent(bucket) {
+                const bucketCount = (lastTimeseries.find(p => p.bucket === bucket) || {}).count || 0;
+                $("kpi-views").textContent = fmt(bucketCount);
+                $("kpi-views-sub").textContent = "neste dia";
+                ["kpi-visitors", "kpi-sessions", "kpi-countries"].forEach(id => $(id).textContent = "—");
+                $("kpi-visitors-sub").textContent = $("kpi-sessions-sub").textContent = $("kpi-countries-sub").textContent = "por dia: requer backend";
+                let rec;
+                try { rec = await fetchRecent(400); } catch (_) { rec = { events: [] }; }
+                const dayEvents = (rec.events || []).filter(e => dayOf(e.ts) === bucket);
+                const counts = new Map();
+                dayEvents.forEach(e => { if (e.name === "page_view" && e.path) counts.set(e.path, (counts.get(e.path) || 0) + 1); });
+                const pages = [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 30).map(([path, c]) => ({ path, views: c }));
+                if (pages.length) {
+                    const max = Math.max(...pages.map(p => p.views)) || 1;
+                    $("top-pages-host").innerHTML = `<table class="a-table">
+                        <thead><tr><th>Caminho</th><th class="bar-cell">Distribuição</th><th class="num">Views</th></tr></thead>
+                        <tbody>${pages.map(p => `<tr><td class="path">${escapeHtml(p.path)}</td>
+                            <td class="bar-cell"><span class="a-bar-fill" style="width:${(p.views / max * 100).toFixed(1)}%"></span></td>
+                            <td class="num">${fmt(p.views)}</td></tr>`).join("")}</tbody></table>
+                        <div class="empty-state" style="margin-top:1vh">Top páginas do dia a partir do stream recente (até 400 eventos). Únicos e geo por dia ficam disponíveis quando o backend aceitar <code>?from</code>/<code>&to</code>.</div>`;
+                } else {
+                    $("top-pages-host").innerHTML = `<div class="empty-state">Sem eventos recentes para <strong>${escapeHtml(fullDate(bucket))}</strong> no buffer. Histórico por dia requer <code>?from</code>/<code>&to</code> no backend.</div>`;
+                }
+                $("geo-host").innerHTML = `<div class="empty-state">Geolocalização por dia requer o slice <code>?from</code>/<code>&to</code> no backend — o stream recente não traz país por evento.</div>`;
+                renderRecent($("recent-host"), dayEvents.slice(0, 50));
+            }
+
             // ─── ENTRY ───────────────────────────────────────────────────────
             async function load(days) {
                 activeDays = days;
+                selectedBucket = null;
+                renderDayFilter();
                 document.querySelectorAll(".range-chip").forEach(b =>
                     b.classList.toggle("is-active", Number(b.dataset.days) === days)
                 );
