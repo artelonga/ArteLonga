@@ -28,11 +28,12 @@ const KEYS = ["al_vid", "al_sid", "al_optout", "al_evq_v1", "al_utm"];
 const ALLOWED = new Set([
     path.join(ROOT, "src/lib/storage-keys.ts"),
     path.join(ROOT, "assets/analytics.js"),
+    path.join(ROOT, "yuri/telemetry.js"), // surface vanilla client: cópia própria; al_vid compartilhado com o apex
     path.join(ROOT, "tools/audit-storage-keys.mjs"), // the key list lives here too
 ]);
 
 const EXTENSIONS = new Set([".ts", ".js", ".mjs"]);
-const SKIP_DIRS = new Set(["node_modules", "dist", ".git"]);
+const SKIP_DIRS = new Set(["node_modules", "dist", ".git", ".worktrees"]);
 
 function* walkFiles(dir) {
     for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {

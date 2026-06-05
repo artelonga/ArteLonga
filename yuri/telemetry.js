@@ -13,6 +13,9 @@
   var dnt = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
   if (dnt === "1" || dnt === "yes") return;                 // respeita DNT
   var EP = "/api/track";
+  // chaves de storage — cópia vanilla (não importa TS; espelha src/lib/storage-keys.ts,
+  // como assets/analytics.js). VID_COOKIE é COMPARTILHADO com o apex (.artelonga.com.br).
+  var STORAGE_KEYS = { VID_COOKIE: "al_vid", VID: "al.vid", SID: "al.sid", UTM: "al.utm" };
 
   // ── identidade ────────────────────────────────────────────────────────────
   function getCookie(name) {
@@ -29,17 +32,17 @@
   function rid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 10); }
   // al_vid: cookie do apex primeiro (ponte cross-subdomínio), senão localStorage, senão cria.
   function vid() {
-    var v = getCookie("al_vid");
-    try { if (!v) v = localStorage.getItem("al.vid"); } catch (e) {}
+    var v = getCookie(STORAGE_KEYS.VID_COOKIE);
+    try { if (!v) v = localStorage.getItem(STORAGE_KEYS.VID); } catch (e) {}
     if (!v) v = rid();
-    try { localStorage.setItem("al.vid", v); } catch (e) {}
-    setCookie("al_vid", v);
+    try { localStorage.setItem(STORAGE_KEYS.VID, v); } catch (e) {}
+    setCookie(STORAGE_KEYS.VID_COOKIE, v);
     return v;
   }
   // al.sid: sessão por aba (sessionStorage).
   function sid() {
     try {
-      var k = "al.sid", v = sessionStorage.getItem(k);
+      var k = STORAGE_KEYS.SID, v = sessionStorage.getItem(k);
       if (!v) { v = rid(); sessionStorage.setItem(k, v); }
       return v;
     } catch (e) { return null; }
@@ -61,7 +64,7 @@
   // ── aquisição: UTM de primeiro toque (sessionStorage) — atribuição de campanha ──
   function firstTouchUtm() {
     try {
-      var k = "al.utm", saved = sessionStorage.getItem(k);
+      var k = STORAGE_KEYS.UTM, saved = sessionStorage.getItem(k);
       if (saved) return JSON.parse(saved);
       var p = new URLSearchParams(location.search), u = {};
       ["source", "medium", "campaign", "term", "content"].forEach(function (f) { var v = p.get("utm_" + f); if (v) u[f] = v.slice(0, 80); });
