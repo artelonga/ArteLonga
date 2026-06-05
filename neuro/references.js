@@ -102,6 +102,34 @@ window.NeuroCite = (function () {
     { key: "colab4", type: "notebook", authors: ["VIEIRA SUGANO, Yuri Yukio"], year: "2023", yearTag: "d",
       title: "Topic Modeling", platform: "Caderno Google Colab",
       url: "https://colab.research.google.com/drive/18xklFkuLHdatL_7M7gXZGISnJjypEiJs", access: "29 maio 2026" },
+
+    // ── fadiga linguística cognitiva (bilinguismo) ──────────────────────────
+    // Referência-web (tipo url: ponteiro SEM estado — reconstruível via Web Archive)
+    // + as três referências científicas que o post cita, na bibliografia.
+    { key: "albornoz2025", type: "web",
+      authors: ["ALBORNOZ, Lissie"], year: "2025",
+      title: "Cognitive language fatigue: when your brain refuses to read English — and how bilingual bar takers can overcome it",
+      publisher: "The LAW Way",
+      url: "https://lissiealbornoz.com/2025/11/18/cognitive-language-fatigue-when-your-brain-refuses-to-read-english-and-how-bilingual-bar-takers-can-overcome-it/",
+      access: "5 jun. 2026" },
+
+    { key: "kroll2013", type: "article",
+      authors: ["KROLL, Judith F.", "BIALYSTOK, Ellen"], year: "2013",
+      title: "Understanding the consequences of bilingualism for language processing and cognition",
+      container: "Journal of Cognitive Psychology", volume: "25", number: "5", pages: "497-514",
+      url: "https://doi.org/10.1080/20445911.2013.799170", access: "5 jun. 2026" },
+
+    { key: "camilleri2025", type: "article",
+      authors: ["CAMILLERI, Joeline"], year: "2025",
+      title: "Investigating cognitive fatigue and recall accuracy across different second-language (L2) idiom learning tasks",
+      container: "IRAL — International Review of Applied Linguistics in Language Teaching" },
+
+    { key: "ershaid2025", type: "article",
+      authors: ["ERSHAID, Hadeel"], year: "2025",
+      title: "Highly proficient bilinguals compensate language dominance effects with differential attentional resource allocation: insights from pupillometry",
+      container: "Bilingualism: Language and Cognition",
+      url: "https://www.cambridge.org/core/journals/bilingualism-language-and-cognition/article/highly-proficient-bilinguals-compensate-language-dominance-effects-with-differential-attentional-resource-allocation-insights-from-pupillometry/396B4A4CE20A3999389194EE1BE555BA",
+      access: "5 jun. 2026" },
   ];
 
   // ---- forma (ABNT) ----
