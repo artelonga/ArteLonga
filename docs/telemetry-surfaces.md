@@ -106,9 +106,17 @@ type TelemetryResponse = {
   access: {
     pageviews: number,
     sessions: number,        // unique session (por-aba; ver §5)
+    visitors: number,        // unique vid
+    returning: number,       // vid visto em >1 dia
     topPages: Array<{ n: number, page: string }>,     // top 12
     referrers: Array<{ n: number, ref: string }>      // top 8, externos (refDomain)
   },
+  acquisition: Array<{ n: number, source: string }>,  // utm_source → referrer → "(direto)", top 10
+  devices: Array<{ n: number, device: string }>,      // mobile/tablet/desktop por viewport
+  timeseries: Array<{ bucket: string, count: number }>,  // pageviews/dia
+  retention: { visitors, returning, bounceRate, dwellAvgMs, ... },
+  geo: Array<{ n: number, country: string }>,         // país (v4+v6), top 12
+  conversions: { total: number, top: Array<{ n: number, goal: string }> },
   interactions: {
     total: number,
     outbound: number,
@@ -145,17 +153,20 @@ redistribuição em repo público). Fonte:
 [`sapics/ip-location-db`](https://github.com/sapics/ip-location-db)
 `geo-whois-asn-country` — licença **CC0** (domínio público, commitável).
 
-Compilado por `tools/bake-geo.mjs` (baixa CSV → binário compacto). Formato:
+Compilado por `tools/bake-geo.mjs` (baixa os CSVs → binários compactos).
+**IPv4 e IPv6**, dois arquivos:
 
 ```
-header  : "AG41" (4B) + count uint32 LE (4B)
-starts  : count × uint32 LE    — limite inferior de cada faixa IPv4, ordenado
-codes   : count × 2 bytes ASCII — país ("\0\0" = desconhecido/gap)
+ip4-country.bin  AG41: magic(4) + count(u32 LE) + starts[count×u32 LE]  + codes[count×2B]
+ip6-country.bin  AG61: magic(4) + count(u32 LE) + starts[count×16B BE]  + codes[count×2B]
+codes = país ASCII 2B ("\0\0" = desconhecido/gap)
 ```
 
-Faixas adjacentes do mesmo país são coladas (push-on-change) → 334k faixas-fonte
-viram ~341k boundaries, **1.95 MB**. Lookup = `ip→uint32`, busca binária pelo
-maior `start ≤ ip`, devolve o país. IPv6/privado/desconhecido → `null`.
+Faixas adjacentes do mesmo país são coladas (push-on-change). v4: 334k faixas →
+341k boundaries, **1.95 MB**; v6: 214k faixas → 273k boundaries, **4.69 MB**.
+Lookup (`geoCountry`) despacha por família: IPv4 (ou `::ffff:a.b.c.d`) → busca
+binária por `uint32`; IPv6 → parse pra 16 bytes big-endian + busca binária por
+`Buffer.compare`. Privado/loopback/desconhecido → `null`.
 
 Regenerar: `node tools/bake-geo.mjs` (ou passar um CSV: `… /tmp/geo4.csv`).
 O `.bin` entra na imagem via `COPY yuri` (Dockerfile) — o reader é **inline** no
@@ -230,18 +241,63 @@ viola o princípio e recentraliza PII; (B) surface 100% self-owned sem co — pu
 mas cada surface reimplementa o cérebro de analytics e não há warehouse de
 horizonte longo sobrevivendo ao sleep. C = continuidade do A + ownership do B.
 
-### Lacunas de paridade a fechar na surface (substrato da Option C)
+### Paridade da surface (substrato da Option C) — estado
 
-Pra surface não regredir vs. co, o build de paridade (aprovado, parcialmente
-feito):
-
-| Capacidade | co tem | surface tem | gap |
+| Capacidade | co | surface | estado |
 |---|---|---|---|
-| timeseries diário | ✅ | ❌ | agregar `TrackEvent.t` por dia em `teleAgg` |
-| geo (país) | ✅ (país+cidade) | ⏳ binário pronto | ligar lookup no ingest `/api/track` |
-| retenção (novo/returning) | ✅ | ❌ | `al_vid` persistente (hoje `al.sid` por-aba) |
-| dwell / sessão | ✅ | ❌ | evento `page_end` com `active_ms` (visibilitychange/pagehide) |
-| conversão / funil | parcial | ❌ | mapa de goals client + agregação |
+| timeseries diário | ✅ | ✅ | `teleAgg` agrega `TrackEvent.t` por dia |
+| geo (país) | ✅ país+cidade | ✅ país (v4+v6) | binário embarcado no ingest; cidade = delta (§GA) |
+| retenção (novo/recorrente) | ✅ | ✅ | `al_vid` persistente (cookie apex) |
+| dwell / engajamento | ✅ | ✅ | `page_end` com `active_ms` |
+| rejeição (bounce) | ~ | ✅ | sessão ≤1 pageview e 0 interação |
+| conversão (goals) | ✅ | ✅ | regras built-in + `[data-goal]` |
+| aquisição (utm/origem) | ✅ | ✅ | `utm` first-touch → referrer → "(direto)" |
+| dispositivo | ✅ | ✅ | categoria por viewport (mobile/tablet/desktop) |
+
+---
+
+## 7. Paridade com Google Analytics (GA4)
+
+Objetivo: a telemetria entregar **tanto e tão granular quanto o GA** — sem cookies
+de terceiros, sem cross-site, self-hosted, raw exportável. Onde "surface" aparece,
+é o estado atual de `yuri.artelonga.com.br`.
+
+| GA4 | apex (co) | surface | nota |
+|---|---|---|---|
+| Pageviews | ✅ | ✅ | |
+| Sessões | ✅ | ✅ | por-aba (`al.sid`) |
+| Usuários únicos | ✅ | ✅ | `al_vid` |
+| Novo vs. recorrente | ✅ | ✅ | vid em >1 dia |
+| Tempo de engajamento | ✅ | ✅ | `page_end active_ms` / dwell |
+| Taxa de rejeição/engajamento | ~ | ✅ | bounce |
+| Eventos (custom) | ✅ | ✅ | pageview/interaction/page_end/goal |
+| Conversões (key events) | ✅ | ✅ | goals |
+| Aquisição (source/medium/campaign) | ✅ | ✅ | UTM first-touch + referrer |
+| Referrals | ✅ | ✅ | |
+| Geo país | ✅ | ✅ | v4+v6 embarcado |
+| Geo região/cidade | ✅ cidade | ⛔ país só | **delta** — exige dataset city (~centenas de MB) |
+| Dispositivo (categoria) | ~ | ✅ | viewport → mobile/tablet/desktop |
+| Browser / OS | ~ `ua_brand` | ⛔ | **delta** — exige parse de User-Agent |
+| Viewport / resolução | ✅ | ✅ | `vw` |
+| Idioma | ✅ | ✅ | `lang` |
+| Landing page | ✅ | ~ derivável | 1º pageview da sessão |
+| Scroll depth | ✅ | ⛔ | **delta** — listener 25/50/75/100% no client |
+| Cliques outbound | ✅ | ✅ | |
+| Tempo real | ✅ | ✅ | `recent` |
+| Funil / path | ~ | ~ goals | **delta** — funil multi-step |
+| Coorte / curva de retenção | ~ | ~ novo/recorrente | **delta** — curva de coorte |
+| **Demografia (idade/gênero/interesses)** | ⛔ | ⛔ | **deliberado** — GA depende de Google Signals (cross-site, vende identidade); viola o princípio de privacidade. Não fazemos. |
+| **Audiências / segmentos cross-site** | ⛔ | ⛔ | **deliberado** — idem |
+| Export raw (BigQuery-like) | ~ admin export | ✅ | NDJSON é a fonte da verdade, exportável |
+
+**Conclusão:** no **core que respeita privacidade**, a surface está **igual ou
+acima** do GA (self-hosted, sem terceiros, raw exportável, geo v4+v6). Os pilares
+do GA que **não** cobrimos são os de **vigilância** (demografia via Google Signals,
+audiências cross-site) — omitidos por princípio, não por limitação.
+
+**Deltas de granularidade ainda abertos** (nenhum exige comprometer privacidade,
+todos incrementais): geo cidade, browser/OS (parse UA), scroll depth, funil
+multi-step e curva de coorte. Priorizar sob demanda.
 
 ---
 
