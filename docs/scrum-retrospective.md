@@ -20,7 +20,7 @@ que simula os releases reais como sprints quinzenais (quinta-feira, 15h BRT).
 
 ## 1. Do funil à entrega do kanban
 
-A conversão (último passo do funil — ver [`docs/lead-acquisition.md`](../docs/lead-acquisition.md))
+A conversão (último passo do funil — ver [`lead-acquisition`](./lead-acquisition.md))
 **dispara o provisionamento do board Scrum** do parceiro no co:
 
 ```mermaid
@@ -166,8 +166,8 @@ DoD** — exatamente o "calendário com as definitions of done dos requisitos en
 
 ## Referências
 
-- [`scrum.md`](./scrum.md) — o framework (papéis, eventos, artefatos) + guia oficial.
-- [`docs/lead-acquisition.md`](../docs/lead-acquisition.md) — o funil até a conversão.
-- [`docs/brain-as-a-service.md`](../docs/brain-as-a-service.md) — onboarding + KPIs.
+- [**/scrum/** (parceiro)](/scrum/) — o framework Scrum (papéis, eventos, artefatos) + guia oficial. *Scrum é um parceiro; esta doc é a entrega da ArteLonga, e linka pra ele.*
+- [`lead-acquisition`](./lead-acquisition.md) — o funil até a conversão.
+- [`brain-as-a-service`](./brain-as-a-service.md) — onboarding + KPIs.
 - `work/artelonga/AL-N.md` — o product backlog existente (43 itens).
 - `CHANGELOG.md` — os requisitos entregues (a base da retrospectiva).

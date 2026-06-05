@@ -37,10 +37,16 @@
     "audit-handles": "node tools/audit-handles.mjs",
     "audit-storage-keys": "node tools/audit-storage-keys.mjs",
     "audit": "npm run audit-shells && npm run audit-consistency && npm run audit-handles && npm run audit-storage-keys",
+    "bake-docs": "node tools/bake-docs.mjs",
     "typecheck": "tsc --noEmit",
     "pre-commit": "node tools/pre-commit-check.mjs",
     "test": "playwright test",
     "ship": "node tools/al-ship.mjs",
+    "deploy": "node tools/deploy-surface.mjs",
+    "deploy-check": "node tools/deploy-surface.mjs --check-only",
+    "deploy:yuri": "node tools/deploy-surface.mjs yuri",
+    "deploy:hostinger": "node tools/deploy-surface.mjs hostinger",
+    "deploy:comunicacao": "node tools/deploy-surface.mjs comunicacao",
     "prepare": "husky"
   }
 }

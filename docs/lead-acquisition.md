@@ -2,7 +2,7 @@
 
 The end-to-end lead-acquisition journey as wired today, step by step from the user's
 side, with what observes each step and where the gaps are. Feeds the Scrum delivery
-([`scrum/retrospective.md`](../scrum/retrospective.md)) and the BaaS onboarding
+([`scrum-retrospective.md`](./scrum-retrospective.md)) and the BaaS onboarding
 ([`brain-as-a-service.md`](./brain-as-a-service.md)).
 
 ```mermaid

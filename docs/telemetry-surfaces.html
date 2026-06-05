@@ -1,0 +1,602 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Telemetria — surfaces universe-owned &amp; convergência — Arte Longa</title>
+<meta name="robots" content="noindex, nofollow"><style>
+  :root{--ink:#0a0a0a;--ink2:#444;--ink3:#888;--line:#e7e1da;--bg:#fbf9f6;--bg2:#fff;--accent:#9a3b2e}
+  *{box-sizing:border-box} body{font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+    max-width:820px;margin:0 auto;padding:4vh 1.4rem 10vh;line-height:1.6;color:var(--ink);background:var(--bg)}
+  a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(154,59,46,.25)}a:hover{border-bottom-color:var(--accent)}
+  h1{font-size:2.1rem;letter-spacing:-.02em;line-height:1.12;margin:.3em 0 .2em}
+  h2{font-size:1.3rem;margin:1.8em 0 .4em;border-top:1px solid var(--line);padding-top:.8em}
+  h3{font-size:1.02rem;margin:1.3em 0 .3em}
+  blockquote{margin:1.2em 0;padding:.7em 1.1em;background:var(--bg2);border-left:3px solid var(--accent);border-radius:8px;color:var(--ink2);font-size:.95rem}
+  ul,ol{padding-left:1.3em}li{margin:.15em 0}
+  table{border-collapse:collapse;width:100%;font-size:.86rem;margin:1.2em 0;display:block;overflow-x:auto}
+  th,td{border:1px solid var(--line);padding:.45rem .6rem;text-align:left;vertical-align:top}
+  th{background:var(--bg2);font-weight:700}
+  code{background:var(--bg2);border:1px solid var(--line);border-radius:4px;padding:.05em .35em;font-size:.85em}
+  pre{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:1em;overflow-x:auto}pre code{border:0;background:none;padding:0}
+  hr{border:0;border-top:1px solid var(--line);margin:2em 0}
+  .mermaid svg{max-width:100%;height:auto;background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:.6rem}
+  .crumb{font-size:.8rem;color:var(--ink3);margin-bottom:2em}
+  .grp{margin:1.4em 0}.grp h2{border:0;padding:0;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink3)}
+  .doclist{list-style:none;padding:0}.doclist li{margin:.5em 0}.doclist .src{font-size:.72rem;color:var(--ink3)}
+  .tag{font-size:.6rem;font-weight:700;border-radius:999px;padding:.05rem .45rem;letter-spacing:.04em;vertical-align:middle}
+  .tag.dev{background:#eef1f6;color:var(--ink3)}.tag.pub{background:#e6f1e8;color:#3a7d44}</style></head><body>
+<div class="crumb"><a href="/">Arte Longa</a> · <a href="/docs/">docs</a> · <span>dev (noindex)</span></div>
+<h1>Telemetria — surfaces universe-owned &amp; convergência</h1>
+<p>Companheiro de <a href="./analytics-api.html"><code>analytics-api.md</code></a>. Aquele documenta o
+sistema <strong>co marketing-batch</strong> (apex <code>artelonga.com.br</code> → co, dashboard
+<code>/analytics/</code>). Este documenta o <strong>segundo sistema</strong> — telemetria
+<strong>universe-owned</strong> das surfaces CNAME — e o <strong>design de convergência</strong> que mantém
+a observabilidade de tempo de um parceiro contínua quando ele é promovido de
+path (<code>/yuri/</code>) pra surface própria (<code>yuri.artelonga.com.br</code>).</p>
+<h2>Mapa dos dois sistemas</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>co marketing-batch</strong></th>
+<th><strong>surface universe-owned</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Onde roda</td>
+<td><code>artelonga.com.br</code> + paths</td>
+<td>surfaces CNAME (<code>yuri.artelonga.com.br</code>, <code>hostinger.…</code>, <code>comunicacao.…</code>)</td>
+</tr>
+<tr>
+<td>Cliente</td>
+<td><code>assets/analytics.js</code> (rico, GA-like)</td>
+<td><code>yuri/telemetry.js</code> (beacon mínimo) + <code>yuri/feedback.js</code></td>
+</tr>
+<tr>
+<td>Ingest</td>
+<td><code>POST co/api/v1/telemetry/events</code></td>
+<td><code>POST /api/track</code>, <code>POST /api/feedback</code> (mesma origem)</td>
+</tr>
+<tr>
+<td>Servidor</td>
+<td><code>artelonga/co</code> (Rust/Axum, SQLite)</td>
+<td><code>tools/surfaces-server.mjs</code> (Node stdlib, Fly)</td>
+</tr>
+<tr>
+<td>Storage</td>
+<td><code>telemetry_events</code> (SQL)</td>
+<td>NDJSON <code>/data/telemetry-&lt;universe&gt;.jsonl</code> (volume Fly)</td>
+</tr>
+<tr>
+<td>Leitura</td>
+<td><code>co/api/v1/analytics/public/{summary,recent}</code></td>
+<td><code>GET /api/telemetry</code> (agrega surfaces irmãs server-side)</td>
+</tr>
+<tr>
+<td>Dashboard</td>
+<td><code>artelonga.com.br/analytics/</code></td>
+<td><code>&lt;surface&gt;/analytics/</code> (ex. <code>yuri.artelonga.com.br/analytics</code>)</td>
+</tr>
+<tr>
+<td>Princípio</td>
+<td>co é a fonte de leitura</td>
+<td><strong>a universe é dona da telemetria; co é alvo de broadcast consentido, nunca fonte de leitura</strong> (<code>surfaces-server.mjs:28</code>)</td>
+</tr>
+</tbody></table>
+<p>O princípio universe-owned é deliberado: acesso/interação <strong>não</strong> vão pro co —
+só o <strong>feedback</strong> (consentido no envio) é broadcastado. Ver <code>feedback</code> abaixo.</p>
+<hr>
+<h2>1. Endpoints da surface (<code>tools/surfaces-server.mjs</code>)</h2>
+<p>Servidor de UMA surface por app Fly, parametrizado por env (§4). Sem
+dependências além da stdlib do Node.</p>
+<h3><code>POST /api/track</code> — acesso + interação (beacon)</h3>
+<p>Recebe pageview/interaction do cliente (<code>yuri/telemetry.js</code>, via <code>sendBeacon</code>).
+Mesma origem, sem CORS. Body ≤ 8 KiB. Resposta <code>204 No Content</code>.</p>
+<p>Request body:</p>
+<pre><code class="language-ts">type TrackBody = {
+  kind: "pageview" | "interaction",   // default "pageview"
+  page?: string,        // location.pathname + search
+  referrer?: string | null,
+  session?: string,     // al.sid — sessionStorage, POR ABA (ver continuidade §5)
+  action?: string | null,    // ex. "click"
+  target?: string | null,    // href clicado (≤ 200 chars)
+  outbound?: boolean,        // saiu do host atual
+  lang?: string | null,
+  vw?: number | null,        // viewport width
+  t?: string                 // ISO timestamp (cliente); server usa se presente
+}
+</code></pre>
+<p>Persistido como uma linha NDJSON (<code>teleSave</code>):</p>
+<pre><code class="language-ts">type TrackEvent = {
+  t: string,                 // ISO
+  universe: string,          // = FEEDBACK_UNIVERSE
+  kind: "pageview" | "interaction",
+  page, referrer, session, action, target, outbound, lang, vw
+  // PLANEJADO (Option C, §3): country  ← resolvido server-side no ingest
+}
+</code></pre>
+<h3><code>POST /api/feedback</code> — feedback consentido (broadcast pro co)</h3>
+<p>Recebe o modal "Fale Conosco" (<code>yuri/feedback.js</code>). Body ≤ 16 KiB. Loga no
+stdout (→ <code>fly logs</code>), persiste no NDJSON da universe <strong>e</strong> encaminha pro co.</p>
+<p>Request body:</p>
+<pre><code class="language-ts">type FeedbackBody = {
+  message: string,
+  sentiment?: -1 | 0 | 1,    // 👎 / • / 👍
+  entry_path?: string,       // ou page
+  kind?: string,             // default "feedback"
+  name?: string,
+  email?: string,            // ou contact
+}
+</code></pre>
+<p>Broadcast pro co: <code>POST $CO_FEEDBACK</code> (default
+<code>https://co.artelonga.com.br/api/v1/feedback</code>) com
+<code>{ universe, kind, message, entry_path, name, email }</code>. O status fica no
+evento (<code>broadcast.co ∈ {ok, failed, pending}</code>, <code>broadcast.status</code> = HTTP).
+<strong>Co é só alvo de broadcast</strong> — o NDJSON local é a fonte da verdade.
+Resposta: <code>200 {ok, broadcast}</code>.</p>
+<h3><code>GET /api/telemetry</code> — leitura agregada (estado da universe)</h3>
+<p>Agrega o NDJSON local + as <strong>surfaces irmãs</strong> (<code>$SIBLINGS</code>, server-side, sem
+CORS). <code>?local=1</code> = só esta surface (usado na agregação pra evitar recursão).
+Cache: nenhum (calculado on-read sobre <code>TELE_MEM</code>). Shape real (verificado):</p>
+<pre><code class="language-ts">type TelemetryResponse = {
+  universe: string,
+  surface: string,           // ex. "/yuri/"
+  source: "universe-state",
+  durable: boolean,          // true só com volume montado (TELEMETRY_DURABLE=1)
+  co: { endpoint, role: "broadcast-target", read: false, verify: string },
+  total: number,             // total de eventos
+  access: {
+    pageviews: number,
+    sessions: number,        // unique session (por-aba; ver §5)
+    visitors: number,        // unique vid
+    returning: number,       // vid visto em &gt;1 dia
+    topPages: Array&lt;{ n: number, page: string }&gt;,     // top 12
+    referrers: Array&lt;{ n: number, ref: string }&gt;      // top 8, externos (refDomain)
+  },
+  acquisition: Array&lt;{ n: number, source: string }&gt;,  // utm_source → referrer → "(direto)", top 10
+  devices: Array&lt;{ n: number, device: string }&gt;,      // mobile/tablet/desktop por viewport
+  timeseries: Array&lt;{ bucket: string, count: number }&gt;,  // pageviews/dia
+  retention: { visitors, returning, bounceRate, dwellAvgMs, ... },
+  geo: Array&lt;{ n: number, country: string }&gt;,         // país (v4+v6), top 12
+  cities: Array&lt;{ n: number, city: string }&gt;,         // "cidade, país" (IPv4 · DB-IP), top 12
+  conversions: { total: number, top: Array&lt;{ n: number, goal: string }&gt; },
+  interactions: {
+    total: number,
+    outbound: number,
+    topTargets: Array&lt;{ n: number, target: string }&gt;  // top 10
+  },
+  feedback: {
+    total: number,
+    bySentiment: { up: number, neutral: number, down: number },
+    broadcast: { ok: number, failed: number, pending: number },
+    recent: Array&lt;{ t, page, sentiment, message, broadcast, surface }&gt;  // últimos 20
+  },
+  recent: Array&lt;{ t, kind, page, action, target, outbound, message, surface }&gt;, // últimos 25
+  surfaces: Array&lt;{ surface, url, ok, total, durable, self? }&gt;   // esta + irmãs
+}
+</code></pre>
+<h3><code>GET /api/health</code></h3>
+<p><code>200 {"ok":true,"surface":"/yuri/","mode":"static"}</code>.</p>
+<h3>Não-telemetria</h3>
+<p><code>/analytics</code> → serve <code>&lt;surface&gt;/analytics/index.html</code>. <code>MODE=iframe</code> →
+joga <code>REDIRECT_URL</code> num iframe + carrega feedback. <code>MODE=redirect</code> → 302.
+Resto = arquivo estático (cache <code>max-age=60</code>).</p>
+<hr>
+<h2>2. Geo embarcado (<code>yuri/geo/*.bin</code>)</h2>
+<p>Geo é resolvido <strong>embarcado, self-hosted, sem chamada externa por request</strong> —
+escolha consciente vs. GeoLite2 (license key + proíbe redistribuição). País via
+<a href="https://github.com/sapics/ip-location-db"><code>sapics/ip-location-db</code></a>
+<code>geo-whois-asn-country</code> (<strong>CC0</strong>); cidade via DB-IP City Lite (<strong>CC-BY</strong>, §abaixo).</p>
+<blockquote>
+<p><strong>Geo é DATA de runtime, não content+form.</strong> Os binários <strong>não são commitados</strong>
+nem servidos por GH Pages — são <strong>baixados + compilados no build da imagem</strong>
+(<code>Dockerfile</code> → <code>RUN bake-geo</code>), e excluídos do git (<code>.gitignore</code>) e do
+build-context (<code>.dockerignore yuri/geo/*.bin</code>). Assim o repo de conteúdo fica
+limpo e o deploy é reproduzível independente do estado local.</p>
+<p><strong>Local dev:</strong> rode <code>node tools/bake-geo.mjs</code> (país) e <code>node tools/bake-geo.mjs --city</code> (cidade) uma vez pra popular <code>yuri/geo/</code> no seu clone; sem isso o server
+sobe sem geo (degrada pra <code>null</code>, sem crash).</p>
+</blockquote>
+<p>Compilado por <code>tools/bake-geo.mjs</code> (baixa os CSVs → binários compactos).
+País em <strong>IPv4 e IPv6</strong>, dois arquivos:</p>
+<pre><code>ip4-country.bin  AG41: magic(4) + count(u32 LE) + starts[count×u32 LE]  + codes[count×2B]
+ip6-country.bin  AG61: magic(4) + count(u32 LE) + starts[count×16B BE]  + codes[count×2B]
+codes = país ASCII 2B ("\0\0" = desconhecido/gap)
+</code></pre>
+<p>Faixas adjacentes do mesmo país são coladas (push-on-change). v4: 334k faixas →
+341k boundaries, <strong>1.95 MB</strong>; v6: 214k faixas → 273k boundaries, <strong>4.69 MB</strong>.
+Lookup (<code>geoCountry</code>) despacha por família: IPv4 (ou <code>::ffff:a.b.c.d</code>) → busca
+binária por <code>uint32</code>; IPv6 → parse pra 16 bytes big-endian + busca binária por
+<code>Buffer.compare</code>. Privado/loopback/desconhecido → <code>null</code>.</p>
+<p><strong>Cidade (opcional, IPv4):</strong> <code>ip4-city.bin</code> (formato <code>AGC4</code> — starts <code>u32</code> +
+índice <code>u32</code> numa tabela <code>país|região|cidade</code> deduplicada). Fonte: <strong>DB-IP City
+Lite</strong>, licença <strong>CC-BY-4.0</strong> → exige atribuição visível ("IP Geolocation by
+DB-IP", presente no dashboard). É grande (~31 MB, e o set IPv6 é ~98 MB gz), então
+<strong>não é commitado</strong>: o <code>Dockerfile</code> baixa + compila no build
+(<code>bake-geo.mjs --city</code>), dentro da imagem, fora do git e do build context. Se
+faltar, a surface cai pra geo de país. <strong>IPv6 resolve em nível de país</strong> (sem city
+v6).</p>
+<p>Regenerar: <code>node tools/bake-geo.mjs</code> (ou passar um CSV: <code>… /tmp/geo4.csv</code>).
+O <code>.bin</code> entra na imagem via <code>COPY yuri</code> (Dockerfile) — o reader é <strong>inline</strong> no
+<code>surfaces-server.mjs</code> (o Dockerfile só copia esse <code>.mjs</code> + <code>yuri/</code>).</p>
+<blockquote>
+<p><strong>Privacidade:</strong> o país é derivado no ingest a partir de <code>Fly-Client-IP</code> e só o
+país é gravado — o IP cru <strong>nunca</strong> é persistido nem sai da surface.</p>
+</blockquote>
+<hr>
+<h2>3. Convergência — parceiro upgrade &amp; observabilidade de tempo contínua</h2>
+<p><strong>Problema:</strong> quando um parceiro é promovido de path (<code>/yuri/</code>, telemetria no co:
+timeseries/geo/retenção) pra surface CNAME (<code>yuri.artelonga.com.br</code>, NDJSON:
+só contagens), ele (a) <strong>perde</strong> o gráfico de tempo, geo, retenção e (b) sofre
+<strong>descontinuidade</strong> na série (histórico no co, novo na NDJSON). O upgrade deveria
+ser melhoria estrita — hoje é regressão.</p>
+<p><strong>Design escolhido — Option C: edge dono do raw + co warehouse de rollups
+consentidos (sem PII).</strong></p>
+<pre><code>visitante → surface
+  ├─ NDJSON raw ............ fonte da verdade, universe-owned, nunca sai
+  │                          (geo resolvido aqui → só país, IP descartado)
+  ├─ /analytics ............ dash local fino (lê raw)
+  └─ rollup diário ......... {universe, day, views, visitors, sessions,
+                              dwell, geo[], goals[]} — consentido, só contagens,
+                              zero PII ──▶ co warehouse
+co warehouse (série diária por universe)
+  ├─ histórico pré-upgrade (rollup único dos eventos /yuri raw do co)
+  └─ rollups pós-upgrade (append)  ──▶ UMA série contínua, keyed by universe
+dashboard rede: /analytics?universe=yuri ──lê──▶ co warehouse
+</code></pre>
+<p>Por que C: honra o princípio universe-owned (raw fica no edge; só agregado
+consentido sem PII vai pro co — mesmo modelo do feedback); a série é contínua no
+upgrade (mesma key <code>universe</code>); sobrevive ao sleep da máquina (rollup on
+cold-start + cron externo, não timer residente — surfaces têm
+<code>min_machines_running=0</code>); PII fica no edge (só histograma de país sai).</p>
+<p><strong>Rollup schema (planejado):</strong></p>
+<pre><code class="language-ts">type DailyRollup = {
+  universe: string,          // "yuri" — estável path↔CNAME
+  day: string,               // YYYY-MM-DD (UTC)
+  views: number, visitors: number, sessions: number,
+  bounce: number,            // sessões com 1 pageview e 0 interação / total
+  dwell_avg_ms: number,
+  geo: Array&lt;{ country: string, n: number }&gt;,
+  goals: Array&lt;{ name: string, n: number }&gt;   // conversões
+}
+// POST consentido → co warehouse, keyed by (universe, day). Idempotente (upsert).
+</code></pre>
+<p><strong>Runbook do upgrade (uma vez por promoção):</strong></p>
+<ol>
+<li><strong>Freeze</strong> — marca o timestamp de corte <code>T</code>.</li>
+<li><strong>Backfill</strong> — exporta eventos pré-<code>T</code> do parceiro do co
+(<code>GET /api/v1/admin/telemetry/export</code>, filtrado a <code>/&lt;handle&gt;/*</code>), rola pra
+série diária sob <code>universe=&lt;handle&gt;</code>.</li>
+<li><strong>Ponte de identidade</strong> — surface adota <code>al_vid</code> (cookie apex
+<code>.artelonga.com.br</code>) no lugar do <code>al.sid</code> por-aba, pra retenção atravessar.</li>
+<li><strong>Cutover</strong> — surface começa a emitir rollups pra <code>≥ T</code>; linhas <code>/&lt;handle&gt;/*</code>
+no dash da rede são redirecionadas/anotadas pra surface.</li>
+<li><strong>Verifica</strong> — consulta a série no warehouse cruzando <code>T</code>: sem gap, sem
+dupla contagem.</li>
+</ol>
+<p><strong>Alternativas descartadas:</strong> (A) encaminhar todo raw pro co + <code>?universe</code> —
+viola o princípio e recentraliza PII; (B) surface 100% self-owned sem co — pura,
+mas cada surface reimplementa o cérebro de analytics e não há warehouse de
+horizonte longo sobrevivendo ao sleep. C = continuidade do A + ownership do B.</p>
+<h3>Paridade da surface (substrato da Option C) — estado</h3>
+<table>
+<thead>
+<tr>
+<th>Capacidade</th>
+<th>co</th>
+<th>surface</th>
+<th>estado</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>timeseries diário</td>
+<td>✅</td>
+<td>✅</td>
+<td><code>teleAgg</code> agrega <code>TrackEvent.t</code> por dia</td>
+</tr>
+<tr>
+<td>geo</td>
+<td>✅ país+cidade</td>
+<td>✅ país (v4+v6) + cidade (IPv4)</td>
+<td>binários embarcados; city via DB-IP na imagem; v6 city = delta</td>
+</tr>
+<tr>
+<td>retenção (novo/recorrente)</td>
+<td>✅</td>
+<td>✅</td>
+<td><code>al_vid</code> persistente (cookie apex)</td>
+</tr>
+<tr>
+<td>dwell / engajamento</td>
+<td>✅</td>
+<td>✅</td>
+<td><code>page_end</code> com <code>active_ms</code></td>
+</tr>
+<tr>
+<td>rejeição (bounce)</td>
+<td>~</td>
+<td>✅</td>
+<td>sessão ≤1 pageview e 0 interação</td>
+</tr>
+<tr>
+<td>conversão (goals)</td>
+<td>✅</td>
+<td>✅</td>
+<td>regras built-in + <code>[data-goal]</code></td>
+</tr>
+<tr>
+<td>aquisição (utm/origem)</td>
+<td>✅</td>
+<td>✅</td>
+<td><code>utm</code> first-touch → referrer → "(direto)"</td>
+</tr>
+<tr>
+<td>dispositivo</td>
+<td>✅</td>
+<td>✅</td>
+<td>categoria por viewport (mobile/tablet/desktop)</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>7. Paridade com Google Analytics (GA4)</h2>
+<p>Objetivo: a telemetria entregar <strong>tanto e tão granular quanto o GA</strong> — sem cookies
+de terceiros, sem cross-site, self-hosted, raw exportável. Onde "surface" aparece,
+é o estado atual de <code>yuri.artelonga.com.br</code>.</p>
+<table>
+<thead>
+<tr>
+<th>GA4</th>
+<th>apex (co)</th>
+<th>surface</th>
+<th>nota</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Pageviews</td>
+<td>✅</td>
+<td>✅</td>
+<td></td>
+</tr>
+<tr>
+<td>Sessões</td>
+<td>✅</td>
+<td>✅</td>
+<td>por-aba (<code>al.sid</code>)</td>
+</tr>
+<tr>
+<td>Usuários únicos</td>
+<td>✅</td>
+<td>✅</td>
+<td><code>al_vid</code></td>
+</tr>
+<tr>
+<td>Novo vs. recorrente</td>
+<td>✅</td>
+<td>✅</td>
+<td>vid em &gt;1 dia</td>
+</tr>
+<tr>
+<td>Tempo de engajamento</td>
+<td>✅</td>
+<td>✅</td>
+<td><code>page_end active_ms</code> / dwell</td>
+</tr>
+<tr>
+<td>Taxa de rejeição/engajamento</td>
+<td>~</td>
+<td>✅</td>
+<td>bounce</td>
+</tr>
+<tr>
+<td>Eventos (custom)</td>
+<td>✅</td>
+<td>✅</td>
+<td>pageview/interaction/page_end/goal</td>
+</tr>
+<tr>
+<td>Conversões (key events)</td>
+<td>✅</td>
+<td>✅</td>
+<td>goals</td>
+</tr>
+<tr>
+<td>Aquisição (source/medium/campaign)</td>
+<td>✅</td>
+<td>✅</td>
+<td>UTM first-touch + referrer</td>
+</tr>
+<tr>
+<td>Referrals</td>
+<td>✅</td>
+<td>✅</td>
+<td></td>
+</tr>
+<tr>
+<td>Geo país</td>
+<td>✅</td>
+<td>✅</td>
+<td>v4+v6 embarcado</td>
+</tr>
+<tr>
+<td>Geo região/cidade</td>
+<td>✅ cidade</td>
+<td>✅ cidade (IPv4) / país (IPv6)</td>
+<td>DB-IP City Lite (CC-BY) compilado na imagem; <strong>delta</strong> = city IPv6</td>
+</tr>
+<tr>
+<td>Dispositivo (categoria)</td>
+<td>~</td>
+<td>✅</td>
+<td>viewport → mobile/tablet/desktop</td>
+</tr>
+<tr>
+<td>Browser / OS</td>
+<td>~ <code>ua_brand</code></td>
+<td>⛔</td>
+<td><strong>delta</strong> — exige parse de User-Agent</td>
+</tr>
+<tr>
+<td>Viewport / resolução</td>
+<td>✅</td>
+<td>✅</td>
+<td><code>vw</code></td>
+</tr>
+<tr>
+<td>Idioma</td>
+<td>✅</td>
+<td>✅</td>
+<td><code>lang</code></td>
+</tr>
+<tr>
+<td>Landing page</td>
+<td>✅</td>
+<td>~ derivável</td>
+<td>1º pageview da sessão</td>
+</tr>
+<tr>
+<td>Scroll depth</td>
+<td>✅</td>
+<td>⛔</td>
+<td><strong>delta</strong> — listener 25/50/75/100% no client</td>
+</tr>
+<tr>
+<td>Cliques outbound</td>
+<td>✅</td>
+<td>✅</td>
+<td></td>
+</tr>
+<tr>
+<td>Tempo real</td>
+<td>✅</td>
+<td>✅</td>
+<td><code>recent</code></td>
+</tr>
+<tr>
+<td>Funil / path</td>
+<td>~</td>
+<td>~ goals</td>
+<td><strong>delta</strong> — funil multi-step</td>
+</tr>
+<tr>
+<td>Coorte / curva de retenção</td>
+<td>~</td>
+<td>~ novo/recorrente</td>
+<td><strong>delta</strong> — curva de coorte</td>
+</tr>
+<tr>
+<td><strong>Demografia (idade/gênero/interesses)</strong></td>
+<td>⛔</td>
+<td>⛔</td>
+<td><strong>deliberado</strong> — GA depende de Google Signals (cross-site, vende identidade); viola o princípio de privacidade. Não fazemos.</td>
+</tr>
+<tr>
+<td><strong>Audiências / segmentos cross-site</strong></td>
+<td>⛔</td>
+<td>⛔</td>
+<td><strong>deliberado</strong> — idem</td>
+</tr>
+<tr>
+<td>Export raw (BigQuery-like)</td>
+<td>~ admin export</td>
+<td>✅</td>
+<td>NDJSON é a fonte da verdade, exportável</td>
+</tr>
+</tbody></table>
+<p><strong>Conclusão:</strong> no <strong>core que respeita privacidade</strong>, a surface está <strong>igual ou
+acima</strong> do GA (self-hosted, sem terceiros, raw exportável, geo v4+v6). Os pilares
+do GA que <strong>não</strong> cobrimos são os de <strong>vigilância</strong> (demografia via Google Signals,
+audiências cross-site) — omitidos por princípio, não por limitação.</p>
+<p><strong>Deltas de granularidade ainda abertos</strong> (nenhum exige comprometer privacidade,
+todos incrementais): <strong>city IPv6</strong> (set ~98 MB gz), browser/OS (parse UA), scroll
+depth, funil multi-step e curva de coorte. Priorizar sob demanda.</p>
+<hr>
+<h2>4. Config (env por app — <code>deploy/surfaces/*.toml</code>)</h2>
+<table>
+<thead>
+<tr>
+<th>Env</th>
+<th>Default</th>
+<th>O que faz</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>SURFACE</code></td>
+<td><code>/yuri/</code></td>
+<td>path da surface servido na raiz <code>/</code></td>
+</tr>
+<tr>
+<td><code>FEEDBACK_UNIVERSE</code></td>
+<td><code>yuri</code></td>
+<td>universe (key de telemetria + roteamento de feedback)</td>
+</tr>
+<tr>
+<td><code>TELEMETRY_DIR</code></td>
+<td><code>/data</code></td>
+<td>onde grava o <code>.jsonl</code></td>
+</tr>
+<tr>
+<td><code>TELEMETRY_DURABLE</code></td>
+<td>`` (off)</td>
+<td><code>1</code> = persiste no volume; senão memória/efêmero</td>
+</tr>
+<tr>
+<td><code>SIBLINGS</code></td>
+<td>``</td>
+<td>URLs de surfaces irmãs da mesma universe (agregação)</td>
+</tr>
+<tr>
+<td><code>CO_FEEDBACK</code></td>
+<td><code>co…/api/v1/feedback</code></td>
+<td>alvo do broadcast de feedback</td>
+</tr>
+<tr>
+<td><code>MODE</code></td>
+<td><code>static</code></td>
+<td><code>static</code> / <code>iframe</code> / <code>redirect</code></td>
+</tr>
+<tr>
+<td><code>GEO_DB</code> (planejado)</td>
+<td><code>yuri/geo/ip4-country.bin</code></td>
+<td>binário geo (§2)</td>
+</tr>
+</tbody></table>
+<p>Surfaces auto-stop (<code>min_machines_running=0</code>): a coleta continua (a máquina
+auto-starta no request, NDJSON durável persiste), mas <strong>não há rollup residente</strong>
+— por isso o rollup roda on-cold-start + cron externo (§3).</p>
+<hr>
+<h2>5. Continuidade de identidade (crítico pro upgrade)</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>apex (<code>analytics.js</code>)</th>
+<th>surface (<code>telemetry.js</code>)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>visitor id</td>
+<td><code>al_vid</code> — localStorage <strong>+ cookie <code>.artelonga.com.br</code></strong>, 2 anos</td>
+<td>— (não tem)</td>
+</tr>
+<tr>
+<td>session id</td>
+<td><code>al_sid</code> — sessionStorage por aba</td>
+<td><code>al.sid</code> — sessionStorage por aba</td>
+</tr>
+</tbody></table>
+<p>O <code>al_vid</code> do apex é cookie no <strong>domínio registrável</strong> <code>.artelonga.com.br</code>, então
+<strong>sobrevive</strong> à mudança pro subdomínio <code>yuri.artelonga.com.br</code> — <em>se</em> a surface
+adotar <code>al_vid</code> em vez do <code>al.sid</code> por-aba. Hoje a surface só tem session por-aba
+→ <code>sessions</code> superestima e não há conceito de visitante recorrente. Fechar isso é
+o passo 3 do runbook (§3).</p>
+<hr>
+<h2>6. Privacidade (ambos os sistemas)</h2>
+<ul>
+<li>Sem cookies de terceiros, sem fingerprinting, sem ads. Respeita
+<code>navigator.doNotTrack</code> e (no apex) <code>navigator.webdriver</code> + opt-out
+(<code>localStorage.al_optout="1"</code> + cookie apex).</li>
+<li>Surface: beacon respeita DNT (<code>telemetry.js:8</code>). Sem PII no <code>/api/track</code>.</li>
+<li>Geo: país derivado do IP <strong>no edge</strong>; IP cru nunca persistido (apex: hash com
+sal server-side; surface: descartado após lookup).</li>
+<li>Só <strong>feedback</strong> (consentido) e <strong>rollups agregados sem PII</strong> saem da surface
+pro co. Acesso/interação raw ficam universe-owned.</li>
+<li>Retenção recomendada: ≤ 90 dias raw, agregado (rollup diário) depois.</li>
+</ul>
+
+</body></html>
