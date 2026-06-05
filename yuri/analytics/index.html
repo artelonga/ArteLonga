@@ -92,13 +92,17 @@
 
   <div class="two">
     <div><h2>geolocalização <span class="muted">(país)</span></h2><div class="bars" id="geo"></div></div>
-    <div><h2>conversões <span class="muted" id="cvsub"></span></h2><div class="bars" id="conversions"></div></div>
+    <div><h2>cidades <span class="muted">(IPv4 · DB-IP)</span></h2><div class="bars" id="cities"></div>
+      <div class="muted" style="margin-top:.5rem;font-size:.66rem">Geo de cidade por <a href="https://db-ip.com" target="_blank" rel="noopener" style="color:var(--ink2)">IP Geolocation by DB-IP</a> (CC-BY). IPv6 fica em nível de país.</div></div>
   </div>
 
   <div class="two">
     <div><h2>aquisição <span class="muted">(origem)</span></h2><div class="bars" id="acquisition"></div></div>
     <div><h2>dispositivo <span class="muted">(viewport)</span></h2><div class="bars" id="devices"></div></div>
   </div>
+
+  <h2>conversões <span class="muted" id="cvsub"></span></h2>
+  <div class="bars" id="conversions"></div>
 
   <h2>interação <span class="muted" id="ixsub"></span></h2>
   <div class="bars" id="targets"></div>
@@ -152,6 +156,7 @@
     bars($("#pages"),ac.topPages,"host",function(p){return p.page||"?";},"sem pageviews ainda");
     bars($("#refs"),ac.referrers,"neu",function(r){return r.ref||"?";},"sem referrers externos");
     bars($("#geo"),geo,"host",function(g){return g.country||"?";},"sem geo (país) ainda");
+    bars($("#cities"),d.cities||[],"neu",function(c){return c.city||"?";},"sem cidades ainda (IPv6 fica em país)");
     $("#cvsub").textContent=cv.total?("("+cv.total+" total)"):"";
     bars($("#conversions"),cv.top,"up",function(g){return g.goal||"?";},"sem conversões ainda");
     bars($("#acquisition"),d.acquisition||[],"neu",function(s){return s.source||"?";},"sem dados de aquisição ainda");
@@ -182,11 +187,13 @@
   }
 
   function recentDetail(r){
-    var k=r.kind||"feedback", geo=r.country?' <span class="muted">· '+esc(r.country)+'</span>':"";
+    var k=r.kind||"feedback";
+    var loc=r.city?(r.city+(r.country?(", "+r.country):"")):r.country;
+    var geo=loc?(' <span class="muted">· '+esc(loc)+'</span>'):"";
     if(k==="interaction")return (r.outbound?"↗ ":"")+esc(r.target||r.action||"")+geo;
     if(k==="goal")return "🎯 "+esc(r.goal||"")+geo;
     if(k==="page_end")return '<span class="muted">'+fmtDur(r.dur)+" ativo</span>";
-    if(k==="pageview")return r.country?'<span class="muted">'+esc(r.country)+"</span>":"";
+    if(k==="pageview")return loc?'<span class="muted">'+esc(loc)+"</span>":"";
     return smark(r.sentiment)+" "+esc(r.message||"");
   }
   function renderRecent(){

@@ -58,3 +58,6 @@ scratch/
 *.bak
 *.swp
 .worktrees/
+
+# geo city DB (DB-IP CC-BY) — built at Docker build, not committed (~31MB)
+yuri/geo/*-city.bin

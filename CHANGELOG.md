@@ -12,6 +12,43 @@ co-auto. Convenção em CLAUDE.md.
 
 ## [Unreleased]
 
+## [0.17.0] — 2026-06-05 — Telemetria: geo de cidade (IPv4, DB-IP CC-BY)
+
+### Theme
+
+Fechar o delta de granularidade geo vs. GA: **cidade** (não só país), via
+DB-IP City Lite, sem inchar o repo.
+
+### Why
+
+GA reporta cidade/região; a surface só tinha país. Faltava o último pilar de geo.
+
+### Added (`feat`)
+
+- **Geo de cidade IPv4** (`tools/bake-geo.mjs --city`, `tools/surfaces-server.mjs`,
+  `yuri/analytics/index.html`): resolve `país|região|cidade` no ingest a partir de
+  **DB-IP City Lite** (CC-BY-4.0). Binário compacto `ip4-city.bin` (formato `AGC4`:
+  starts `u32` + índice `u32` numa tabela de localidades deduplicada — 3.45M faixas,
+  169k locais, ~31 MB). Verificado: `8.8.8.8`→Mountain View, IPs BR→Rio/Brasília,
+  `1.1.1.1`→Sydney. Nova seção "cidades" no dashboard + **atribuição DB-IP**
+  (exigida pela CC-BY). IPv6 continua em nível de país.
+
+### Architecture
+
+- O binário de cidade **não é commitado** (~31 MB; o set IPv6 é ~98 MB gz). O
+  `Dockerfile` da surface **baixa + compila no build** (`bake-geo.mjs --city`,
+  streaming via gunzip+readline pra não estourar memória), dentro da imagem, fora do
+  git e do build context. **Non-fatal**: se o dataset falhar, a surface cai pra geo
+  de país (binários commitados). `.gitignore` cobre `yuri/geo/*-city.bin`.
+
+### Deploy
+
+- `artelonga-yuri` + `artelonga-hostinger` redeployadas (build agora compila o city
+  bin). Cliente inalterado (cidade é server-side).
+
+> **Delta restante:** city IPv6 (~98 MB gz). Demais deltas vs GA: browser/OS,
+> scroll, funil, coorte — todos sem comprometer privacidade.
+
 ## [0.16.0] — 2026-06-05 — Telemetria: geo IPv6, aquisição (UTM) e dispositivo — paridade com Google Analytics + runbook de upgrade
 
 ### Theme

@@ -15,7 +15,11 @@
  *
  * Uso:  node tools/bake-geo.mjs                 (baixa os CSVs se não houver cache)
  *       node tools/bake-geo.mjs /tmp/geo4.csv /tmp/geo6.csv */
-import { promises as fs } from "node:fs";
+import { promises as fs, createReadStream, createWriteStream } from "node:fs";
+import { createGunzip } from "node:zlib";
+import { createInterface } from "node:readline";
+import { pipeline } from "node:stream/promises";
+import { Readable } from "node:stream";
 import path from "node:path";
 import os from "node:os";
 
@@ -24,6 +28,11 @@ const SRC4 = BASE + "geo-whois-asn-country-ipv4-num.csv";
 const SRC6 = BASE + "geo-whois-asn-country-ipv6.csv";
 const OUT4 = path.resolve(process.cwd(), "yuri/geo/ip4-country.bin");
 const OUT6 = path.resolve(process.cwd(), "yuri/geo/ip6-country.bin");
+// city (DB-IP City Lite, CC-BY-4.0 — exige atribuição "IP Geolocation by DB-IP").
+// IPv4 só (o set v6 é ~98MB gz). NÃO commitado: buildado no Dockerfile (build-time),
+// fora do git e do build context. Ver docs/telemetry-surfaces.md.
+const SRC_CITY4 = "https://raw.githubusercontent.com/sapics/ip-location-db/main/dbip-city/dbip-city-ipv4-num.csv.gz";
+const OUT_CITY4 = path.resolve(process.cwd(), "yuri/geo/ip4-city.bin");
 const UNK = "\0\0";
 
 async function getCsv(url, cacheName, arg) {
@@ -123,7 +132,58 @@ function buildV6(csv) {
   return { buf, rows: rows.length, count };
 }
 
+// ── city (AGC4): IPv4 → {país|região|cidade}. Stream (gunzip + readline) p/ não
+// estourar memória no builder. Tabela de localidades deduplicada + índice u32.
+//   header : "AGC4"(4B) + boundCount(u32 LE) + locCount(u32 LE)
+//   starts : boundCount × u32 LE
+//   ids    : boundCount × u32 LE  (índice na tabela de localidades)
+//   locs   : locCount × ( len u16 LE + utf8 "país|região|cidade" )
+async function downloadTo(url, file) {
+  const r = await fetch(url, { signal: AbortSignal.timeout(240000) });
+  if (!r.ok) throw new Error("download " + r.status);
+  await pipeline(Readable.fromWeb(r.body), createWriteStream(file));
+}
+async function buildCity4(arg) {
+  const gz = arg || path.join(os.tmpdir(), "dbip-city4.csv.gz");
+  if (!arg) { try { const st = await fs.stat(gz); if (st.size < 1e6) throw 0; console.log("[geo] city cache " + gz); } catch { console.log("[geo] baixando city " + SRC_CITY4); await downloadTo(SRC_CITY4, gz); } }
+  const loc = new Map(), locList = [];
+  const locId = s => { let id = loc.get(s); if (id === undefined) { id = locList.length; locList.push(s); loc.set(s, id); } return id; };
+  const UNKID = locId("");
+  const starts = [], ids = []; let last = -1, prevEnd = -1, rows = 0;
+  const push = (at, id) => { if (id !== last) { starts.push(at >>> 0); ids.push(id); last = id; } };
+  const rl = createInterface({ input: createReadStream(gz).pipe(createGunzip()), crlfDelay: Infinity });
+  for await (const line of rl) {
+    if (!line) continue;
+    const c = line.split(",");                              // start,end,país,região,_,cidade,_,lat,lng,_
+    if (c.length < 6) continue;
+    const s = +c[0], e = +c[1]; if (!Number.isFinite(s) || !Number.isFinite(e)) continue;
+    const id = locId((c[2] || "") + "|" + (c[3] || "") + "|" + (c[5] || ""));
+    rows++;
+    if (s > prevEnd + 1) push(prevEnd + 1, UNKID);
+    push(s, id);
+    if (e > prevEnd) prevEnd = e;
+  }
+  if (starts.length === 0 || starts[0] !== 0) { starts.unshift(0); ids.unshift(UNKID); }
+  const count = starts.length;
+  const locBufs = locList.map(s => Buffer.from(s, "utf8"));
+  let locBytes = 0; for (const b of locBufs) locBytes += 2 + b.length;
+  const buf = Buffer.alloc(12 + count * 8 + locBytes);
+  buf.write("AGC4", 0, "ascii"); buf.writeUInt32LE(count, 4); buf.writeUInt32LE(locList.length, 8);
+  let off = 12;
+  for (let i = 0; i < count; i++) { buf.writeUInt32LE(starts[i], off); off += 4; }
+  for (let i = 0; i < count; i++) { buf.writeUInt32LE(ids[i], off); off += 4; }
+  for (const b of locBufs) { buf.writeUInt16LE(b.length, off); off += 2; b.copy(buf, off); off += b.length; }
+  await fs.mkdir(path.dirname(OUT_CITY4), { recursive: true });
+  await fs.writeFile(OUT_CITY4, buf);
+  console.log("[geo] city v4: rows=" + rows + " boundaries=" + count + " locs=" + locList.length + " " + (buf.length / 1048576).toFixed(1) + " MB → " + OUT_CITY4);
+}
+
 async function main() {
+  if (process.argv.includes("--city")) {                    // build-time (Dockerfile): só city v4
+    const arg = process.argv.find((a, i) => i >= 2 && !a.startsWith("--"));
+    await buildCity4(arg);
+    return;
+  }
   const csv4 = await getCsv(SRC4, "geo4.csv", process.argv[2]);
   const csv6 = await getCsv(SRC6, "geo6.csv", process.argv[3]);
   await fs.mkdir(path.dirname(OUT4), { recursive: true });

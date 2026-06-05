@@ -44,8 +44,10 @@ const TELE_MEM = [];                                           // cache em memó
 // cliente; só o país é gravado no evento — o IP cru é descartado.
 const GEO_DB = process.env.GEO_DB || path.join(ROOT, "yuri/geo/ip4-country.bin");
 const GEO6_DB = process.env.GEO6_DB || path.join(ROOT, "yuri/geo/ip6-country.bin");
+const CITY_DB = process.env.CITY_DB || path.join(ROOT, "yuri/geo/ip4-city.bin");  // DB-IP CC-BY, build-time, IPv4 só
 let GEO = null;                                                // v4: { starts: Uint32Array, codes: Buffer, count }
 let GEO6 = null;                                               // v6: { starts: Buffer(16B×count), codes: Buffer, count }
+let CITY = null;                                               // v4 city: { starts: Uint32Array, ids: Uint32Array, locs: string[], count }
 function geoInit() {                                           // AG41 (IPv4)
   try {
     const buf = readFileSync(GEO_DB);
@@ -66,12 +68,38 @@ function geo6Init() {                                          // AG61 (IPv6)
     console.log("[GEO] v6 " + count + " faixas de " + GEO6_DB);
   } catch (e) { console.log("[GEO] v6 desabilitado (" + (e && e.message) + ")"); }
 }
+function cityInit() {                                          // AGC4 (DB-IP city v4) — opcional
+  try {
+    const buf = readFileSync(CITY_DB);
+    if (buf.length < 12 || buf.toString("ascii", 0, 4) !== "AGC4") { console.log("[GEO] city formato inválido"); return; }
+    const count = buf.readUInt32LE(4), locCount = buf.readUInt32LE(8);
+    const starts = new Uint32Array(count), ids = new Uint32Array(count);
+    let off = 12;
+    for (let i = 0; i < count; i++) { starts[i] = buf.readUInt32LE(off); off += 4; }
+    for (let i = 0; i < count; i++) { ids[i] = buf.readUInt32LE(off); off += 4; }
+    const locs = new Array(locCount);
+    for (let i = 0; i < locCount; i++) { const len = buf.readUInt16LE(off); off += 2; locs[i] = buf.toString("utf8", off, off + len); off += len; }
+    CITY = { starts, ids, locs, count };
+    console.log("[GEO] city v4 " + count + " faixas / " + locCount + " locais de " + CITY_DB);
+  } catch (e) { console.log("[GEO] city desabilitado (" + (e && e.message) + ")"); }
+}
 function ip2int(ip) {
   const m = String(ip || "").match(/(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/);   // IPv4 (inclui ::ffff:a.b.c.d)
   if (!m) return null;
   const a = +m[1], b = +m[2], c = +m[3], d = +m[4];
   if (a > 255 || b > 255 || c > 255 || d > 255) return null;
   return ((a * 16777216) + (b * 65536) + (c * 256) + d) >>> 0;
+}
+function geoCity(ip) {                                         // {country, region, city} ou null (IPv4 só)
+  if (!CITY) return null;
+  const n = ip2int(ip); if (n == null) return null;
+  let lo = 0, hi = CITY.count - 1, ans = -1;
+  while (lo <= hi) { const mid = (lo + hi) >> 1; if (CITY.starts[mid] <= n) { ans = mid; lo = mid + 1; } else hi = mid - 1; }
+  if (ans < 0) return null;
+  const s = CITY.locs[CITY.ids[ans]]; if (!s) return null;
+  const p = s.split("|");                                     // país|região|cidade
+  if (!p[2] && !p[1]) return null;
+  return { country: p[0] || null, region: p[1] || null, city: p[2] || null };
 }
 function ip6Bytes(s) {                                          // IPv6 string → Buffer 16B BE (ou null)
   s = String(s || "").trim().split("%")[0];
@@ -156,13 +184,14 @@ function teleAgg(events) {
   const go = events.filter(e => e.kind === "goal");
   const bySent = { up: 0, neutral: 0, down: 0 }, bc = { ok: 0, failed: 0, pending: 0 };
   fb.forEach(e => { bySent[e.sentiment > 0 ? "up" : e.sentiment < 0 ? "down" : "neutral"]++; const st = (e.broadcast && e.broadcast.co) || "pending"; if (bc[st] != null) bc[st]++; });
-  const sess = {}, refs = {}, pvPages = {}, geo = {}, tsMap = {}, acq = {}, devs = {};
+  const sess = {}, refs = {}, pvPages = {}, geo = {}, tsMap = {}, acq = {}, devs = {}, cities = {};
   const vidDays = {}, sessPv = {};                            // retenção (vid→dias) e bounce (sessão→#pageviews)
   pv.forEach(e => {
     if (e.session) { sess[e.session] = 1; sessPv[e.session] = (sessPv[e.session] || 0) + 1; }
     const r = refDomain(e.referrer); if (r) refs[r] = (refs[r] || 0) + 1;
     const p = e.page || "?"; pvPages[p] = (pvPages[p] || 0) + 1;
     if (e.country) geo[e.country] = (geo[e.country] || 0) + 1;
+    if (e.city) { const ck = e.city + (e.country ? (", " + e.country) : ""); cities[ck] = (cities[ck] || 0) + 1; }
     const d = dayOf(e.t); if (d) tsMap[d] = (tsMap[d] || 0) + 1;
     if (e.vid) (vidDays[e.vid] = vidDays[e.vid] || new Set()).add(dayOf(e.t));
     const src = (e.utm && e.utm.source) || r || "(direto)";  // aquisição: utm_source → referrer → direto
@@ -192,11 +221,12 @@ function teleAgg(events) {
     timeseries: timeseries,
     retention: { visitors: visitors, returning: returning, _bounce: { bounced: bounced, sessions: allSess.size }, _dwell: { sum: dwellSum, pageviews: pv.length } },
     geo: topN(geo, 12, "country"),
+    cities: topN(cities, 12, "city"),
     interactions: { total: ix.length, outbound: outbound, topTargets: topN(tgt, 10, "target") },
     conversions: { total: go.length, top: topN(goals, 12, "goal") },
     feedback: { total: fb.length, bySentiment: bySent, broadcast: bc,
       recent: fb.slice(-20).reverse().map(e => ({ t: e.t, page: e.page, sentiment: e.sentiment, message: (e.message || "").slice(0, 280), broadcast: e.broadcast, surface: SURFACE })) },
-    recent: events.slice(-25).reverse().map(e => ({ t: e.t, kind: e.kind || "feedback", page: e.page, sentiment: e.sentiment, action: e.action, target: e.target, outbound: e.outbound, goal: e.goal, country: e.country, dur: e.dur, message: (e.message || "").slice(0, 140), surface: SURFACE }))
+    recent: events.slice(-25).reverse().map(e => ({ t: e.t, kind: e.kind || "feedback", page: e.page, sentiment: e.sentiment, action: e.action, target: e.target, outbound: e.outbound, goal: e.goal, country: e.country, city: e.city, dur: e.dur, message: (e.message || "").slice(0, 140), surface: SURFACE }))
   };
 }
 function mergeCounts(dst, list, keyName) { (list || []).forEach(x => { dst[x[keyName]] = (dst[x[keyName]] || 0) + x.n; }); }
@@ -208,6 +238,7 @@ function teleCombine(aggs) {      // soma agregados de várias surfaces da MESMA
     timeseries: {},   // bucket → count (consolidado abaixo)
     retention: { visitors: 0, returning: 0, bounced: 0, sessions: 0, dwellSum: 0, pageviews: 0 },
     geo: {},          // country → n (consolidado abaixo)
+    cities: {},       // city → n (consolidado abaixo)
     interactions: { total: 0, outbound: 0, _tgt: {} },
     conversions: { total: 0, _top: {} },
     feedback: { total: 0, bySentiment: { up: 0, neutral: 0, down: 0 }, broadcast: { ok: 0, failed: 0, pending: 0 }, recent: [] },
@@ -223,6 +254,7 @@ function teleCombine(aggs) {      // soma agregados de várias surfaces da MESMA
     mergeCounts(out.devices, a.devices, "device");
     (a.timeseries || []).forEach(p => { out.timeseries[p.bucket] = (out.timeseries[p.bucket] || 0) + (p.count || 0); });
     mergeCounts(out.geo, a.geo, "country");
+    mergeCounts(out.cities, a.cities, "city");
     out.retention.visitors += rt.visitors || 0; out.retention.returning += rt.returning || 0;
     if (rt._bounce) { out.retention.bounced += rt._bounce.bounced || 0; out.retention.sessions += rt._bounce.sessions || 0; }
     if (rt._dwell) { out.retention.dwellSum += rt._dwell.sum || 0; out.retention.pageviews += rt._dwell.pageviews || 0; }
@@ -241,6 +273,7 @@ function teleCombine(aggs) {      // soma agregados de várias surfaces da MESMA
   out.devices = topN(out.devices, 5, "device");
   out.timeseries = Object.keys(out.timeseries).sort().map(d => ({ bucket: d, count: out.timeseries[d] }));
   out.geo = topN(out.geo, 12, "country");
+  out.cities = topN(out.cities, 12, "city");
   out.interactions.topTargets = topN(out.interactions._tgt, 10, "target"); delete out.interactions._tgt;
   out.conversions.top = topN(out.conversions._top, 12, "goal"); delete out.conversions._top;
   const rt = out.retention;                       // métricas derivadas pro display
@@ -302,7 +335,9 @@ const server = http.createServer(async (req, res) => {
   // acesso/interação (GA-like): pageview + clique. Estado DA universe; NÃO vai pro co
   // (só feedback, consentido, é broadcastado). O beacon respeita DNT no cliente.
   if (req.method === "POST" && url === "/api/track") {
-    const country = geoCountry(clientIp(req));   // resolve no ingest; IP NÃO é guardado
+    const ip = clientIp(req);                    // resolve geo no ingest; IP NÃO é guardado
+    const country = geoCountry(ip);
+    const place = geoCity(ip);                   // {country,region,city} ou null (IPv4 só)
     let body = "";
     req.on("data", c => { body += c; if (body.length > 8192) req.destroy(); });
     req.on("end", async () => {
@@ -320,7 +355,9 @@ const server = http.createServer(async (req, res) => {
           source: d.utm.source ? String(d.utm.source).slice(0, 80) : null,
           medium: d.utm.medium ? String(d.utm.medium).slice(0, 80) : null,
           campaign: d.utm.campaign ? String(d.utm.campaign).slice(0, 80) : null } : null,
-        country: country };
+        country: country || (place && place.country) || null,
+        region: place && place.region || null,
+        city: place && place.city || null };
       await teleSave(ev);
       res.writeHead(204); res.end();
     });
@@ -382,5 +419,5 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-geoInit(); geo6Init();
+geoInit(); geo6Init(); cityInit();
 teleInit().finally(() => server.listen(PORT, () => console.log("surface=" + SURFACE + " mode=" + MODE + " universe=" + UNIVERSE + " on :" + PORT)));
