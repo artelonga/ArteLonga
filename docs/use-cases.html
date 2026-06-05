@@ -1,0 +1,382 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Use cases — artelonga / co universe platform — Arte Longa</title>
+<style>
+  :root{--ink:#0a0a0a;--ink2:#444;--ink3:#888;--line:#e7e1da;--bg:#fbf9f6;--bg2:#fff;--accent:#9a3b2e}
+  *{box-sizing:border-box} body{font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+    max-width:820px;margin:0 auto;padding:4vh 1.4rem 10vh;line-height:1.6;color:var(--ink);background:var(--bg)}
+  a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(154,59,46,.25)}a:hover{border-bottom-color:var(--accent)}
+  h1{font-size:2.1rem;letter-spacing:-.02em;line-height:1.12;margin:.3em 0 .2em}
+  h2{font-size:1.3rem;margin:1.8em 0 .4em;border-top:1px solid var(--line);padding-top:.8em}
+  h3{font-size:1.02rem;margin:1.3em 0 .3em}
+  blockquote{margin:1.2em 0;padding:.7em 1.1em;background:var(--bg2);border-left:3px solid var(--accent);border-radius:8px;color:var(--ink2);font-size:.95rem}
+  ul,ol{padding-left:1.3em}li{margin:.15em 0}
+  table{border-collapse:collapse;width:100%;font-size:.86rem;margin:1.2em 0;display:block;overflow-x:auto}
+  th,td{border:1px solid var(--line);padding:.45rem .6rem;text-align:left;vertical-align:top}
+  th{background:var(--bg2);font-weight:700}
+  code{background:var(--bg2);border:1px solid var(--line);border-radius:4px;padding:.05em .35em;font-size:.85em}
+  pre{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:1em;overflow-x:auto}pre code{border:0;background:none;padding:0}
+  hr{border:0;border-top:1px solid var(--line);margin:2em 0}
+  .mermaid svg{max-width:100%;height:auto;background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:.6rem}
+  .crumb{font-size:.8rem;color:var(--ink3);margin-bottom:2em}
+  .grp{margin:1.4em 0}.grp h2{border:0;padding:0;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink3)}
+  .doclist{list-style:none;padding:0}.doclist li{margin:.5em 0}.doclist .src{font-size:.72rem;color:var(--ink3)}
+  .tag{font-size:.6rem;font-weight:700;border-radius:999px;padding:.05rem .45rem;letter-spacing:.04em;vertical-align:middle}
+  .tag.dev{background:#eef1f6;color:var(--ink3)}.tag.pub{background:#e6f1e8;color:#3a7d44}</style></head><body>
+<div class="crumb"><a href="/">Arte Longa</a> · <a href="/docs/">docs</a></div>
+<h1>Use cases — artelonga / co universe platform</h1>
+<p>Catálogo de todos os casos de uso levantados, com problema → solução → estado →
+artefato, e o papel do <strong>co</strong> (a plataforma). É o índice; cada linha linka o doc/
+endpoint/código de fundo. Estado: ✅ entregue · ◑ parcial/design · ⏳ co-side/próximo.</p>
+<blockquote>
+<p>Princípio que atravessa tudo: <strong>separar content de form de data</strong>; cada <strong>universe</strong>
+(recursivo/fractal — a abstração é do co) <strong>é dona do próprio estado</strong>; e o
+<strong>publish é atômico + cache-first</strong> (a última versão boa segue no ar se a ingestão
+quebrar). Universos são a abstração do co — não redocumentamos o modelo aqui.</p>
+</blockquote>
+<hr>
+<h2>A · Observabilidade &amp; Analytics</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Caso de uso</th>
+<th>Solução</th>
+<th>Estado</th>
+<th>Artefato</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A1</td>
+<td>Coletar telemetria de uma universe sem terceiros</td>
+<td>Surface universe-owned (<code>/api/track</code>) + apex (analytics.js)</td>
+<td>✅</td>
+<td><a href="./telemetry-surfaces.html">telemetry-surfaces</a></td>
+</tr>
+<tr>
+<td>A2</td>
+<td>Geo sem SaaS, custo zero</td>
+<td>Binário CC0/DB-IP embarcado (país v4+v6, cidade IPv4), build-time</td>
+<td>✅</td>
+<td>telemetry-surfaces §2</td>
+</tr>
+<tr>
+<td>A3</td>
+<td>Paridade com Google Analytics</td>
+<td>retenção · dwell · timeseries · conversões · aquisição (UTM) · dispositivo</td>
+<td>✅</td>
+<td>telemetry-surfaces §7</td>
+</tr>
+<tr>
+<td>A4</td>
+<td>Analytics central, filtrável, multi-tenant</td>
+<td><code>?universe=</code> · <code>?from/&amp;to</code> · <code>?breakdown=</code> sobre rollups</td>
+<td>◑</td>
+<td><a href="./analytics-framework.html">analytics-framework</a> · <a href="./analytics-api.html">analytics-api</a></td>
+</tr>
+<tr>
+<td>A5</td>
+<td>Dado novo (CNAME) chega no pai sem partir a série</td>
+<td>Rollup bidirecional (push + read-back) + ponte <code>path LIKE '/x/%'</code></td>
+<td>✅</td>
+<td>telemetry-surfaces §3 · co CO-340</td>
+</tr>
+<tr>
+<td>A6</td>
+<td>Ver stats de qualquer universe pela artelonga</td>
+<td>summary <code>?universe=&lt;handle&gt;</code></td>
+<td>⏳</td>
+<td>co CO-340 (PR #152)</td>
+</tr>
+<tr>
+<td>A7</td>
+<td>Dashboards (gráfico de tempo, filtro por dia, geo)</td>
+<td>apex <code>/analytics/</code> + surface <code>/analytics</code></td>
+<td>✅</td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h2>B · Universes (modelo recursivo/fractal — abstração do co)</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Caso de uso</th>
+<th>Solução</th>
+<th>Estado</th>
+<th>Artefato</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>B1</td>
+<td>Representar cada domínio como universe</td>
+<td>É a abstração do co (<code>/api/v1/universes/:slug</code>); domínio declara <code>_universe.yaml</code></td>
+<td>◑</td>
+<td>co · <code>work/artelonga/_universe.yaml</code></td>
+</tr>
+<tr>
+<td>B2</td>
+<td>Promover universe path → CNAME sem fricção</td>
+<td>Mesma universe, mesma chave/histórico/changelog/analytics</td>
+<td>✅</td>
+<td><a href="./universe-upgrade.html">universe-upgrade</a></td>
+</tr>
+<tr>
+<td>B3</td>
+<td>Universe é dona do próprio estado</td>
+<td>Raw no edge; co é alvo de broadcast consentido</td>
+<td>✅</td>
+<td>telemetry-surfaces</td>
+</tr>
+<tr>
+<td>B4</td>
+<td>Não duplicar dado compartilhado</td>
+<td>Dado compartilhado é uma universe, referenciada (yuri → neuro)</td>
+<td>✅</td>
+<td>author identity</td>
+</tr>
+</tbody></table>
+<h2>C · Conteúdo: verificar &amp; publicar</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Caso de uso</th>
+<th>Solução</th>
+<th>Estado</th>
+<th>Artefato</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>C1</td>
+<td><strong>Verificar e publicar conteúdo de VÁRIAS universes</strong></td>
+<td><strong>co</strong>: entries + proposals + reindex (verify) → artefato imutável + ponteiro <code>current</code> (publish)</td>
+<td>⏳</td>
+<td><strong>§ Contrato co (abaixo)</strong></td>
+</tr>
+<tr>
+<td>C2</td>
+<td>Content separado de form</td>
+<td>markdown/data (content) + renderer (form); bakes; <code>bake-docs</code></td>
+<td>✅</td>
+<td><a href="./scrum-universe.html">scrum-universe</a></td>
+</tr>
+<tr>
+<td>C3</td>
+<td>Base de conhecimento / referências como dado</td>
+<td>neuro references + registro de autores; queryável</td>
+<td>✅</td>
+<td>neuro/references.js · authors.js</td>
+</tr>
+<tr>
+<td>C4</td>
+<td>Identidade canônica de autor (resolve variantes)</td>
+<td><code>author=yuri</code> resolve "Vieira Sugano"/"Yuri"/ABNT</td>
+<td>✅</td>
+<td>neuro/authors.js</td>
+</tr>
+<tr>
+<td>C5</td>
+<td>Docs como conteúdo renderizado</td>
+<td><code>/docs/</code> hub (markdown+mermaid → estático), split público/dev</td>
+<td>✅</td>
+<td>tools/bake-docs.mjs</td>
+</tr>
+<tr>
+<td>C6</td>
+<td>Publicar rápido/fácil, escalável</td>
+<td>folder + <code>draft:false</code>; N universes, um template</td>
+<td>◑</td>
+<td>scrum-universe</td>
+</tr>
+</tbody></table>
+<h2>D · Negócio: funil → conversão → entrega</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Caso de uso</th>
+<th>Solução</th>
+<th>Estado</th>
+<th>Artefato</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>D1</td>
+<td>Aquisição de lead (funil E2E)</td>
+<td>discover→engage→intent→capture→qualify→register→convert→onboard</td>
+<td>◑</td>
+<td><a href="./lead-acquisition.html">lead-acquisition</a></td>
+</tr>
+<tr>
+<td>D2</td>
+<td>Conversão → provisiona Kanban (board co)</td>
+<td>tasks API do co; board semeado no momento da conversão</td>
+<td>⏳</td>
+<td><a href="./scrum-retrospective.html">scrum-retrospective</a></td>
+</tr>
+<tr>
+<td>D3</td>
+<td>Entrega Scrum (cadência, roadmap/backlog, DoD)</td>
+<td>quinzenal Thu 15h BRT; backlog/sprint como co tasks; retrospectiva</td>
+<td>◑</td>
+<td>scrum-retrospective</td>
+</tr>
+<tr>
+<td>D4</td>
+<td>Onboarding de parceiro</td>
+<td>BaaS: register→provision→deploy→ingest→sync→convert→satisfy</td>
+<td>◑</td>
+<td><a href="./brain-as-a-service.html">brain-as-a-service</a> §4</td>
+</tr>
+<tr>
+<td>D5</td>
+<td>Parceiro (ex. Scrum) referenciado, não embutido</td>
+<td><code>/scrum/</code> é o parceiro (draft/noindex); docs linkam</td>
+<td>✅</td>
+<td>/scrum/</td>
+</tr>
+</tbody></table>
+<h2>E · Plataforma &amp; infra</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Caso de uso</th>
+<th>Solução</th>
+<th>Estado</th>
+<th>Artefato</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>E1</td>
+<td>Escala horizontal a custo SaaS zero</td>
+<td>Brain as a Service — universe soberana, ~1 VM cada</td>
+<td>◑</td>
+<td>brain-as-a-service</td>
+</tr>
+<tr>
+<td>E2</td>
+<td>Liberdade de infra (qualquer domínio/máquina)</td>
+<td>server stdlib + estático + data spec; artefato imutável portável</td>
+<td>✅</td>
+<td>brain-as-a-service §2</td>
+</tr>
+<tr>
+<td>E3</td>
+<td>Dado de runtime ≠ content (não commitar/servir)</td>
+<td>geo bins build-time; <code>*.ndjson</code>/<code>*.enc</code> gitignored</td>
+<td>✅</td>
+<td>refactor geo · security</td>
+</tr>
+<tr>
+<td>E4</td>
+<td>Revisão de segurança (o que está exposto)</td>
+<td>índice de superfície (todos os paths + endpoints) por sensibilidade</td>
+<td>✅</td>
+<td>tools/bake-security-index.mjs</td>
+</tr>
+<tr>
+<td>E5</td>
+<td>Conversão (registro → pagamento)</td>
+<td>identidade + pagamento no co</td>
+<td>⏳</td>
+<td>brain-as-a-service §8</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>§ Contrato co — verificar &amp; publicar conteúdo de várias universes (C1)</h2>
+<p><strong>O problema:</strong> N universes precisam de uma forma <strong>consistente</strong> de verificar e
+publicar conteúdo. Pipelines bespoke por universe não escalam. <strong>co é a resposta</strong> —
+ele já é multi-tenant por <code>:slug</code> e tem as duas metades.</p>
+<p><strong>co já tem os primitivos</strong> (não é aspiracional):</p>
+<ul>
+<li><strong>Publish</strong> (<code>core/deploy.rs</code>): cada universe publica um <strong>artefato IMUTÁVEL</strong>
+(<code>{universe_id}/{timestamp}-{suffix}</code>) no R2 → <strong>deploy ID estável + URL pública</strong>,
+com ponteiro atômico <strong><code>current</code></strong> (<code>co-deployments-current/{universe_id}/current</code>).</li>
+<li><strong>Verify</strong>: <code>entries</code> (modelo de conteúdo) · <strong><code>proposals</code></strong> (revisão/aprovação) ·
+<strong><code>reindex</code></strong> (validar + indexar) — tudo keyed by <code>:slug</code>.</li>
+</ul>
+<p><strong>O loop, por universe:</strong></p>
+<pre><code>author/sync → co entries (a universe é dona do conteúdo)
+   → VERIFY:  reindex (schema) + proposals (revisão) + gates, no artefato imutável
+   → PUBLISH: flip atômico do current → deploy_id   (instantâneo, sem estado parcial)
+   → OBSERVE: analytics keyed by universe (rollups)
+   rollback = repointar current · preview = servir o deploy_id antes do flip
+</code></pre>
+<p><strong>Por que isso resolve de fato:</strong></p>
+<ul>
+<li><strong>Verifica antes de publicar</strong> — build do artefato imutável → gates (até preview
+URL) → só então flipa <code>current</code>. Nada vai ao ar sem verificar.</li>
+<li><strong>Atômico + reversível</strong> — flip instantâneo; rollback = repointar. Sem estado
+intermediário quebrado.</li>
+<li><strong>Cache-first (nosso princípio)</strong> — servir lê <code>current</code> → último artefato bom. Se a
+pipeline de build/verify cair, <strong>o site no ar continua</strong>. Falha de publish ≠ outage.</li>
+<li><strong>N universes, uma pipeline</strong> — <code>co publish &lt;slug&gt;</code>; board do estado de todas;
+verificação cross-universe (= a visão de rede do analytics-framework).</li>
+</ul>
+<p><strong>Mapa: a pipeline bespoke da ArteLonga → gates do co</strong> (a ArteLonga é a <em>reference
+implementation</em>; deve generalizar pra dentro do co):</p>
+<table>
+<thead>
+<tr>
+<th>ArteLonga (hoje, bespoke)</th>
+<th>→ co (gate genérico)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>validate-yaml</code> (vs openapi)</td>
+<td><code>reindex</code> valida o schema canônico</td>
+</tr>
+<tr>
+<td><code>audit-handles</code> / <code>audit-consistency</code></td>
+<td><code>reindex</code> checa refs/backlinks</td>
+</tr>
+<tr>
+<td><code>audit-storage-keys</code> / lint</td>
+<td>gate de lint no artefato</td>
+</tr>
+<tr>
+<td><code>quality</code> CI (Playwright/a11y/Lighthouse)</td>
+<td>passo render+gate no artefato (preview)</td>
+</tr>
+<tr>
+<td>revisão humana</td>
+<td><strong>proposals</strong> (gate de aprovação)</td>
+</tr>
+<tr>
+<td>bakes (<code>bake-*</code>)</td>
+<td>o <strong>renderer</strong> do co (content → estático)</td>
+</tr>
+<tr>
+<td><code>git push → GH Pages</code> / <code>fly deploy</code></td>
+<td><strong>deploy</strong> (artefato imutável + flip <code>current</code>)</td>
+</tr>
+</tbody></table>
+<p><strong>Endpoints (co) que materializam C1:</strong></p>
+<ul>
+<li><code>POST /api/v1/universes/:slug/entries</code> — conteúdo (a universe é dona).</li>
+<li><code>POST /api/v1/universes/:slug/reindex</code> — verify (schema + refs + index).</li>
+<li><code>POST /api/v1/universes/:slug/proposals</code> — revisão/aprovação.</li>
+<li><code>POST /api/v1/universes/:slug/deploy</code> <em>(a especificar)</em> — build → artefato imutável<ul>
+<li>flip <code>current</code>; resposta = deploy_id + URL pública.</li>
+</ul>
+</li>
+<li><code>GET /api/v1/universes/:slug/deploys</code> <em>(a especificar)</em> — histórico/rollback.</li>
+</ul>
+<p><strong>Lacuna honesta:</strong> os primitivos existem; falta (1) conteúdo da ArteLonga → co
+entries (ou co lê o repo git), (2) bakes → renderer do co, (3) os gates <code>quality</code> →
+um passo de verify no co. Nada disso é infra nova — é fiar a pipeline já provada da
+ArteLonga no modelo de universe do co.</p>
+<p><strong>Reconciliação com os princípios:</strong> <em>universe é dona do estado</em> (a universe é dona do
+conteúdo; co orquestra) · <em>liberdade de infra</em> (artefato imutável + URL estável, sirva
+de R2/Fly/GH Pages) · <em>render-at-cache</em> (o ponteiro <code>current</code> É a garantia cache-first).</p>
+<hr>
+<h2>Índice de docs</h2>
+<ul>
+<li><a href="./telemetry-surfaces.html">telemetry-surfaces</a> · <a href="./analytics-framework.html">analytics-framework</a> · <a href="./analytics-api.html">analytics-api</a></li>
+<li><a href="./universe-upgrade.html">universe-upgrade</a> · <a href="./brain-as-a-service.html">brain-as-a-service</a></li>
+<li><a href="./lead-acquisition.html">lead-acquisition</a> · <a href="./scrum-retrospective.html">scrum-retrospective</a> · <a href="./scrum-universe.html">scrum-universe</a></li>
+<li>Parceiro: <a href="/scrum/">/scrum/</a> · Base: neuro <code>references.js</code>/<code>authors.js</code> · Backlog: <code>work/artelonga/AL-N.md</code></li>
+</ul>
+
+</body></html>

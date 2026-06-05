@@ -20,6 +20,7 @@ const DOCS = path.join(ROOT, "docs");
 
 // curadoria: { file, slug, title, group: "publico"|"dev" }
 const MANIFEST = [
+  { file: "use-cases.md", title: "Use cases — catálogo (artelonga/co)", group: "publico" },
   { file: "brain-as-a-service.md", title: "Brain as a Service — case study", group: "publico" },
   { file: "scrum-retrospective.md", title: "Scrum — entrega & retrospectiva (ArteLonga)", group: "publico" },
   { file: "lead-acquisition.md", title: "Aquisição de lead — o funil E2E", group: "publico" },
