@@ -62,3 +62,6 @@ scratch/
 # geo bins são DATA de runtime (não content+form) — baixados+compilados no build
 # (Dockerfile RUN bake-geo). País (CC0) e cidade (DB-IP CC-BY) ficam fora do git.
 yuri/geo/*.bin
+
+# security review artifact — mapa de superficie exposta, NUNCA servir/commitar
+_security-review.html
