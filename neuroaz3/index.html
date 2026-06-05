@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>AZ3 · Display grotesk — Arte Longa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/neuro/neuro.css">
+<link rel="stylesheet" href="/neuro/zigzag.css">
+<style>
+/* ───────────── AZ3 — DISPLAY (grotesk Space Grotesk) ─────────────
+   Só tipografia/expressão; layout vem de zigzag.css. Datas enormes e punchy,
+   tracking apertado, contraste alto. Tudo na mesma grotesk pra coesão. */
+:root { --grotesk: 'Space Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+body, .neuro-head h1, .card .teaser, .card .body { font-family: var(--grotesk); }
+.neuro-head h1 { font-weight: 700; letter-spacing: -0.04em; }
+.card .yr {
+  font-family: var(--grotesk); font-weight: 700; font-size: 2.15rem; line-height: 0.95;
+  letter-spacing: -0.05em; text-transform: none; color: var(--ink);
+}
+.card.open .yr { color: var(--terra); }
+.card h3 { font-family: var(--grotesk); font-weight: 700; font-size: 1.16rem; line-height: 1.12;
+           letter-spacing: -0.025em; margin-top: 0.15rem; }
+.card .teaser { font-size: 0.88rem; font-weight: 400; }
+.card .more { font-weight: 700; }
+/* conector um pouco mais baixo, pra alinhar com a data gigante */
+.card::before, .card::after { top: 1.7rem; }
+.card::after { top: calc(1.7rem - 5px); }
+</style>
+</head>
+<body>
+<nav class="neuro-rev">
+  <b>review</b>
+  <a href="/neuroaz/">AZ</a>
+  <a href="/neuroaz1/">AZ1</a>
+  <a href="/neuroaz2/">AZ2</a>
+  <a href="/neuroaz3/" class="on">AZ3</a>
+  <a href="/neuroaz12/">1+2</a>
+  <span class="tag">·</span>
+  <a href="/neuro1/">A</a>
+  <a href="/neuro2/">2</a>
+  <a href="/neuro3/">3</a>
+  <span class="sp"></span>
+  <span class="tag">display · grotesk Space Grotesk</span>
+</nav>
+
+<header class="neuro-head">
+  <h1 id="doc-title">Linha do Tempo</h1>
+  <p class="sub">2012 — 2026. Datas gigantes e punchy; grotesk de ponta a ponta.</p>
+  <span class="neuro-draft">forma AZ3 · display</span>
+</header>
+
+<main class="tl" id="tl">
+  <div class="cols">
+    <div class="col left" id="col-left"><div class="neuro-loading">carregando…</div></div>
+    <div class="col right" id="col-right"></div>
+  </div>
+</main>
+
+<script src="/neuro/parse.js"></script>
+<script src="/neuro/authors.js?v=20260605a"></script>
+<script src="/neuro/references.js"></script>
+<script src="/neuro/zigzag.js"></script>
+</body>
+</html>

@@ -3,6 +3,9 @@ WORKDIR /app
 COPY tools/surfaces-server.mjs /app/tools/surfaces-server.mjs
 COPY tools/bake-geo.mjs /app/tools/bake-geo.mjs
 COPY yuri /app/yuri
+# registro canônico de autores (metadado unificado) — a surface yuri (UI) resolve
+# variantes de autor (yuri = "Vieira Sugano" = "Yuri") sobre os próprios entries.
+COPY neuro/authors.js /app/neuro/authors.js
 # geo é DATA de runtime (não content+form): TODOS os binários são baixados +
 # compilados aqui, no build, pra dentro da imagem — NÃO commitados, fora do git e
 # do build-context (.dockerignore). País v4+v6 (CC0) + cidade v4 (DB-IP CC-BY).

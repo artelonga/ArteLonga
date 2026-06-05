@@ -12,6 +12,53 @@ co-auto. Convenção em CLAUDE.md.
 
 ## [Unreleased]
 
+## [0.20.0] — 2026-06-05 — Identidade unificada de autores: neuro é a base, yuri é a UI
+
+### Theme
+
+Uma **identidade canônica de autor** unifica as referências: a base é
+`neuro/references.js`, yuri é a UI que filtra por autor. Variantes de nome
+("VIEIRA SUGANO, Yuri Yukio" / "yuri" / "Yuri" / "Vieira Sugano") resolvem pra UMA
+identidade — então dá pra consultar "publicações onde yuri é autor" ou "autor
+contém havlik". Metadado unificado, conteúdo separado de forma.
+
+### Why
+
+Autor era string livre, sem identidade: o filtro `author=yuri` não casava com
+"VIEIRA SUGANO, Yuri Yukio", e o yuri duplicava 5 publicações com strings de autor
+combinadas, filtradas por igualdade exata. Sem unificação, não dava pra consultar
+por nome.
+
+### Added (`feat`)
+
+- **`neuro/authors.js`** (novo): registro CANÔNICO de autores (metadado, não forma).
+  `resolve(qualquer-variante) → id`, `match(string, query)` alias-aware com quebra de
+  strings COMBINADAS ("Havlik, Vieira Sugano et al." → casa yuri E havlik), fallback
+  "contém". A maioria dos autores auto-deriva do sobrenome ABNT; só quem tem variantes/
+  handle (yuri) é registrado explícito.
+- **`neuro/references.js`**: `byAuthor()` resolve variantes via `NeuroAuthors`
+  (`byAuthor("yuri")` = `byAuthor("Vieira Sugano")` = 10 refs); novo `authors()`
+  (autores únicos canônicos). Carregado em todas as 8 páginas que usam references.js.
+- **`yuri/garden.js`**: filtro de autor alias-aware + chips de autor **deduplicados
+  por identidade canônica** (com display name). `yuri/index.html` carrega authors.js.
+- Surface yuri (UI) ganha `neuro/authors.js` na imagem (`deploy/surfaces/Dockerfile`)
+  pra resolver no child também; degrada gracioso se ausente.
+
+### Queries habilitadas
+
+- "publicações onde yuri é autor" → `NeuroCite.byAuthor("yuri")` (toda variante).
+- "autor contém havlik" → `NeuroCite.byAuthor("havlik")`.
+
+### Tests
+
+- 12 asserts (resolução de variantes, strings combinadas, sem falso-positivo) — todos
+  verdes. neuro byAuthor sem regressão.
+
+### Notes
+
+- yuri ainda DUPLICA as 5 publicações em `entries.json` (do #71); a unificação aqui é
+  do FILTRO/identidade. Renderizar yuri como view pura da base neuro (dedup) é follow-up.
+
 ## [0.19.0] — 2026-06-05 — Integração BIDIRECIONAL surface ↔ artelonga pai (Fase 3)
 
 ### Theme
