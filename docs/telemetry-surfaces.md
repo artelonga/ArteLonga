@@ -146,16 +146,25 @@ Resto = arquivo estático (cache `max-age=60`).
 
 ---
 
-## 2. Geo embarcado (`yuri/geo/ip4-country.bin`)
+## 2. Geo embarcado (`yuri/geo/*.bin`)
 
-Geo é resolvido **embarcado, self-hosted, sem chamada externa por request, só
-país** — escolha consciente vs. GeoLite2 (que exige license key e **proíbe**
-redistribuição em repo público). Fonte:
+Geo é resolvido **embarcado, self-hosted, sem chamada externa por request** —
+escolha consciente vs. GeoLite2 (license key + proíbe redistribuição). País via
 [`sapics/ip-location-db`](https://github.com/sapics/ip-location-db)
-`geo-whois-asn-country` — licença **CC0** (domínio público, commitável).
+`geo-whois-asn-country` (**CC0**); cidade via DB-IP City Lite (**CC-BY**, §abaixo).
+
+> **Geo é DATA de runtime, não content+form.** Os binários **não são commitados**
+> nem servidos por GH Pages — são **baixados + compilados no build da imagem**
+> (`Dockerfile` → `RUN bake-geo`), e excluídos do git (`.gitignore`) e do
+> build-context (`.dockerignore yuri/geo/*.bin`). Assim o repo de conteúdo fica
+> limpo e o deploy é reproduzível independente do estado local.
+>
+> **Local dev:** rode `node tools/bake-geo.mjs` (país) e `node tools/bake-geo.mjs
+> --city` (cidade) uma vez pra popular `yuri/geo/` no seu clone; sem isso o server
+> sobe sem geo (degrada pra `null`, sem crash).
 
 Compilado por `tools/bake-geo.mjs` (baixa os CSVs → binários compactos).
-**IPv4 e IPv6**, dois arquivos:
+País em **IPv4 e IPv6**, dois arquivos:
 
 ```
 ip4-country.bin  AG41: magic(4) + count(u32 LE) + starts[count×u32 LE]  + codes[count×2B]

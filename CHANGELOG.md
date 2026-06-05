@@ -12,6 +12,29 @@ co-auto. Convenção em CLAUDE.md.
 
 ## [Unreleased]
 
+## [0.17.1] — 2026-06-05 — Geo bins são DATA de runtime (Fly), não content+form
+
+### Why
+
+Princípio do projeto: **separar form de content**. Os binários de geo são **data
+de runtime da surface** — não são content (publicado) nem form (apresentação). Os
+de país estavam **commitados** (~6.6 MB) e até servidos por GH Pages inutilmente
+(o apex usa o co pra telemetria, não estes bins); o de cidade já era build-time.
+Inconsistente.
+
+### Changed (`refactor`)
+
+- **Todos os binários de geo agora são build-time only**, dentro da imagem Fly:
+  - `Dockerfile` compila país (v4+v6) **e** cidade no `RUN bake-geo` (antes só city).
+  - `git rm --cached` dos `ip4-country.bin`/`ip6-country.bin` (saem do git e do GH
+    Pages; seguem em disco pra dev local).
+  - `.gitignore` → `yuri/geo/*.bin` (todos); `.dockerignore` → `yuri/geo/*.bin`
+    (fora do build-context → deploy reproduzível, não depende do estado local).
+- Repo de conteúdo **−6.6 MB**; GH Pages para de servir os bins. Sem mudança de
+  comportamento em runtime (a surface compila tudo no build).
+- Local dev: `node tools/bake-geo.mjs [--city]` popula `yuri/geo/` (doc em
+  `telemetry-surfaces.md §2`).
+
 ## [0.17.0] — 2026-06-05 — Telemetria: geo de cidade (IPv4, DB-IP CC-BY)
 
 ### Theme

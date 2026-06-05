@@ -59,5 +59,6 @@ scratch/
 *.swp
 .worktrees/
 
-# geo city DB (DB-IP CC-BY) — built at Docker build, not committed (~31MB)
-yuri/geo/*-city.bin
+# geo bins são DATA de runtime (não content+form) — baixados+compilados no build
+# (Dockerfile RUN bake-geo). País (CC0) e cidade (DB-IP CC-BY) ficam fora do git.
+yuri/geo/*.bin
