@@ -1,10 +1,11 @@
 # Upgrade de universe — path → surface CNAME (runbook reproduzível)
 
-Como promover uma subuniverse servida como **path no apex** (`artelonga.com.br/yuri/`)
+Como promover uma **universe** servida como **path no apex** (`artelonga.com.br/yuri/`)
 pra **surface própria num CNAME** (`yuri.artelonga.com.br`), **sem perder
-observabilidade nem partir a série temporal**. Princípio (recursive universes): uma
-subuniverse promove pra universe sem fricção; a **surface é a subuniverse promovida**
-e passa a **ser dona do próprio estado** — inclusive telemetria.
+observabilidade nem partir a série temporal**. Princípio (universos **recursivos /
+fractais** — a mesma unidade em qualquer escala, sem "sub"): uma universe aninhada
+promove pra surface sem fricção, continua sendo a mesma universe (mesma chave,
+histórico, changelog, analytics) e passa a **ser dona do próprio estado**.
 
 Worked example ao longo do doc: **yuri** (`handle=yuri`, app `artelonga-yuri`,
 host `yuri.artelonga.com.br`). Troque `yuri`/`artelonga-yuri`/o host pelos seus.
