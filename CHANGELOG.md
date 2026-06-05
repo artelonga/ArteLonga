@@ -12,6 +12,28 @@ co-auto. Convenção em CLAUDE.md.
 
 ## [Unreleased]
 
+## [0.21.0] — 2026-06-05 — Parceiro Scrum + docs como conteúdo + revisão de segurança
+
+### Added (`feat`)
+
+- **Scrum (parceiro)** — pasta `scrum/` (draft, noindex): framework + guia oficial 2020
+  (anexo) + referências estruturadas na base; `note.md`. A entrega da ArteLonga (papéis,
+  cadência quinzenal Thu 15h BRT, roadmap/backlog como co tasks, retrospectiva dos
+  releases reais com DoD) vive sob `docs/`, linkando o parceiro.
+- **Docs como conteúdo** (`/docs/`) — `tools/bake-docs.mjs` pré-renderiza markdown +
+  mermaid → HTML+SVG estático (zero dependência de runtime/terceiros). Hub com split
+  público (case study/metodologia) / dev (specs, noindex). `npm run bake-docs`.
+- **Revisão de segurança** — `tools/bake-security-index.mjs`: índice de toda superfície
+  exposta (GH Pages serve o repo inteiro) + endpoints, por sensibilidade. Saída noindex
+  + gitignored. `npm run security-review`.
+
+### Fixed (`fix`)
+
+- **security:** `data/feedback.ndjson` (PII) e `yuri/file.enc` (vault) saíram do repo
+  servido (`git rm --cached` + gitignore `*.ndjson`/`*.enc`) — dados de runtime ≠ content.
+- **ci:** telemetry só roda em subdomínio (sem erro de console no apex/smoke); audit
+  de storage-keys com constante p/ `al_vid`. PR `quality` verde.
+
 ## [0.20.0] — 2026-06-05 — Identidade unificada de autores: neuro é a base, yuri é a UI
 
 ### Theme
