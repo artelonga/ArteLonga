@@ -8,6 +8,29 @@ partners: []
 created: 2026-06-05
 attachments:
   - 2020-Scrum-Guide-US.pdf
+# referências ESTRUTURADAS (dado, não só texto) — entram na base artelonga/co como
+# entries do tipo `ref`, queryáveis por autor/título (mesmo padrão de neuro/references.js).
+references:
+  - key: scrum-guide-2020
+    title: "The Scrum Guide (2020)"
+    authors: "Schwaber, K.; Sutherland, J."
+    year: 2020
+    url: "https://scrumguides.org/"
+    attachment: "2020-Scrum-Guide-US.pdf"
+  - key: agile-manifesto-2001
+    title: "Manifesto for Agile Software Development"
+    authors: "Beck, K. et al."
+    year: 2001
+    url: "https://agilemanifesto.org/"
+  - key: takeuchi-nonaka-1986
+    title: "The New New Product Development Game"
+    authors: "Takeuchi, H.; Nonaka, I."
+    year: 1986
+    container: "Harvard Business Review"
+    url: "https://hbr.org/1986/01/the-new-new-product-development-game"
+  - key: scrum-org
+    title: "Scrum.org — Home of Scrum"
+    url: "https://www.scrum.org/"
 license: "The Scrum Guide © 2020 Ken Schwaber & Jeff Sutherland — Attribution ShareAlike"
 ---
 
@@ -54,6 +77,17 @@ num plano grande de uma vez só.
 - **Product Backlog** → Meta do Produto.
 - **Sprint Backlog** → Meta da Sprint.
 - **Increment** → Definition of Done.
+
+## Referências
+
+Referências estruturadas — entram na **base artelonga/co** como conteúdo
+queryável por autor/título (mesmo padrão da [bibliografia neuro](/neuro/bibliografia.html)),
+parte do upgrade da base de conhecimento. Todos os links:
+
+- **The Scrum Guide (2020)** — Schwaber, K.; Sutherland, J. — [scrumguides.org](https://scrumguides.org/) · guia oficial anexo nesta pasta: [[2020-Scrum-Guide-US.pdf]]
+- **Manifesto for Agile Software Development (2001)** — Beck, K. *et al.* — [agilemanifesto.org](https://agilemanifesto.org/)
+- **The New New Product Development Game (1986)** — Takeuchi, H.; Nonaka, I. — *Harvard Business Review* — [hbr.org](https://hbr.org/1986/01/the-new-new-product-development-game) — origem do termo *scrum* em desenvolvimento de produto.
+- **Scrum.org — Home of Scrum** — [scrum.org](https://www.scrum.org/)
 
 ---
 
