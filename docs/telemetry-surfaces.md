@@ -116,6 +116,7 @@ type TelemetryResponse = {
   timeseries: Array<{ bucket: string, count: number }>,  // pageviews/dia
   retention: { visitors, returning, bounceRate, dwellAvgMs, ... },
   geo: Array<{ n: number, country: string }>,         // país (v4+v6), top 12
+  cities: Array<{ n: number, city: string }>,         // "cidade, país" (IPv4 · DB-IP), top 12
   conversions: { total: number, top: Array<{ n: number, goal: string }> },
   interactions: {
     total: number,
@@ -167,6 +168,15 @@ Faixas adjacentes do mesmo país são coladas (push-on-change). v4: 334k faixas 
 Lookup (`geoCountry`) despacha por família: IPv4 (ou `::ffff:a.b.c.d`) → busca
 binária por `uint32`; IPv6 → parse pra 16 bytes big-endian + busca binária por
 `Buffer.compare`. Privado/loopback/desconhecido → `null`.
+
+**Cidade (opcional, IPv4):** `ip4-city.bin` (formato `AGC4` — starts `u32` +
+índice `u32` numa tabela `país|região|cidade` deduplicada). Fonte: **DB-IP City
+Lite**, licença **CC-BY-4.0** → exige atribuição visível ("IP Geolocation by
+DB-IP", presente no dashboard). É grande (~31 MB, e o set IPv6 é ~98 MB gz), então
+**não é commitado**: o `Dockerfile` baixa + compila no build
+(`bake-geo.mjs --city`), dentro da imagem, fora do git e do build context. Se
+faltar, a surface cai pra geo de país. **IPv6 resolve em nível de país** (sem city
+v6).
 
 Regenerar: `node tools/bake-geo.mjs` (ou passar um CSV: `… /tmp/geo4.csv`).
 O `.bin` entra na imagem via `COPY yuri` (Dockerfile) — o reader é **inline** no
@@ -246,7 +256,7 @@ horizonte longo sobrevivendo ao sleep. C = continuidade do A + ownership do B.
 | Capacidade | co | surface | estado |
 |---|---|---|---|
 | timeseries diário | ✅ | ✅ | `teleAgg` agrega `TrackEvent.t` por dia |
-| geo (país) | ✅ país+cidade | ✅ país (v4+v6) | binário embarcado no ingest; cidade = delta (§GA) |
+| geo | ✅ país+cidade | ✅ país (v4+v6) + cidade (IPv4) | binários embarcados; city via DB-IP na imagem; v6 city = delta |
 | retenção (novo/recorrente) | ✅ | ✅ | `al_vid` persistente (cookie apex) |
 | dwell / engajamento | ✅ | ✅ | `page_end` com `active_ms` |
 | rejeição (bounce) | ~ | ✅ | sessão ≤1 pageview e 0 interação |
@@ -275,7 +285,7 @@ de terceiros, sem cross-site, self-hosted, raw exportável. Onde "surface" apare
 | Aquisição (source/medium/campaign) | ✅ | ✅ | UTM first-touch + referrer |
 | Referrals | ✅ | ✅ | |
 | Geo país | ✅ | ✅ | v4+v6 embarcado |
-| Geo região/cidade | ✅ cidade | ⛔ país só | **delta** — exige dataset city (~centenas de MB) |
+| Geo região/cidade | ✅ cidade | ✅ cidade (IPv4) / país (IPv6) | DB-IP City Lite (CC-BY) compilado na imagem; **delta** = city IPv6 |
 | Dispositivo (categoria) | ~ | ✅ | viewport → mobile/tablet/desktop |
 | Browser / OS | ~ `ua_brand` | ⛔ | **delta** — exige parse de User-Agent |
 | Viewport / resolução | ✅ | ✅ | `vw` |
@@ -296,8 +306,8 @@ do GA que **não** cobrimos são os de **vigilância** (demografia via Google Si
 audiências cross-site) — omitidos por princípio, não por limitação.
 
 **Deltas de granularidade ainda abertos** (nenhum exige comprometer privacidade,
-todos incrementais): geo cidade, browser/OS (parse UA), scroll depth, funil
-multi-step e curva de coorte. Priorizar sob demanda.
+todos incrementais): **city IPv6** (set ~98 MB gz), browser/OS (parse UA), scroll
+depth, funil multi-step e curva de coorte. Priorizar sob demanda.
 
 ---
 
