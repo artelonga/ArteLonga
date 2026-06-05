@@ -12,6 +12,9 @@
 (function () {
   var dnt = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
   if (dnt === "1" || dnt === "yes") return;                 // respeita DNT
+  // só roda na SURFACE (subdomínio que serve /api/track). No apex (artelonga.com.br/yuri/),
+  // GH Pages e localhost o /api/track não existe — o POST viraria erro de console.
+  if (!/\.artelonga\.com\.br$/.test(location.hostname)) return;
   var EP = "/api/track";
   // chaves de storage — cópia vanilla (não importa TS; espelha src/lib/storage-keys.ts,
   // como assets/analytics.js). VID_COOKIE é COMPARTILHADO com o apex (.artelonga.com.br).
