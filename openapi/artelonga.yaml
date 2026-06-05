@@ -814,3 +814,153 @@ components:
             bairro:
               type: string
       required: [people, communities, services]
+
+    # ── Analytics framework ────────────────────────────────────────────────
+    # Schema canônico do framework de analytics multi-tenant (docs/analytics-framework.md).
+    # TelemetryEvent é RAW (dono = a universe, edge; NUNCA centralizado). DailyRollup
+    # é o agregado CONSENTIDO, sem PII — a ÚNICA coisa que vai pro warehouse central
+    # (co), keyed by (universe, day). Qualquer producer que conforme com DailyRollup
+    # (surface universe-owned, apex, parceiro, universe co, SDK externo) entra no centro.
+
+    TelemetryKind:
+      type: string
+      enum: [pageview, interaction, page_end, goal, feedback]
+      description: Tipo de evento de telemetria.
+
+    DeviceCategory:
+      type: string
+      enum: [mobile, tablet, desktop, "(desconhecido)"]
+      description: Categoria de dispositivo derivada do viewport.
+
+    Utm:
+      type: object
+      description: Atribuição de campanha (first-touch).
+      properties:
+        source: { type: string }
+        medium: { type: string }
+        campaign: { type: string }
+        term: { type: string }
+        content: { type: string }
+
+    TelemetryEvent:
+      type: object
+      description: |
+        Evento RAW de telemetria. Dono = a universe (edge); fica no estado local
+        (NDJSON) e NUNCA é centralizado. Geo resolvido no ingest a partir do IP, que
+        é descartado. vid/session/IP não saem do edge (PII relativa).
+      properties:
+        universe: { $ref: "#/components/schemas/Handle" }
+        t: { type: string, format: date-time, description: ISO timestamp. }
+        kind: { $ref: "#/components/schemas/TelemetryKind" }
+        vid: { type: string, description: Visitor ID persistente (al_vid). Não centralizado. }
+        session: { type: string, description: Session ID por-aba (al.sid). }
+        page: { type: string }
+        referrer: { type: string, nullable: true }
+        country: { type: string, nullable: true, description: ISO-3166 alpha-2 (geo embarcado v4+v6). }
+        region: { type: string, nullable: true }
+        city: { type: string, nullable: true, description: IPv4 via DB-IP City Lite (CC-BY). }
+        device: { $ref: "#/components/schemas/DeviceCategory" }
+        utm: { allOf: [{ $ref: "#/components/schemas/Utm" }], nullable: true }
+        lang: { type: string, nullable: true }
+        vw: { type: integer, nullable: true, description: Viewport width (px). }
+        action: { type: string, nullable: true, description: 'ex. "click" (interaction).' }
+        target: { type: string, nullable: true, description: href (interaction). }
+        outbound: { type: boolean }
+        dur: { type: integer, nullable: true, description: ms ativos (page_end). }
+        goal: { type: string, nullable: true, description: nome da conversão (goal). }
+      required: [universe, t, kind]
+
+    DimensionCount:
+      type: object
+      description: 'Contagem por valor de uma dimensão. n + uma chave (ex. {n, source}, {n, page}, {n, device}, {n, goal}).'
+      properties:
+        n: { type: integer }
+      additionalProperties: { type: string }
+      required: [n]
+
+    GeoCount:
+      type: object
+      description: Contagem geo (país / região / cidade).
+      properties:
+        country: { type: string }
+        region: { type: string, nullable: true }
+        city: { type: string, nullable: true }
+        n: { type: integer }
+      required: [country, n]
+
+    RollupMetrics:
+      type: object
+      description: Métricas escalares de um dia (sem PII).
+      properties:
+        pageviews: { type: integer }
+        visitors: { type: integer, description: Únicos (vid). }
+        returning: { type: integer, description: vid visto em >1 dia. }
+        sessions: { type: integer }
+        bounced: { type: integer, description: Sessões ≤1 pageview e 0 interação. }
+        dwell_ms_sum: { type: integer, description: Soma de ms ativos (page_end). }
+        conversions: { type: integer }
+      required: [pageviews, visitors, sessions]
+
+    RollupDims:
+      type: object
+      description: Breakdowns por dimensão (cubos de baixa cardinalidade, filtráveis no centro).
+      properties:
+        geo: { type: array, items: { $ref: "#/components/schemas/GeoCount" } }
+        device: { type: array, items: { $ref: "#/components/schemas/DimensionCount" } }
+        source: { type: array, items: { $ref: "#/components/schemas/DimensionCount" } }
+        pages: { type: array, items: { $ref: "#/components/schemas/DimensionCount" } }
+        goals: { type: array, items: { $ref: "#/components/schemas/DimensionCount" } }
+        referrers: { type: array, items: { $ref: "#/components/schemas/DimensionCount" } }
+
+    DailyRollup:
+      type: object
+      description: |
+        Agregado diário CONSENTIDO, sem PII — a ÚNICA coisa que vai pro warehouse
+        central (co), keyed by (universe, day). Idempotente (upsert). Produzido por
+        qualquer producer que conforme com este shape (surface universe-owned, apex,
+        parceiro, universe co, SDK externo). Contrato = este schema, não a implementação.
+      properties:
+        universe: { $ref: "#/components/schemas/Handle" }
+        day: { type: string, pattern: "^\\d{4}-\\d{2}-\\d{2}$", description: UTC YYYY-MM-DD. }
+        schema: { type: integer, const: 1, description: Versão do schema de rollup. }
+        metrics: { $ref: "#/components/schemas/RollupMetrics" }
+        dims: { $ref: "#/components/schemas/RollupDims" }
+      required: [universe, day, schema, metrics]
+
+    AnalyticsScope:
+      type: string
+      description: 'Escopo de leitura: um universe (tenant) ou "network" (owner: todas as universes).'
+      examples: [yuri, hostinger, network]
+
+    AnalyticsSummary:
+      type: object
+      description: |
+        Resposta do endpoint central filtrável GET /api/v1/analytics/{scope}/summary.
+        Filtros: from/to (intervalo), groupBy (bucket), filter (facetas de dimensão),
+        breakdown (dimensão a retornar). Ver docs/analytics-framework.md.
+      properties:
+        scope: { $ref: "#/components/schemas/AnalyticsScope" }
+        range:
+          type: object
+          properties:
+            from: { type: string, format: date }
+            to: { type: string, format: date }
+            groupBy: { type: string, enum: [day, week, month] }
+        filter:
+          type: object
+          additionalProperties: { type: string }
+          description: 'Facetas aplicadas (ex. {"geo.country":"BR","device":"mobile"}).'
+        metrics: { $ref: "#/components/schemas/RollupMetrics" }
+        timeseries:
+          type: array
+          items:
+            type: object
+            properties:
+              bucket: { type: string }
+              count: { type: integer }
+            required: [bucket, count]
+        breakdown:
+          type: array
+          description: Contagens da dimensão pedida em ?breakdown (geo/device/source/page/goal).
+          items: { $ref: "#/components/schemas/DimensionCount" }
+      required: [scope, range, metrics, timeseries]

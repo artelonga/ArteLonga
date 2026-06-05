@@ -12,6 +12,41 @@ co-auto. Convenção em CLAUDE.md.
 
 ## [Unreleased]
 
+## [0.18.0] — 2026-06-05 — Analytics framework: schema canônico multi-tenant (Fase 1)
+
+### Theme
+
+Fase 1 do framework de analytics **central, filtrável e extensível** que unifica os
+dois sistemas (apex co-backed + surfaces universe-owned) e estende pra novos
+parceiros e qualquer universe do `co`.
+
+### Why
+
+Hoje há dois dashboards/sistemas paralelos. O caminho pra um framework multi-tenant
+é: **schema canônico keyed by `universe`** + warehouse central filtrável + producers
+uniformes + um dashboard parametrizado — honrando o princípio "edge dono do raw,
+centro só com agregado consentido sem PII". Esta fase define o **contrato** (schema +
+design) contra o qual a metade central (`co`, Fase 2) é construída.
+
+### Added (`feat`)
+
+- **Schema canônico** em `openapi/artelonga.yaml`: `TelemetryEvent` (raw, edge-owned,
+  nunca centralizado), `DailyRollup` (agregado consentido sem PII — o único que vai
+  pro centro, keyed by universe+day), `RollupMetrics`, `RollupDims`, `GeoCount`,
+  `DimensionCount`, `AnalyticsSummary` (resposta da API filtrável), `TelemetryKind`,
+  `DeviceCategory`, `Utm`, `AnalyticsScope`. Types regenerados (`src/types.gen.ts`).
+- **`docs/analytics-framework.md`** (novo): a arquitetura completa — seam central,
+  API filtrável (`/api/v1/analytics/{scope}/summary` com scope/from/to/filter/
+  breakdown), contrato de producer (turnkey surfaces-server + SDK), dashboard único
+  parametrizado, a tensão filtrável-vs-raw-soberano, privacidade/tenancy e o rollout
+  faseado (1–5) com o que já existe.
+
+### Notes
+
+- `teleAgg()` da surface já produz ~`DailyRollup.dims` — a surface está a um bucketing
+  diário de virar producer conforme (Fase 3, depois).
+- Fase 2 (warehouse + API filtrável) e Fase 3 (push do rollup) ficam pra próxima.
+
 ## [0.17.1] — 2026-06-05 — Geo bins são DATA de runtime (Fly), não content+form
 
 ### Why
