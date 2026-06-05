@@ -15,9 +15,12 @@ scrum/
 └── index.html               # the form — publishes at artelonga.com.br/scrum
 ```
 
-Live at **`artelonga.com.br/scrum`** today (GH Pages). `index.html` renders
-`scrum.md` client-side and falls back to a baked stub if the fetch fails —
-**content separated from form, cache-renderable even if ingestion breaks**.
+**Status: rascunho (`draft: true`).** A pasta existe e é renderizável em
+`artelonga.com.br/scrum`, mas é **`noindex`** e marcada como rascunho — visível só
+pra revisão do lead, **ainda não publicada**. `index.html` renderiza `scrum.md`
+client-side e cai num stub baked se o fetch falhar — **forma separada de conteúdo,
+renderiza no cache mesmo se a ingestão quebrar**. Publicar = sair do estágio draft
+(`draft: false`, remover `noindex`).
 
 ## 1. Why a *folder* (and the lifecycle)
 
@@ -37,13 +40,14 @@ flowchart LR
 
 ## 2. Publishing now → upgrading later (infra-agnostic, zero SaaS)
 
-| Stage | Where | How |
+| Stage | Where | Gate |
 |---|---|---|
-| **Now** | `artelonga.com.br/scrum` | static folder on GH Pages; standalone `index.html` |
-| **Upgrade** | `scrum.artelonga.com.br` | promote to a surface (CNAME) via the `universe-upgrade.md` runbook — own domain/machine, no data loss |
+| **Draft (now)** | `/scrum` — **`noindex`** | `draft: true` · revisão do lead, não público |
+| **Published** | `artelonga.com.br/scrum` (público, indexado) | `draft: false` · sai do rascunho |
+| **Surface** | `scrum.artelonga.com.br` | `universe-upgrade.md` runbook — own domain/machine, no data loss |
 
-The folder is the migration unit. Promotion changes the host, **not** the content or
-the data spec.
+The folder is the migration unit. Going draft→published is a **frontmatter gate**;
+promotion to a surface changes the **host**, never the content or the data spec.
 
 ## 3. The two user experiences
 

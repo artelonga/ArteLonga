@@ -1,6 +1,7 @@
 ---
 title: Scrum
 type: projeto
+draft: true            # ainda RASCUNHO — não publicado (noindex; só revisão do lead)
 status: draft
 lead: yuri
 partners: []
