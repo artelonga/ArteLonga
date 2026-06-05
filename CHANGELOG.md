@@ -12,6 +12,55 @@ co-auto. Convenção em CLAUDE.md.
 
 ## [Unreleased]
 
+## [0.16.0] — 2026-06-05 — Telemetria: geo IPv6, aquisição (UTM) e dispositivo — paridade com Google Analytics + runbook de upgrade
+
+### Theme
+
+Levar a telemetria da surface a **paridade com o Google Analytics** (sem cookies
+de terceiros, sem cross-site, self-hosted) e documentar de forma **reproduzível**
+como uma universe é promovida de path pra CNAME.
+
+### Why
+
+A geo só cobria IPv4 — parte relevante do tráfego (mobile/moderno) ficava sem
+país. E faltavam pilares do GA: **aquisição** (campanha/origem) e **dispositivo**.
+Fechados aqui. Além disso, o upgrade `/yuri` → `yuri.artelonga.com.br` precisava de
+um runbook executável pra ser repetível com outros parceiros.
+
+### Added (`feat`)
+
+- **Geo IPv6** (`tools/bake-geo.mjs`, `tools/surfaces-server.mjs`): segundo binário
+  `yuri/geo/ip6-country.bin` (formato `AG61`, 273k faixas, 4.69 MB) — starts de 16
+  bytes big-endian + busca binária via `Buffer.compare`; parser de IPv6 (trata `::`,
+  IPv4 embutido). `geoCountry` despacha v4/v6. Verificado: `2001:4860:4860::8888`→US,
+  `2804:…`→BR, Cloudflare→US, loopback→null.
+- **Aquisição / UTM** (`yuri/telemetry.js`, `surfaces-server.mjs`): UTM de primeiro
+  toque (sessionStorage) enviado no pageview; servidor agrega origem
+  (`utm_source` → referrer → "(direto)"). Nova seção "aquisição" no dashboard.
+- **Dispositivo** (`surfaces-server.mjs`): categoria mobile/tablet/desktop derivada
+  do viewport (sem custo no client, sem dataset). Nova seção "dispositivo".
+
+### Docs
+
+- **`docs/universe-upgrade.md`** (novo): runbook **reproduzível** path→CNAME (DNS na
+  Hostinger, app/volume/cert Fly, deploy gate, continuidade de telemetria via Option
+  C, checklist de verificação com comandos, rollback) — ancorado nos artefatos reais
+  do yuri.
+- **`docs/telemetry-surfaces.md`**: **matriz de paridade com o GA4** (§7) — igual ou
+  acima no core que respeita privacidade; pilares de vigilância (demografia via
+  Google Signals, audiências cross-site) omitidos por princípio. Deltas abertos
+  (cidade, browser/OS, scroll, funil, coorte) listados. Geo §2 atualizado pra v4+v6;
+  shape de `/api/telemetry` com `acquisition`/`devices`/`visitors`/`returning`.
+
+### Deploy
+
+- `artelonga-yuri` e `artelonga-hostinger` redeployadas (binários geo v4+v6,
+  aquisição, dispositivo). `telemetry.js?v=` → `20260605b`.
+
+> **Pendente:** deltas de granularidade vs GA (geo cidade, browser/OS, scroll,
+> funil, coorte) — incrementais, nenhum exige comprometer privacidade. Metade co da
+> Option C segue pendente (`telemetry-surfaces.md §3`).
+
 ## [0.15.0] — 2026-06-05 — Telemetria: paridade de observabilidade nas surfaces + gráfico de tempo no dashboard apex
 
 ### Theme

@@ -58,8 +58,20 @@
     } catch (e) {}
   }
 
+  // ── aquisição: UTM de primeiro toque (sessionStorage) — atribuição de campanha ──
+  function firstTouchUtm() {
+    try {
+      var k = "al.utm", saved = sessionStorage.getItem(k);
+      if (saved) return JSON.parse(saved);
+      var p = new URLSearchParams(location.search), u = {};
+      ["source", "medium", "campaign", "term", "content"].forEach(function (f) { var v = p.get("utm_" + f); if (v) u[f] = v.slice(0, 80); });
+      if (Object.keys(u).length) { sessionStorage.setItem(k, JSON.stringify(u)); return u; }
+      return null;
+    } catch (e) { return null; }
+  }
+
   // ── acesso: pageview no carregamento ───────────────────────────────────────
-  send({ kind: "pageview", referrer: document.referrer || null, vw: window.innerWidth || null });
+  send({ kind: "pageview", referrer: document.referrer || null, vw: window.innerWidth || null, utm: firstTouchUtm() });
 
   // ── retenção: dwell (ms ativos) via page_end. Conta só tempo visível; manda o
   // delta desde o último envio (visibilitychange/pagehide) — sem dupla contagem.

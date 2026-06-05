@@ -95,6 +95,11 @@
     <div><h2>conversões <span class="muted" id="cvsub"></span></h2><div class="bars" id="conversions"></div></div>
   </div>
 
+  <div class="two">
+    <div><h2>aquisição <span class="muted">(origem)</span></h2><div class="bars" id="acquisition"></div></div>
+    <div><h2>dispositivo <span class="muted">(viewport)</span></h2><div class="bars" id="devices"></div></div>
+  </div>
+
   <h2>interação <span class="muted" id="ixsub"></span></h2>
   <div class="bars" id="targets"></div>
 
@@ -149,6 +154,8 @@
     bars($("#geo"),geo,"host",function(g){return g.country||"?";},"sem geo (país) ainda");
     $("#cvsub").textContent=cv.total?("("+cv.total+" total)"):"";
     bars($("#conversions"),cv.top,"up",function(g){return g.goal||"?";},"sem conversões ainda");
+    bars($("#acquisition"),d.acquisition||[],"neu",function(s){return s.source||"?";},"sem dados de aquisição ainda");
+    bars($("#devices"),d.devices||[],"host",function(s){return s.device||"?";},"sem dados de dispositivo ainda");
 
     $("#ixsub").textContent="("+ix.total+" cliques · "+ix.outbound+" outbound)";
     bars($("#targets"),ix.topTargets,"up",function(t){return t.target||"?";},"sem interações ainda");
