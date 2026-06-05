@@ -9,12 +9,22 @@ endpoint is set in `assets/analytics.js` (`ENDPOINT`).
 This file is the source of truth for the marketing-batch schema and HTTP
 contract. Bump `SCHEMA_VERSION` in both this doc and `analytics.js` together.
 
-> **Status (2026-04-29):** the translator handler exists in `artelonga/co`
-> (`co-web/src/telemetry.rs::marketing_events_handler`) but is not yet
-> deployed. Co's pages also have a separate, narrower client (`telemetry.js`,
-> `POST /api/v1/telemetry/event`, single-event shape) — both endpoints write
-> to the same `telemetry_events` table. The marketing client is the canonical
-> schema; Co's internal one will be retired or merged in a follow-up.
+> **Status (2026-06-05): LIVE.** The ingest (`POST /api/v1/telemetry/events`)
+> and the public read endpoints (`/api/v1/analytics/public/{summary,recent}`,
+> §9) are deployed and serving real data from `artelonga/co`. The dashboard at
+> `artelonga.com.br/analytics/` consumes them directly (the localStorage queue
+> in §9 is now only a fallback when the backend is unreachable). Co also has a
+> narrower single-event client (`telemetry.js`, `POST /api/v1/telemetry/event`,
+> single-event shape) — both endpoints write the same `telemetry_events` table.
+> The marketing-batch client (`assets/analytics.js`) is the canonical schema.
+>
+> **Two telemetry systems coexist.** This doc covers the **co marketing-batch**
+> system: the apex site `artelonga.com.br` and its paths send rich GA-like
+> events to co; it powers `/analytics/`. The second system —
+> **universe-owned surfaces** (promoted CNAME surfaces such as
+> `yuri.artelonga.com.br` that own their telemetry locally) — and the
+> convergence design that keeps a parceiro's time-series continuous across the
+> path→CNAME upgrade are documented in **`docs/telemetry-surfaces.md`**.
 
 ---
 
@@ -252,24 +262,39 @@ JSON. CORS aberto pra `https://artelonga.com.br`.
 
 Retorna agregados pra o intervalo informado (1, 7, 30 ou 90 dias).
 
+**Shape real servido hoje** (verificado 2026-06-05 — note `as_of`/`window_days`,
+não `range`):
+
 ```ts
 type SummaryResponse = {
-  range: { from: string, to: string, days: number },   // ISO datetimes
+  as_of: string,                                       // ISO datetime do cálculo
+  window_days: number,                                 // janela pedida (= days)
   views: number,                                       // total page_view
   events_total: number,                                // todos os eventos no range
   visitors: number,                                    // unique vid
-  returning?: number,                                  // visitantes que tinham vid antes do range
+  returning: number,                                   // visitantes que tinham vid antes do range
   sessions: number,                                    // unique sid
-  session_avg_ms?: number,                             // duração média (ms)
+  session_avg_ms: number,                              // duração média (ms) — ⚠ bug atual: retorna ~4ms
   countries: number,                                   // distinct
-  cities?: number,
-  timeseries: Array<{ bucket: string, count: number }>, // bucket = ISO date ou hora
+  cities: number,
+  timeseries: Array<{ bucket: string, count: number }>, // bucket = ISO date (ou hora se days=1)
   top_pages: Array<{ path: string, views: number, visitors: number }>,
-  geo: Array<{ country: string, city?: string, visitors: number, sessions: number }>
+  geo: Array<{ country: string, city: string, visitors: number, sessions: number }>
 }
 ```
 
 Bucketing: `days=1` → hora, demais → dia. Limite top_pages = 30, geo = 50.
+
+**Parâmetros planejados (ainda ignorados pelo backend — front já feature-detecta):**
+
+| Param            | Efeito                                                        | Status |
+| ---              | ---                                                           | ---    |
+| `from`, `to`     | Fatia por intervalo de datas (`YYYY-MM-DD`). O dashboard usa pra **clique-no-gráfico filtra dados abaixo**: ao clicar numa barra ele chama `?from=DIA&to=DIA` e, se o backend devolver `timeseries.length === 1` com aquele bucket, assume suporte e usa o slice; senão cai no fallback client-side (recomputa top-pages do dia a partir de `/recent`). Implementar = fatiar todos os agregados (KPIs/top_pages/geo/timeseries) por `[from,to]`. | **TODO co** |
+| `universe`       | Filtra por universe/surface (`?universe=yuri`). Necessário pra separar a observabilidade de `/yuri` (agora CNAME `yuri.artelonga.com.br`) do agregado da rede. Hoje é **ignorado** (mesmos números com ou sem). Ver convergência em `docs/telemetry-surfaces.md`. | **TODO co** |
+
+> Bot/datacenter skew: `geo` hoje é dominado por IPs de datacenter (Washington,
+> Boydton, Chicago, San Jose, Phoenix, Cheyenne = AWS/Azure/GCP). Recomenda-se
+> filtro de ASN/datacenter no backend antes de contar como visitante.
 
 ### `GET /api/v1/analytics/public/recent?limit=50`
 
