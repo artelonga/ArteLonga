@@ -85,6 +85,12 @@
   <div id="ts-host"></div>
   <div class="day-filter" id="day-filter"></div>
 
+  <div id="parent-section" style="display:none">
+    <h2>histórico · artelonga pai <span class="muted">(co — <code>/yuri</code> + rollups)</span></h2>
+    <div class="cards" id="parent-cards"></div>
+    <div class="muted" style="font-size:.7rem;margin:.3rem 0 1rem">Visão <b>unificada</b> da universe no co: o histórico do path <code>/yuri</code> (pré-CNAME) + os rollups que esta surface empurra. O estado local acima é a fonte da verdade do tempo real; isto é o <b>mesmo dado da universe</b> reclamado de volta do pai.</div>
+  </div>
+
   <div class="two">
     <div><h2>páginas mais vistas <span class="muted">(pageviews)</span></h2><div class="bars" id="pages"></div></div>
     <div><h2>referrers <span class="muted">(externos)</span></h2><div class="bars" id="refs"></div></div>
@@ -152,6 +158,16 @@
     ].map(function(c){return '<div class="card"><b>'+esc(c[1])+'</b><span>'+esc(c[0])+'</span></div>';}).join("");
 
     renderTS(d.timeseries||[]);
+
+    var parent=d.parent;
+    if(parent){
+      document.getElementById("parent-section").style.display="";
+      $("#parent-cards").innerHTML=[
+        ["visualizações",parent.views||0],["visitantes",parent.visitors||0],
+        ["recorrentes",parent.returning||0],["sessões",parent.sessions||0],
+        ["países",parent.countries||0],["cidades",parent.cities||0]
+      ].map(function(c){return '<div class="card"><b>'+esc(c[1])+'</b><span>'+esc(c[0])+'</span></div>';}).join("");
+    } else { document.getElementById("parent-section").style.display="none"; }
 
     bars($("#pages"),ac.topPages,"host",function(p){return p.page||"?";},"sem pageviews ainda");
     bars($("#refs"),ac.referrers,"neu",function(r){return r.ref||"?";},"sem referrers externos");

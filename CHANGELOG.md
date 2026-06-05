@@ -12,6 +12,49 @@ co-auto. Convenção em CLAUDE.md.
 
 ## [Unreleased]
 
+## [0.19.0] — 2026-06-05 — Integração BIDIRECIONAL surface ↔ artelonga pai (Fase 3)
+
+### Theme
+
+A surface universe-owned passa a integrar nos **dois sentidos** com a artelonga pai
+(co): **empurra** `DailyRollup` diário pro warehouse central **e lê de volta** o
+summary unificado da universe (histórico `/yuri` pré-CNAME + rollups). Resultado: o
+dado da `yuri.artelonga.com.br` chega no pai, e o histórico do pai aparece no child.
+
+### Why
+
+Faltava o lado producer da Option C **e** a leitura de volta. Sem push, o dado da
+CNAME ficava ilhado; sem read-back, o child não via o próprio histórico `/yuri`
+(pré-migração) que vive no co. O usuário quer os dois sentidos.
+
+### Added (`feat`)
+
+- **child → pai (push):** `dayRollup()` constrói o `DailyRollup` de um dia
+  (consentido, **sem PII** — só contagens: metrics + dims
+  geo/device/source/pages/goals/referrers) do NDJSON local; `pushRollups()` faz `POST`
+  dos últimos `ROLLUP_DAYS` dias pro `CO_ROLLUP_URL` com bearer `CO_ROLLUP_TOKEN`.
+  Trigger sem timer residente (Fly auto-stop): **cold-start** + **debounced no
+  tráfego** (`ROLLUP_INTERVAL_MS`, 30min). Idempotente no co (upsert `(universe, day)`).
+- **pai → child (read-back):** `fetchParent()` lê o summary unificado da universe no
+  co (`CO_HISTORY` = `…/analytics/public/summary?universe=yuri`), cache 5min,
+  server-side (sem CORS). `/api/telemetry` ganha o bloco `parent`; o dashboard mostra
+  "histórico · artelonga pai" (visualizações/visitantes/recorrentes/sessões/países/
+  cidades). É o **próprio dado da universe** reclamado de volta — não de terceiros.
+- Ambos no-op sem env; non-fatal (estado local = fonte da verdade do tempo real).
+  `co` meta reporta `rollup`/`read` ligados.
+
+### Activation (manual, depois do co CO-340 deployar — PR `artelonga/co#152`)
+
+1. Deployar co com CO-340 (ingest de rollup + `?universe` no summary).
+2. `fly secrets set CO_ROLLUP_TOKEN=<segredo> -a artelonga-yuri` (só na surface
+   **primária** — não na hostinger, p/ não colidir no upsert) e o **mesmo** no co.
+3. `fly secrets set CO_HISTORY='https://co.artelonga.com.br/api/v1/analytics/public/summary?universe=yuri&days=90' -a artelonga-yuri`.
+
+### Notes
+
+- Escalares + timeseries cruzam a ponte no co; merge dos `dims` de rollup é follow-up.
+  Multi-surface por universe (somar yuri+hostinger) exige rollups surface-keyed no co.
+
 ## [0.18.0] — 2026-06-05 — Analytics framework: schema canônico multi-tenant (Fase 1)
 
 ### Theme

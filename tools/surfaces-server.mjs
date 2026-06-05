@@ -33,6 +33,21 @@ const FEEDBACK_UNIVERSE = process.env.FEEDBACK_UNIVERSE || "";   // universo do 
 const UNIVERSE = FEEDBACK_UNIVERSE || "yuri";
 const CO_FEEDBACK = process.env.CO_FEEDBACK || "https://co.artelonga.com.br/api/v1/feedback";
 const SIBLINGS = (process.env.SIBLINGS || "").split(",").map(s => s.trim()).filter(Boolean);
+// ── rollup → parent artelonga (co) ──────────────────────────────────────────
+// Producer da Option C: a surface empurra DailyRollup diário (consentido, SEM PII)
+// pro warehouse central do co, keyed by universe. Liga só se CO_ROLLUP_TOKEN setado
+// (e só na surface PRIMÁRIA da universe, p/ não colidir no upsert (universe,day)).
+const CO_ROLLUP_URL = process.env.CO_ROLLUP_URL || "https://co.artelonga.com.br/api/v1/analytics/public/rollups";
+const CO_ROLLUP_TOKEN = process.env.CO_ROLLUP_TOKEN || "";
+const ROLLUP_DAYS = +(process.env.ROLLUP_DAYS || 3);             // dias finalizados/recentes por push
+const ROLLUP_INTERVAL_MS = +(process.env.ROLLUP_INTERVAL_MS || 1800000);  // debounce no tráfego (30min)
+let lastRollupPush = 0;
+// ── ler de volta o histórico da artelonga PAI (co) ──────────────────────────
+// Bidirecional: além de empurrar (acima), a surface LÊ o summary unificado do co
+// pra ESTA universe (histórico /yuri pré-CNAME + rollups), pra mostrar no child.
+// É o PRÓPRIO dado da universe (não de terceiros) — reclamado de volta. Opt-in (env).
+const CO_HISTORY = process.env.CO_HISTORY || "";   // ex. co…/analytics/public/summary?universe=yuri&days=90
+let PARENT_CACHE = { at: 0, data: null };
 const TELE_DIR = process.env.TELEMETRY_DIR || "/data";
 const TELE_DURABLE = process.env.TELEMETRY_DURABLE === "1";    // true só com volume montado
 let TELE_FILE = path.join(TELE_DIR, "telemetry-" + UNIVERSE + ".jsonl");
@@ -284,6 +299,74 @@ function teleCombine(aggs) {      // soma agregados de várias surfaces da MESMA
   return out;
 }
 
+// ── DailyRollup (schema do artelonga): agregado CONSENTIDO de UM dia, SEM PII.
+// Só contagens — vid/session/IP não saem. `returning` = vid do dia visto antes dele.
+function dayRollup(all, day) {
+  const ev = all.filter(e => dayOf(e.t) === day);
+  if (!ev.length) return null;
+  const pv = ev.filter(e => e.kind === "pageview");
+  const ix = ev.filter(e => e.kind === "interaction");
+  const pe = ev.filter(e => e.kind === "page_end");
+  const go = ev.filter(e => e.kind === "goal");
+  const vids = new Set(pv.map(e => e.vid).filter(Boolean));
+  const earlier = new Set(all.filter(e => e.kind === "pageview" && e.vid && dayOf(e.t) < day).map(e => e.vid));
+  let returning = 0; vids.forEach(v => { if (earlier.has(v)) returning++; });
+  const sessPv = {}, sessIx = {};
+  pv.forEach(e => { if (e.session) sessPv[e.session] = (sessPv[e.session] || 0) + 1; });
+  ix.forEach(e => { if (e.session) sessIx[e.session] = 1; });
+  const allSess = new Set([...Object.keys(sessPv), ...Object.keys(sessIx)]);
+  let bounced = 0; allSess.forEach(s => { if ((sessPv[s] || 0) <= 1 && !sessIx[s]) bounced++; });
+  let dwell = 0; pe.forEach(e => { if (typeof e.dur === "number") dwell += e.dur; });
+  const geo = {}, device = {}, source = {}, pages = {}, goals = {}, referrers = {};
+  pv.forEach(e => {
+    if (e.country) geo[e.country] = (geo[e.country] || 0) + 1;
+    const dev = e.vw ? (e.vw < 768 ? "mobile" : e.vw < 1024 ? "tablet" : "desktop") : "(desconhecido)";
+    device[dev] = (device[dev] || 0) + 1;
+    const r = refDomain(e.referrer); if (r) referrers[r] = (referrers[r] || 0) + 1;
+    const src = (e.utm && e.utm.source) || r || "(direto)"; source[src] = (source[src] || 0) + 1;
+    const p = e.page || "?"; pages[p] = (pages[p] || 0) + 1;
+  });
+  go.forEach(e => { const k = e.goal || "?"; goals[k] = (goals[k] || 0) + 1; });
+  return {
+    universe: UNIVERSE, day, schema: 1,
+    metrics: { pageviews: pv.length, visitors: vids.size, returning,
+      sessions: Object.keys(sessPv).length, bounced, dwell_ms_sum: dwell, conversions: go.length },
+    dims: { geo: topN(geo, 20, "country"), device: topN(device, 5, "device"),
+      source: topN(source, 10, "source"), pages: topN(pages, 20, "page"),
+      goals: topN(goals, 20, "goal"), referrers: topN(referrers, 10, "ref") }
+  };
+}
+
+// Empurra os últimos ROLLUP_DAYS dias pro co (upsert idempotente por universe+day).
+// No-op sem token. Non-fatal: o estado local é a fonte da verdade; isto é broadcast.
+async function pushRollups() {
+  if (!CO_ROLLUP_TOKEN) return;
+  for (let i = 0; i < ROLLUP_DAYS; i++) {
+    const day = new Date(Date.now() - i * 86400000).toISOString().slice(0, 10);
+    const r = dayRollup(TELE_MEM, day);
+    if (!r) continue;
+    try {
+      const res = await fetch(CO_ROLLUP_URL, {
+        method: "POST", signal: AbortSignal.timeout(8000),
+        headers: { "Content-Type": "application/json", "Authorization": "Bearer " + CO_ROLLUP_TOKEN },
+        body: JSON.stringify(r)
+      });
+      if (!(res && res.ok)) console.log("[ROLLUP] " + day + " → co " + (res && res.status));
+    } catch (e) { console.log("[ROLLUP] push-failed " + day + " " + (e && e.message)); }
+  }
+}
+
+// Lê o summary unificado da universe no co (histórico + rollups), cache 5min. Non-fatal.
+async function fetchParent() {
+  if (!CO_HISTORY) return null;
+  if (Date.now() - PARENT_CACHE.at < 300000) return PARENT_CACHE.data;
+  try {
+    const r = await fetch(CO_HISTORY, { signal: AbortSignal.timeout(4000) });
+    if (r && r.ok) { PARENT_CACHE = { at: Date.now(), data: await r.json() }; }
+  } catch (e) { /* mantém cache anterior */ }
+  return PARENT_CACHE.data;
+}
+
 // MODE=iframe: renderiza REDIRECT_URL num iframe de tela cheia + carrega o widget de feedback (Fale Conosco)
 function iframePage() {
   return '<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">' +
@@ -360,6 +443,11 @@ const server = http.createServer(async (req, res) => {
         city: place && place.city || null };
       await teleSave(ev);
       res.writeHead(204); res.end();
+      // debounce: empurra rollups pro co enquanto a máquina está de pé (auto-stop = sem timer residente)
+      if (CO_ROLLUP_TOKEN && Date.now() - lastRollupPush > ROLLUP_INTERVAL_MS) {
+        lastRollupPush = Date.now();
+        pushRollups().catch(() => {});
+      }
     });
     return;
   }
@@ -374,7 +462,8 @@ const server = http.createServer(async (req, res) => {
     const q = new URL(req.url, "http://x").searchParams;
     const localAgg = teleAgg(TELE_MEM);
     const meta = { universe: UNIVERSE, surface: SURFACE, source: "universe-state", durable: TELE_DURABLE,
-      co: { endpoint: CO_FEEDBACK, role: "broadcast-target", read: false,
+      co: { endpoint: CO_FEEDBACK, role: CO_ROLLUP_TOKEN ? "broadcast + rollup" : "broadcast-target",
+            read: !!CO_HISTORY, rollup: !!CO_ROLLUP_TOKEN,
             verify: "co (universe='" + UNIVERSE + "') deve ter >= broadcast.ok linhas; failed/pending = não confirmado no co" } };
     if (q.get("local") === "1") {
       res.writeHead(200, { "content-type": "application/json" });
@@ -389,8 +478,9 @@ const server = http.createServer(async (req, res) => {
         else surfaces.push({ surface: s, url: s, ok: false, status: r && r.status });
       } catch (e) { surfaces.push({ surface: s, url: s, ok: false, error: String(e && e.message).slice(0, 80) }); }
     }
+    const parent = await fetchParent();   // histórico unificado da universe no co (bidirecional)
     res.writeHead(200, { "content-type": "application/json" });
-    return res.end(JSON.stringify(Object.assign({}, meta, teleCombine(aggs), { surfaces })));
+    return res.end(JSON.stringify(Object.assign({}, meta, teleCombine(aggs), { surfaces, parent })));
   }
   if (url === "/analytics" || url === "/analytics/") url = SURFACE + "analytics/index.html";
   if (MODE === "iframe" && (url === "/" || url === "")) {   // comunicacao → jogo no iframe + feedback
@@ -420,4 +510,7 @@ const server = http.createServer(async (req, res) => {
 });
 
 geoInit(); geo6Init(); cityInit();
-teleInit().finally(() => server.listen(PORT, () => console.log("surface=" + SURFACE + " mode=" + MODE + " universe=" + UNIVERSE + " on :" + PORT)));
+teleInit().finally(() => server.listen(PORT, () => {
+  console.log("surface=" + SURFACE + " mode=" + MODE + " universe=" + UNIVERSE + " on :" + PORT);
+  if (CO_ROLLUP_TOKEN) { lastRollupPush = Date.now(); pushRollups().catch(() => {}); }   // push no cold-start
+}));
