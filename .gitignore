@@ -65,3 +65,8 @@ yuri/geo/*.bin
 
 # security review artifact — mapa de superficie exposta, NUNCA servir/commitar
 _security-review.html
+
+# dados COLETADOS em runtime (feedback/telemetria) — nunca content, nunca servir
+*.ndjson
+# vaults criptografados — fora do repo de conteúdo público
+*.enc
