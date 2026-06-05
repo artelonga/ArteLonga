@@ -12,6 +12,83 @@ co-auto. Convenção em CLAUDE.md.
 
 ## [Unreleased]
 
+## [0.15.0] — 2026-06-05 — Telemetria: paridade de observabilidade nas surfaces + gráfico de tempo no dashboard apex
+
+### Theme
+
+Fechar a lacuna de observabilidade entre os **dois sistemas de telemetria** (ver
+`docs/telemetry-surfaces.md`): o apex `artelonga.com.br` (co, rico — timeseries,
+geo, retenção) e as **surfaces universe-owned** (CNAME como `yuri.artelonga.com.br`,
+que até então só contavam pageviews/cliques). Quando um parceiro é promovido de
+path (`/yuri/`) pra surface própria, a observabilidade não pode regredir nem
+quebrar a série temporal — esta release traz a surface à paridade e arruma o
+gráfico de tempo do dashboard público.
+
+### Why
+
+`/yuri` migrou pra CNAME (`yuri.artelonga.com.br`), passando da telemetria do co
+(timeseries/geo/retenção) pra NDJSON da surface (só contagens). O upgrade
+*regredia* a observabilidade e *partia* a série no corte. Além disso o gráfico de
+tempo do apex ficava sem eixo X além de 14 dias e não filtrava nada ao clicar.
+Este é o **substrato da Option C** (edge dono do raw + rollups consentidos pro co)
+documentada em `docs/telemetry-surfaces.md §3`.
+
+### Added — geo embarcado, retenção, dwell, timeseries e conversões na surface (`feat`)
+
+- **Geo país embarcado** (`tools/surfaces-server.mjs`, `tools/bake-geo.mjs`): país
+  resolvido no ingest de `/api/track` a partir de `Fly-Client-IP`, via binário CC0
+  compacto (`yuri/geo/ip4-country.bin`, formato `AG41`, 341k faixas, busca binária
+  stdlib). Self-hosted, sem chamada externa por request, **IP cru nunca persistido**
+  — só o país. Substitui o GeoLite2 (license key + proíbe redistribuição em repo
+  público) pelo dataset `ip-location-db` (domínio público).
+- **Visitante persistente + retenção** (`yuri/telemetry.js`): `al_vid` em
+  localStorage + cookie no apex `.artelonga.com.br` — **ponte de identidade** com o
+  cliente do apex, sobrevive ao upgrade path→CNAME. Habilita visitantes únicos e
+  novo/recorrente.
+- **Dwell / tempo ativo** (`page_end`): mede ms visíveis (visibilitychange/pagehide),
+  envia o delta sem dupla contagem. Habilita tempo ativo médio e taxa de rejeição.
+- **Timeseries diário + conversões** (`teleAgg`): série diária de pageviews;
+  conversões via regras de goal built-in (resume/contato/github/linkedin) e
+  `[data-goal]`, sem precisar editar HTML.
+- **Dashboard da surface à paridade** (`yuri/analytics/index.html`): 8 cards
+  (pageviews, visitantes, recorrentes, sessões, rejeição, tempo ativo, conversões,
+  países), gráfico de tempo (meses no eixo, data exata no hover, clique filtra a
+  atividade recente por dia), geolocalização por país e conversões. Agregação entre
+  surfaces irmãs preservada (`teleCombine`).
+
+### Added — gráfico de tempo do dashboard apex (`feat`)
+
+- **Eixo X em meses + data exata no hover** (`analytics/index.html`): rótulos por
+  mês em janelas longas (antes em branco além de 14 dias); readout com a data
+  completa e contagem.
+- **Clique na barra filtra os dados abaixo**: chip de dia, KPIs/top-pages/recentes
+  por dia. Feature-detecta `?from`/`&to` no co — usa o slice do backend assim que
+  ele existir; até lá recomputa o dia a partir de `/recent` (client-side).
+
+### Fixed (`fix`)
+
+- Gráfico de tempo do apex sem rótulos de eixo além de 14 dias → meses sempre
+  visíveis (`analytics/index.html`).
+
+### Docs
+
+- **`docs/telemetry-surfaces.md`** (novo): mapa dos dois sistemas, contrato dos
+  endpoints da surface (`/api/track`, `/api/feedback`, `/api/telemetry`), formato do
+  binário geo, **design de convergência (Option C)** + schema de rollup + runbook do
+  upgrade de parceiro.
+- **`docs/analytics-api.md`**: status → LIVE; shape real do `summary`
+  (`as_of`/`window_days`); documenta os params planejados `from`/`to`/`universe`;
+  flag do bug `session_avg_ms ≈ 4ms` e do skew de IPs de datacenter no geo.
+
+### Deploy
+
+- Surfaces `artelonga-yuri` e `artelonga-hostinger` redeployadas (servidor +
+  `yuri/` + binário geo). `telemetry.js?v=` bumpado pra `20260605a` nas 3 HTMLs.
+- Dashboard apex (`analytics/index.html`) + docs vão pro `main` (GH Pages) via PR.
+
+> **Pendente (próxima):** a metade co da Option C — endpoint de ingest de rollup
+> por universe e os params `?from`/`&to`/`?universe` no `summary` (repo `co`).
+
 ## [0.14.0] — 2026-05-20 — Phase C wave 4-8 close (modular data, TypeScript runtime, OpenAPI codegen, signup integration, dist cleanup)
 
 ### Theme

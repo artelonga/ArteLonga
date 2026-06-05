@@ -42,6 +42,7 @@
   .pill.ok{background:#e6f1e8;color:var(--up)}.pill.failed{background:#f6e7e4;color:var(--down)}.pill.pending{background:#efece7;color:var(--ink3)}
   .pill.on{background:#e6f1e8;color:var(--up)}.pill.off{background:#f6e7e4;color:var(--down)}
   .pill.pageview{background:#ece8fb;color:var(--host)}.pill.interaction{background:#eef3ea;color:var(--up)}.pill.feedback{background:#f6efe4;color:var(--accent)}
+  .pill.goal{background:#f3e9dd;color:var(--accent)}.pill.page_end{background:#eef1f6;color:var(--ink3)}
   .s{font-size:1rem}.s.up{color:var(--up)}.s.down{color:var(--down)}.s.neu{color:var(--ink3)}
   .co{border:1px dashed var(--line);border-radius:8px;padding:.7rem .9rem;font-size:.74rem;color:var(--ink2);margin-top:.4rem}
   .co b{color:var(--ink)}
@@ -51,6 +52,17 @@
   .empty{color:var(--ink3);font-style:italic;padding:.6rem 0}
   .two{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem}@media(max-width:620px){.two{grid-template-columns:1fr}}
   code{background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:.05rem .3rem;font-size:.72rem}
+  /* timeseries */
+  .ts-readout{font-size:.74rem;color:var(--ink2);min-height:1.2em;margin:.2rem 0 .5rem;font-weight:700}
+  .ts-readout .muted{color:var(--ink3);font-weight:400}
+  .ts-chart{width:100%;background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:.6rem .4rem .2rem;display:block}
+  .ts-bar{fill:var(--host);cursor:pointer;transition:fill .12s ease}
+  .ts-bar:hover{fill:var(--accent)}.ts-bar.sel{fill:var(--accent)}
+  .ts-month{font-size:9px;fill:var(--ink3);font-weight:700;font-family:var(--mono)}
+  .day-filter{display:flex;align-items:center;gap:.5rem;margin:.5rem 0 .2rem;font-size:.72rem;flex-wrap:wrap}
+  .day-filter .chip{display:inline-flex;align-items:center;gap:.4rem;background:var(--ink);color:#fff;border-radius:999px;padding:.2rem .6rem;font-weight:700}
+  .day-filter .chip button{background:none;border:none;color:#fff;cursor:pointer;font-size:.9rem;line-height:1;padding:0}
+  .day-filter .note{color:var(--ink3)}
 </style>
 </head>
 <body>
@@ -68,9 +80,19 @@
 
   <div class="cards" id="cards"></div>
 
+  <h2>visualizações ao longo do tempo</h2>
+  <div class="ts-readout" id="ts-readout"><span class="muted">passe o mouse sobre uma barra · clique pra filtrar a atividade recente por dia</span></div>
+  <div id="ts-host"></div>
+  <div class="day-filter" id="day-filter"></div>
+
   <div class="two">
     <div><h2>páginas mais vistas <span class="muted">(pageviews)</span></h2><div class="bars" id="pages"></div></div>
     <div><h2>referrers <span class="muted">(externos)</span></h2><div class="bars" id="refs"></div></div>
+  </div>
+
+  <div class="two">
+    <div><h2>geolocalização <span class="muted">(país)</span></h2><div class="bars" id="geo"></div></div>
+    <div><h2>conversões <span class="muted" id="cvsub"></span></h2><div class="bars" id="conversions"></div></div>
   </div>
 
   <h2>interação <span class="muted" id="ixsub"></span></h2>
@@ -99,6 +121,10 @@
   function when(t){if(!t)return"?";var d=new Date(t),diff=(Date.now()-d.getTime())/1000;
     if(diff<90)return"agora";if(diff<3600)return Math.floor(diff/60)+"min";if(diff<86400)return Math.floor(diff/3600)+"h";return d.toISOString().slice(0,10);}
   function smark(s){return s>0?'<span class="s up">▲</span>':s<0?'<span class="s down">▼</span>':'<span class="s neu">•</span>';}
+  var ALL_RECENT=[], LAST_TS=[], selectedDay=null;
+  function dayOf(t){return (t||"").slice(0,10);}
+  function fullDate(b){if(!b)return"";var d=new Date(b+"T00:00:00");return isNaN(d.getTime())?b:d.toLocaleDateString("pt-BR",{day:"numeric",month:"short",year:"numeric"}).replace(/\./g,"");}
+  function fmtDur(ms){ms=+ms||0;var s=Math.round(ms/1000);if(s<1)return"0s";if(s<60)return s+"s";var m=Math.floor(s/60);return m+"m"+(s%60?(" "+(s%60)+"s"):"");}
 
   function render(d){
     var ac=d.access||{pageviews:0,sessions:0,topPages:[],referrers:[]};
@@ -108,11 +134,21 @@
     $("#sub").innerHTML="estado da universe <b>"+esc(d.universe)+"</b> · "+(d.total||0)+" eventos · "+
       '<span class="pill '+(d.durable?"on":"off")+'">'+(d.durable?"durável (volume)":"efêmero (sem volume)")+'</span>';
 
-    $("#cards").innerHTML=[["pageviews",ac.pageviews],["sessões",ac.sessions],["interações",ix.total],["feedback",fb.total]]
-      .map(function(c){return '<div class="card"><b>'+c[1]+'</b><span>'+esc(c[0])+'</span></div>';}).join("");
+    var rt=d.retention||{visitors:ac.visitors||0,returning:ac.returning||0,bounceRate:0,dwellAvgMs:0};
+    var cv=d.conversions||{total:0,top:[]};
+    var geo=d.geo||[];
+    $("#cards").innerHTML=[
+      ["pageviews",ac.pageviews||0],["visitantes",rt.visitors||0],["recorrentes",rt.returning||0],["sessões",ac.sessions||0],
+      ["rejeição",(rt.bounceRate||0)+"%"],["tempo ativo",fmtDur(rt.dwellAvgMs)],["conversões",cv.total||0],["países",geo.length]
+    ].map(function(c){return '<div class="card"><b>'+esc(c[1])+'</b><span>'+esc(c[0])+'</span></div>';}).join("");
+
+    renderTS(d.timeseries||[]);
 
     bars($("#pages"),ac.topPages,"host",function(p){return p.page||"?";},"sem pageviews ainda");
     bars($("#refs"),ac.referrers,"neu",function(r){return r.ref||"?";},"sem referrers externos");
+    bars($("#geo"),geo,"host",function(g){return g.country||"?";},"sem geo (país) ainda");
+    $("#cvsub").textContent=cv.total?("("+cv.total+" total)"):"";
+    bars($("#conversions"),cv.top,"up",function(g){return g.goal||"?";},"sem conversões ainda");
 
     $("#ixsub").textContent="("+ix.total+" cliques · "+ix.outbound+" outbound)";
     bars($("#targets"),ix.topTargets,"up",function(t){return t.target||"?";},"sem interações ainda");
@@ -133,13 +169,53 @@
         "</td><td>"+(s.ok?'<span class="pill ok">ok</span>':'<span class="pill failed">'+esc(s.status||s.error||"offline")+"</span>")+"</td></tr>";
     }).join(""):'<tr><td colspan="4" class="empty">nenhuma</td></tr>';
 
-    var rc=d.recent||[];
-    $("#recent tbody").innerHTML=rc.length?rc.map(function(r){
-      var k=r.kind||"feedback";
-      var detail=k==="interaction"?(r.outbound?"↗ ":"")+esc(r.target||r.action||""):k==="pageview"?"":smark(r.sentiment)+" "+esc(r.message||"");
-      return "<tr><td><span class='pill "+k+"'>"+esc(k)+"</span></td><td>"+esc(when(r.t))+"</td><td>"+esc(r.page||"?")+"</td><td>"+detail+"</td></tr>";
-    }).join(""):'<tr><td colspan="4" class="empty">nada coletado ainda</td></tr>';
+    ALL_RECENT=d.recent||[];
+    renderDayFilter();
+    renderRecent();
   }
+
+  function recentDetail(r){
+    var k=r.kind||"feedback", geo=r.country?' <span class="muted">· '+esc(r.country)+'</span>':"";
+    if(k==="interaction")return (r.outbound?"↗ ":"")+esc(r.target||r.action||"")+geo;
+    if(k==="goal")return "🎯 "+esc(r.goal||"")+geo;
+    if(k==="page_end")return '<span class="muted">'+fmtDur(r.dur)+" ativo</span>";
+    if(k==="pageview")return r.country?'<span class="muted">'+esc(r.country)+"</span>":"";
+    return smark(r.sentiment)+" "+esc(r.message||"");
+  }
+  function renderRecent(){
+    var list=selectedDay?ALL_RECENT.filter(function(r){return dayOf(r.t)===selectedDay;}):ALL_RECENT;
+    $("#recent tbody").innerHTML=list.length?list.map(function(r){
+      var k=r.kind||"feedback";
+      return "<tr><td><span class='pill "+esc(k)+"'>"+esc(k)+"</span></td><td>"+esc(when(r.t))+"</td><td>"+esc(r.page||"?")+"</td><td>"+recentDetail(r)+"</td></tr>";
+    }).join(""):'<tr><td colspan="4" class="empty">'+(selectedDay?"nada neste dia no buffer recente":"nada coletado ainda")+'</td></tr>';
+  }
+
+  // ── timeseries: meses no eixo X, data exata no hover, clique filtra recentes ──
+  function renderTS(ts){
+    LAST_TS=ts||[];
+    var host=$("#ts-host"), ro=$("#ts-readout");
+    if(!ts||!ts.length){host.innerHTML='<div class="empty">sem dados ao longo do tempo ainda</div>';return;}
+    var W=820,H=150,P=22,max=1;ts.forEach(function(p){if((p.count||0)>max)max=p.count;});
+    var bw=(W-P*2)/ts.length, prevM=null, labels="";
+    var rects=ts.map(function(p,i){
+      var h=((p.count||0)/max)*(H-P*2),x=P+i*bw+bw*0.15,y=H-P-h,w=Math.max(1,bw*0.7),sel=p.bucket===selectedDay?" sel":"";
+      return '<rect class="ts-bar'+sel+'" data-b="'+esc(p.bucket)+'" data-c="'+(p.count||0)+'" x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+w.toFixed(1)+'" height="'+h.toFixed(1)+'"><title>'+esc(fullDate(p.bucket))+": "+(p.count||0)+' visualizações</title></rect>';
+    }).join("");
+    ts.forEach(function(p,i){var d=new Date(p.bucket+"T00:00:00");if(isNaN(d.getTime()))return;var key=d.getFullYear()*12+d.getMonth();if(key===prevM)return;prevM=key;var cx=P+i*bw+bw/2;var lab=d.toLocaleDateString("pt-BR",{month:"short"}).replace(".","")+(d.getMonth()===0?(" "+d.getFullYear()):"");labels+='<text class="ts-month" x="'+cx.toFixed(1)+'" y="'+(H-6)+'" text-anchor="middle">'+esc(lab)+"</text>";});
+    host.innerHTML='<svg class="ts-chart" viewBox="0 0 '+W+" "+H+'" preserveAspectRatio="xMidYMid meet" role="img" aria-label="visualizações ao longo do tempo">'+rects+labels+"</svg>";
+    host.querySelectorAll("rect.ts-bar").forEach(function(rect){
+      rect.addEventListener("mouseenter",function(){ro.innerHTML="<b>"+esc(fullDate(rect.dataset.b))+"</b> · "+rect.dataset.c+" visualizações";});
+      rect.addEventListener("click",function(){pickDay(rect.dataset.b);});
+    });
+    host.onmouseleave=function(){ro.innerHTML=selectedDay?("<b>"+esc(fullDate(selectedDay))+"</b> · filtrando atividade recente"):'<span class="muted">passe o mouse sobre uma barra · clique pra filtrar a atividade recente por dia</span>';};
+  }
+  function renderDayFilter(){
+    var el=$("#day-filter");
+    if(!selectedDay){el.innerHTML="";return;}
+    el.innerHTML='<span class="chip">📅 '+esc(fullDate(selectedDay))+' <button id="dayclr" aria-label="limpar filtro do dia">✕</button></span><span class="note">atividade recente filtrada por este dia</span>';
+    $("#dayclr").onclick=function(){selectedDay=null;renderDayFilter();renderTS(LAST_TS);renderRecent();};
+  }
+  function pickDay(b){selectedDay=(selectedDay===b)?null:b;renderDayFilter();renderTS(LAST_TS);renderRecent();}
 
   function load(){
     $("#sub").textContent="carregando…";
