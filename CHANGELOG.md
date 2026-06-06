@@ -12,6 +12,34 @@ co-auto. Convenção em CLAUDE.md.
 
 ## [Unreleased]
 
+## [0.22.0] — 2026-06-06 — Intelligence as a Service · docs bilíngues · surfaces na raiz · mapa de domínios
+
+### Added (`feat`)
+
+- **Intelligence as a Service** (ex-"Brain as a Service") — rebrand **filosófico**: a
+  **inteligência de máquina** (determinística — o que *schema*/contrato de API capturam)
+  é o **serviço**; o **cérebro** (inteligência biológica, humana) fica **livre** pra criar.
+  Narrativa **livre** (co é software livre) + **ñandé** (nós inclusivo). `git mv` +
+  redirect no URL antigo.
+- **Docs bilíngues (pt+en)** — `bake-docs` reescrito: pt primária + `.en.html`, toggle de
+  idioma + hreflang, render de diagrama compartilhado; 9 docs traduzidos. Forma em inglês,
+  conteúdo no idioma.
+- **Surfaces servem na própria raiz** — `yuri.artelonga.com.br/aws` (não `/yuri/aws/`);
+  `/yuri/aws/` segue como fallback.
+- **`/aws` bilíngue** — tutorial + estudo de caso: tira de experiência/escala, custo
+  estimável (~US$150/mês por cliente de alta demanda), DynamoDB reenquadrado pela decisão.
+- **Mapa de domínios** — `deploy/domains.yaml` (fonte única de domínios/CNAMEs/surfaces +
+  registro dos DNS) + `/docs/domains.html` (mapa + audit de drift); `deploy-surface` lê o
+  registro. Linkado no portfólio.
+- **Toda universe vira entrada no portfólio** do yuri.
+
+### Fixed (`fix`)
+
+- **surface:** 301 trailing-slash pra diretórios — causa-raiz do `/aws/en` 404 (links
+  relativos resolviam contra o pai). Sistêmico + guard `dirCheck` no deploy gate.
+- **IaaS:** "inteligência delimitada" → **inteligência de máquina (determinística)**,
+  em contraste com a biológica.
+
 ## [0.21.0] — 2026-06-05 — Parceiro Scrum + docs como conteúdo + revisão de segurança
 
 ### Added (`feat`)
