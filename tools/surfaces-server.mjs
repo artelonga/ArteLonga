@@ -493,20 +493,36 @@ const server = http.createServer(async (req, res) => {
   }
   if (url === "/" || url === "") url = SURFACE + "index.html";
 
-  let fp = path.normalize(path.join(ROOT, url));
-  if (fp !== ROOT && !fp.startsWith(ROOT + path.sep)) { res.writeHead(403); return res.end("forbidden"); }
-  try {
-    let st = await fs.stat(fp);
-    if (st.isDirectory()) { fp = path.join(fp, "index.html"); st = await fs.stat(fp); }
+  // resolve traversal-safe: {fp} pra arquivo · {dir} pra diretório · null
+  const probe = async (u) => {
+    const fp = path.normalize(path.join(ROOT, u));
+    if (fp !== ROOT && !fp.startsWith(ROOT + path.sep)) return null;
+    try { const st = await fs.stat(fp); return st.isDirectory() ? { dir: fp } : { fp }; }
+    catch { return null; }
+  };
+  // 1) caminho direto;  2) universe promovida serve na PRÓPRIA raiz → /aws = SURFACE/aws (yuri/aws/).
+  let hit = await probe(url);
+  if (!hit && SURFACE !== "/" && !url.startsWith(SURFACE)) hit = await probe(SURFACE + url.replace(/^\/+/, ""));
+  if (hit && hit.dir) {
+    // diretório SEM barra final → 301 com barra. Senão os links RELATIVOS da página
+    // (ex. toggle "en/") resolvem contra o pai (/aws → /en/) e dão 404 — causa-raiz do bug.
+    if (!url.endsWith("/")) {
+      const qi = (req.url || "").indexOf("?");
+      res.writeHead(301, { Location: url + "/" + (qi >= 0 ? req.url.slice(qi) : "") });
+      return res.end();
+    }
+    const idx = path.join(hit.dir, "index.html");
+    hit = await fs.stat(idx).then(() => ({ fp: idx }), () => null);
+  }
+  if (hit && hit.fp) {
     res.writeHead(200, {
-      "content-type": MIME[path.extname(fp).toLowerCase()] || "application/octet-stream",
+      "content-type": MIME[path.extname(hit.fp).toLowerCase()] || "application/octet-stream",
       "cache-control": "public, max-age=60"
     });
-    createReadStream(fp).pipe(res);
-  } catch (e) {
-    res.writeHead(404, { "content-type": "text/html; charset=utf-8" });
-    res.end('<!doctype html><meta charset=utf-8><title>404</title><body style="font-family:monospace;padding:3rem">404 — not found</body>');
+    return createReadStream(hit.fp).pipe(res);
   }
+  res.writeHead(404, { "content-type": "text/html; charset=utf-8" });
+  res.end('<!doctype html><meta charset=utf-8><title>404</title><body style="font-family:monospace;padding:3rem">404 — not found</body>');
 });
 
 geoInit(); geo6Init(); cityInit();

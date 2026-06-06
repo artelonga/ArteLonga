@@ -19,6 +19,16 @@ knowing all of them — it's knowing **which service solves what, and when the c
 of adding it starts to pay off**. Almost every decision below was made by writing
 down a *threshold* (an objective limit) *before* migrating.
 
+Read it as a tutorial: each section below is a decision you'll face too.
+
+## In short
+
+- **AWS doesn't reward knowing more services — it rewards knowing which one NOT to use yet**, with an objective threshold written *before* migrating.
+- **S3 as the source of truth** makes a database and streaming optional (only if a consumer demands them).
+- **Cost scales with requirements, but is estimable up front — no surprises.** This real data platform cost ~US$ 150/mo at the high-demand ceiling; most workloads, far less.
+- **Mature operations beat the trendy service**: 100% IaC, layered observability, least-privilege IAM, and postmortems that become rules.
+- The migration numbers further down (DynamoDB→S3, −95%) are **one case study** — they depend on each case's latency requirements, not a universal ruler.
+
 ## 1. The mental map — the toolbox
 
 I think of AWS in four layers. For each problem, I pick the simplest *managed*
@@ -89,9 +99,15 @@ consumers. The solution: a **transport abstraction layer** (`TRANSPORT_TYPE`)
 that lets you swap S3 ↔ Redpanda ↔ MSK by config. **Lesson: abstract what you
 haven't decided yet.**
 
-**DynamoDB → S3 + Parquet.** A 322 GB / 226M-item table cost US$ 80.58/month in
-storage alone. Migrated to S3+Parquet: ~US$ 4/month (**~95% savings**). Two
-golden lessons:
+**DynamoDB → S3 + Parquet — why NOT keep DynamoDB.** The question wasn't "how do
+we save money", it was *"does this data need millisecond key-reads?"*. Here,
+**no**: the user's latency requirements didn't need single-digit-ms access — the
+queries were analytical, by range. Without that need, DynamoDB was cost with no
+benefit. A 322 GB / 226M-item table cost US$ 80.58/month in storage alone; on
+S3+Parquet, ~US$ 4/month (**−95%**, ~157h of hand-rolled scan → **13 min** native
+export). **In a scenario where latency demanded ms key-access, DynamoDB would be
+justified — and we'd pay the ~95% premium deliberately.** The lesson isn't "S3 is
+cheaper", it's **match the service to the real requirement**. Two golden lessons:
 
 - **The native tool beats a hand-rolled script:** `export-table-to-point-in-time`
   took **13 minutes** versus an estimated **~157 hours** of scan + pagination.
@@ -163,24 +179,17 @@ always review default-permissive SG rules before shipping.**
   an **empty** secret ARN, so IAM *physically* blocks access to real credentials
   (defense in depth). Never log auth headers — only key IDs and the outcome.
 
-## 7. The principles that remain
+## 7. Principles (what remains)
 
-If I had to distill it all into a few lines for someone starting on AWS:
+Distilled, for someone starting out:
 
-1. **S3 as the source of truth simplifies everything else.** Database and
-   streaming layers are optional until a consumer demands them.
-2. **Pick serverless/managed until a concrete threshold forces a change** — and
-   write that threshold first, so the decision to migrate is objective.
-3. **Storage classes + lifecycle are the biggest cost ROI.** Turn it on day 1.
-4. **In analytics you pay per byte read** — partition, filter, select only what's needed.
-5. **Watch request count and egress, not just storage and compute.**
-6. **A native bulk tool beats a hand-rolled script** (700x faster, in my case).
-7. **Least-privilege IAM bites when config drifts** — keep them in sync, use prefixes.
-8. **Verify the config was actually applied** at runtime.
-9. **Circuit breakers must tolerate warmup.**
-10. **Scheduled jobs fail silently** — give them their own alarms.
-11. **The same code for streaming and batch** beats reconciling two implementations.
-12. **An abstraction layer lets you defer expensive architecture commitments.**
+1. **S3 as the source of truth** simplifies everything else — database and streaming are optional until a consumer demands them.
+2. **Serverless/managed until a concrete threshold** you write *before* migrating.
+3. **Cost lives in storage lifecycle, bytes read, request count and egress** — not CPU.
+4. **A native bulk tool beats a hand-rolled script** (700× in my case).
+5. **Least-privilege IAM + config in sync** — and verify the config was *applied* at runtime.
+6. **Resilience: circuit breakers tolerate warmup; every cron gets its own alarm** (silent failure kills).
+7. **Abstract what you haven't decided yet** — a transport layer defers expensive commitments.
 
 > AWS doesn't reward knowing more services. It rewards knowing **which one not to
 > use yet** — and having the number to prove it.

@@ -17,11 +17,22 @@ const ROOT = process.cwd();
 const DIR = path.join(ROOT, "yuri", "aws");
 const esc = s => String(s).replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
 const APEX = "https://artelonga.com.br/yuri/aws/";
+const DOCS = "https://artelonga.com.br/docs/";   // siblings absolutos — resolvem no apex E no surface
 
 // pt = raiz da universe (/yuri/aws/ ou /), en = /en/
 const PAGES = [
-  { src: "aws.pt.md", out: "index.html", lang: "pt-BR", toHref: "en/", toLabel: "EN", alt: APEX + "en/", self: APEX, desc: "AWS pela experiência: ferramentas, decisões, custos e postmortems de uma plataforma de dados real (~US$ 155/mês)." },
-  { src: "aws.en.md", out: "en/index.html", lang: "en", toHref: "../", toLabel: "PT", alt: APEX, self: APEX + "en/", desc: "AWS through experience: tools, decisions, costs and postmortems from a real data platform (~US$ 155/mo)." },
+  { src: "aws.pt.md", out: "index.html", lang: "pt-BR", toHref: "en/", toLabel: "EN", back: "../", self: APEX,
+    desc: "AWS pela experiência — tutorial + estudo de caso: plataforma de dados escalável, custo estimável (~US$150/mês por cliente de alta demanda), decisões e postmortems.",
+    metrics: [["13+", "serviços AWS"], ["100% IaC", "Terraform"], ["~US$150/mês", "por cliente alta demanda"], ["24/7", "tempo real"]],
+    note: "AWS é o <b>caso extremo</b> do espectro de custo: a conta sobe com os requisitos, mas é <b>estimável de antemão — sem cobrança-surpresa</b> (~US$1,8k/ano no teto de alta demanda; a maioria das universes roda muito mais barato, surface ~US$5/mês). Os números de migração mais abaixo são de <b>um</b> estudo de caso, não a régua.",
+    seeLabel: "Ver também",
+    seeAlso: [["Brain as a Service", DOCS + "brain-as-a-service.html"], ["Telemetria & Analytics", DOCS + "telemetry-surfaces.html"]] },
+  { src: "aws.en.md", out: "en/index.html", lang: "en", toHref: "../", toLabel: "PT", back: "../../", self: APEX + "en/",
+    desc: "AWS through experience — tutorial + case study: scalable data platform, estimable cost (~US$150/mo per high-demand customer), decisions and postmortems.",
+    metrics: [["13+", "AWS services"], ["100% IaC", "Terraform"], ["~US$150/mo", "per high-demand customer"], ["24/7", "real-time"]],
+    note: "AWS is the <b>edge of the cost spectrum</b>: the bill scales with requirements but is <b>estimable up front — no surprise charges</b> (~US$1.8k/yr at the high-demand ceiling; most universes run far cheaper, a surface ~US$5/mo). The migration numbers further down are from <b>one</b> case study, not the ruler.",
+    seeLabel: "See also",
+    seeAlso: [["Brain as a Service", DOCS + "brain-as-a-service.html"], ["Telemetry & Analytics", DOCS + "telemetry-surfaces.html"]] },
 ];
 
 const CSS = `
@@ -38,20 +49,35 @@ const CSS = `
  pre{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:1em;overflow-x:auto;font-size:.78rem;line-height:1.4}pre code{border:0;background:none;padding:0}
  .top{display:flex;justify-content:space-between;align-items:center;font-size:.8rem;color:var(--ink3);margin-bottom:2em}
  .lang{font-weight:700;border:1px solid var(--line);border-radius:999px;padding:.25rem .7rem}
- footer{margin-top:3em;padding-top:1.2em;border-top:1px solid var(--line);font-size:.76rem;color:var(--ink3)}`;
+ .metrics{display:flex;flex-wrap:wrap;gap:.6rem;margin:1.3em 0 1.9em}
+ .stat{flex:1 1 130px;border:1px solid var(--line);border-radius:10px;background:var(--bg2);padding:.65rem .9rem}
+ .stat b{display:block;font-size:1.35rem;letter-spacing:-.02em;color:var(--accent);line-height:1.1}
+ .stat span{font-size:.68rem;color:var(--ink3);text-transform:uppercase;letter-spacing:.04em}
+ .costnote{font-size:.82rem;color:var(--ink2);background:var(--bg2);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:8px;padding:.6rem .9rem;margin:0 0 1.8em}
+ .seealso{margin-top:2.6em;padding-top:1.2em;border-top:1px solid var(--line)}
+ .seealso h3{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink3);margin:0 0 .55em}
+ .seealso a{display:inline-block;margin-right:1.1em}
+ footer{margin-top:2.4em;padding-top:1.2em;border-top:1px solid var(--line);font-size:.76rem;color:var(--ink3)}`;
 
 function shell(p, title, body) {
   const other = p.lang === "pt-BR" ? APEX + "en/" : APEX;
+  // case study: tira de resultados logo após o h1 (lidera pelo impacto)
+  const metrics = '<div class="metrics">' + p.metrics.map(m => '<div class="stat"><b>' + esc(m[0]) + '</b><span>' + esc(m[1]) + '</span></div>').join("") + '</div>'
+    + (p.note ? '<p class="costnote">' + p.note + '</p>' : '');
+  const withStrip = body.replace("</h1>", "</h1>\n" + metrics);
+  // see also: tece nas universes irmãs (links absolutos → resolvem no surface também)
+  const seeAlso = '<nav class="seealso"><h3>' + esc(p.seeLabel) + '</h3>' + p.seeAlso.map(s => '<a href="' + s[1] + '">' + esc(s[0]) + ' ↗</a>').join("") + '</nav>';
   return `<!DOCTYPE html><html lang="${p.lang}"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0"><title>${esc(title)} — Yuri · Arte Longa</title>
 <meta name="description" content="${esc(p.desc)}">
 <link rel="canonical" href="${p.self}">
 <link rel="alternate" hreflang="${p.lang === "pt-BR" ? "pt-br" : "en"}" href="${p.self}">
 <link rel="alternate" hreflang="${p.lang === "pt-BR" ? "en" : "pt-br"}" href="${other}">
-<meta property="og:title" content="${esc(title)}"><meta property="og:type" content="article">
+<meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(p.desc)}"><meta property="og:type" content="article">
 <style>${CSS}</style></head><body>
-<div class="top"><a href="/yuri/">← yuri</a><a class="lang" href="${p.toHref}" hreflang="${p.toLabel === "EN" ? "en" : "pt-br"}">${p.toLabel}</a></div>
-${body}
+<div class="top"><a href="${p.back}">← yuri</a><a class="lang" href="${p.toHref}" hreflang="${p.toLabel === "EN" ? "en" : "pt-br"}">${p.toLabel}</a></div>
+${withStrip}
+${seeAlso}
 <footer>Conteúdo: <code>yuri/aws/aws.${p.lang === "pt-BR" ? "pt" : "en"}.md</code> · forma separada de conteúdo, pré-renderizado.
 Universe <code>aws</code> (promovível a <code>aws.artelonga.com.br</code>).</footer>
 </body></html>`;

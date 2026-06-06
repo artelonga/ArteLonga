@@ -20,6 +20,16 @@ arquitetura não é conhecer todos — é saber **qual serviço resolve o quê, 
 quando o custo de adicioná-lo passa a valer a pena**. Quase toda decisão abaixo
 foi tomada escrevendo um *threshold* (um limiar objetivo) antes de migrar.
 
+Leia como um tutorial: cada seção abaixo é uma decisão que você também vai enfrentar.
+
+## Em resumo
+
+- **A AWS não recompensa conhecer mais serviços — recompensa saber qual NÃO usar ainda**, com um limiar objetivo escrito *antes* de migrar.
+- **S3 como fonte da verdade** torna banco e *streaming* opcionais (só se um consumidor exigir).
+- **O custo escala com os requisitos, mas é estimável de antemão — sem surpresa.** Esta plataforma de dados real custou ~US$ 150/mês no teto de alta demanda; a maioria das cargas, muito menos.
+- **Operação madura vence o serviço da moda**: 100% IaC, observabilidade em camadas, IAM *least-privilege*, e *postmortems* que viram regra.
+- Os números de migração mais abaixo (DynamoDB→S3, −95%) são **um estudo de caso** — dependem dos requisitos de latência de cada caso, não são uma régua universal.
+
 ## 1. O mapa mental — a caixa de ferramentas
 
 Penso na AWS em quatro camadas. Para cada problema, escolho o serviço *gerenciado*
@@ -92,9 +102,16 @@ múltiplos consumidores em tempo real. Solução: uma **camada de abstração de
 transporte** (`TRANSPORT_TYPE`) que deixa trocar S3 ↔ Redpanda ↔ MSK por
 configuração. **Lição: abstraia o que você ainda não decidiu.**
 
-**DynamoDB → S3 + Parquet.** Uma tabela de 322 GB / 226M itens custava
-US$ 80,58/mês só de armazenamento. Migrada para S3+Parquet: ~US$ 4/mês (**~95%
-de economia**). Dois aprendizados de ouro:
+**DynamoDB → S3 + Parquet — por que NÃO manter o DynamoDB.** A pergunta não foi
+"como economizar", foi *"esse dado precisa de leitura por chave em
+milissegundos?"*. Neste caso, **não**: os requisitos de latência do usuário não
+exigiam acesso *single-digit ms* — as consultas eram analíticas, por faixa. Sem
+essa exigência, o DynamoDB era custo sem benefício. Uma tabela de 322 GB / 226M
+itens custava US$ 80,58/mês só de armazenamento; em S3+Parquet, ~US$ 4/mês
+(**−95%**, ~157h de scan artesanal → **13 min** de export nativo). **Num cenário
+onde a latência exigisse acesso por chave em ms, o DynamoDB se justificaria — e
+pagaríamos os ~95% a mais conscientemente.** A lição não é "S3 é mais barato", é
+**casar o serviço ao requisito real**. Dois aprendizados de ouro:
 
 - **Ferramenta nativa vence script artesanal:** `export-table-to-point-in-time`
   levou **13 minutos** contra **~157 horas** estimadas de *scan* + paginação.
@@ -170,24 +187,17 @@ revise sempre as regras default-permissivas de SG antes de subir.**
   acesso a credenciais reais (defesa em profundidade). Nunca logue *headers* de
   auth — só IDs de chave e o resultado.
 
-## 7. Os princípios que ficam
+## 7. Princípios (o que fica)
 
-Se eu tivesse que destilar tudo em poucas frases para alguém começando na AWS:
+Destilando, para quem está começando:
 
-1. **S3 como fonte da verdade simplifica o resto.** Camadas de banco e streaming
-   são opcionais até um consumidor exigir.
-2. **Escolha o serverless/gerenciado até um limiar concreto forçar a troca** — e
-   escreva esse limiar antes, para a decisão de migrar ser objetiva.
-3. **Storage classes + lifecycle são o maior ROI de custo.** Ative no dia 1.
-4. **Em analytics você paga por byte lido** — particione, filtre, selecione só o necessário.
-5. **Vigie *request count* e *egress*, não só storage e compute.**
-6. **Ferramenta nativa de bulk vence script artesanal** (700x mais rápido, no meu caso).
-7. **IAM least-privilege morde quando a config deriva** — sincronize, use prefixos.
-8. **Verifique que a config foi de fato aplicada** no runtime.
-9. **Circuit breakers precisam tolerar o warmup.**
-10. **Tarefas agendadas falham em silêncio** — dê a elas alarmes próprios.
-11. **Mesmo código para streaming e batch** vence reconciliar duas implementações.
-12. **Uma camada de abstração permite adiar compromissos caros de arquitetura.**
+1. **S3 como fonte da verdade** simplifica o resto — banco e streaming são opcionais até um consumidor exigir.
+2. **Serverless/gerenciado até um limiar concreto** que você escreve *antes* de migrar.
+3. **Custo mora em storage lifecycle, bytes lidos, request count e egress** — não na CPU.
+4. **Ferramenta nativa de bulk vence script artesanal** (700× no meu caso).
+5. **IAM least-privilege + config em sincronia** — e verifique que a config foi *aplicada* no runtime.
+6. **Resiliência: circuit breakers toleram o warmup; todo cron tem alarme próprio** (falha calada mata).
+7. **Abstraia o que ainda não decidiu** — uma camada de transporte adia compromissos caros.
 
 > A AWS não recompensa quem conhece mais serviços. Recompensa quem sabe **qual
 > não usar ainda** — e tem o número na mão para provar.

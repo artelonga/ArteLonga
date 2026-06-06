@@ -1,16 +1,23 @@
-# Brain as a Service (BaaS) — yuri as the horizontal-scaling template
+# Intelligence as a Service (IaaS) — the line between what is specified and what is created
 
-**Thesis.** A *brain* is the integration of a human, their hardware (computer ·
-phone · pen & paper), their notes / tasks / calendar, and the content they manage —
-delivered as a **sovereign, renderable surface** that scales horizontally at **zero
-marginal SaaS cost**. `yuri` is the reference brain (the **user**); `artelonga` is
-the **business** that onboards brains. This doc is the case study + the de-facto
-onboarding playbook + the co-integration spec.
+**Thesis.** There are two intelligences, and the architecture draws the line between
+them honestly. On one side, **bounded intelligence** — everything a *schema* or an
+*API contract* can capture: deterministic, functional, verifiable, reproducible.
+*That* is what we render **as a service** — the "artificial", machine intelligence.
+On the other side, the **brain** — biological intelligence, the human — which we
+**deliberately exclude from the deterministic machinery** and leave **free to roam**,
+toward creativity and free expression. The service does not commodify the brain; it
+absorbs the deterministic labor *so the brain is set free*. (This is yuri's own
+tagline made literal: *writing biological and machine intelligence — for the free
+expression of being*.)
 
-> Grounded in what we already shipped: [`telemetry-surfaces.md`](./telemetry-surfaces.md),
-> [`analytics-framework.md`](./analytics-framework.md), [`universe-upgrade.md`](./universe-upgrade.md),
-> and `openapi/artelonga.yaml`. Nothing here is aspirational — it's the pattern the
-> yuri surface already proves.
+`yuri` is the reference case. `artelonga` is the **libre network** — *ñandé*, "we,
+you included" (Guarani: *ñandé* = we-with-you, not *oré* = we-without-you). **co is
+free software** anyone can run. This doc is the empirical essay + the onboarding
+playbook + the integration contract — grounded in what the yuri surface already
+proves: [`telemetry-surfaces.md`](./telemetry-surfaces.md),
+[`analytics-framework.md`](./analytics-framework.md),
+[`universe-upgrade.md`](./universe-upgrade.md), `openapi/artelonga.yaml`.
 
 ---
 
@@ -18,41 +25,39 @@ onboarding playbook + the co-integration spec.
 
 ```mermaid
 flowchart LR
-  subgraph Human["Human (yuri)"]
-    H["Person"]
+  subgraph Free["The brain — left FREE (not a service)"]
+    H["Human"]
+    CR["Creativity · free expression"]
     HW["Hardware<br/>computer · phone · pen & paper"]
   end
-  subgraph Brain["The Brain (a universe)"]
-    N["Notes"]
-    T["Tasks"]
-    C["Calendar"]
-    K["Content / Knowledge base<br/>articles · poems · references · songs · files"]
-  end
-  subgraph Surface["Surface — UI + local data (ANY domain / ANY machine)"]
+  subgraph Service["Intelligence as a Service — the bounded part"]
+    SCH["Schemas + API contracts<br/>deterministic · verifiable"]
     R["Renderer (form)"]
-    D["Local DB (data spec)"]
+    D["Local data (data spec)"]
   end
-  subgraph Platform["co — the business platform (we own it)"]
+  subgraph Platform["co — free software, shared (ñandé)"]
     ID["Identity · users"]
     WH["Warehouse · analytics"]
     PAY["Payment"]
     SYNC["Sync / KB"]
   end
-  H --> HW --> Brain
-  Brain --> Surface
-  Surface -->|"consented, PII-free aggregates"| Platform
-  Platform -->|"identity · history · payment"| Surface
+  H --> CR
+  H -->|"specifies (schema / contract)"| Service
+  Service -->|"consented, PII-free aggregates"| Platform
+  Platform -->|"identity · history · payment"| Service
 ```
 
-**Brain as a Service** = the surface (the brain's body) + co (the shared nervous
-system). The human owns the brain; co provides identity, memory (warehouse),
-metabolism (payment), and synapses (sync) — multi-tenant, one per brain.
+**Intelligence as a Service** = the line. The **brain stays free** (creativity, free
+expression); the **service is the bounded intelligence that *can* be specified** —
+schemas and contracts. **co** (free software, *ñandé* — shared) provides identity,
+memory (warehouse), metabolism (payment), and synapses (sync). The contract is the
+spec, never an owner.
 
 ---
 
 ## 1. The case study — what `yuri` proved
 
-| Building block we shipped | What it proves for BaaS |
+| Building block we shipped | What it proves for IaaS |
 |---|---|
 | **Universe-owned telemetry** + surface (`tools/surfaces-server.mjs`) | A brain owns its raw data; the platform is broadcast-only. **Sovereignty.** |
 | **Path → CNAME upgrade** (`universe-upgrade.md`) | A brain promotes from a path on the mothership to its own domain **with no data loss**. **Portability.** |
@@ -78,7 +83,7 @@ Four architectural invariants make a brain a cheap, independent unit:
    platform (co) holds only **consented, PII-free aggregates** (`DailyRollup`). No
    central store of raw → linear cost, no multi-tenant blast radius.
 3. **Zero third-party SaaS.** Telemetry is self-hosted; geo is an embedded CC0/DB-IP
-   binary compiled at deploy; analytics is co (ours). **No Google Analytics, no geo
+   binary compiled at deploy; analytics is co (libre, self-hosted). **No Google Analytics, no geo
    API, no per-seat anything.** Marginal cost of brain N ≈ the cost of a small VM.
 4. **Cache-first resilience.** The surface renders from local state; if **ingestion
    or sync breaks, delivery still works** (the apex falls back to a localStorage
@@ -116,7 +121,7 @@ which already exists, versioned, in `openapi/artelonga.yaml`:
 | **Telemetry / analytics** | `TelemetryEvent` (raw, edge) · `DailyRollup` (consented, central) | both |
 | **Payment / subscription** | co billing | co |
 
-The brain owns the **content + render**; co owns **identity + warehouse + payment +
+The brain owns the **content + render**; co **provides** **identity + warehouse + payment +
 sync**. Onboarding = wiring those two via the universe key.
 
 ---
@@ -166,7 +171,7 @@ wire the universe key.**
 
 ## 5. KPIs & latency — making interactions instant
 
-The business cares about a few **time-to-X** metrics; the architecture is designed to
+The network cares about a few **time-to-X** metrics; the architecture is designed to
 collapse each toward zero.
 
 | KPI | Definition | Lever that makes it fast |
@@ -241,7 +246,7 @@ flowchart TB
     E2["local data (NDJSON / markdown + files)"]
     E3["embedded geo (CC0/DB-IP) · zero SaaS"]
   end
-  subgraph CENTER["CENTER — co (the platform we own)"]
+  subgraph CENTER["CENTER — co (free software, shared â Ã±andÃ©)"]
     direction LR
     C1["identity · users (email = ADD)"]
     C2["warehouse · rollups<br/>filterable, multi-tenant (universe key)"]
@@ -301,7 +306,7 @@ To onboard brain N:
 
 `yuri` is not a special case — it's the **de-facto template** for how artelonga scales
 to N brains, each sovereign, each on whatever infra is cheapest, each costing ~one
-small VM, integrated to one platform we own.
+small VM, integrated to one libre platform we all share (Ã±andÃ©).
 
 ---
 

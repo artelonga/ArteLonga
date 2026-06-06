@@ -1,10 +1,10 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0"><title>AWS — an introduction through experience — Yuri · Arte Longa</title>
-<meta name="description" content="AWS through experience: tools, decisions, costs and postmortems from a real data platform (~US$ 155/mo).">
+<meta name="description" content="AWS through experience — tutorial + case study: scalable data platform, estimable cost (~US$150/mo per high-demand customer), decisions and postmortems.">
 <link rel="canonical" href="https://artelonga.com.br/yuri/aws/en/">
 <link rel="alternate" hreflang="en" href="https://artelonga.com.br/yuri/aws/en/">
 <link rel="alternate" hreflang="pt-br" href="https://artelonga.com.br/yuri/aws/">
-<meta property="og:title" content="AWS — an introduction through experience"><meta property="og:type" content="article">
+<meta property="og:title" content="AWS — an introduction through experience"><meta property="og:description" content="AWS through experience — tutorial + case study: scalable data platform, estimable cost (~US$150/mo per high-demand customer), decisions and postmortems."><meta property="og:type" content="article">
 <style>
  :root{--ink:#0a0a0a;--ink2:#444;--ink3:#888;--line:#e7e1da;--bg:#fbf9f6;--bg2:#fff;--accent:#9a3b2e}
  *{box-sizing:border-box}body{font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;max-width:780px;margin:0 auto;padding:4vh 1.4rem 10vh;line-height:1.62;color:var(--ink);background:var(--bg)}
@@ -19,9 +19,18 @@
  pre{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:1em;overflow-x:auto;font-size:.78rem;line-height:1.4}pre code{border:0;background:none;padding:0}
  .top{display:flex;justify-content:space-between;align-items:center;font-size:.8rem;color:var(--ink3);margin-bottom:2em}
  .lang{font-weight:700;border:1px solid var(--line);border-radius:999px;padding:.25rem .7rem}
- footer{margin-top:3em;padding-top:1.2em;border-top:1px solid var(--line);font-size:.76rem;color:var(--ink3)}</style></head><body>
-<div class="top"><a href="/yuri/">← yuri</a><a class="lang" href="../" hreflang="pt-br">PT</a></div>
+ .metrics{display:flex;flex-wrap:wrap;gap:.6rem;margin:1.3em 0 1.9em}
+ .stat{flex:1 1 130px;border:1px solid var(--line);border-radius:10px;background:var(--bg2);padding:.65rem .9rem}
+ .stat b{display:block;font-size:1.35rem;letter-spacing:-.02em;color:var(--accent);line-height:1.1}
+ .stat span{font-size:.68rem;color:var(--ink3);text-transform:uppercase;letter-spacing:.04em}
+ .costnote{font-size:.82rem;color:var(--ink2);background:var(--bg2);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:8px;padding:.6rem .9rem;margin:0 0 1.8em}
+ .seealso{margin-top:2.6em;padding-top:1.2em;border-top:1px solid var(--line)}
+ .seealso h3{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink3);margin:0 0 .55em}
+ .seealso a{display:inline-block;margin-right:1.1em}
+ footer{margin-top:2.4em;padding-top:1.2em;border-top:1px solid var(--line);font-size:.76rem;color:var(--ink3)}</style></head><body>
+<div class="top"><a href="../../">← yuri</a><a class="lang" href="../" hreflang="pt-br">PT</a></div>
 <h1>AWS — an introduction through experience</h1>
+<div class="metrics"><div class="stat"><b>13+</b><span>AWS services</span></div><div class="stat"><b>100% IaC</b><span>Terraform</span></div><div class="stat"><b>~US$150/mo</b><span>per high-demand customer</span></div><div class="stat"><b>24/7</b><span>real-time</span></div></div><p class="costnote">AWS is the <b>edge of the cost spectrum</b>: the bill scales with requirements but is <b>estimable up front — no surprise charges</b> (~US$1.8k/yr at the high-demand ceiling; most universes run far cheaper, a surface ~US$5/mo). The migration numbers further down are from <b>one</b> case study, not the ruler.</p>
 <blockquote>
 <p>This is not a service list memorized from the docs. It&#39;s what I learned
 operating a real-time data platform on AWS — from WebSocket collection to a
@@ -33,6 +42,15 @@ matters here are the <strong>lessons that transfer</strong> to any cloud project
 knowing all of them — it&#39;s knowing <strong>which service solves what, and when the cost
 of adding it starts to pay off</strong>. Almost every decision below was made by writing
 down a <em>threshold</em> (an objective limit) <em>before</em> migrating.</p>
+<p>Read it as a tutorial: each section below is a decision you&#39;ll face too.</p>
+<h2>In short</h2>
+<ul>
+<li><strong>AWS doesn&#39;t reward knowing more services — it rewards knowing which one NOT to use yet</strong>, with an objective threshold written <em>before</em> migrating.</li>
+<li><strong>S3 as the source of truth</strong> makes a database and streaming optional (only if a consumer demands them).</li>
+<li><strong>Cost scales with requirements, but is estimable up front — no surprises.</strong> This real data platform cost ~US$ 150/mo at the high-demand ceiling; most workloads, far less.</li>
+<li><strong>Mature operations beat the trendy service</strong>: 100% IaC, layered observability, least-privilege IAM, and postmortems that become rules.</li>
+<li>The migration numbers further down (DynamoDB→S3, −95%) are <strong>one case study</strong> — they depend on each case&#39;s latency requirements, not a universal ruler.</li>
+</ul>
 <h2>1. The mental map — the toolbox</h2>
 <p>I think of AWS in four layers. For each problem, I pick the simplest <em>managed</em>
 service until a concrete threshold forces a change.</p>
@@ -173,9 +191,15 @@ was <em>already solved by S3</em>, Kafka was only justified by multiple real-tim
 consumers. The solution: a <strong>transport abstraction layer</strong> (<code>TRANSPORT_TYPE</code>)
 that lets you swap S3 ↔ Redpanda ↔ MSK by config. <strong>Lesson: abstract what you
 haven&#39;t decided yet.</strong></p>
-<p><strong>DynamoDB → S3 + Parquet.</strong> A 322 GB / 226M-item table cost US$ 80.58/month in
-storage alone. Migrated to S3+Parquet: <del>US$ 4/month (**</del>95% savings**). Two
-golden lessons:</p>
+<p><strong>DynamoDB → S3 + Parquet — why NOT keep DynamoDB.</strong> The question wasn&#39;t &quot;how do
+we save money&quot;, it was <em>&quot;does this data need millisecond key-reads?&quot;</em>. Here,
+<strong>no</strong>: the user&#39;s latency requirements didn&#39;t need single-digit-ms access — the
+queries were analytical, by range. Without that need, DynamoDB was cost with no
+benefit. A 322 GB / 226M-item table cost US$ 80.58/month in storage alone; on
+S3+Parquet, ~US$ 4/month (<strong>−95%</strong>, ~157h of hand-rolled scan → <strong>13 min</strong> native
+export). <strong>In a scenario where latency demanded ms key-access, DynamoDB would be
+justified — and we&#39;d pay the ~95% premium deliberately.</strong> The lesson isn&#39;t &quot;S3 is
+cheaper&quot;, it&#39;s <strong>match the service to the real requirement</strong>. Two golden lessons:</p>
 <ul>
 <li><strong>The native tool beats a hand-rolled script:</strong> <code>export-table-to-point-in-time</code>
 took <strong>13 minutes</strong> versus an estimated <strong>~157 hours</strong> of scan + pagination.
@@ -239,29 +263,23 @@ alarms → a composite alarm firing to SNS → Slack + PagerDuty.</li>
 an <strong>empty</strong> secret ARN, so IAM <em>physically</em> blocks access to real credentials
 (defense in depth). Never log auth headers — only key IDs and the outcome.</li>
 </ul>
-<h2>7. The principles that remain</h2>
-<p>If I had to distill it all into a few lines for someone starting on AWS:</p>
+<h2>7. Principles (what remains)</h2>
+<p>Distilled, for someone starting out:</p>
 <ol>
-<li><strong>S3 as the source of truth simplifies everything else.</strong> Database and
-streaming layers are optional until a consumer demands them.</li>
-<li><strong>Pick serverless/managed until a concrete threshold forces a change</strong> — and
-write that threshold first, so the decision to migrate is objective.</li>
-<li><strong>Storage classes + lifecycle are the biggest cost ROI.</strong> Turn it on day 1.</li>
-<li><strong>In analytics you pay per byte read</strong> — partition, filter, select only what&#39;s needed.</li>
-<li><strong>Watch request count and egress, not just storage and compute.</strong></li>
-<li><strong>A native bulk tool beats a hand-rolled script</strong> (700x faster, in my case).</li>
-<li><strong>Least-privilege IAM bites when config drifts</strong> — keep them in sync, use prefixes.</li>
-<li><strong>Verify the config was actually applied</strong> at runtime.</li>
-<li><strong>Circuit breakers must tolerate warmup.</strong></li>
-<li><strong>Scheduled jobs fail silently</strong> — give them their own alarms.</li>
-<li><strong>The same code for streaming and batch</strong> beats reconciling two implementations.</li>
-<li><strong>An abstraction layer lets you defer expensive architecture commitments.</strong></li>
+<li><strong>S3 as the source of truth</strong> simplifies everything else — database and streaming are optional until a consumer demands them.</li>
+<li><strong>Serverless/managed until a concrete threshold</strong> you write <em>before</em> migrating.</li>
+<li><strong>Cost lives in storage lifecycle, bytes read, request count and egress</strong> — not CPU.</li>
+<li><strong>A native bulk tool beats a hand-rolled script</strong> (700× in my case).</li>
+<li><strong>Least-privilege IAM + config in sync</strong> — and verify the config was <em>applied</em> at runtime.</li>
+<li><strong>Resilience: circuit breakers tolerate warmup; every cron gets its own alarm</strong> (silent failure kills).</li>
+<li><strong>Abstract what you haven&#39;t decided yet</strong> — a transport layer defers expensive commitments.</li>
 </ol>
 <blockquote>
 <p>AWS doesn&#39;t reward knowing more services. It rewards knowing <strong>which one not to
 use yet</strong> — and having the number to prove it.</p>
 </blockquote>
 
+<nav class="seealso"><h3>See also</h3><a href="https://artelonga.com.br/docs/brain-as-a-service.html">Brain as a Service ↗</a><a href="https://artelonga.com.br/docs/telemetry-surfaces.html">Telemetry &amp; Analytics ↗</a></nav>
 <footer>Conteúdo: <code>yuri/aws/aws.en.md</code> · forma separada de conteúdo, pré-renderizado.
 Universe <code>aws</code> (promovível a <code>aws.artelonga.com.br</code>).</footer>
 </body></html>

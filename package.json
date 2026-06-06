@@ -39,6 +39,7 @@
     "audit": "npm run audit-shells && npm run audit-consistency && npm run audit-handles && npm run audit-storage-keys",
     "bake-docs": "node tools/bake-docs.mjs",
     "bake-aws": "node tools/bake-aws.mjs",
+    "bake-domains": "node tools/bake-domains.mjs",
     "security-review": "node tools/bake-security-index.mjs",
     "typecheck": "tsc --noEmit",
     "pre-commit": "node tools/pre-commit-check.mjs",

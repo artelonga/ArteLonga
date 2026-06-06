@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="robots" content="noindex,nofollow">
+<title>Mapa de domínios — Arte Longa</title><style>body{font-family:-apple-system,system-ui,sans-serif;max-width:1000px;margin:0 auto;padding:3vh 1.4rem 8vh;color:#161413;background:#fbf9f6;line-height:1.5}
+   h1{font-size:1.7rem}h2{font-size:1rem;margin-top:1.8em;border-top:1px solid #e7e1da;padding-top:.7em}
+   a{color:#9a3b2e}table{border-collapse:collapse;width:100%;font-size:.78rem;margin:1em 0}
+   th,td{border-bottom:1px solid #eee;padding:.4rem .5rem;text-align:left;vertical-align:top}
+   th{font-size:.62rem;text-transform:uppercase;letter-spacing:.06em;color:#888}
+   code{font-family:ui-monospace,Menlo,monospace;font-size:.92em}.src{font-size:.7rem;color:#888}
+   .pill{color:#fff;font-size:.6rem;font-weight:700;border-radius:999px;padding:.05rem .45rem}
+   pre{background:#fff;border:1px solid #e7e1da;border-radius:8px;padding:1em;overflow-x:auto;font-size:.74rem;line-height:1.4}
+   .warn{background:#fdecea;border:1px solid #f3c4bd;border-left:3px solid #9a3b2e;border-radius:8px;padding:.6rem .9rem;font-size:.8rem;margin:1em 0}
+   .ok{background:#e6f1e8;border:1px solid #b9dcc1;border-left:3px solid #3a7d44;border-radius:8px;padding:.5rem .9rem;font-size:.8rem;margin:1em 0}</style></head><body>
+<p class="src"><a href="/">Arte Longa</a> · <a href="/docs/">docs</a> · mapa de domínios</p>
+<h1>Mapa de domínios · CNAMEs · surfaces</h1>
+<p>Fonte única: <code>deploy/domains.yaml</code>. Gerado por <code>tools/bake-domains.mjs</code>.
+Os registros DNS reais vivem no registrar/Fly — aqui ficam <b>documentados</b> em git.</p>
+<div class="ok">✓ sem drift — registro bate com os configs.</div>
+<table><thead><tr><th>domínio</th><th>tipo</th><th>host · app</th><th>conteúdo</th><th>DNS</th><th>status · config</th></tr></thead>
+<tbody><tr>
+    <td><b>artelonga.com.br</b></td>
+    <td><span class="pill" style="background:#9a3b2e">apex</span></td>
+    <td>github-pages</td>
+    <td><code>(whole repo)</code></td>
+    <td class="src">registrar: A/ALIAS → GitHub Pages (185.199.108–111.153)</td>
+    <td><span class="pill" style="background:#3a7d44">live</span><br><span class="src">CNAME</span></td></tr><tr>
+    <td><b>yuri.artelonga.com.br</b></td>
+    <td><span class="pill" style="background:#3a7d44">surface</span></td>
+    <td>fly · <code>artelonga-yuri</code></td>
+    <td><code>yuri/</code><br><span class="src">SURFACE /yuri/</span></td>
+    <td class="src">registrar: CNAME yuri → artelonga-yuri.fly.dev (+ fly certs)</td>
+    <td><span class="pill" style="background:#3a7d44">live</span><br><span class="src">deploy/surfaces/yuri.toml</span></td></tr><tr>
+    <td><b>hostinger.artelonga.com.br</b></td>
+    <td><span class="pill" style="background:#3a7d44">surface</span></td>
+    <td>fly · <code>artelonga-hostinger</code></td>
+    <td><code>yuri/hostinger/</code><br><span class="src">SURFACE /yuri/hostinger/</span></td>
+    <td class="src">registrar: CNAME hostinger → artelonga-hostinger.fly.dev (+ fly certs)</td>
+    <td><span class="pill" style="background:#3a7d44">live</span><br><span class="src">deploy/surfaces/hostinger.toml</span></td></tr><tr>
+    <td><b>comunicacao.artelonga.com.br</b></td>
+    <td><span class="pill" style="background:#3a7d44">surface</span></td>
+    <td>fly · <code>artelonga-comunicacao</code></td>
+    <td><code>(iframe → yggdrasil)</code><br><span class="src">SURFACE iframe</span></td>
+    <td class="src">registrar: CNAME comunicacao → artelonga-comunicacao.fly.dev (+ fly certs)</td>
+    <td><span class="pill" style="background:#3a7d44">live</span><br><span class="src">deploy/surfaces/comunicacao.toml</span></td></tr><tr>
+    <td><b>neuro.artelonga.com.br</b></td>
+    <td><span class="pill" style="background:#3a7d44">surface</span></td>
+    <td>fly · <code>artelonga-neuro</code></td>
+    <td><code>neuro/</code></td>
+    <td class="src">registrar: CNAME neuro → artelonga-neuro.fly.dev (+ fly certs)</td>
+    <td><span class="pill" style="background:#3a7d44">live</span><br><span class="src">deploy/neuro/fly.toml</span></td></tr><tr>
+    <td><b>retroumarizal.com.br</b></td>
+    <td><span class="pill" style="background:#5b5450">graduated</span></td>
+    <td>fly · <code>artelonga-retro</code></td>
+    <td><code>retro-umarizal/</code></td>
+    <td class="src">registrar: A/CNAME → artelonga-retro.fly.dev (+ fly certs)</td>
+    <td><span class="pill" style="background:#3a7d44">live</span><br><span class="src">deploy/retro/fly.toml</span></td></tr></tbody></table>
+<h2>Ciclo de desenvolvimento (path → CNAME)</h2>
+<pre>local      → localhost:8000 (apex) · node tools/surfaces-server.mjs (surface)
+branch/PR  → review localhost → merge
+apex       → push main → GitHub Pages (~1min + Fastly ~10min)
+surface    → npm run deploy:&lt;key&gt;  (smoke gate → fly deploy, imagem imutável)
+promoção   → path /x/ no apex  →  x.artelonga.com.br : fly app + fly certs + CNAME
+             (mesma key/histórico/analytics — docs/universe-upgrade.html)</pre>
+<p class="src">Modelo recursivo: cada universe é uma pasta servida como path no apex; promover = app Fly + cert + CNAME, carregando a mesma chave/histórico/analytics.</p>
+</body></html>

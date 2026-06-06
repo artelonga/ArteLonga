@@ -1,6 +1,6 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Analytics API — wire contract — Arte Longa</title>
-<meta name="robots" content="noindex, nofollow"><link rel="alternate" hreflang="pt-br" href="analytics-api.html"><link rel="alternate" hreflang="en" href="analytics-api.en.html">
+<meta name="robots" content="noindex, nofollow"><link rel="alternate" hreflang="en" href="analytics-api.en.html"><link rel="alternate" hreflang="pt-br" href="analytics-api.html">
 <style>
   :root{--ink:#0a0a0a;--ink2:#444;--ink3:#888;--line:#e7e1da;--bg:#fbf9f6;--bg2:#fff;--accent:#9a3b2e}
   *{box-sizing:border-box} body{font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
@@ -23,7 +23,7 @@
   .doclist{list-style:none;padding:0}.doclist li{margin:.5em 0}.doclist .src{font-size:.72rem;color:var(--ink3)}
   .tag{font-size:.6rem;font-weight:700;border-radius:999px;padding:.05rem .45rem;letter-spacing:.04em;vertical-align:middle}
   .tag.dev{background:#eef1f6;color:var(--ink3)}.tag.pub{background:#e6f1e8;color:#3a7d44}</style></head><body>
-<div class="crumb"><span><a href="/">Arte Longa</a> · <a href="/docs/">docs</a> · dev (noindex)</span><a class="lang" href="analytics-api.en.html" hreflang="en">EN</a></div>
+<div class="crumb"><span><a href="/">Arte Longa</a> · <a href="/docs/">docs</a> · dev (noindex)</span><a class="lang" href="analytics-api.html" hreflang="pt">PT</a></div>
 <h1>Analytics API — wire contract</h1>
 <p>Spec for the marketing-batch event endpoint that the static site (this repo)
 talks to. The endpoint lives in <strong><code>artelonga/co</code></strong> at
@@ -323,57 +323,57 @@ days so queued events from older clients still ingest.</li>
 </ul>
 <hr>
 <h2>9. Public read endpoints (dashboard <code>/analytics/</code>)</h2>
-<p>A página pública <code>artelonga.com.br/analytics/</code> (noindex) consome estes
-endpoints — <strong>sem auth</strong>, somente leitura agregada, sem PII. Todos retornam
-JSON. CORS aberto pra <code>https://artelonga.com.br</code>.</p>
+<p>The public page <code>artelonga.com.br/analytics/</code> (noindex) consumes these
+endpoints — <strong>no auth</strong>, aggregated read-only, no PII. They all return
+JSON. CORS open for <code>https://artelonga.com.br</code>.</p>
 <h3><code>GET /api/v1/analytics/public/summary?days=30</code></h3>
-<p>Retorna agregados pra o intervalo informado (1, 7, 30 ou 90 dias).</p>
-<p><strong>Shape real servido hoje</strong> (verificado 2026-06-05 — note <code>as_of</code>/<code>window_days</code>,
-não <code>range</code>):</p>
+<p>Returns aggregates for the requested range (1, 7, 30 or 90 days).</p>
+<p><strong>Actual shape served today</strong> (verified 2026-06-05 — note <code>as_of</code>/<code>window_days</code>,
+not <code>range</code>):</p>
 <pre><code class="language-ts">type SummaryResponse = {
-  as_of: string,                                       // ISO datetime do cálculo
-  window_days: number,                                 // janela pedida (= days)
+  as_of: string,                                       // ISO datetime of the computation
+  window_days: number,                                 // requested window (= days)
   views: number,                                       // total page_view
-  events_total: number,                                // todos os eventos no range
+  events_total: number,                                // all events in range
   visitors: number,                                    // unique vid
-  returning: number,                                   // visitantes que tinham vid antes do range
+  returning: number,                                   // visitors that had a vid before the range
   sessions: number,                                    // unique sid
-  session_avg_ms: number,                              // duração média (ms) — ⚠ bug atual: retorna ~4ms
+  session_avg_ms: number,                              // average duration (ms) — ⚠ current bug: returns ~4ms
   countries: number,                                   // distinct
   cities: number,
-  timeseries: Array&lt;{ bucket: string, count: number }&gt;, // bucket = ISO date (ou hora se days=1)
+  timeseries: Array&lt;{ bucket: string, count: number }&gt;, // bucket = ISO date (or hour if days=1)
   top_pages: Array&lt;{ path: string, views: number, visitors: number }&gt;,
   geo: Array&lt;{ country: string, city: string, visitors: number, sessions: number }&gt;
 }
 </code></pre>
-<p>Bucketing: <code>days=1</code> → hora, demais → dia. Limite top_pages = 30, geo = 50.</p>
-<p><strong>Parâmetros planejados (ainda ignorados pelo backend — front já feature-detecta):</strong></p>
+<p>Bucketing: <code>days=1</code> → hour, otherwise → day. Limit top_pages = 30, geo = 50.</p>
+<p><strong>Planned parameters (still ignored by the backend — the front end already feature-detects):</strong></p>
 <table>
 <thead>
 <tr>
 <th>Param</th>
-<th>Efeito</th>
+<th>Effect</th>
 <th>Status</th>
 </tr>
 </thead>
 <tbody><tr>
 <td><code>from</code>, <code>to</code></td>
-<td>Fatia por intervalo de datas (<code>YYYY-MM-DD</code>). O dashboard usa pra <strong>clique-no-gráfico filtra dados abaixo</strong>: ao clicar numa barra ele chama <code>?from=DIA&amp;to=DIA</code> e, se o backend devolver <code>timeseries.length === 1</code> com aquele bucket, assume suporte e usa o slice; senão cai no fallback client-side (recomputa top-pages do dia a partir de <code>/recent</code>). Implementar = fatiar todos os agregados (KPIs/top_pages/geo/timeseries) por <code>[from,to]</code>.</td>
+<td>Slice by date range (<code>YYYY-MM-DD</code>). The dashboard uses it for <strong>click-on-chart filters the data below</strong>: when you click a bar it calls <code>?from=DAY&amp;to=DAY</code> and, if the backend returns <code>timeseries.length === 1</code> with that bucket, it assumes support and uses the slice; otherwise it falls back to the client-side fallback (recomputes the day's top-pages from <code>/recent</code>). To implement = slice all aggregates (KPIs/top_pages/geo/timeseries) by <code>[from,to]</code>.</td>
 <td><strong>TODO co</strong></td>
 </tr>
 <tr>
 <td><code>universe</code></td>
-<td>Filtra por universe/surface (<code>?universe=yuri</code>). Necessário pra separar a observabilidade de <code>/yuri</code> (agora CNAME <code>yuri.artelonga.com.br</code>) do agregado da rede. Hoje é <strong>ignorado</strong> (mesmos números com ou sem). Ver convergência em <code>docs/telemetry-surfaces.md</code>.</td>
+<td>Filter by universe/surface (<code>?universe=yuri</code>). Needed to separate the observability of <code>/yuri</code> (now CNAME <code>yuri.artelonga.com.br</code>) from the network-wide aggregate. Today it is <strong>ignored</strong> (same numbers with or without). See convergence in <code>docs/telemetry-surfaces.md</code>.</td>
 <td><strong>TODO co</strong></td>
 </tr>
 </tbody></table>
 <blockquote>
-<p>Bot/datacenter skew: <code>geo</code> hoje é dominado por IPs de datacenter (Washington,
-Boydton, Chicago, San Jose, Phoenix, Cheyenne = AWS/Azure/GCP). Recomenda-se
-filtro de ASN/datacenter no backend antes de contar como visitante.</p>
+<p>Bot/datacenter skew: <code>geo</code> today is dominated by datacenter IPs (Washington,
+Boydton, Chicago, San Jose, Phoenix, Cheyenne = AWS/Azure/GCP). An
+ASN/datacenter filter is recommended on the backend before counting them as a visitor.</p>
 </blockquote>
 <h3><code>GET /api/v1/analytics/public/recent?limit=50</code></h3>
-<p>Stream recente — últimos N eventos (max 200). Útil pra "live tail" no dashboard.</p>
+<p>Recent stream — the last N events (max 200). Useful for a "live tail" on the dashboard.</p>
 <pre><code class="language-ts">type RecentResponse = {
   events: Array&lt;{
     ts: number,           // epoch ms
@@ -384,16 +384,16 @@ filtro de ASN/datacenter no backend antes de contar como visitante.</p>
   }&gt;
 }
 </code></pre>
-<p>Sem <code>vid</code>, <code>sid</code>, <code>ip_hash</code>, <code>ua_brand</code>, <code>props</code>. Só o que o público pode ver.</p>
-<h3>Privacidade</h3>
+<p>No <code>vid</code>, <code>sid</code>, <code>ip_hash</code>, <code>ua_brand</code>, <code>props</code>. Only what the public is allowed to see.</p>
+<h3>Privacy</h3>
 <ul>
-<li>Nenhum dos endpoints expõe <code>vid</code>, <code>sid</code>, <code>ip_hash</code>, UTM, props, experiments ou
-qualquer campo que possa identificar visitante individual.</li>
-<li>Eventos com <code>name = js_error</code> ou <code>js_promise_rejection</code> ficam fora do
-<code>recent</code> (ruído + risco de stack vazar info).</li>
-<li>Cache HTTP: <code>Cache-Control: public, max-age=60</code> é razoável (dashboard
-não precisa ser real-time absoluto).</li>
-<li>Rate-limit por IP recomendado: 30 req/min.</li>
+<li>None of the endpoints expose <code>vid</code>, <code>sid</code>, <code>ip_hash</code>, UTM, props, experiments or
+any field that could identify an individual visitor.</li>
+<li>Events with <code>name = js_error</code> or <code>js_promise_rejection</code> are kept out of
+<code>recent</code> (noise + risk of the stack leaking info).</li>
+<li>HTTP cache: <code>Cache-Control: public, max-age=60</code> is reasonable (the dashboard
+doesn't need to be absolutely real-time).</li>
+<li>Recommended per-IP rate-limit: 30 req/min.</li>
 </ul>
 
 </body></html>

@@ -12,7 +12,7 @@ added: 2026-06-05
 tags: [data, funil, customer success]
 media:
   - kind: url
-    url: /yuri/hostinger/
+    url: hostinger/
 ---
 
 Estudo de Data Analyst: funil, fricção de onboarding e sinais de CS, do lugar do cliente. Bilíngue (pt/en).

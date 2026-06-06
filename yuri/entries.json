@@ -1,7 +1,40 @@
 {
   "generated": "static",
-  "count": 20,
+  "count": 21,
   "entries": [
+    {
+      "slug": "domains",
+      "path": "/yuri/refs/domains.md",
+      "folder": "refs",
+      "type": "page",
+      "kind": "systems",
+      "lang": "pt-BR",
+      "tkey": "domains",
+      "category": "sistemas",
+      "title": "Mapa de domínios & infra (DNS · CNAMEs · surfaces)",
+      "author": "yuri",
+      "mine": true,
+      "created": "2026",
+      "added": "2026-06-06",
+      "date": null,
+      "published": true,
+      "tags": [
+        "infra",
+        "dns",
+        "fly",
+        "github-pages",
+        "cname"
+      ],
+      "media": [
+        {
+          "kind": "url",
+          "url": "https://artelonga.com.br/docs/domains.html"
+        }
+      ],
+      "caderno": null,
+      "pagina": null,
+      "snippet": "Fonte única dos domínios/CNAMEs/surfaces (`deploy/domains.yaml`) + ciclo de deploy (path → CNAME, modelo recursivo de universes). Mapa gerad"
+    },
     {
       "slug": "aws",
       "path": "/yuri/refs/aws.md",
@@ -26,43 +59,12 @@
       "media": [
         {
           "kind": "url",
-          "url": "/yuri/aws/"
+          "url": "aws/"
         }
       ],
       "caderno": null,
       "pagina": null,
       "snippet": "Ferramentas, decisões, custos e postmortems de operar uma plataforma de dados real na AWS (~US$ 155/mês). Bilíngue (pt/en)."
-    },
-    {
-      "slug": "brain-as-a-service",
-      "path": "/yuri/refs/brain-as-a-service.md",
-      "folder": "refs",
-      "type": "project",
-      "kind": "systems",
-      "lang": "pt-BR",
-      "tkey": "brain-as-a-service",
-      "category": "sistemas",
-      "title": "Brain as a Service — escala horizontal",
-      "author": "yuri",
-      "mine": true,
-      "created": "2026",
-      "added": "2026-06-05",
-      "date": null,
-      "published": true,
-      "tags": [
-        "baas",
-        "escala",
-        "infraestrutura"
-      ],
-      "media": [
-        {
-          "kind": "url",
-          "url": "https://artelonga.com.br/docs/brain-as-a-service.html"
-        }
-      ],
-      "caderno": null,
-      "pagina": null,
-      "snippet": "Tese de escala horizontal a custo SaaS zero: cada brain (universe) soberana, infra-agnóstica, renderiza do cache. yuri é o template."
     },
     {
       "slug": "hostinger",
@@ -88,12 +90,43 @@
       "media": [
         {
           "kind": "url",
-          "url": "/yuri/hostinger/"
+          "url": "hostinger/"
         }
       ],
       "caderno": null,
       "pagina": null,
       "snippet": "Estudo de Data Analyst: funil, fricção de onboarding e sinais de CS, do lugar do cliente. Bilíngue (pt/en)."
+    },
+    {
+      "slug": "intelligence-as-a-service",
+      "path": "/yuri/refs/intelligence-as-a-service.md",
+      "folder": "refs",
+      "type": "project",
+      "kind": "systems",
+      "lang": "pt-BR",
+      "tkey": "intelligence-as-a-service",
+      "category": "sistemas",
+      "title": "Intelligence as a Service — IaaS Â· escala horizontal",
+      "author": "yuri",
+      "mine": true,
+      "created": "2026",
+      "added": "2026-06-05",
+      "date": null,
+      "published": true,
+      "tags": [
+        "baas",
+        "escala",
+        "infraestrutura"
+      ],
+      "media": [
+        {
+          "kind": "url",
+          "url": "https://artelonga.com.br/docs/intelligence-as-a-service.html"
+        }
+      ],
+      "caderno": null,
+      "pagina": null,
+      "snippet": "Tese de IaaS Â· escala horizontal a custo SaaS zero: cada brain (universe) soberana, infra-agnóstica, renderiza do cache. yuri é o template."
     },
     {
       "slug": "neuro",
