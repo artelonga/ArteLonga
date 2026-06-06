@@ -35,6 +35,16 @@
   }
   var LANG = getLang();
   function L(){ return STR[LANG]; }
+  // rótulos de tipo localizados — segue o idioma do site; o valor cru continua sendo a chave de filtro
+  var TYPE_LABELS = {
+    page:{ "pt-BR":"página", en:"page" }, project:{ "pt-BR":"projeto", en:"project" },
+    paper:{ "pt-BR":"artigo", en:"paper" }, portfolio:{ "pt-BR":"portfólio", en:"portfolio" },
+    ref:{ "pt-BR":"referência", en:"reference" }, nota:{ "pt-BR":"nota", en:"note" },
+    song:{ "pt-BR":"música", en:"song" }, poem:{ "pt-BR":"poema", en:"poem" },
+    dia:{ "pt-BR":"diário", en:"journal" }, url:{ "pt-BR":"link", en:"link" },
+    video:{ "pt-BR":"vídeo", en:"video" }, resume:{ "pt-BR":"currículo", en:"résumé" }
+  };
+  function typeLabel(t){ var m = TYPE_LABELS[t]; return (m && m[LANG]) ? m[LANG] : t; }
   function setLang(l){
     if (!STR[l] || l===LANG) return;
     LANG = l; try{ localStorage.setItem("yuri.lang", l); }catch(e){}
@@ -154,7 +164,7 @@
         return fetchBody(t.path).then(function(b){var rr=renderBody(b);return '<div class="embed"><div class="eh"><a href="?e='+encodeURIComponent(t.slug)+'">'+esc(t.title)+(t.author?" — "+esc(t.author):"")+' ↗</a></div>'+mediaHtml(t.media)+rr.html+'</div>';});
       })).then(function(rendered){
         var html=r.html;rendered.forEach(function(h,idx){html=html.replace("__EMB"+idx+"__",h);});
-        var meta=[];meta.push(e.type);if(e.category)meta.push(L().cat+": "+e.category);if(e.author)meta.push(e.author);
+        var meta=[];meta.push(typeLabel(e.type));if(e.category)meta.push(L().cat+": "+e.category);if(e.author)meta.push(e.author);
         if(e.created)meta.push(e.created);if(e.added&&e.added!==e.created)meta.push("add "+e.added);
         if(e.type==="nota"&&(e.caderno||e.pagina!=null))meta.push("caderno "+(e.caderno||"?")+(e.pagina!=null?" · p."+e.pagina:""));
         // portfolio: as duas linhas do tempo vivas acima do texto (banner Hostinger vive em /yuri/hostinger/)
@@ -199,10 +209,23 @@
   var state={type:null,category:null,author:null,q:""};
   function visible(){ return langSelect(DATA); }   // base já reduzida ao idioma (com fallback)
   function uniq(key){var s={};visible().forEach(function(e){var v=e[key];if(v)s[v]=1;});return Object.keys(s).sort();}
+  // autores CANÔNICOS presentes (resolve variantes via neuro/authors.js: yuri =
+  // "Vieira Sugano" = "Yuri"). Sem authors.js, cai pros strings crus.
+  function authorList(){
+    if(!window.NeuroAuthors)return uniq("author").map(function(a){return {id:a,label:a};});
+    var seen={},out=[];
+    visible().forEach(function(e){ if(!e.author)return;
+      e.author.split(/,|;|&| e | and |\bet al\.?/i).map(function(x){return x.trim();}).filter(Boolean).forEach(function(frag){
+        var id=window.NeuroAuthors.resolve(frag); if(!id||seen[id])return; seen[id]=1;
+        var disp=window.NeuroAuthors.displayOf(id); out.push({id:id,label:(disp&&disp!==id)?disp:frag});
+      });
+    });
+    return out.sort(function(a,b){return a.label<b.label?-1:1;});
+  }
   function matches(e){
     if(state.type&&e.type!==state.type)return false;
     if(state.category&&e.category!==state.category)return false;
-    if(state.author&&e.author!==state.author)return false;
+    if(state.author){ if(window.NeuroAuthors){ if(!window.NeuroAuthors.match(e.author||"",state.author))return false; } else if(e.author!==state.author)return false; }
     if(state.q){var hay=(e.title+" "+(e.author||"")+" "+(e.snippet||"")+" "+(e.tags||[]).join(" ")).toLowerCase();if(hay.indexOf(state.q.toLowerCase())===-1)return false;}
     return true;
   }
@@ -210,7 +233,7 @@
   function cardHtml(e){
     var mk=(e.media||[]).map(function(m){return '<span>'+esc(m.kind)+'</span>';}).join("");
     return '<a class="card" href="?e='+encodeURIComponent(e.slug)+'">'+
-      '<div class="ct"><span class="t">'+esc(e.type)+'</span>'+(e.category?'<span class="cat">'+esc(e.category)+'</span>':'')+'</div>'+
+      '<div class="ct"><span class="t">'+esc(typeLabel(e.type))+'</span>'+(e.category?'<span class="cat">'+esc(e.category)+'</span>':'')+'</div>'+
       '<h3>'+esc(e.title)+'</h3>'+
       (e.author?'<div class="by">'+esc(e.author)+(e.created?" · "+esc(e.created):"")+'</div>':(e.date?'<div class="by">'+esc(e.date)+'</div>':''))+
       (e.snippet?'<div class="snip">'+esc(e.snippet)+'</div>':'')+
@@ -226,9 +249,9 @@
     if(cats.length){var cg=document.createElement("div");cg.className="grp";cg.innerHTML='<span class="flabel">'+esc(L().cat)+'</span>';
       cats.forEach(function(c){var b=chip(c,state.category===c,"cat");b.onclick=function(){state.category=state.category===c?null:c;renderList();};cg.appendChild(b);});f.appendChild(cg);}
     var types=uniq("type");var tg=document.createElement("div");tg.className="grp";tg.innerHTML='<span class="flabel">'+esc(L().type)+'</span>';
-    types.forEach(function(t){var b=chip(t,state.type===t);b.onclick=function(){state.type=state.type===t?null:t;renderList();};tg.appendChild(b);});f.appendChild(tg);
-    var authors=uniq("author");if(authors.length){var ag=document.createElement("div");ag.className="grp";ag.innerHTML='<span class="flabel">'+esc(L().author)+'</span>';
-      authors.forEach(function(a){var b=chip(a,state.author===a);b.onclick=function(){state.author=state.author===a?null:a;renderList();};ag.appendChild(b);});f.appendChild(ag);}
+    types.forEach(function(t){var b=chip(typeLabel(t),state.type===t);b.onclick=function(){state.type=state.type===t?null:t;renderList();};tg.appendChild(b);});f.appendChild(tg);
+    var authors=authorList();if(authors.length){var ag=document.createElement("div");ag.className="grp";ag.innerHTML='<span class="flabel">'+esc(L().author)+'</span>';
+      authors.forEach(function(a){var b=chip(a.label,state.author===a.id);b.onclick=function(){state.author=state.author===a.id?null:a.id;renderList();};ag.appendChild(b);});f.appendChild(ag);}
     var q=document.createElement("input");q.className="q";q.placeholder=L().search;q.value=state.q;q.oninput=function(){state.q=q.value;renderList();};f.appendChild(q);
     APP.appendChild(f);
     var sections=document.createElement("div");sections.className="sections";APP.appendChild(sections);

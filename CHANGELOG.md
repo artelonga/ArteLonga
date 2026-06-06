@@ -12,6 +12,339 @@ co-auto. Convenção em CLAUDE.md.
 
 ## [Unreleased]
 
+## [0.21.0] — 2026-06-05 — Parceiro Scrum + docs como conteúdo + revisão de segurança
+
+### Added (`feat`)
+
+- **Scrum (parceiro)** — pasta `scrum/` (draft, noindex): framework + guia oficial 2020
+  (anexo) + referências estruturadas na base; `note.md`. A entrega da ArteLonga (papéis,
+  cadência quinzenal Thu 15h BRT, roadmap/backlog como co tasks, retrospectiva dos
+  releases reais com DoD) vive sob `docs/`, linkando o parceiro.
+- **Docs como conteúdo** (`/docs/`) — `tools/bake-docs.mjs` pré-renderiza markdown +
+  mermaid → HTML+SVG estático (zero dependência de runtime/terceiros). Hub com split
+  público (case study/metodologia) / dev (specs, noindex). `npm run bake-docs`.
+- **Revisão de segurança** — `tools/bake-security-index.mjs`: índice de toda superfície
+  exposta (GH Pages serve o repo inteiro) + endpoints, por sensibilidade. Saída noindex
+  + gitignored. `npm run security-review`.
+
+### Fixed (`fix`)
+
+- **security:** `data/feedback.ndjson` (PII) e `yuri/file.enc` (vault) saíram do repo
+  servido (`git rm --cached` + gitignore `*.ndjson`/`*.enc`) — dados de runtime ≠ content.
+- **ci:** telemetry só roda em subdomínio (sem erro de console no apex/smoke); audit
+  de storage-keys com constante p/ `al_vid`. PR `quality` verde.
+
+## [0.20.0] — 2026-06-05 — Identidade unificada de autores: neuro é a base, yuri é a UI
+
+### Theme
+
+Uma **identidade canônica de autor** unifica as referências: a base é
+`neuro/references.js`, yuri é a UI que filtra por autor. Variantes de nome
+("VIEIRA SUGANO, Yuri Yukio" / "yuri" / "Yuri" / "Vieira Sugano") resolvem pra UMA
+identidade — então dá pra consultar "publicações onde yuri é autor" ou "autor
+contém havlik". Metadado unificado, conteúdo separado de forma.
+
+### Why
+
+Autor era string livre, sem identidade: o filtro `author=yuri` não casava com
+"VIEIRA SUGANO, Yuri Yukio", e o yuri duplicava 5 publicações com strings de autor
+combinadas, filtradas por igualdade exata. Sem unificação, não dava pra consultar
+por nome.
+
+### Added (`feat`)
+
+- **`neuro/authors.js`** (novo): registro CANÔNICO de autores (metadado, não forma).
+  `resolve(qualquer-variante) → id`, `match(string, query)` alias-aware com quebra de
+  strings COMBINADAS ("Havlik, Vieira Sugano et al." → casa yuri E havlik), fallback
+  "contém". A maioria dos autores auto-deriva do sobrenome ABNT; só quem tem variantes/
+  handle (yuri) é registrado explícito.
+- **`neuro/references.js`**: `byAuthor()` resolve variantes via `NeuroAuthors`
+  (`byAuthor("yuri")` = `byAuthor("Vieira Sugano")` = 10 refs); novo `authors()`
+  (autores únicos canônicos). Carregado em todas as 8 páginas que usam references.js.
+- **`yuri/garden.js`**: filtro de autor alias-aware + chips de autor **deduplicados
+  por identidade canônica** (com display name). `yuri/index.html` carrega authors.js.
+- Surface yuri (UI) ganha `neuro/authors.js` na imagem (`deploy/surfaces/Dockerfile`)
+  pra resolver no child também; degrada gracioso se ausente.
+
+### Queries habilitadas
+
+- "publicações onde yuri é autor" → `NeuroCite.byAuthor("yuri")` (toda variante).
+- "autor contém havlik" → `NeuroCite.byAuthor("havlik")`.
+
+### Tests
+
+- 12 asserts (resolução de variantes, strings combinadas, sem falso-positivo) — todos
+  verdes. neuro byAuthor sem regressão.
+
+### Notes
+
+- yuri ainda DUPLICA as 5 publicações em `entries.json` (do #71); a unificação aqui é
+  do FILTRO/identidade. Renderizar yuri como view pura da base neuro (dedup) é follow-up.
+
+## [0.19.0] — 2026-06-05 — Integração BIDIRECIONAL surface ↔ artelonga pai (Fase 3)
+
+### Theme
+
+A surface universe-owned passa a integrar nos **dois sentidos** com a artelonga pai
+(co): **empurra** `DailyRollup` diário pro warehouse central **e lê de volta** o
+summary unificado da universe (histórico `/yuri` pré-CNAME + rollups). Resultado: o
+dado da `yuri.artelonga.com.br` chega no pai, e o histórico do pai aparece no child.
+
+### Why
+
+Faltava o lado producer da Option C **e** a leitura de volta. Sem push, o dado da
+CNAME ficava ilhado; sem read-back, o child não via o próprio histórico `/yuri`
+(pré-migração) que vive no co. O usuário quer os dois sentidos.
+
+### Added (`feat`)
+
+- **child → pai (push):** `dayRollup()` constrói o `DailyRollup` de um dia
+  (consentido, **sem PII** — só contagens: metrics + dims
+  geo/device/source/pages/goals/referrers) do NDJSON local; `pushRollups()` faz `POST`
+  dos últimos `ROLLUP_DAYS` dias pro `CO_ROLLUP_URL` com bearer `CO_ROLLUP_TOKEN`.
+  Trigger sem timer residente (Fly auto-stop): **cold-start** + **debounced no
+  tráfego** (`ROLLUP_INTERVAL_MS`, 30min). Idempotente no co (upsert `(universe, day)`).
+- **pai → child (read-back):** `fetchParent()` lê o summary unificado da universe no
+  co (`CO_HISTORY` = `…/analytics/public/summary?universe=yuri`), cache 5min,
+  server-side (sem CORS). `/api/telemetry` ganha o bloco `parent`; o dashboard mostra
+  "histórico · artelonga pai" (visualizações/visitantes/recorrentes/sessões/países/
+  cidades). É o **próprio dado da universe** reclamado de volta — não de terceiros.
+- Ambos no-op sem env; non-fatal (estado local = fonte da verdade do tempo real).
+  `co` meta reporta `rollup`/`read` ligados.
+
+### Activation (manual, depois do co CO-340 deployar — PR `artelonga/co#152`)
+
+1. Deployar co com CO-340 (ingest de rollup + `?universe` no summary).
+2. `fly secrets set CO_ROLLUP_TOKEN=<segredo> -a artelonga-yuri` (só na surface
+   **primária** — não na hostinger, p/ não colidir no upsert) e o **mesmo** no co.
+3. `fly secrets set CO_HISTORY='https://co.artelonga.com.br/api/v1/analytics/public/summary?universe=yuri&days=90' -a artelonga-yuri`.
+
+### Notes
+
+- Escalares + timeseries cruzam a ponte no co; merge dos `dims` de rollup é follow-up.
+  Multi-surface por universe (somar yuri+hostinger) exige rollups surface-keyed no co.
+
+## [0.18.0] — 2026-06-05 — Analytics framework: schema canônico multi-tenant (Fase 1)
+
+### Theme
+
+Fase 1 do framework de analytics **central, filtrável e extensível** que unifica os
+dois sistemas (apex co-backed + surfaces universe-owned) e estende pra novos
+parceiros e qualquer universe do `co`.
+
+### Why
+
+Hoje há dois dashboards/sistemas paralelos. O caminho pra um framework multi-tenant
+é: **schema canônico keyed by `universe`** + warehouse central filtrável + producers
+uniformes + um dashboard parametrizado — honrando o princípio "edge dono do raw,
+centro só com agregado consentido sem PII". Esta fase define o **contrato** (schema +
+design) contra o qual a metade central (`co`, Fase 2) é construída.
+
+### Added (`feat`)
+
+- **Schema canônico** em `openapi/artelonga.yaml`: `TelemetryEvent` (raw, edge-owned,
+  nunca centralizado), `DailyRollup` (agregado consentido sem PII — o único que vai
+  pro centro, keyed by universe+day), `RollupMetrics`, `RollupDims`, `GeoCount`,
+  `DimensionCount`, `AnalyticsSummary` (resposta da API filtrável), `TelemetryKind`,
+  `DeviceCategory`, `Utm`, `AnalyticsScope`. Types regenerados (`src/types.gen.ts`).
+- **`docs/analytics-framework.md`** (novo): a arquitetura completa — seam central,
+  API filtrável (`/api/v1/analytics/{scope}/summary` com scope/from/to/filter/
+  breakdown), contrato de producer (turnkey surfaces-server + SDK), dashboard único
+  parametrizado, a tensão filtrável-vs-raw-soberano, privacidade/tenancy e o rollout
+  faseado (1–5) com o que já existe.
+
+### Notes
+
+- `teleAgg()` da surface já produz ~`DailyRollup.dims` — a surface está a um bucketing
+  diário de virar producer conforme (Fase 3, depois).
+- Fase 2 (warehouse + API filtrável) e Fase 3 (push do rollup) ficam pra próxima.
+
+## [0.17.1] — 2026-06-05 — Geo bins são DATA de runtime (Fly), não content+form
+
+### Why
+
+Princípio do projeto: **separar form de content**. Os binários de geo são **data
+de runtime da surface** — não são content (publicado) nem form (apresentação). Os
+de país estavam **commitados** (~6.6 MB) e até servidos por GH Pages inutilmente
+(o apex usa o co pra telemetria, não estes bins); o de cidade já era build-time.
+Inconsistente.
+
+### Changed (`refactor`)
+
+- **Todos os binários de geo agora são build-time only**, dentro da imagem Fly:
+  - `Dockerfile` compila país (v4+v6) **e** cidade no `RUN bake-geo` (antes só city).
+  - `git rm --cached` dos `ip4-country.bin`/`ip6-country.bin` (saem do git e do GH
+    Pages; seguem em disco pra dev local).
+  - `.gitignore` → `yuri/geo/*.bin` (todos); `.dockerignore` → `yuri/geo/*.bin`
+    (fora do build-context → deploy reproduzível, não depende do estado local).
+- Repo de conteúdo **−6.6 MB**; GH Pages para de servir os bins. Sem mudança de
+  comportamento em runtime (a surface compila tudo no build).
+- Local dev: `node tools/bake-geo.mjs [--city]` popula `yuri/geo/` (doc em
+  `telemetry-surfaces.md §2`).
+
+## [0.17.0] — 2026-06-05 — Telemetria: geo de cidade (IPv4, DB-IP CC-BY)
+
+### Theme
+
+Fechar o delta de granularidade geo vs. GA: **cidade** (não só país), via
+DB-IP City Lite, sem inchar o repo.
+
+### Why
+
+GA reporta cidade/região; a surface só tinha país. Faltava o último pilar de geo.
+
+### Added (`feat`)
+
+- **Geo de cidade IPv4** (`tools/bake-geo.mjs --city`, `tools/surfaces-server.mjs`,
+  `yuri/analytics/index.html`): resolve `país|região|cidade` no ingest a partir de
+  **DB-IP City Lite** (CC-BY-4.0). Binário compacto `ip4-city.bin` (formato `AGC4`:
+  starts `u32` + índice `u32` numa tabela de localidades deduplicada — 3.45M faixas,
+  169k locais, ~31 MB). Verificado: `8.8.8.8`→Mountain View, IPs BR→Rio/Brasília,
+  `1.1.1.1`→Sydney. Nova seção "cidades" no dashboard + **atribuição DB-IP**
+  (exigida pela CC-BY). IPv6 continua em nível de país.
+
+### Architecture
+
+- O binário de cidade **não é commitado** (~31 MB; o set IPv6 é ~98 MB gz). O
+  `Dockerfile` da surface **baixa + compila no build** (`bake-geo.mjs --city`,
+  streaming via gunzip+readline pra não estourar memória), dentro da imagem, fora do
+  git e do build context. **Non-fatal**: se o dataset falhar, a surface cai pra geo
+  de país (binários commitados). `.gitignore` cobre `yuri/geo/*-city.bin`.
+
+### Deploy
+
+- `artelonga-yuri` + `artelonga-hostinger` redeployadas (build agora compila o city
+  bin). Cliente inalterado (cidade é server-side).
+
+> **Delta restante:** city IPv6 (~98 MB gz). Demais deltas vs GA: browser/OS,
+> scroll, funil, coorte — todos sem comprometer privacidade.
+
+## [0.16.0] — 2026-06-05 — Telemetria: geo IPv6, aquisição (UTM) e dispositivo — paridade com Google Analytics + runbook de upgrade
+
+### Theme
+
+Levar a telemetria da surface a **paridade com o Google Analytics** (sem cookies
+de terceiros, sem cross-site, self-hosted) e documentar de forma **reproduzível**
+como uma universe é promovida de path pra CNAME.
+
+### Why
+
+A geo só cobria IPv4 — parte relevante do tráfego (mobile/moderno) ficava sem
+país. E faltavam pilares do GA: **aquisição** (campanha/origem) e **dispositivo**.
+Fechados aqui. Além disso, o upgrade `/yuri` → `yuri.artelonga.com.br` precisava de
+um runbook executável pra ser repetível com outros parceiros.
+
+### Added (`feat`)
+
+- **Geo IPv6** (`tools/bake-geo.mjs`, `tools/surfaces-server.mjs`): segundo binário
+  `yuri/geo/ip6-country.bin` (formato `AG61`, 273k faixas, 4.69 MB) — starts de 16
+  bytes big-endian + busca binária via `Buffer.compare`; parser de IPv6 (trata `::`,
+  IPv4 embutido). `geoCountry` despacha v4/v6. Verificado: `2001:4860:4860::8888`→US,
+  `2804:…`→BR, Cloudflare→US, loopback→null.
+- **Aquisição / UTM** (`yuri/telemetry.js`, `surfaces-server.mjs`): UTM de primeiro
+  toque (sessionStorage) enviado no pageview; servidor agrega origem
+  (`utm_source` → referrer → "(direto)"). Nova seção "aquisição" no dashboard.
+- **Dispositivo** (`surfaces-server.mjs`): categoria mobile/tablet/desktop derivada
+  do viewport (sem custo no client, sem dataset). Nova seção "dispositivo".
+
+### Docs
+
+- **`docs/universe-upgrade.md`** (novo): runbook **reproduzível** path→CNAME (DNS na
+  Hostinger, app/volume/cert Fly, deploy gate, continuidade de telemetria via Option
+  C, checklist de verificação com comandos, rollback) — ancorado nos artefatos reais
+  do yuri.
+- **`docs/telemetry-surfaces.md`**: **matriz de paridade com o GA4** (§7) — igual ou
+  acima no core que respeita privacidade; pilares de vigilância (demografia via
+  Google Signals, audiências cross-site) omitidos por princípio. Deltas abertos
+  (cidade, browser/OS, scroll, funil, coorte) listados. Geo §2 atualizado pra v4+v6;
+  shape de `/api/telemetry` com `acquisition`/`devices`/`visitors`/`returning`.
+
+### Deploy
+
+- `artelonga-yuri` e `artelonga-hostinger` redeployadas (binários geo v4+v6,
+  aquisição, dispositivo). `telemetry.js?v=` → `20260605b`.
+
+> **Pendente:** deltas de granularidade vs GA (geo cidade, browser/OS, scroll,
+> funil, coorte) — incrementais, nenhum exige comprometer privacidade. Metade co da
+> Option C segue pendente (`telemetry-surfaces.md §3`).
+
+## [0.15.0] — 2026-06-05 — Telemetria: paridade de observabilidade nas surfaces + gráfico de tempo no dashboard apex
+
+### Theme
+
+Fechar a lacuna de observabilidade entre os **dois sistemas de telemetria** (ver
+`docs/telemetry-surfaces.md`): o apex `artelonga.com.br` (co, rico — timeseries,
+geo, retenção) e as **surfaces universe-owned** (CNAME como `yuri.artelonga.com.br`,
+que até então só contavam pageviews/cliques). Quando um parceiro é promovido de
+path (`/yuri/`) pra surface própria, a observabilidade não pode regredir nem
+quebrar a série temporal — esta release traz a surface à paridade e arruma o
+gráfico de tempo do dashboard público.
+
+### Why
+
+`/yuri` migrou pra CNAME (`yuri.artelonga.com.br`), passando da telemetria do co
+(timeseries/geo/retenção) pra NDJSON da surface (só contagens). O upgrade
+*regredia* a observabilidade e *partia* a série no corte. Além disso o gráfico de
+tempo do apex ficava sem eixo X além de 14 dias e não filtrava nada ao clicar.
+Este é o **substrato da Option C** (edge dono do raw + rollups consentidos pro co)
+documentada em `docs/telemetry-surfaces.md §3`.
+
+### Added — geo embarcado, retenção, dwell, timeseries e conversões na surface (`feat`)
+
+- **Geo país embarcado** (`tools/surfaces-server.mjs`, `tools/bake-geo.mjs`): país
+  resolvido no ingest de `/api/track` a partir de `Fly-Client-IP`, via binário CC0
+  compacto (`yuri/geo/ip4-country.bin`, formato `AG41`, 341k faixas, busca binária
+  stdlib). Self-hosted, sem chamada externa por request, **IP cru nunca persistido**
+  — só o país. Substitui o GeoLite2 (license key + proíbe redistribuição em repo
+  público) pelo dataset `ip-location-db` (domínio público).
+- **Visitante persistente + retenção** (`yuri/telemetry.js`): `al_vid` em
+  localStorage + cookie no apex `.artelonga.com.br` — **ponte de identidade** com o
+  cliente do apex, sobrevive ao upgrade path→CNAME. Habilita visitantes únicos e
+  novo/recorrente.
+- **Dwell / tempo ativo** (`page_end`): mede ms visíveis (visibilitychange/pagehide),
+  envia o delta sem dupla contagem. Habilita tempo ativo médio e taxa de rejeição.
+- **Timeseries diário + conversões** (`teleAgg`): série diária de pageviews;
+  conversões via regras de goal built-in (resume/contato/github/linkedin) e
+  `[data-goal]`, sem precisar editar HTML.
+- **Dashboard da surface à paridade** (`yuri/analytics/index.html`): 8 cards
+  (pageviews, visitantes, recorrentes, sessões, rejeição, tempo ativo, conversões,
+  países), gráfico de tempo (meses no eixo, data exata no hover, clique filtra a
+  atividade recente por dia), geolocalização por país e conversões. Agregação entre
+  surfaces irmãs preservada (`teleCombine`).
+
+### Added — gráfico de tempo do dashboard apex (`feat`)
+
+- **Eixo X em meses + data exata no hover** (`analytics/index.html`): rótulos por
+  mês em janelas longas (antes em branco além de 14 dias); readout com a data
+  completa e contagem.
+- **Clique na barra filtra os dados abaixo**: chip de dia, KPIs/top-pages/recentes
+  por dia. Feature-detecta `?from`/`&to` no co — usa o slice do backend assim que
+  ele existir; até lá recomputa o dia a partir de `/recent` (client-side).
+
+### Fixed (`fix`)
+
+- Gráfico de tempo do apex sem rótulos de eixo além de 14 dias → meses sempre
+  visíveis (`analytics/index.html`).
+
+### Docs
+
+- **`docs/telemetry-surfaces.md`** (novo): mapa dos dois sistemas, contrato dos
+  endpoints da surface (`/api/track`, `/api/feedback`, `/api/telemetry`), formato do
+  binário geo, **design de convergência (Option C)** + schema de rollup + runbook do
+  upgrade de parceiro.
+- **`docs/analytics-api.md`**: status → LIVE; shape real do `summary`
+  (`as_of`/`window_days`); documenta os params planejados `from`/`to`/`universe`;
+  flag do bug `session_avg_ms ≈ 4ms` e do skew de IPs de datacenter no geo.
+
+### Deploy
+
+- Surfaces `artelonga-yuri` e `artelonga-hostinger` redeployadas (servidor +
+  `yuri/` + binário geo). `telemetry.js?v=` bumpado pra `20260605a` nas 3 HTMLs.
+- Dashboard apex (`analytics/index.html`) + docs vão pro `main` (GH Pages) via PR.
+
+> **Pendente (próxima):** a metade co da Option C — endpoint de ingest de rollup
+> por universe e os params `?from`/`&to`/`?universe` no `summary` (repo `co`).
+
 ## [0.14.0] — 2026-05-20 — Phase C wave 4-8 close (modular data, TypeScript runtime, OpenAPI codegen, signup integration, dist cleanup)
 
 ### Theme

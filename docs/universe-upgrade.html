@@ -1,0 +1,216 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Upgrade de universe — path → surface CNAME (runbook reproduzível) — Arte Longa</title>
+<meta name="robots" content="noindex, nofollow"><style>
+  :root{--ink:#0a0a0a;--ink2:#444;--ink3:#888;--line:#e7e1da;--bg:#fbf9f6;--bg2:#fff;--accent:#9a3b2e}
+  *{box-sizing:border-box} body{font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+    max-width:820px;margin:0 auto;padding:4vh 1.4rem 10vh;line-height:1.6;color:var(--ink);background:var(--bg)}
+  a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(154,59,46,.25)}a:hover{border-bottom-color:var(--accent)}
+  h1{font-size:2.1rem;letter-spacing:-.02em;line-height:1.12;margin:.3em 0 .2em}
+  h2{font-size:1.3rem;margin:1.8em 0 .4em;border-top:1px solid var(--line);padding-top:.8em}
+  h3{font-size:1.02rem;margin:1.3em 0 .3em}
+  blockquote{margin:1.2em 0;padding:.7em 1.1em;background:var(--bg2);border-left:3px solid var(--accent);border-radius:8px;color:var(--ink2);font-size:.95rem}
+  ul,ol{padding-left:1.3em}li{margin:.15em 0}
+  table{border-collapse:collapse;width:100%;font-size:.86rem;margin:1.2em 0;display:block;overflow-x:auto}
+  th,td{border:1px solid var(--line);padding:.45rem .6rem;text-align:left;vertical-align:top}
+  th{background:var(--bg2);font-weight:700}
+  code{background:var(--bg2);border:1px solid var(--line);border-radius:4px;padding:.05em .35em;font-size:.85em}
+  pre{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:1em;overflow-x:auto}pre code{border:0;background:none;padding:0}
+  hr{border:0;border-top:1px solid var(--line);margin:2em 0}
+  .mermaid svg{max-width:100%;height:auto;background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:.6rem}
+  .crumb{font-size:.8rem;color:var(--ink3);margin-bottom:2em}
+  .grp{margin:1.4em 0}.grp h2{border:0;padding:0;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink3)}
+  .doclist{list-style:none;padding:0}.doclist li{margin:.5em 0}.doclist .src{font-size:.72rem;color:var(--ink3)}
+  .tag{font-size:.6rem;font-weight:700;border-radius:999px;padding:.05rem .45rem;letter-spacing:.04em;vertical-align:middle}
+  .tag.dev{background:#eef1f6;color:var(--ink3)}.tag.pub{background:#e6f1e8;color:#3a7d44}</style></head><body>
+<div class="crumb"><a href="/">Arte Longa</a> · <a href="/docs/">docs</a> · <span>dev (noindex)</span></div>
+<h1>Upgrade de universe — path → surface CNAME (runbook reproduzível)</h1>
+<p>Como promover uma <strong>universe</strong> servida como <strong>path no apex</strong> (<code>artelonga.com.br/yuri/</code>)
+pra <strong>surface própria num CNAME</strong> (<code>yuri.artelonga.com.br</code>), <strong>sem perder
+observabilidade nem partir a série temporal</strong>. Princípio (universos <strong>recursivos /
+fractais</strong> — a mesma unidade em qualquer escala, sem "sub"): uma universe aninhada
+promove pra surface sem fricção, continua sendo a mesma universe (mesma chave,
+histórico, changelog, analytics) e passa a <strong>ser dona do próprio estado</strong>.</p>
+<p>Worked example ao longo do doc: <strong>yuri</strong> (<code>handle=yuri</code>, app <code>artelonga-yuri</code>,
+host <code>yuri.artelonga.com.br</code>). Troque <code>yuri</code>/<code>artelonga-yuri</code>/o host pelos seus.</p>
+<blockquote>
+<p>Pré-requisitos: <code>fly</code> autenticado (<code>fly auth whoami</code>), acesso ao DNS em
+<strong>Hostinger</strong> (registrar do <code>artelonga.com.br</code>), repo clonado, conteúdo da
+universe já em <code>&lt;handle&gt;/</code> com um <code>index.html</code> servível na raiz da surface.</p>
+</blockquote>
+<hr>
+<h2>Visão geral (o que muda)</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Antes (path)</th>
+<th>Depois (surface CNAME)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>URL</td>
+<td><code>artelonga.com.br/yuri/</code></td>
+<td><code>yuri.artelonga.com.br</code></td>
+</tr>
+<tr>
+<td>Servidor</td>
+<td>GH Pages (apex)</td>
+<td><code>tools/surfaces-server.mjs</code> num app Fly</td>
+</tr>
+<tr>
+<td>Telemetria</td>
+<td>co (rico)</td>
+<td><strong>universe-owned</strong> (NDJSON local, à paridade — geo/retenção/timeseries/conversões/aquisição)</td>
+</tr>
+<tr>
+<td>Fonte da verdade</td>
+<td><code>telemetry_events</code> no co</td>
+<td><code>/data/telemetry-&lt;handle&gt;.jsonl</code> na surface</td>
+</tr>
+</tbody></table>
+<p>A continuidade tem 3 partes, todas cobertas abaixo: <strong>série</strong> (backfill), <strong>identidade</strong>
+(<code>al_vid</code> no cookie apex), <strong>capacidade</strong> (surface já está à paridade — ver
+<code>telemetry-surfaces.md</code>).</p>
+<hr>
+<h2>Passo a passo</h2>
+<h3>1. Conteúdo servível na raiz da surface</h3>
+<p>A surface serve <code>SURFACE</code> (ex. <code>/yuri/</code>) na raiz <code>/</code>. Os HTML usam caminhos
+absolutos <code>/yuri/*</code>, então só <code>/</code> é mapeado pro <code>index.html</code> da surface; o resto
+serve o arquivo direto. Garanta que <code>&lt;handle&gt;/index.html</code> existe e carrega o
+beacon de telemetria + feedback:</p>
+<pre><code class="language-html">&lt;script src="/yuri/telemetry.js?v=YYYYMMDDx" defer&gt;&lt;/script&gt;
+&lt;script src="/yuri/feedback.js?v=YYYYMMDDx" defer&gt;&lt;/script&gt;
+</code></pre>
+<h3>2. Registrar a surface no deploy tooling</h3>
+<p>Adicione a entrada em <code>tools/deploy-surface.mjs</code> (<code>SURFACES</code>) e crie o toml:</p>
+<pre><code class="language-js">// tools/deploy-surface.mjs → SURFACES
+&lt;handle&gt;: {
+  server: "tools/surfaces-server.mjs",
+  env: { SURFACE: "/&lt;handle&gt;/", FEEDBACK_UNIVERSE: "&lt;handle&gt;" },
+  config: "deploy/surfaces/&lt;handle&gt;.toml", dockerfile: "deploy/surfaces/Dockerfile",
+  expect: ["&lt;string única do index&gt;", "feedback.js", "&lt;/html&gt;"]   // smoke check pré-deploy
+}
+</code></pre>
+<p><code>deploy/surfaces/&lt;handle&gt;.toml</code> (copie de <code>deploy/surfaces/yuri.toml</code>):</p>
+<pre><code class="language-toml">app = "artelonga-&lt;handle&gt;"
+primary_region = "gru"
+[env]
+  SURFACE = "/&lt;handle&gt;/"
+  FEEDBACK_UNIVERSE = "&lt;handle&gt;"
+  TELEMETRY_DIR = "/data"
+  TELEMETRY_DURABLE = "1"
+  SIBLINGS = ""                       # URLs de surfaces irmãs da MESMA universe (agregação)
+[[mounts]]
+  source = "tele"
+  destination = "/data"
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "stop"         # dorme quando ocioso; auto-starta no request
+  auto_start_machines = true
+  min_machines_running = 0
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "256mb"
+</code></pre>
+<blockquote>
+<p>O <code>Dockerfile</code> (<code>deploy/surfaces/Dockerfile</code>) já copia <code>tools/surfaces-server.mjs</code></p>
+<ul>
+<li><code>yuri/</code> — então o reader de geo e os binários <code>yuri/geo/ip{4,6}-country.bin</code>
+vão junto. Nada a mudar aqui.</li>
+</ul>
+</blockquote>
+<h3>3. Criar o app Fly + volume durável + deploy</h3>
+<p>Da raiz do repo (valores reais do yuri como exemplo):</p>
+<pre><code class="language-bash">fly apps create artelonga-&lt;handle&gt;
+fly volumes create tele --region gru --size 1 --app artelonga-&lt;handle&gt; --yes   # NDJSON durável em /data
+node tools/deploy-surface.mjs &lt;handle&gt;        # smoke check local (health, strings) → fly deploy --remote-only --ha=false
+</code></pre>
+<p><code>deploy-surface.mjs</code> sobe o server local, valida <code>/api/health</code>, <code>/</code> e as strings
+<code>expect</code> (e ausência de fallback L-002) <strong>antes</strong> de deployar. Falhou o smoke →
+deploy abortado.</p>
+<h3>4. Certificado + DNS (CNAME na Hostinger)</h3>
+<pre><code class="language-bash">fly certs add &lt;handle&gt;.artelonga.com.br --app artelonga-&lt;handle&gt;   # mostra o alvo do CNAME
+</code></pre>
+<p>No DNS da <strong>Hostinger</strong>, crie o registro que o comando indicou:</p>
+<pre><code>CNAME   &lt;handle&gt;   artelonga-&lt;handle&gt;.fly.dev.
+</code></pre>
+<p>Aguarde a emissão (<code>fly certs show &lt;handle&gt;.artelonga.com.br --app artelonga-&lt;handle&gt;</code>
+→ <code>Status: Issued</code>). No yuri: cert <strong>Issued</strong> (Fly-managed), IPs <code>v6 dedicado</code></p>
+<ul>
+<li><code>v4 compartilhado</code> — o Fly cuida disso ao adicionar o cert.</li>
+</ul>
+<h3>5. Continuidade de telemetria (Option C)</h3>
+<ol>
+<li><p><strong>Identidade — já automática.</strong> O <code>al_vid</code> vive em cookie no <strong>apex
+<code>.artelonga.com.br</code></strong> (ver <code>telemetry-surfaces.md §5</code>), então o mesmo visitante
+atravessa <code>artelonga.com.br/&lt;handle&gt;/</code> → <code>&lt;handle&gt;.artelonga.com.br</code> sem virar
+"novo". O <code>telemetry.js</code> da surface lê esse cookie primeiro. Nada a fazer.</p>
+</li>
+<li><p><strong>Backfill da série.</strong> Exporte o histórico pré-cutover do co e role pra série
+diária sob <code>universe=&lt;handle&gt;</code>:</p>
+<pre><code class="language-bash"># marca o cutover
+T=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+# exporta eventos /&lt;handle&gt;/* do co (auth admin) → rollup diário keyed by universe
+curl -H "Authorization: Bearer $CO_TOKEN" \
+  "https://co.artelonga.com.br/api/v1/admin/telemetry/export?path_prefix=/&lt;handle&gt;/&amp;until=$T"
+</code></pre>
+<p>(A metade co — ingest de rollup por universe — é o follow-up rastreado em
+<code>telemetry-surfaces.md §3</code>. Até lá o histórico fica legível via o dashboard do
+apex; a surface começa a série nova do cutover.)</p>
+</li>
+<li><p><strong>Rollups novos.</strong> A surface emite rollups diários consentidos (sem PII) keyed
+by <code>universe=&lt;handle&gt;</code> — mesma key path↔CNAME, então a série não tem corte.</p>
+</li>
+</ol>
+<h3>6. Redirecionar o path antigo (evita fragmentar)</h3>
+<p>Pra <code>/&lt;handle&gt;/</code> no apex não competir com a surface no analytics da rede,
+redirecione 301 o path antigo pro CNAME (GH Pages: meta-refresh/redirect no
+<code>&lt;handle&gt;/index.html</code> do apex, ou regra de redirect). Assim todo tráfego novo
+pousa na surface e a atribuição fica limpa.</p>
+<hr>
+<h2>Checklist de verificação (reproduzível)</h2>
+<pre><code class="language-bash">H=&lt;handle&gt;.artelonga.com.br
+# 1. surface no ar + estática
+curl -s https://$H/api/health                      # {"ok":true,"surface":"/&lt;handle&gt;/",...}
+curl -s -o /dev/null -w "%{http_code}\n" https://$H/   # 200
+
+# 2. telemetria à paridade (schema novo servido)
+curl -s https://$H/api/telemetry | python3 -c "import sys,json;d=json.load(sys.stdin);print('keys',sorted(d));assert all(k in d for k in('timeseries','retention','geo','conversions','acquisition'))"
+
+# 3. geo resolve (v4 E v6) — força cada família
+curl -4 -s -o /dev/null -X POST https://$H/api/track -H 'content-type: application/json' -d '{"kind":"pageview","vid":"vchk4","session":"vchk4","page":"/__chk4"}'
+curl -6 -s -o /dev/null -X POST https://$H/api/track -H 'content-type: application/json' -d '{"kind":"pageview","vid":"vchk6","session":"vchk6","page":"/__chk6"}' || true
+curl -s https://$H/api/telemetry | python3 -c "import sys,json;d=json.load(sys.stdin);print('geo',[(g['country'],g['n']) for g in d['geo']])"
+
+# 4. cert emitido
+fly certs show $H --app artelonga-&lt;handle&gt; | grep -i status   # Issued
+
+# 5. durabilidade (sobrevive ao auto-stop)
+curl -s https://$H/api/telemetry | python3 -c "import sys,json;print('durable',json.load(sys.stdin)['durable'])"  # True
+</code></pre>
+<p>Dashboard: <code>https://&lt;handle&gt;.artelonga.com.br/analytics</code> deve mostrar os 8 cards
+(pageviews, visitantes, recorrentes, sessões, rejeição, tempo ativo, conversões,
+países), gráfico de tempo (meses no eixo, hover, clique filtra), geo, conversões e
+aquisição.</p>
+<hr>
+<h2>Rollback</h2>
+<ul>
+<li><strong>Reverter pro path:</strong> remova o redirect do passo 6; o apex volta a servir
+<code>/&lt;handle&gt;/</code> direto. O CNAME pode coexistir (sem tráfego) ou ser removido
+(<code>fly certs remove &lt;host&gt;</code> + apagar o CNAME na Hostinger).</li>
+<li><strong>Derrubar a surface:</strong> <code>fly apps destroy artelonga-&lt;handle&gt;</code> (apaga o volume e os
+dados de telemetria locais — exporte antes se quiser preservar).</li>
+<li><strong>Sem perda de identidade:</strong> como o <code>al_vid</code> é do apex, voltar pro path não quebra
+os visitantes recorrentes.</li>
+</ul>
+<hr>
+<h2>Referências</h2>
+<ul>
+<li><code>docs/telemetry-surfaces.md</code> — endpoints da surface, binário geo, <strong>Option C</strong> e
+schema de rollup. Este runbook é o §3 daquele doc, expandido e executável.</li>
+<li><code>tools/deploy-surface.mjs</code> — gate de smoke check + deploy.</li>
+<li><code>deploy/surfaces/*.toml</code> — configs reais (yuri, hostinger, comunicacao).</li>
+</ul>
+
+</body></html>

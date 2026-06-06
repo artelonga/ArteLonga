@@ -1,0 +1,206 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Analytics framework — central, filtrável, multi-tenant, extensível — Arte Longa</title>
+<meta name="robots" content="noindex, nofollow"><style>
+  :root{--ink:#0a0a0a;--ink2:#444;--ink3:#888;--line:#e7e1da;--bg:#fbf9f6;--bg2:#fff;--accent:#9a3b2e}
+  *{box-sizing:border-box} body{font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+    max-width:820px;margin:0 auto;padding:4vh 1.4rem 10vh;line-height:1.6;color:var(--ink);background:var(--bg)}
+  a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(154,59,46,.25)}a:hover{border-bottom-color:var(--accent)}
+  h1{font-size:2.1rem;letter-spacing:-.02em;line-height:1.12;margin:.3em 0 .2em}
+  h2{font-size:1.3rem;margin:1.8em 0 .4em;border-top:1px solid var(--line);padding-top:.8em}
+  h3{font-size:1.02rem;margin:1.3em 0 .3em}
+  blockquote{margin:1.2em 0;padding:.7em 1.1em;background:var(--bg2);border-left:3px solid var(--accent);border-radius:8px;color:var(--ink2);font-size:.95rem}
+  ul,ol{padding-left:1.3em}li{margin:.15em 0}
+  table{border-collapse:collapse;width:100%;font-size:.86rem;margin:1.2em 0;display:block;overflow-x:auto}
+  th,td{border:1px solid var(--line);padding:.45rem .6rem;text-align:left;vertical-align:top}
+  th{background:var(--bg2);font-weight:700}
+  code{background:var(--bg2);border:1px solid var(--line);border-radius:4px;padding:.05em .35em;font-size:.85em}
+  pre{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:1em;overflow-x:auto}pre code{border:0;background:none;padding:0}
+  hr{border:0;border-top:1px solid var(--line);margin:2em 0}
+  .mermaid svg{max-width:100%;height:auto;background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:.6rem}
+  .crumb{font-size:.8rem;color:var(--ink3);margin-bottom:2em}
+  .grp{margin:1.4em 0}.grp h2{border:0;padding:0;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink3)}
+  .doclist{list-style:none;padding:0}.doclist li{margin:.5em 0}.doclist .src{font-size:.72rem;color:var(--ink3)}
+  .tag{font-size:.6rem;font-weight:700;border-radius:999px;padding:.05rem .45rem;letter-spacing:.04em;vertical-align:middle}
+  .tag.dev{background:#eef1f6;color:var(--ink3)}.tag.pub{background:#e6f1e8;color:#3a7d44}</style></head><body>
+<div class="crumb"><a href="/">Arte Longa</a> · <a href="/docs/">docs</a> · <span>dev (noindex)</span></div>
+<h1>Analytics framework — central, filtrável, multi-tenant, extensível</h1>
+<p>Como os <strong>dois sistemas de telemetria</strong> de hoje (apex co-backed + surfaces
+universe-owned, ver <a href="./telemetry-surfaces.html"><code>telemetry-surfaces.md</code></a>) viram <strong>um
+framework</strong> central, filtrável e extensível — pra novos parceiros e pra qualquer
+universe do <code>co</code>, dentro ou fora da artelonga.</p>
+<blockquote>
+<p><strong>Status:</strong> Fase 1 (este doc + schema canônico em
+<code>openapi/artelonga.yaml#/components/schemas/{TelemetryEvent,DailyRollup,…}</code>).
+Fases 2–5 abaixo. O que já existe está marcado ✅.</p>
+</blockquote>
+<h2>Ideia central</h2>
+<p>Um <strong>schema canônico keyed by <code>universe</code></strong> + um <strong>warehouse central com uma API de
+query filtrável</strong> + <strong>producers uniformes e plugáveis</strong> + <strong>um dashboard
+parametrizado</strong>. A tenancy é a chave <code>universe</code> — que o <code>co</code> já modela (universes
+recursivas; um parceiro <strong>é</strong> uma universe; ver [[reference_co_recursive_universes]]).
+Então "estender pra novos parceiros / outras universes co" não é um sistema novo —
+é o mesmo sistema com outra chave de tenant.</p>
+<p><strong>O princípio que concilia "central" com "a universe é dona da sua telemetria":</strong></p>
+<blockquote>
+<p>Os <strong>edges são donos do RAW</strong> (soberano, nunca sai). O <strong>centro guarda só
+agregados CONSENTIDOS, sem PII</strong> (rollups). Isso é a Option C
+(<a href="./telemetry-surfaces.html"><code>telemetry-surfaces.md §3</code></a>) generalizada em framework.</p>
+</blockquote>
+<pre><code>producers (edges, donos do raw)            centro (warehouse co)             consumers
+──────────────────────────────            ─────────────────────             ─────────
+surface artelonga (yuri)  ─┐                                                ┌─ dash apex   (scope=network)
+apex artelonga            ─┤  DailyRollup                                   ├─ dash surface (scope=yuri)
+parceiro novo (CNAME)     ─┼─ consentido, ──▶  tabela rollups  ──query──────┼─ dash parceiro (scope=&lt;id&gt;)
+qualquer universe co      ─┤  sem PII,         (multi-tenant,  API          ├─ view de rede (owner)
+stack externa (SDK)       ─┘  keyed by universe  filtrável)                 └─ componente embutível
+</code></pre>
+<h2>Schema canônico (source of truth: openapi)</h2>
+<p>Os dois sistemas já emitem ~a mesma taxonomia. Convergem em dois shapes, versionados
+em <code>openapi/artelonga.yaml</code>:</p>
+<ul>
+<li><strong><code>TelemetryEvent</code></strong> — RAW, edge-owned, <strong>nunca centralizado</strong>. Fica no NDJSON da
+surface. Geo resolvido no ingest a partir do IP (descartado). <code>vid/session/IP</code> não
+saem do edge.</li>
+<li><strong><code>DailyRollup</code></strong> — agregado <strong>consentido, sem PII</strong> — a <strong>única</strong> coisa que vai
+pro centro, keyed by <code>(universe, day)</code>, idempotente (upsert). Campos: <code>metrics</code>
+(<code>RollupMetrics</code> — pageviews, visitors, returning, sessions, bounced,
+dwell_ms_sum, conversions) + <code>dims</code> (<code>RollupDims</code> — geo, device, source, pages,
+goals, referrers).</li>
+</ul>
+<p><code>teleAgg()</code> (<code>tools/surfaces-server.mjs</code>) <strong>já produz</strong> quase exatamente
+<code>DailyRollup.dims</code> ✅ — a surface está a um bucketing diário de virar producer
+conforme.</p>
+<h2>Warehouse central + API filtrável (co)</h2>
+<pre><code>POST /api/v1/analytics/{universe}/rollups     producer push (tenant-keyed; upsert por universe+day)
+GET  /api/v1/analytics/{scope}/summary        a ÚNICA leitura → AnalyticsSummary
+        scope   = &lt;universe&gt; | network         (network = owner: todas as universes)
+        ?from&amp;to                                intervalo de datas
+        ?groupBy=day|week|month                 bucket temporal
+        ?filter=geo.country:BR,device:mobile    facetas (dimensões de baixa cardinalidade)
+        ?breakdown=source|geo|device|page|goal  qual dimensão retornar
+GET  /api/v1/analytics/{scope}/recent          live tail (opt-in)
+</code></pre>
+<p>Resposta = <strong><code>AnalyticsSummary</code></strong> (openapi): <code>{ scope, range, filter, metrics, timeseries[], breakdown[] }</code>. Isto <strong>realiza os params <code>?from</code>/<code>&amp;to</code>/<code>?universe</code></strong>
+que o dashboard apex já feature-detecta hoje
+(<a href="./analytics-api.html"><code>analytics-api.md §9</code></a>).</p>
+<p><strong>Acesso é tenant-scoped:</strong> a chave de um parceiro → só a universe dele; a chave do
+owner artelonga → <code>network</code>. Mesmo endpoint, escopo pela auth.</p>
+<h2>Producers — uniformes e plugáveis (a extensibilidade)</h2>
+<p>O <strong>contrato é o schema (<code>DailyRollup</code>), não a implementação.</strong> Um parceiro/universe
+integra de dois jeitos:</p>
+<ol>
+<li><strong>Turnkey</strong> — sobe o <code>surfaces-server</code> universe-owned (já agrega ✅; falta só o
+<em>push</em> do rollup, no cold-start + um ping de cron — máquinas Fly auto-stop não têm
+timer residente). É o caminho de CNAME da artelonga, já coberto pelo runbook
+<a href="./universe-upgrade.html"><code>universe-upgrade.md</code></a>.</li>
+<li><strong>SDK / contrato raw</strong> — qualquer stack externa (uma universe co, um site não-
+artelonga) faz <code>POST DailyRollup</code> no schema canônico com uma tenant key. Coleta e
+storage do raw continuam dela.</li>
+</ol>
+<p>Onboarding de um producer = (a) escolher universe id, (b) emitir/“pushar”
+<code>DailyRollup</code> diário, (c) receber uma tenant key. Nada além do schema.</p>
+<h2>Consumers — um dashboard parametrizado</h2>
+<p>Colapsar os dois <code>analytics/index.html</code> num componente único
+<code>AnalyticsDashboard(scope, filters)</code> que lê a API central:</p>
+<ul>
+<li><strong>apex</strong> = <code>scope=network</code> (rede inteira);</li>
+<li><strong>cada surface</strong> = <code>scope=&lt;sua universe&gt;</code> (mantém o <code>/api/telemetry</code> local pro
+live fino + lê o warehouse pra histórico/cross-universe);</li>
+<li><strong>parceiros</strong> embutem o mesmo componente com o scope deles.</li>
+</ul>
+<p>O gráfico de meses + clique-filtra + facetas que já existe ✅ vira a superfície de
+filtro compartilhada.</p>
+<h2>A tensão a desenhar conscientemente: filtrável vs raw soberano</h2>
+<p>Os <strong>cubos de rollup</strong> dão facetas <strong>de uma dimensão</strong> no centro — "tráfego do
+Brasil ao longo do tempo", "conversões por origem", "share mobile" — que cobrem ~todos
+os relatórios do GA. <strong>Cross-dimensão arbitrário</strong> ("usuários mobile do Brasil que
+converteram via HN") precisa de eventos raw, que ficam no edge. Então:</p>
+<table>
+<thead>
+<tr>
+<th>Pergunta</th>
+<th>Onde responde</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Faceta de 1 dimensão + tempo</td>
+<td><strong>centro</strong> (rollup cubes)</td>
+</tr>
+<tr>
+<td>Cross-dimensão profundo / sessão individual</td>
+<td><strong>edge dono</strong> (query na surface) ou feed de eventos <strong>amostrado</strong> opt-in</td>
+</tr>
+</tbody></table>
+<p>O GA também amostra aqui. Decisão por-tenant: a maioria fica em cubos; quem precisar
+de drill-down profundo habilita o feed amostrado (consentido).</p>
+<h2>Privacidade &amp; tenancy</h2>
+<ul>
+<li><strong>Raw soberano no edge</strong> (folder/estado por owner — LGPD, <a href="./LESSONS.html"><code>docs/LESSONS.md#L-009</code></a>).</li>
+<li><strong>Só agregado sem PII no centro</strong> (<code>DailyRollup</code> não tem vid/sid/IP).</li>
+<li><strong>Geo/PII resolvido no edge</strong> (país v4+v6 + cidade IPv4; IP nunca persiste).</li>
+<li><strong>Acesso scoped por tenant key</strong> (parceiro vê só o seu; owner vê a rede).</li>
+<li>Sem terceiros, sem cross-site, sem demografia via Google Signals (ver matriz de
+paridade GA em <a href="./telemetry-surfaces.html"><code>telemetry-surfaces.md §7</code></a>).</li>
+</ul>
+<h2>Rollout faseado (incremental — constrói no que existe)</h2>
+<table>
+<thead>
+<tr>
+<th>Fase</th>
+<th>Onde</th>
+<th>Estado</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>1. Schema canônico</strong> (<code>TelemetryEvent</code>, <code>DailyRollup</code>, dims) + este doc</td>
+<td>ArteLonga</td>
+<td>✅ <strong>feito</strong> (openapi + types)</td>
+</tr>
+<tr>
+<td><strong>2. co: tabela <code>rollups</code> + ingest + <code>summary</code> filtrável</strong> (scope/from/to/filter/breakdown)</td>
+<td><code>co</code> (Rust)</td>
+<td>⏳ a metade central</td>
+</tr>
+<tr>
+<td><strong>3. surface emite <code>DailyRollup</code></strong> (producer half: bucketing diário + push)</td>
+<td>ArteLonga</td>
+<td>parcial — <code>teleAgg</code> ✅, falta o push</td>
+</tr>
+<tr>
+<td><strong>4. Dashboard único</strong> parametrizado por scope</td>
+<td>ArteLonga</td>
+<td>UI de chart/filtro ✅, falta unificar</td>
+</tr>
+<tr>
+<td><strong>5. Onboarding de parceiro</strong> (turnkey + SDK + tenant key)</td>
+<td>docs</td>
+<td>estende <code>universe-upgrade.md</code></td>
+</tr>
+</tbody></table>
+<p><strong>Já de-riscado:</strong> agregação no edge com todas as dimensões de paridade GA ✅, geo
+(v4+v6 + cidade) ✅, o <em>shape</em> do rollup (<code>teleAgg</code> ≈ <code>DailyRollup</code>) ✅, a UI de
+filtro-por-dia com feature-detect do backend ✅, o modelo de privacidade/ownership ✅,
+o runbook de upgrade ✅. O trabalho novo real é a <strong>Fase 2 no repo <code>co</code></strong> + ligar o
+push da Fase 3.</p>
+<h2>Pontos de extensão</h2>
+<ul>
+<li><strong>Nova dimensão</strong> → aditiva em <code>RollupDims</code> (schema versionado por <code>schema:</code>).</li>
+<li><strong>Novo producer</strong> → conforma com <code>DailyRollup</code> (turnkey surfaces-server ou SDK).</li>
+<li><strong>Novo consumer</strong> → a API <code>summary</code> + o componente embutível.</li>
+<li><strong>Fora da artelonga / universe co</strong> → como o <code>co</code> já é multi-universe, analytics
+vira <strong>capability de universe</strong>: toda universe ganha dashboard emitindo rollups; um
+parceiro não-co usa o endpoint público de ingest com uma tenant key.</li>
+</ul>
+<h2>Referências</h2>
+<ul>
+<li><a href="./telemetry-surfaces.html"><code>telemetry-surfaces.md</code></a> — os dois sistemas, Option C,
+endpoints da surface, geo, paridade GA.</li>
+<li><a href="./universe-upgrade.html"><code>universe-upgrade.md</code></a> — runbook path→CNAME (vira o
+onboarding turnkey de producer).</li>
+<li><a href="./analytics-api.html"><code>analytics-api.md</code></a> — contrato co marketing-batch + os params
+<code>from/to/universe</code> que a Fase 2 realiza.</li>
+<li><code>openapi/artelonga.yaml#/components/schemas/</code> — <code>TelemetryEvent</code>, <code>DailyRollup</code>,
+<code>RollupMetrics</code>, <code>RollupDims</code>, <code>GeoCount</code>, <code>DimensionCount</code>, <code>AnalyticsSummary</code>.</li>
+</ul>
+
+</body></html>

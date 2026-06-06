@@ -17,3 +17,7 @@ yuri/neuro/IMG_*.png
 playwright-report
 test-results
 tests
+# geo é DATA de runtime (não content+form): NÃO entra na imagem via context —
+# é baixado+compilado no build (Dockerfile RUN bake-geo). Deploy reproduzível
+# independente do estado local.
+yuri/geo/*.bin

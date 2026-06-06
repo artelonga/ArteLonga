@@ -469,6 +469,151 @@ export interface components {
                 bairro?: string;
             };
         };
+        /**
+         * @description Tipo de evento de telemetria.
+         * @enum {string}
+         */
+        TelemetryKind: "pageview" | "interaction" | "page_end" | "goal" | "feedback";
+        /**
+         * @description Categoria de dispositivo derivada do viewport.
+         * @enum {string}
+         */
+        DeviceCategory: "mobile" | "tablet" | "desktop" | "(desconhecido)";
+        /** @description Atribuição de campanha (first-touch). */
+        Utm: {
+            source?: string;
+            medium?: string;
+            campaign?: string;
+            term?: string;
+            content?: string;
+        };
+        /**
+         * @description Evento RAW de telemetria. Dono = a universe (edge); fica no estado local
+         *     (NDJSON) e NUNCA é centralizado. Geo resolvido no ingest a partir do IP, que
+         *     é descartado. vid/session/IP não saem do edge (PII relativa).
+         */
+        TelemetryEvent: {
+            universe: components["schemas"]["Handle"];
+            /**
+             * Format: date-time
+             * @description ISO timestamp.
+             */
+            t: string;
+            kind: components["schemas"]["TelemetryKind"];
+            /** @description Visitor ID persistente (al_vid). Não centralizado. */
+            vid?: string;
+            /** @description Session ID por-aba (al.sid). */
+            session?: string;
+            page?: string;
+            referrer?: string | null;
+            /** @description ISO-3166 alpha-2 (geo embarcado v4+v6). */
+            country?: string | null;
+            region?: string | null;
+            /** @description IPv4 via DB-IP City Lite (CC-BY). */
+            city?: string | null;
+            device?: components["schemas"]["DeviceCategory"];
+            utm?: components["schemas"]["Utm"] | null;
+            lang?: string | null;
+            /** @description Viewport width (px). */
+            vw?: number | null;
+            /** @description ex. "click" (interaction). */
+            action?: string | null;
+            /** @description href (interaction). */
+            target?: string | null;
+            outbound?: boolean;
+            /** @description ms ativos (page_end). */
+            dur?: number | null;
+            /** @description nome da conversão (goal). */
+            goal?: string | null;
+        };
+        /** @description Contagem por valor de uma dimensão. n + uma chave (ex. {n, source}, {n, page}, {n, device}, {n, goal}). */
+        DimensionCount: {
+            n: number;
+        } & {
+            [key: string]: string;
+        };
+        /** @description Contagem geo (país / região / cidade). */
+        GeoCount: {
+            country: string;
+            region?: string | null;
+            city?: string | null;
+            n: number;
+        };
+        /** @description Métricas escalares de um dia (sem PII). */
+        RollupMetrics: {
+            pageviews: number;
+            /** @description Únicos (vid). */
+            visitors: number;
+            /** @description vid visto em >1 dia. */
+            returning?: number;
+            sessions: number;
+            /** @description Sessões ≤1 pageview e 0 interação. */
+            bounced?: number;
+            /** @description Soma de ms ativos (page_end). */
+            dwell_ms_sum?: number;
+            conversions?: number;
+        };
+        /** @description Breakdowns por dimensão (cubos de baixa cardinalidade, filtráveis no centro). */
+        RollupDims: {
+            geo?: components["schemas"]["GeoCount"][];
+            device?: components["schemas"]["DimensionCount"][];
+            source?: components["schemas"]["DimensionCount"][];
+            pages?: components["schemas"]["DimensionCount"][];
+            goals?: components["schemas"]["DimensionCount"][];
+            referrers?: components["schemas"]["DimensionCount"][];
+        };
+        /**
+         * @description Agregado diário CONSENTIDO, sem PII — a ÚNICA coisa que vai pro warehouse
+         *     central (co), keyed by (universe, day). Idempotente (upsert). Produzido por
+         *     qualquer producer que conforme com este shape (surface universe-owned, apex,
+         *     parceiro, universe co, SDK externo). Contrato = este schema, não a implementação.
+         */
+        DailyRollup: {
+            universe: components["schemas"]["Handle"];
+            /** @description UTC YYYY-MM-DD. */
+            day: string;
+            /**
+             * @description Versão do schema de rollup.
+             * @constant
+             */
+            schema: 1;
+            metrics: components["schemas"]["RollupMetrics"];
+            dims?: components["schemas"]["RollupDims"];
+        };
+        /**
+         * @description Escopo de leitura: um universe (tenant) ou "network" (owner: todas as universes).
+         * @example yuri
+         * @example hostinger
+         * @example network
+         */
+        AnalyticsScope: string;
+        /**
+         * @description Resposta do endpoint central filtrável GET /api/v1/analytics/{scope}/summary.
+         *     Filtros: from/to (intervalo), groupBy (bucket), filter (facetas de dimensão),
+         *     breakdown (dimensão a retornar). Ver docs/analytics-framework.md.
+         */
+        AnalyticsSummary: {
+            scope: components["schemas"]["AnalyticsScope"];
+            range: {
+                /** Format: date */
+                from?: string;
+                /** Format: date */
+                to?: string;
+                /** @enum {string} */
+                groupBy?: "day" | "week" | "month";
+            };
+            /** @description Facetas aplicadas (ex. {"geo.country":"BR","device":"mobile"}). */
+            filter?: {
+                [key: string]: string;
+            };
+            metrics: components["schemas"]["RollupMetrics"];
+            timeseries: {
+                bucket: string;
+                count: number;
+            }[];
+            /** @description Contagens da dimensão pedida em ?breakdown (geo/device/source/page/goal). */
+            breakdown?: components["schemas"]["DimensionCount"][];
+        };
     };
     responses: never;
     parameters: never;

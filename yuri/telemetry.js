@@ -1,24 +1,60 @@
-/* yuri/telemetry.js — telemetria de ACESSO + INTERAÇÃO (GA-like), first-party.
+/* yuri/telemetry.js — telemetria de ACESSO + INTERAÇÃO + RETENÇÃO (GA-like), first-party.
  *
  * Princípio: a universe é dona da sua telemetria. Envia pra /api/track (estado
  * local da surface) — NÃO vai pro co (só feedback consentido é broadcastado).
- * Privacidade: sem cookies (sessão em sessionStorage, por aba), sem PII, sem
- * terceiros. Respeita Do-Not-Track. Pageview no load + cliques (outbound marcado). */
+ * Privacidade: respeita Do-Not-Track; sem PII; sem terceiros. País é resolvido
+ * no servidor (IP nunca persistido). Ver docs/telemetry-surfaces.md.
+ *
+ * Coleta: pageview (load) · interaction (clique, outbound marcado) · page_end
+ * (dwell — ms ativos) · goal (conversão). Identidade: al_vid persistente
+ * (localStorage + cookie no apex .artelonga.com.br, PONTE com o cliente do apex)
+ * pra distinguir visitante novo/recorrente; al.sid por aba (sessão). */
 (function () {
   var dnt = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
   if (dnt === "1" || dnt === "yes") return;                 // respeita DNT
+  // só roda na SURFACE (subdomínio que serve /api/track). No apex (artelonga.com.br/yuri/),
+  // GH Pages e localhost o /api/track não existe — o POST viraria erro de console.
+  if (!/\.artelonga\.com\.br$/.test(location.hostname)) return;
   var EP = "/api/track";
+  // chaves de storage — cópia vanilla (não importa TS; espelha src/lib/storage-keys.ts,
+  // como assets/analytics.js). VID_COOKIE é COMPARTILHADO com o apex (.artelonga.com.br).
+  var STORAGE_KEYS = { VID_COOKIE: "al_vid", VID: "al.vid", SID: "al.sid", UTM: "al.utm" };
 
+  // ── identidade ────────────────────────────────────────────────────────────
+  function getCookie(name) {
+    try { var m = document.cookie.match("(?:^|; )" + name + "=([^;]*)"); return m ? decodeURIComponent(m[1]) : null; }
+    catch (e) { return null; }
+  }
+  function setCookie(name, val) {
+    try {
+      var apex = /(^|\.)artelonga\.com\.br$/.test(location.hostname);
+      document.cookie = name + "=" + encodeURIComponent(val) + "; path=/; max-age=63072000; samesite=lax" +
+        (location.protocol === "https:" ? "; secure" : "") + (apex ? "; domain=.artelonga.com.br" : "");
+    } catch (e) {}
+  }
+  function rid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 10); }
+  // al_vid: cookie do apex primeiro (ponte cross-subdomínio), senão localStorage, senão cria.
+  function vid() {
+    var v = getCookie(STORAGE_KEYS.VID_COOKIE);
+    try { if (!v) v = localStorage.getItem(STORAGE_KEYS.VID); } catch (e) {}
+    if (!v) v = rid();
+    try { localStorage.setItem(STORAGE_KEYS.VID, v); } catch (e) {}
+    setCookie(STORAGE_KEYS.VID_COOKIE, v);
+    return v;
+  }
+  // al.sid: sessão por aba (sessionStorage).
   function sid() {
     try {
-      var k = "al.sid", v = sessionStorage.getItem(k);
-      if (!v) { v = Date.now().toString(36) + Math.random().toString(36).slice(2, 8); sessionStorage.setItem(k, v); }
+      var k = STORAGE_KEYS.SID, v = sessionStorage.getItem(k);
+      if (!v) { v = rid(); sessionStorage.setItem(k, v); }
       return v;
     } catch (e) { return null; }
   }
+  var VID = vid(), SID = sid();
+
   function send(ev) {
     try {
-      ev.session = sid();
+      ev.session = SID; ev.vid = VID;
       ev.t = new Date().toISOString();
       ev.page = location.pathname + location.search;
       ev.lang = (document.documentElement.lang || navigator.language || "").slice(0, 5);
@@ -28,16 +64,54 @@
     } catch (e) {}
   }
 
-  // acesso: pageview no carregamento
-  send({ kind: "pageview", referrer: document.referrer || null, vw: window.innerWidth || null });
+  // ── aquisição: UTM de primeiro toque (sessionStorage) — atribuição de campanha ──
+  function firstTouchUtm() {
+    try {
+      var k = STORAGE_KEYS.UTM, saved = sessionStorage.getItem(k);
+      if (saved) return JSON.parse(saved);
+      var p = new URLSearchParams(location.search), u = {};
+      ["source", "medium", "campaign", "term", "content"].forEach(function (f) { var v = p.get("utm_" + f); if (v) u[f] = v.slice(0, 80); });
+      if (Object.keys(u).length) { sessionStorage.setItem(k, JSON.stringify(u)); return u; }
+      return null;
+    } catch (e) { return null; }
+  }
 
-  // interação: cliques em links (outbound = sai do host atual)
+  // ── acesso: pageview no carregamento ───────────────────────────────────────
+  send({ kind: "pageview", referrer: document.referrer || null, vw: window.innerWidth || null, utm: firstTouchUtm() });
+
+  // ── retenção: dwell (ms ativos) via page_end. Conta só tempo visível; manda o
+  // delta desde o último envio (visibilitychange/pagehide) — sem dupla contagem.
+  var activeMs = 0, sentMs = 0, lastTs = Date.now(), visible = (document.visibilityState !== "hidden");
+  function accrue() { var now = Date.now(); if (visible) activeMs += now - lastTs; lastTs = now; }
+  function flushEnd() { accrue(); var d = activeMs - sentMs; if (d <= 0) return; sentMs = activeMs; send({ kind: "page_end", dur: d }); }
+  document.addEventListener("visibilitychange", function () {
+    accrue();
+    if (document.visibilityState === "hidden") { visible = false; flushEnd(); }
+    else { visible = true; lastTs = Date.now(); }
+  });
+  window.addEventListener("pagehide", flushEnd);
+
+  // ── conversões: regras built-in (sem precisar editar HTML) + [data-goal] ────
+  function goalFor(a, href) {
+    if (a.getAttribute("data-goal")) return a.getAttribute("data-goal");
+    if (/\/resume\//.test(href) || /\.pdf($|\?)/.test(href)) return "resume";
+    if (/^mailto:/.test(href) || /^tel:/.test(href) || /wa\.me|whatsapp/.test(href)) return "contato";
+    if (/github\.com/.test(href)) return "github";
+    if (/linkedin\.com/.test(href)) return "linkedin";
+    return null;
+  }
+
+  // ── interação: cliques em links (outbound = sai do host atual) + goal ───────
   document.addEventListener("click", function (e) {
-    var a = e.target && e.target.closest && e.target.closest("a[href]");
+    var a = e.target && e.target.closest && e.target.closest("a[href], [data-goal]");
     if (!a) return;
     var href = a.getAttribute("href") || "";
-    if (!href || href.charAt(0) === "#") return;              // âncora interna: ignora
-    var outbound = /^https?:\/\//.test(href) && a.hostname !== location.hostname;
-    send({ kind: "interaction", action: "click", target: href, outbound: outbound });
+    if (href && href.charAt(0) === "#") return;               // âncora interna: ignora
+    if (href) {
+      var outbound = /^https?:\/\//.test(href) && a.hostname !== location.hostname;
+      send({ kind: "interaction", action: "click", target: href, outbound: outbound });
+    }
+    var g = goalFor(a, href);
+    if (g) send({ kind: "goal", goal: g, target: href || null });
   }, true);
 })();

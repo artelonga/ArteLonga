@@ -1,0 +1,398 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Analytics API — wire contract — Arte Longa</title>
+<meta name="robots" content="noindex, nofollow"><style>
+  :root{--ink:#0a0a0a;--ink2:#444;--ink3:#888;--line:#e7e1da;--bg:#fbf9f6;--bg2:#fff;--accent:#9a3b2e}
+  *{box-sizing:border-box} body{font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+    max-width:820px;margin:0 auto;padding:4vh 1.4rem 10vh;line-height:1.6;color:var(--ink);background:var(--bg)}
+  a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(154,59,46,.25)}a:hover{border-bottom-color:var(--accent)}
+  h1{font-size:2.1rem;letter-spacing:-.02em;line-height:1.12;margin:.3em 0 .2em}
+  h2{font-size:1.3rem;margin:1.8em 0 .4em;border-top:1px solid var(--line);padding-top:.8em}
+  h3{font-size:1.02rem;margin:1.3em 0 .3em}
+  blockquote{margin:1.2em 0;padding:.7em 1.1em;background:var(--bg2);border-left:3px solid var(--accent);border-radius:8px;color:var(--ink2);font-size:.95rem}
+  ul,ol{padding-left:1.3em}li{margin:.15em 0}
+  table{border-collapse:collapse;width:100%;font-size:.86rem;margin:1.2em 0;display:block;overflow-x:auto}
+  th,td{border:1px solid var(--line);padding:.45rem .6rem;text-align:left;vertical-align:top}
+  th{background:var(--bg2);font-weight:700}
+  code{background:var(--bg2);border:1px solid var(--line);border-radius:4px;padding:.05em .35em;font-size:.85em}
+  pre{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:1em;overflow-x:auto}pre code{border:0;background:none;padding:0}
+  hr{border:0;border-top:1px solid var(--line);margin:2em 0}
+  .mermaid svg{max-width:100%;height:auto;background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:.6rem}
+  .crumb{font-size:.8rem;color:var(--ink3);margin-bottom:2em}
+  .grp{margin:1.4em 0}.grp h2{border:0;padding:0;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink3)}
+  .doclist{list-style:none;padding:0}.doclist li{margin:.5em 0}.doclist .src{font-size:.72rem;color:var(--ink3)}
+  .tag{font-size:.6rem;font-weight:700;border-radius:999px;padding:.05rem .45rem;letter-spacing:.04em;vertical-align:middle}
+  .tag.dev{background:#eef1f6;color:var(--ink3)}.tag.pub{background:#e6f1e8;color:#3a7d44}</style></head><body>
+<div class="crumb"><a href="/">Arte Longa</a> · <a href="/docs/">docs</a> · <span>dev (noindex)</span></div>
+<h1>Analytics API — wire contract</h1>
+<p>Spec for the marketing-batch event endpoint that the static site (this repo)
+talks to. The endpoint lives in <strong><code>artelonga/co</code></strong> at
+<code>POST /api/v1/telemetry/events</code>. Until it's deployed, events queue locally
+in the visitor's <code>localStorage</code> (cap 1000) and ship retroactively once the
+endpoint is set in <code>assets/analytics.js</code> (<code>ENDPOINT</code>).</p>
+<p>This file is the source of truth for the marketing-batch schema and HTTP
+contract. Bump <code>SCHEMA_VERSION</code> in both this doc and <code>analytics.js</code> together.</p>
+<blockquote>
+<p><strong>Status (2026-06-05): LIVE.</strong> The ingest (<code>POST /api/v1/telemetry/events</code>)
+and the public read endpoints (<code>/api/v1/analytics/public/{summary,recent}</code>,
+§9) are deployed and serving real data from <code>artelonga/co</code>. The dashboard at
+<code>artelonga.com.br/analytics/</code> consumes them directly (the localStorage queue
+in §9 is now only a fallback when the backend is unreachable). Co also has a
+narrower single-event client (<code>telemetry.js</code>, <code>POST /api/v1/telemetry/event</code>,
+single-event shape) — both endpoints write the same <code>telemetry_events</code> table.
+The marketing-batch client (<code>assets/analytics.js</code>) is the canonical schema.</p>
+<p><strong>Two telemetry systems coexist.</strong> This doc covers the <strong>co marketing-batch</strong>
+system: the apex site <code>artelonga.com.br</code> and its paths send rich GA-like
+events to co; it powers <code>/analytics/</code>. The second system —
+<strong>universe-owned surfaces</strong> (promoted CNAME surfaces such as
+<code>yuri.artelonga.com.br</code> that own their telemetry locally) — and the
+convergence design that keeps a parceiro's time-series continuous across the
+path→CNAME upgrade are documented in <strong><code>docs/telemetry-surfaces.md</code></strong>.</p>
+</blockquote>
+<hr>
+<h2>1. Endpoints</h2>
+<h3><code>POST /api/v1/telemetry/events</code> — public ingest (marketing batch)</h3>
+<p>CORS: allow origins <code>https://artelonga.com.br</code> and <code>https://co.artelonga.com.br</code>
+(plus dev origins). No credentials. Body limit: 64 KiB. Max batch size: 200
+events. Rate limit: per IP, e.g. 60 req/min (sliding window) — not enforced
+yet by the handler; rely on the platform's edge limits until added.</p>
+<p>Request body:</p>
+<pre><code class="language-json">{
+  "schema": 1,
+  "batch": [ { Event }, { Event }, ... ]
+}
+</code></pre>
+<p>Response: <code>204 No Content</code> on success, <code>400</code> on malformed payload, <code>413</code> on body
+too large, <code>429</code> on rate limit. The client retries with exponential backoff on
+5xx and network errors; non-2xx 4xx (validation) drops the batch.</p>
+<h3><code>GET /api/v1/admin/analytics/...</code> — auth-protected</h3>
+<p>Read endpoints for the dashboard. Require admin auth (cookie or token, same as
+the rest of <code>co</code>'s admin surface). Suggested first endpoints:</p>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Returns</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>/sessions/recent?limit=100</code></td>
+<td>latest N sessions, with first/last event</td>
+</tr>
+<tr>
+<td><code>/funnel?steps=page_view,click_section,click_email</code></td>
+<td>per-step counts and drop-off</td>
+</tr>
+<tr>
+<td><code>/experiments/:id/results</code></td>
+<td>exposures + conversions per variant</td>
+</tr>
+<tr>
+<td><code>/timeseries?event=page_view&amp;bucket=hour&amp;days=7</code></td>
+<td>event counts over time</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>2. Event shape (schema 1)</h2>
+<pre><code class="language-ts">type Event = {
+  s: 1,                        // schema version
+  site: "artelonga" | "co",    // surface that emitted the event; same vid may appear under multiple sites
+  name: string,                // event name, ≤ 64 chars (see taxonomy below)
+  sid: string,                 // session ID (UUID, per tab session)
+  vid: string,                 // visitor ID (UUID, persists in localStorage)
+  ts: number,                  // event timestamp, epoch ms (client clock — backend records its own received_at too)
+  tz?: string | null,          // IANA timezone, e.g. "America/Sao_Paulo"
+  path: string,                // normalized pathname, e.g. "/yuri/" (trailing slash, no /index.html)
+  query?: string | null,       // raw location.search, including leading "?"
+  ref?: string | null,         // document.referrer
+  vw: number, vh: number,      // viewport in CSS pixels
+  lang?: string | null,        // navigator.language
+  ua_brand?: string | null,    // userAgentData.brands joined by ","; null on Safari/Firefox
+  utm?: {                      // first-touch UTM for the session (null if no UTM ever seen)
+    source?: string, medium?: string, campaign?: string, term?: string, content?: string
+  } | null,
+  experiments?: {              // active variants for this visitor (snapshotted at event time)
+    [expId: string]: string    // expId → variantId
+  } | null,
+  props?: object               // event-specific payload, see taxonomy
+}
+</code></pre>
+<p>The backend should store all required fields as columns and <code>experiments</code>/<code>props</code>
+as JSON. Add a server-side <code>received_at</code> column (epoch ms) and compute <code>ip_hash</code>
+as <code>SHA-256(salt || client_ip)</code> where <code>salt</code> is a long-lived secret in env.</p>
+<hr>
+<h2>3. Event taxonomy</h2>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>when</th>
+<th>props</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>page_view</code></td>
+<td>once on page load</td>
+<td><code>{ title }</code></td>
+</tr>
+<tr>
+<td><code>page_end</code></td>
+<td>first visibility:hidden or pagehide</td>
+<td><code>{ active_ms, total_ms }</code> — <code>active_ms</code> excludes backgrounded time</td>
+</tr>
+<tr>
+<td><code>scroll_depth</code></td>
+<td>when crossing 25 / 50 / 75 / 100% of page</td>
+<td><code>{ pct }</code></td>
+</tr>
+<tr>
+<td><code>click_section</code></td>
+<td>click on <code>/parceiros/</code>, <code>/servicos/</code>, etc.</td>
+<td><code>{ section, href }</code></td>
+</tr>
+<tr>
+<td><code>click_profile</code></td>
+<td>click on <code>/&lt;handle&gt;/</code></td>
+<td><code>{ handle }</code></td>
+</tr>
+<tr>
+<td><code>click_email</code></td>
+<td><code>mailto:</code> click</td>
+<td><code>{ href }</code></td>
+</tr>
+<tr>
+<td><code>click_tel</code></td>
+<td><code>tel:</code> click</td>
+<td><code>{ href }</code></td>
+</tr>
+<tr>
+<td><code>click_whatsapp</code></td>
+<td>wa.me / api.whatsapp.com click</td>
+<td><code>{ href }</code></td>
+</tr>
+<tr>
+<td><code>click_pdf</code></td>
+<td><code>.pdf</code> link click</td>
+<td><code>{ href }</code></td>
+</tr>
+<tr>
+<td><code>click_app</code></td>
+<td>click on a different <code>*.artelonga.com.br</code> host (same product, other surface)</td>
+<td><code>{ app, href }</code> — <code>app</code> is the subdomain (<code>co</code>, <code>co-dev</code>, …), or <code>main</code> for apex</td>
+</tr>
+<tr>
+<td><code>click_outbound</code></td>
+<td>external <code>https?://...</code> click (different host, not in-network)</td>
+<td><code>{ href }</code></td>
+</tr>
+<tr>
+<td><code>click_cta</code></td>
+<td><code>&lt;button&gt;</code> / <code>.see-more</code> / <code>.ver-servicos-btn</code></td>
+<td><code>{ kind, label }</code></td>
+</tr>
+<tr>
+<td><code>experiment_exposure</code></td>
+<td>first time a variant is read in the session</td>
+<td><code>{ exp, variant }</code></td>
+</tr>
+<tr>
+<td><code>modal_em_breve</code></td>
+<td>"em breve" modal opens (e.g., wiki-link)</td>
+<td><code>{ title }</code></td>
+</tr>
+<tr>
+<td><code>js_error</code></td>
+<td>window error event (capped 20 / page)</td>
+<td><code>{ message, source, line, col, stack }</code></td>
+</tr>
+<tr>
+<td><code>js_promise_rejection</code></td>
+<td>unhandledrejection (capped 20 / page)</td>
+<td><code>{ reason }</code></td>
+</tr>
+</tbody></table>
+<p>Any future event name is fine — the backend stores it as-is. Reserve the prefix
+<code>_</code> for system events (none yet).</p>
+<hr>
+<h2>4. Privacy</h2>
+<ul>
+<li><strong>One first-party cookie, scoped to <code>.artelonga.com.br</code>.</strong> Carries the same
+<code>al_vid</code> that lives in localStorage so identity threads across
+<code>artelonga.com.br</code> and <code>co.artelonga.com.br</code>. <code>SameSite=Lax</code>, <code>Secure</code>,
+<code>Max-Age=2y</code>. Not sent to any third party (no cross-site tracking, no ads,
+no fingerprinting). Outside the apex domain (e.g. localhost) the cookie is
+not set and the client falls back to localStorage-only.</li>
+<li><strong>Visitor opt-out</strong>: the client sets <code>localStorage.al_optout = "1"</code> <em>and</em>
+the cookie <code>al_optout=1</code> on the apex domain so opt-out propagates across
+subdomains. Backend never sees these clients.</li>
+<li><strong>DNT</strong>: <code>navigator.doNotTrack === "1"</code> short-circuits the client.</li>
+<li><strong>Webdriver</strong>: <code>navigator.webdriver</code> short-circuits (Lighthouse, Cypress, etc.).</li>
+<li><strong>IP</strong>: hashed with secret salt server-side; raw IP never persisted.</li>
+<li><strong>Retention</strong>: recommend ≤ 90 days raw; aggregate older data (counts per
+<code>(name, path, day)</code>) and drop the row-level table beyond that.</li>
+</ul>
+<h3>Cross-subdomain identity</h3>
+<p>Because both surfaces share the registrable domain <code>artelonga.com.br</code>, a single
+<code>vid</code> carries through marketing → app. On every page load the client:</p>
+<ol>
+<li>Reads the <code>al_vid</code> cookie from <code>.artelonga.com.br</code> first.</li>
+<li>If absent, reads <code>localStorage.al_vid</code>.</li>
+<li>If both absent, mints a UUID.</li>
+<li>Writes the resulting <code>vid</code> to <strong>both</strong> localStorage and the cookie, so the
+first visit to any subdomain seeds the other.</li>
+</ol>
+<p>This means the <em>first</em> same-day visit to either subdomain after rollout will
+appear as a "new" visitor; subsequent cross-subdomain hops unify on the same
+<code>vid</code>. Visits before rollout cannot be retroactively unified — the backend can
+optionally join old per-origin <code>vid</code>s heuristically via <code>(ip_hash, ua_brand)</code>
+proximity if needed for one-off analyses.</p>
+<hr>
+<h2>5. A/B framework</h2>
+<p>Experiments are declared in <code>assets/analytics.js</code> under <code>EXPERIMENTS</code>. Each
+experiment has variants with weights. Assignment is deterministic:</p>
+<pre><code>variant_id = variants[ FNV-1a(vid + ":" + expId) % sum(weights) ]
+</code></pre>
+<p>The same <code>vid</code> always gets the same variant for the same experiment, across
+sessions. Different experiments are independent (different seed).</p>
+<p>Backend correlation: every event after exposure carries <code>experiments</code> map.
+To compute results for experiment <code>X</code>:</p>
+<pre><code class="language-sql">-- conversions per variant
+SELECT json_extract(experiments, '$.X')           AS variant,
+       COUNT(DISTINCT vid) FILTER (WHERE name = 'click_email') AS conversions,
+       COUNT(DISTINCT vid)                                     AS exposed
+FROM events
+WHERE json_extract(experiments, '$.X') IS NOT NULL
+  AND ts BETWEEN ? AND ?
+GROUP BY variant;
+</code></pre>
+<p>(Use <code>experiment_exposure</code> events for the denominator if you want
+"reached the experiment" rather than "saw any event after exposure".)</p>
+<hr>
+<h2>6. SQLite schema (suggested)</h2>
+<pre><code class="language-sql">CREATE TABLE events (
+  id           INTEGER PRIMARY KEY AUTOINCREMENT,
+  received_at  INTEGER NOT NULL,
+  ts           INTEGER NOT NULL,
+  schema       INTEGER NOT NULL,
+  site         TEXT    NOT NULL,
+  name         TEXT    NOT NULL,
+  sid          TEXT    NOT NULL,
+  vid          TEXT    NOT NULL,
+  ip_hash      TEXT    NOT NULL,
+  country      TEXT,
+  path         TEXT    NOT NULL,
+  query        TEXT,
+  ref          TEXT,
+  vw           INTEGER,
+  vh           INTEGER,
+  lang         TEXT,
+  tz           TEXT,
+  ua_brand     TEXT,
+  utm_source   TEXT, utm_medium TEXT, utm_campaign TEXT, utm_term TEXT, utm_content TEXT,
+  experiments  TEXT,                     -- JSON, NULL if none
+  props        TEXT NOT NULL DEFAULT '{}'
+);
+CREATE INDEX events_ts          ON events(ts);
+CREATE INDEX events_received_at ON events(received_at);
+CREATE INDEX events_sid         ON events(sid);
+CREATE INDEX events_vid         ON events(vid);
+CREATE INDEX events_name_ts     ON events(name, ts);
+CREATE INDEX events_path_ts     ON events(path, ts);
+</code></pre>
+<hr>
+<h2>7. Switching it on</h2>
+<ol>
+<li>In <code>co</code>: deploy the existing <code>marketing_events_handler</code> route (already
+wired at <code>/api/v1/telemetry/events</code>). Verify with
+<code>curl -X POST https://co.artelonga.com.br/api/v1/telemetry/events \ -H 'content-type: application/json' \ -d '{"schema":1,"batch":[{"s":1,"site":"artelonga","name":"page_view","sid":"x","vid":"y"}]}'</code>
+— should return <code>204</code>.</li>
+<li>In this repo: set <code>ENDPOINT</code> in <code>assets/analytics.js</code> to
+<code>https://co.artelonga.com.br/api/v1/telemetry/events</code>, bump the cache-buster
+on every HTML page (<code>?v=YYYYMMDD</code> for <code>analytics.js</code>), commit, deploy.</li>
+<li>Verify in prod: open the site, then in devtools console run
+<code>AL_analytics.info()</code> (queue should drain) and check the <code>telemetry_events</code>
+table in <code>co</code>.</li>
+</ol>
+<hr>
+<h2>8. Schema-version migration policy</h2>
+<ul>
+<li>Adding optional fields → no version bump (forward-compatible).</li>
+<li>Removing or renaming required fields, changing types, redefining semantics →
+bump <code>SCHEMA_VERSION</code>. Backend keeps the old read-path live for at least 30
+days so queued events from older clients still ingest.</li>
+</ul>
+<hr>
+<h2>9. Public read endpoints (dashboard <code>/analytics/</code>)</h2>
+<p>A página pública <code>artelonga.com.br/analytics/</code> (noindex) consome estes
+endpoints — <strong>sem auth</strong>, somente leitura agregada, sem PII. Todos retornam
+JSON. CORS aberto pra <code>https://artelonga.com.br</code>.</p>
+<h3><code>GET /api/v1/analytics/public/summary?days=30</code></h3>
+<p>Retorna agregados pra o intervalo informado (1, 7, 30 ou 90 dias).</p>
+<p><strong>Shape real servido hoje</strong> (verificado 2026-06-05 — note <code>as_of</code>/<code>window_days</code>,
+não <code>range</code>):</p>
+<pre><code class="language-ts">type SummaryResponse = {
+  as_of: string,                                       // ISO datetime do cálculo
+  window_days: number,                                 // janela pedida (= days)
+  views: number,                                       // total page_view
+  events_total: number,                                // todos os eventos no range
+  visitors: number,                                    // unique vid
+  returning: number,                                   // visitantes que tinham vid antes do range
+  sessions: number,                                    // unique sid
+  session_avg_ms: number,                              // duração média (ms) — ⚠ bug atual: retorna ~4ms
+  countries: number,                                   // distinct
+  cities: number,
+  timeseries: Array&lt;{ bucket: string, count: number }&gt;, // bucket = ISO date (ou hora se days=1)
+  top_pages: Array&lt;{ path: string, views: number, visitors: number }&gt;,
+  geo: Array&lt;{ country: string, city: string, visitors: number, sessions: number }&gt;
+}
+</code></pre>
+<p>Bucketing: <code>days=1</code> → hora, demais → dia. Limite top_pages = 30, geo = 50.</p>
+<p><strong>Parâmetros planejados (ainda ignorados pelo backend — front já feature-detecta):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>Efeito</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>from</code>, <code>to</code></td>
+<td>Fatia por intervalo de datas (<code>YYYY-MM-DD</code>). O dashboard usa pra <strong>clique-no-gráfico filtra dados abaixo</strong>: ao clicar numa barra ele chama <code>?from=DIA&amp;to=DIA</code> e, se o backend devolver <code>timeseries.length === 1</code> com aquele bucket, assume suporte e usa o slice; senão cai no fallback client-side (recomputa top-pages do dia a partir de <code>/recent</code>). Implementar = fatiar todos os agregados (KPIs/top_pages/geo/timeseries) por <code>[from,to]</code>.</td>
+<td><strong>TODO co</strong></td>
+</tr>
+<tr>
+<td><code>universe</code></td>
+<td>Filtra por universe/surface (<code>?universe=yuri</code>). Necessário pra separar a observabilidade de <code>/yuri</code> (agora CNAME <code>yuri.artelonga.com.br</code>) do agregado da rede. Hoje é <strong>ignorado</strong> (mesmos números com ou sem). Ver convergência em <code>docs/telemetry-surfaces.md</code>.</td>
+<td><strong>TODO co</strong></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>Bot/datacenter skew: <code>geo</code> hoje é dominado por IPs de datacenter (Washington,
+Boydton, Chicago, San Jose, Phoenix, Cheyenne = AWS/Azure/GCP). Recomenda-se
+filtro de ASN/datacenter no backend antes de contar como visitante.</p>
+</blockquote>
+<h3><code>GET /api/v1/analytics/public/recent?limit=50</code></h3>
+<p>Stream recente — últimos N eventos (max 200). Útil pra "live tail" no dashboard.</p>
+<pre><code class="language-ts">type RecentResponse = {
+  events: Array&lt;{
+    ts: number,           // epoch ms
+    name: string,
+    path?: string,
+    country?: string,
+    city?: string
+  }&gt;
+}
+</code></pre>
+<p>Sem <code>vid</code>, <code>sid</code>, <code>ip_hash</code>, <code>ua_brand</code>, <code>props</code>. Só o que o público pode ver.</p>
+<h3>Privacidade</h3>
+<ul>
+<li>Nenhum dos endpoints expõe <code>vid</code>, <code>sid</code>, <code>ip_hash</code>, UTM, props, experiments ou
+qualquer campo que possa identificar visitante individual.</li>
+<li>Eventos com <code>name = js_error</code> ou <code>js_promise_rejection</code> ficam fora do
+<code>recent</code> (ruído + risco de stack vazar info).</li>
+<li>Cache HTTP: <code>Cache-Control: public, max-age=60</code> é razoável (dashboard
+não precisa ser real-time absoluto).</li>
+<li>Rate-limit por IP recomendado: 30 req/min.</li>
+</ul>
+
+</body></html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Bibliografia · Neuro Notebook Brasil</title>
+<meta name="description" content="Repositório aberto de bibliografia em neurociência — Neuro Notebook Brasil. Filtre por autor com ?author=.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/neuro/neuro.css?v=20260529o">
+<style>
+  body{background:#fbf9f6;color:#161413;font-family:'Fraunces',Georgia,serif;
+    max-width:880px;margin:0 auto;padding:2.6rem 6vw 6rem;line-height:1.5}
+  .bib-head{border-bottom:2px solid #161413;padding-bottom:.9rem;margin-bottom:1.4rem}
+  .bib-head h1{font-family:'Space Mono',monospace;font-size:1.7rem;letter-spacing:-.02em}
+  .bib-head .sub{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.1em;
+    text-transform:uppercase;color:#938b85;margin-top:.4rem}
+  .bib-filter{font-family:'Space Mono',monospace;font-size:.82rem;background:#fff;border:1px solid #e7e1da;
+    border-left:4px solid #9a3b2e;border-radius:8px;padding:.6rem .8rem;margin-bottom:1.2rem}
+  .bib-filter a{color:#9a3b2e}
+  .bib-empty{color:#938b85;font-style:italic}
+  .bib-back{display:inline-block;margin-top:2rem;font-family:'Space Mono',monospace;font-size:.78rem;color:#9a3b2e;text-decoration:none}
+</style>
+</head>
+<body>
+  <header class="bib-head">
+    <h1>Bibliografia</h1>
+    <div class="sub">Repositório aberto · Neuro Notebook Brasil</div>
+  </header>
+  <div id="bib"></div>
+  <a class="bib-back" href="/2026-05-29/">← apresentação neuro</a>
+
+  <script src="/neuro/authors.js?v=20260605a"></script>
+  <script src="/neuro/references.js?v=20260605b"></script>
+  <script>
+    (function () {
+      var q = (new URLSearchParams(location.search).get("author") || "").trim();
+      var el = document.getElementById("bib");
+      if (!window.NeuroCite || !window.NeuroCite.bibliographyHtml) { el.innerHTML = '<p class="bib-empty">Falha ao carregar a bibliografia.</p>'; return; }
+      var safe = q.replace(/[&<>"]/g, "");
+      var sort = (new URLSearchParams(location.search).get("sort") || "date");
+      var html = window.NeuroCite.bibliographyHtml(q, sort !== "author");   // padrão: por data
+      if (q) {
+        var who = safe.charAt(0).toUpperCase() + safe.slice(1);
+        el.innerHTML = '<div class="bib-filter">Filtrado por autor: <b>' + who + '</b> · <a href="?">ver bibliografia completa</a></div>' +
+          (html || '<p class="bib-empty">Nenhuma obra desse autor.</p>');
+        document.title = "Bibliografia · " + who;
+      } else {
+        el.innerHTML = html;
+      }
+    })();
+  </script>
+</body>
+</html>
