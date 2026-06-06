@@ -1,0 +1,276 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0"><title>AWS — uma introdução pela experiência — Yuri · Arte Longa</title>
+<meta name="description" content="AWS pela experiência: ferramentas, decisões, custos e postmortems de uma plataforma de dados real (~US$ 155/mês).">
+<link rel="canonical" href="https://artelonga.com.br/yuri/aws/">
+<link rel="alternate" hreflang="pt-br" href="https://artelonga.com.br/yuri/aws/">
+<link rel="alternate" hreflang="en" href="https://artelonga.com.br/yuri/aws/en/">
+<meta property="og:title" content="AWS — uma introdução pela experiência"><meta property="og:type" content="article">
+<style>
+ :root{--ink:#0a0a0a;--ink2:#444;--ink3:#888;--line:#e7e1da;--bg:#fbf9f6;--bg2:#fff;--accent:#9a3b2e}
+ *{box-sizing:border-box}body{font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;max-width:780px;margin:0 auto;padding:4vh 1.4rem 10vh;line-height:1.62;color:var(--ink);background:var(--bg)}
+ a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(154,59,46,.25)}a:hover{border-bottom-color:var(--accent)}
+ h1{font-size:2.2rem;letter-spacing:-.02em;line-height:1.12;margin:.2em 0 .15em}
+ h2{font-size:1.25rem;margin:1.9em 0 .4em;border-top:1px solid var(--line);padding-top:.8em}
+ blockquote{margin:1.2em 0;padding:.7em 1.1em;background:var(--bg2);border-left:3px solid var(--accent);border-radius:8px;color:var(--ink2);font-size:.95rem}
+ ul,ol{padding-left:1.3em}li{margin:.25em 0}
+ table{border-collapse:collapse;width:100%;font-size:.82rem;margin:1.2em 0;display:block;overflow-x:auto}
+ th,td{border:1px solid var(--line);padding:.4rem .55rem;text-align:left;vertical-align:top}th{background:var(--bg2);font-weight:700}
+ code{background:var(--bg2);border:1px solid var(--line);border-radius:4px;padding:.05em .35em;font-size:.85em}
+ pre{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:1em;overflow-x:auto;font-size:.78rem;line-height:1.4}pre code{border:0;background:none;padding:0}
+ .top{display:flex;justify-content:space-between;align-items:center;font-size:.8rem;color:var(--ink3);margin-bottom:2em}
+ .lang{font-weight:700;border:1px solid var(--line);border-radius:999px;padding:.25rem .7rem}
+ footer{margin-top:3em;padding-top:1.2em;border-top:1px solid var(--line);font-size:.76rem;color:var(--ink3)}</style></head><body>
+<div class="top"><a href="/yuri/">← yuri</a><a class="lang" href="en/" hreflang="en">EN</a></div>
+<h1>AWS — uma introdução pela experiência</h1>
+<blockquote>
+<p>Esta não é uma lista de serviços decorada da documentação. É o que aprendi
+operando uma plataforma de dados em tempo real na AWS — desde a coleta via
+WebSocket até o data lake consultável — por cerca de <strong>US$ 155/mês</strong>. Foco em
+ferramentas, decisões, custos e <em>postmortems</em>. Os detalhes de negócio ficam de
+fora; o que interessa aqui são as <strong>lições que se transferem</strong> para qualquer
+projeto na nuvem.</p>
+</blockquote>
+<p>A AWS tem mais de 200 serviços. Ninguém usa 200. O segredo de uma boa
+arquitetura não é conhecer todos — é saber <strong>qual serviço resolve o quê, e
+quando o custo de adicioná-lo passa a valer a pena</strong>. Quase toda decisão abaixo
+foi tomada escrevendo um <em>threshold</em> (um limiar objetivo) antes de migrar.</p>
+<h2>1. O mapa mental — a caixa de ferramentas</h2>
+<p>Penso na AWS em quatro camadas. Para cada problema, escolho o serviço <em>gerenciado</em>
+mais simples até que um limiar concreto force a troca.</p>
+<table>
+<thead>
+<tr>
+<th>Camada</th>
+<th>Serviço</th>
+<th>Para quê serve</th>
+<th>Quando usei / evitei</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Compute</strong></td>
+<td><strong>ECS + Fargate</strong></td>
+<td>Rodar containers sem gerenciar máquina</td>
+<td>Padrão para tudo. Zero manutenção de SO, auto-recovery, <em>startup</em> ~30s</td>
+</tr>
+<tr>
+<td></td>
+<td>EC2</td>
+<td>Máquina virtual crua</td>
+<td>Evitei — só compensa acima de ~20 <em>tasks</em> fixas ou com GPU</td>
+</tr>
+<tr>
+<td></td>
+<td>Lambda</td>
+<td>Função sob evento, sem servidor</td>
+<td>Tarefas agendadas (reconciliação, compliance) via EventBridge</td>
+</tr>
+<tr>
+<td></td>
+<td>EKS</td>
+<td>Kubernetes gerenciado</td>
+<td>Nunca justificado nessa escala — complexidade demais</td>
+</tr>
+<tr>
+<td><strong>Storage</strong></td>
+<td><strong>S3</strong></td>
+<td>Object storage, a &quot;fonte da verdade&quot;</td>
+<td>Coração de tudo. Durabilidade de 11 noves</td>
+</tr>
+<tr>
+<td></td>
+<td>ECR</td>
+<td>Registro de imagens Docker</td>
+<td>Imagens dos coletores, com <em>lifecycle policy</em></td>
+</tr>
+<tr>
+<td></td>
+<td>DynamoDB</td>
+<td>Banco NoSQL chave-valor</td>
+<td>Migrei a maior parte para S3 (ver §3). Mantive só tabelas minúsculas e quentes</td>
+</tr>
+<tr>
+<td><strong>Dados</strong></td>
+<td><strong>Glue</strong></td>
+<td>ETL serverless (Spark gerenciado)</td>
+<td>ETL diário JSON → Parquet</td>
+</tr>
+<tr>
+<td></td>
+<td><strong>Athena</strong></td>
+<td>SQL sobre arquivos no S3</td>
+<td>Consulta o data lake, paga por byte lido</td>
+</tr>
+<tr>
+<td></td>
+<td>EMR</td>
+<td>Cluster Spark/Hadoop cru</td>
+<td>Documentei, não usei — só vence acima de ~100 GB/dia</td>
+</tr>
+<tr>
+<td></td>
+<td>MSK</td>
+<td>Kafka gerenciado</td>
+<td>Avaliei e recusei (ver §3) — Redpanda self-hosted no lugar</td>
+</tr>
+<tr>
+<td><strong>Operações</strong></td>
+<td><strong>CloudWatch</strong></td>
+<td>Logs, métricas, alarmes, dashboards</td>
+<td>Observabilidade inteira</td>
+</tr>
+<tr>
+<td></td>
+<td>Secrets Manager</td>
+<td>Credenciais e chaves</td>
+<td>Segredos de API, rotação</td>
+</tr>
+<tr>
+<td></td>
+<td>IAM</td>
+<td>Permissões (quem pode o quê)</td>
+<td><em>Least privilege</em> — a fonte de metade dos bugs sutis (§5)</td>
+</tr>
+<tr>
+<td></td>
+<td>EventBridge</td>
+<td>Agendador / barramento de eventos</td>
+<td>Cron de ETL, pipelines de compliance</td>
+</tr>
+</tbody></table>
+<p>A intuição que ficou: <strong>comece serverless e gerenciado, suba de degrau só com
+um número na mão.</strong> Fargate até ~20 <em>tasks</em>; Glue até ~100 GB/dia; DynamoDB
+on-demand para tabelas pequenas. Escrever o limiar transforma &quot;acho que está
+caro&quot; numa decisão objetiva.</p>
+<h2>2. O padrão que se repete — data lake sobre S3</h2>
+<p>A arquitetura que mais aprendi a confiar é simples e barata:</p>
+<pre><code>Coletores (Fargate) ──► S3 raw (JSON gzip) ──► Glue ETL diário ──► S3 processed (Parquet)
+                                                                          │
+                                                       Athena / DuckDB / Polars (consulta)
+</code></pre>
+<ul>
+<li><strong>S3 como fonte única da verdade (SSOT).</strong> Se o armazenamento durável já te dá
+11 noves de durabilidade, qualquer camada de banco ou <em>streaming</em> passa a ser
+<strong>opcional</strong> — só se justifica por <em>consumidores</em>, não por hábito.</li>
+<li><strong>Parquet + Snappy</strong> no lugar de JSON: ~70-80% menor, colunar, com <em>predicate
+pushdown</em>. Uma consulta de 100M de registros caiu de 120s (JSON) para 15s (Parquet).</li>
+<li><strong>Partição por data</strong> (<code>year=/month=/day=/</code>): o Athena pula partições
+irrelevantes e você paga só pelos bytes que realmente leu.</li>
+</ul>
+<p>Adicionar uma fonte nova vira só registrar uma entrada no Terraform — não
+reconstruir infraestrutura.</p>
+<h2>3. As decisões difíceis (trade-offs)</h2>
+<p>Arquitetura é a arte de <strong>adiar e justificar compromissos caros</strong>. Quatro
+decisões que valeram a reflexão:</p>
+<p><strong>Fargate vs EC2.</strong> Para esse workload, EC2 era só ~13-20% mais barato — mas
+custava 8+ passos de configuração (auto scaling group, <em>patching</em>, agente de
+métricas, auto-recovery) contra 2 do Fargate. Valorizando meu tempo a US$ 50/h,
+EC2 só passa a compensar acima de ~20 <em>tasks</em> em regime constante. <strong>Lição:
+custo de operação humana é custo real.</strong></p>
+<p><strong>Glue vs EMR.</strong> Glue é serverless e some quando o <em>job</em> termina. EMR (cluster
+cru) só vence acima de ~100 GB/dia ou <em>jobs</em> de mais de 1h — aí fica 50-70% mais
+barato, ainda mais com Spot. <strong>Regra que adotei:</strong> só migro se a alternativa for</p>
+<blockquote>
+<p>30% mais barata.</p>
+</blockquote>
+<p><strong>MSK vs Redpanda vs S3-direto.</strong> Kafka gerenciado (MSK) custava ~US$ 480-550/mês
+para um cluster HA de 3 brokers, contra ~US$ 18 da abordagem atual. Como a
+durabilidade <em>já estava resolvida pelo S3</em>, o Kafka só se justificava por ter
+múltiplos consumidores em tempo real. Solução: uma <strong>camada de abstração de
+transporte</strong> (<code>TRANSPORT_TYPE</code>) que deixa trocar S3 ↔ Redpanda ↔ MSK por
+configuração. <strong>Lição: abstraia o que você ainda não decidiu.</strong></p>
+<p><strong>DynamoDB → S3 + Parquet.</strong> Uma tabela de 322 GB / 226M itens custava
+US$ 80,58/mês só de armazenamento. Migrada para S3+Parquet: <del>US$ 4/mês (**</del>95%
+de economia**). Dois aprendizados de ouro:</p>
+<ul>
+<li><strong>Ferramenta nativa vence script artesanal:</strong> <code>export-table-to-point-in-time</code>
+levou <strong>13 minutos</strong> contra <strong>~157 horas</strong> estimadas de <em>scan</em> + paginação.
+Sempre procure o <em>bulk export</em> nativo antes de iterar na mão.</li>
+<li><strong>Padrão de migração segura:</strong> exportar → verificar que as contagens batem →
+rodar em paralelo por 30 dias → só então deletar.</li>
+</ul>
+<h2>4. Custo — onde o dinheiro realmente vaza</h2>
+<p>O instinto errado é otimizar CPU. Os verdadeiros vazamentos estão em outro lugar:</p>
+<ul>
+<li><strong>Lifecycle de storage é a maior alavanca.</strong> S3 transiciona sozinho:
+STANDARD (US$ 0,023/GB) → STANDARD_IA após 30d (-45%) → GLACIER após 90d
+(-83%) → DEEP_ARCHIVE após 365d. Configure no dia 1.</li>
+<li><strong>No Athena você paga por byte escaneado.</strong> Particionar + filtrar no <code>WHERE</code> +
+selecionar só as colunas necessárias derrubou uma consulta de 1,8 TB → 50 MB,
+de US$ 10 para US$ 0,0003. Use agregações aproximadas (<code>APPROX_PERCENTILE</code>).</li>
+<li><strong>Custo de <em>request</em> é real.</strong> Um coletor escrevendo 4 arquivos/min mesmo
+ocioso gerava ~170 mil PUTs/mês. Subir o intervalo de <em>flush</em> de 5s → 60s
+cortou para ~1 arquivo/min. <strong>Agrupe suas escritas — o intervalo de flush é um
+botão de custo deliberado.</strong></li>
+<li><strong>Transferência de rede (NAT egress) pode passar o compute.</strong> Num caso,
+US$ 58/mês de egress contra US$ 18 de Fargate. Otimizar CPU ali seria inútil.</li>
+<li><strong>Compressão compõe:</strong> gzip no JSON (70-90%) e depois Parquet/Snappy (mais
+~70%) reduzem armazenamento <em>e</em> custo de consulta ao mesmo tempo.</li>
+</ul>
+<h2>5. Postmortems — as histórias de guerra</h2>
+<p>Aqui mora o aprendizado de verdade. Casos generalizados:</p>
+<p><strong>O circuit breaker que virou apagão permanente.</strong> Uma <em>task</em> reiniciou
+(suspeita de OOM) e subiu com estado defasado durante o <em>warmup</em>. Em ~300ms
+acumulou 10 rejeições consecutivas e o <em>circuit breaker</em> (limiar = 10) travou
+<strong>de forma permanente</strong>, exigindo reinício manual. <strong>Lição: breakers precisam
+tolerar o ruído de inicialização — um período de graça no <em>warmup</em> evita que um
+soluço transitório vire uma queda definitiva.</strong></p>
+<p><strong>IAM apertado demais, falha silenciosa.</strong> O serviço emitia métricas sob um
+<em>namespace</em> (vindo de um default hardcoded que ignorava a env var), mas a
+política IAM só permitia outro <em>namespace</em> exato → <code>PutMetricData</code> negado em
+silêncio, sem métricas justo durante um incidente. <strong>Lição: mantenha IAM e
+configuração da aplicação em sincronia, e prefira condições por prefixo a <em>match</em>
+exato.</strong></p>
+<p><strong>A configuração que não foi aplicada.</strong> Tópicos Kafka criados com 1 partição
+apesar da config pedir 12 — o <em>auto-create</em> sobrescreveu silenciosamente a
+intenção, matando o paralelismo e criando um <em>backlog</em> de 323 mil mensagens.
+<strong>Lição: verifique que a config realmente <em>foi aplicada</em> no runtime.</strong></p>
+<p><strong>O job agendado que falhava em silêncio.</strong> Uma tarefa de reconciliação saía com
+erro a cada 5 minutos (<code>No module named ...</code>) porque o módulo nunca foi incluído
+na imagem. Ninguém percebeu por dias. <strong>Lição: tarefas agendadas falham caladas —
+dê a cada cron/EventBridge o seu próprio alarme.</strong></p>
+<p><strong>Security group com <code>0.0.0.0/0</code>.</strong> Pego em <em>review</em> antes do apply. <strong>Lição:
+revise sempre as regras default-permissivas de SG antes de subir.</strong></p>
+<h2>6. Operação no dia a dia</h2>
+<ul>
+<li><strong>Tudo em IaC (Terraform).</strong> Módulos reutilizáveis por serviço, deployments por
+ambiente. Um padrão de &quot;<em>source map</em>&quot; gera todos os recursos por fonte (IAM,
+log groups, alarmes, widgets) a partir de uma variável.</li>
+<li><strong>Logs estruturados em JSON</strong> (Rust <code>tracing</code>, Python <code>structlog</code>) para que as
+<em>queries</em> do CloudWatch Insights funcionem em campos tipados. Cuidado com o
+&quot;split-brain&quot;: se parte do código loga JSON e parte usa f-string, os filtros
+passam a casar com nada, silenciosamente.</li>
+<li><strong>Containers:</strong> <em>multi-stage build</em>, usuário não-root, versões fixadas. Imagem
+Rust ~30 MB vs Python ~500 MB — importa para storage no ECR e <em>cold start</em>.</li>
+<li><strong>Monitoramento em camadas:</strong> <em>metric filters</em> sobre logs → métricas custom →
+alarmes por fonte → um <em>composite alarm</em> que dispara para SNS → Slack + PagerDuty.</li>
+<li><strong>Segurança / credenciais:</strong> Secrets Manager + IAM por fonte. Modos de <em>sandbox</em>
+recebem um ARN de segredo <strong>vazio</strong>, de forma que o IAM <em>fisicamente</em> bloqueia o
+acesso a credenciais reais (defesa em profundidade). Nunca logue <em>headers</em> de
+auth — só IDs de chave e o resultado.</li>
+</ul>
+<h2>7. Os princípios que ficam</h2>
+<p>Se eu tivesse que destilar tudo em poucas frases para alguém começando na AWS:</p>
+<ol>
+<li><strong>S3 como fonte da verdade simplifica o resto.</strong> Camadas de banco e streaming
+são opcionais até um consumidor exigir.</li>
+<li><strong>Escolha o serverless/gerenciado até um limiar concreto forçar a troca</strong> — e
+escreva esse limiar antes, para a decisão de migrar ser objetiva.</li>
+<li><strong>Storage classes + lifecycle são o maior ROI de custo.</strong> Ative no dia 1.</li>
+<li><strong>Em analytics você paga por byte lido</strong> — particione, filtre, selecione só o necessário.</li>
+<li><strong>Vigie <em>request count</em> e <em>egress</em>, não só storage e compute.</strong></li>
+<li><strong>Ferramenta nativa de bulk vence script artesanal</strong> (700x mais rápido, no meu caso).</li>
+<li><strong>IAM least-privilege morde quando a config deriva</strong> — sincronize, use prefixos.</li>
+<li><strong>Verifique que a config foi de fato aplicada</strong> no runtime.</li>
+<li><strong>Circuit breakers precisam tolerar o warmup.</strong></li>
+<li><strong>Tarefas agendadas falham em silêncio</strong> — dê a elas alarmes próprios.</li>
+<li><strong>Mesmo código para streaming e batch</strong> vence reconciliar duas implementações.</li>
+<li><strong>Uma camada de abstração permite adiar compromissos caros de arquitetura.</strong></li>
+</ol>
+<blockquote>
+<p>A AWS não recompensa quem conhece mais serviços. Recompensa quem sabe <strong>qual
+não usar ainda</strong> — e tem o número na mão para provar.</p>
+</blockquote>
+
+<footer>Conteúdo: <code>yuri/aws/aws.pt.md</code> · forma separada de conteúdo, pré-renderizado.
+Universe <code>aws</code> (promovível a <code>aws.artelonga.com.br</code>).</footer>
+</body></html>
