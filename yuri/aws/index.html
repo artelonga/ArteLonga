@@ -1,10 +1,10 @@
 <!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0"><title>AWS — uma introdução pela experiência — Yuri · Arte Longa</title>
-<meta name="description" content="AWS pela experiência: ferramentas, decisões, custos e postmortems de uma plataforma de dados real (~US$ 155/mês).">
+<meta name="description" content="AWS pela experiência — tutorial + estudo de caso: plataforma de dados escalável, custo estimável (~US$150/mês por cliente de alta demanda), decisões e postmortems.">
 <link rel="canonical" href="https://artelonga.com.br/yuri/aws/">
 <link rel="alternate" hreflang="pt-br" href="https://artelonga.com.br/yuri/aws/">
 <link rel="alternate" hreflang="en" href="https://artelonga.com.br/yuri/aws/en/">
-<meta property="og:title" content="AWS — uma introdução pela experiência"><meta property="og:description" content="AWS pela experiência: ferramentas, decisões, custos e postmortems de uma plataforma de dados real (~US$ 155/mês)."><meta property="og:type" content="article">
+<meta property="og:title" content="AWS — uma introdução pela experiência"><meta property="og:description" content="AWS pela experiência — tutorial + estudo de caso: plataforma de dados escalável, custo estimável (~US$150/mês por cliente de alta demanda), decisões e postmortems."><meta property="og:type" content="article">
 <style>
  :root{--ink:#0a0a0a;--ink2:#444;--ink3:#888;--line:#e7e1da;--bg:#fbf9f6;--bg2:#fff;--accent:#9a3b2e}
  *{box-sizing:border-box}body{font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;max-width:780px;margin:0 auto;padding:4vh 1.4rem 10vh;line-height:1.62;color:var(--ink);background:var(--bg)}
@@ -23,13 +23,14 @@
  .stat{flex:1 1 130px;border:1px solid var(--line);border-radius:10px;background:var(--bg2);padding:.65rem .9rem}
  .stat b{display:block;font-size:1.35rem;letter-spacing:-.02em;color:var(--accent);line-height:1.1}
  .stat span{font-size:.68rem;color:var(--ink3);text-transform:uppercase;letter-spacing:.04em}
+ .costnote{font-size:.82rem;color:var(--ink2);background:var(--bg2);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:8px;padding:.6rem .9rem;margin:0 0 1.8em}
  .seealso{margin-top:2.6em;padding-top:1.2em;border-top:1px solid var(--line)}
  .seealso h3{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink3);margin:0 0 .55em}
  .seealso a{display:inline-block;margin-right:1.1em}
  footer{margin-top:2.4em;padding-top:1.2em;border-top:1px solid var(--line);font-size:.76rem;color:var(--ink3)}</style></head><body>
 <div class="top"><a href="../">← yuri</a><a class="lang" href="en/" hreflang="en">EN</a></div>
 <h1>AWS — uma introdução pela experiência</h1>
-<div class="metrics"><div class="stat"><b>~US$ 155/mês</b><span>custo operacional</span></div><div class="stat"><b>95% ↓</b><span>custo DynamoDB→S3</span></div><div class="stat"><b>700×</b><span>migração mais rápida</span></div><div class="stat"><b>226M</b><span>itens migrados</span></div></div>
+<div class="metrics"><div class="stat"><b>13+</b><span>serviços AWS</span></div><div class="stat"><b>100% IaC</b><span>Terraform</span></div><div class="stat"><b>~US$150/mês</b><span>por cliente alta demanda</span></div><div class="stat"><b>24/7</b><span>tempo real</span></div></div><p class="costnote">AWS é o <b>caso extremo</b> do espectro de custo: a conta sobe com os requisitos, mas é <b>estimável de antemão — sem cobrança-surpresa</b> (~US$1,8k/ano no teto de alta demanda; a maioria das universes roda muito mais barato, surface ~US$5/mês). Os números de migração mais abaixo são de <b>um</b> estudo de caso, não a régua.</p>
 <blockquote>
 <p>Esta não é uma lista de serviços decorada da documentação. É o que aprendi
 operando uma plataforma de dados em tempo real na AWS — desde a coleta via
@@ -42,6 +43,15 @@ projeto na nuvem.</p>
 arquitetura não é conhecer todos — é saber <strong>qual serviço resolve o quê, e
 quando o custo de adicioná-lo passa a valer a pena</strong>. Quase toda decisão abaixo
 foi tomada escrevendo um <em>threshold</em> (um limiar objetivo) antes de migrar.</p>
+<p>Leia como um tutorial: cada seção abaixo é uma decisão que você também vai enfrentar.</p>
+<h2>Em resumo</h2>
+<ul>
+<li><strong>A AWS não recompensa conhecer mais serviços — recompensa saber qual NÃO usar ainda</strong>, com um limiar objetivo escrito <em>antes</em> de migrar.</li>
+<li><strong>S3 como fonte da verdade</strong> torna banco e <em>streaming</em> opcionais (só se um consumidor exigir).</li>
+<li><strong>O custo escala com os requisitos, mas é estimável de antemão — sem surpresa.</strong> Esta plataforma de dados real custou ~US$ 150/mês no teto de alta demanda; a maioria das cargas, muito menos.</li>
+<li><strong>Operação madura vence o serviço da moda</strong>: 100% IaC, observabilidade em camadas, IAM <em>least-privilege</em>, e <em>postmortems</em> que viram regra.</li>
+<li>Os números de migração mais abaixo (DynamoDB→S3, −95%) são <strong>um estudo de caso</strong> — dependem dos requisitos de latência de cada caso, não são uma régua universal.</li>
+</ul>
 <h2>1. O mapa mental — a caixa de ferramentas</h2>
 <p>Penso na AWS em quatro camadas. Para cada problema, escolho o serviço <em>gerenciado</em>
 mais simples até que um limiar concreto force a troca.</p>
@@ -186,9 +196,16 @@ durabilidade <em>já estava resolvida pelo S3</em>, o Kafka só se justificava p
 múltiplos consumidores em tempo real. Solução: uma <strong>camada de abstração de
 transporte</strong> (<code>TRANSPORT_TYPE</code>) que deixa trocar S3 ↔ Redpanda ↔ MSK por
 configuração. <strong>Lição: abstraia o que você ainda não decidiu.</strong></p>
-<p><strong>DynamoDB → S3 + Parquet.</strong> Uma tabela de 322 GB / 226M itens custava
-US$ 80,58/mês só de armazenamento. Migrada para S3+Parquet: <del>US$ 4/mês (**</del>95%
-de economia**). Dois aprendizados de ouro:</p>
+<p><strong>DynamoDB → S3 + Parquet — por que NÃO manter o DynamoDB.</strong> A pergunta não foi
+&quot;como economizar&quot;, foi <em>&quot;esse dado precisa de leitura por chave em
+milissegundos?&quot;</em>. Neste caso, <strong>não</strong>: os requisitos de latência do usuário não
+exigiam acesso <em>single-digit ms</em> — as consultas eram analíticas, por faixa. Sem
+essa exigência, o DynamoDB era custo sem benefício. Uma tabela de 322 GB / 226M
+itens custava US$ 80,58/mês só de armazenamento; em S3+Parquet, ~US$ 4/mês
+(<strong>−95%</strong>, ~157h de scan artesanal → <strong>13 min</strong> de export nativo). <strong>Num cenário
+onde a latência exigisse acesso por chave em ms, o DynamoDB se justificaria — e
+pagaríamos os ~95% a mais conscientemente.</strong> A lição não é &quot;S3 é mais barato&quot;, é
+<strong>casar o serviço ao requisito real</strong>. Dois aprendizados de ouro:</p>
 <ul>
 <li><strong>Ferramenta nativa vence script artesanal:</strong> <code>export-table-to-point-in-time</code>
 levou <strong>13 minutos</strong> contra <strong>~157 horas</strong> estimadas de <em>scan</em> + paginação.
@@ -256,23 +273,16 @@ recebem um ARN de segredo <strong>vazio</strong>, de forma que o IAM <em>fisicam
 acesso a credenciais reais (defesa em profundidade). Nunca logue <em>headers</em> de
 auth — só IDs de chave e o resultado.</li>
 </ul>
-<h2>7. Os princípios que ficam</h2>
-<p>Se eu tivesse que destilar tudo em poucas frases para alguém começando na AWS:</p>
+<h2>7. Princípios (o que fica)</h2>
+<p>Destilando, para quem está começando:</p>
 <ol>
-<li><strong>S3 como fonte da verdade simplifica o resto.</strong> Camadas de banco e streaming
-são opcionais até um consumidor exigir.</li>
-<li><strong>Escolha o serverless/gerenciado até um limiar concreto forçar a troca</strong> — e
-escreva esse limiar antes, para a decisão de migrar ser objetiva.</li>
-<li><strong>Storage classes + lifecycle são o maior ROI de custo.</strong> Ative no dia 1.</li>
-<li><strong>Em analytics você paga por byte lido</strong> — particione, filtre, selecione só o necessário.</li>
-<li><strong>Vigie <em>request count</em> e <em>egress</em>, não só storage e compute.</strong></li>
-<li><strong>Ferramenta nativa de bulk vence script artesanal</strong> (700x mais rápido, no meu caso).</li>
-<li><strong>IAM least-privilege morde quando a config deriva</strong> — sincronize, use prefixos.</li>
-<li><strong>Verifique que a config foi de fato aplicada</strong> no runtime.</li>
-<li><strong>Circuit breakers precisam tolerar o warmup.</strong></li>
-<li><strong>Tarefas agendadas falham em silêncio</strong> — dê a elas alarmes próprios.</li>
-<li><strong>Mesmo código para streaming e batch</strong> vence reconciliar duas implementações.</li>
-<li><strong>Uma camada de abstração permite adiar compromissos caros de arquitetura.</strong></li>
+<li><strong>S3 como fonte da verdade</strong> simplifica o resto — banco e streaming são opcionais até um consumidor exigir.</li>
+<li><strong>Serverless/gerenciado até um limiar concreto</strong> que você escreve <em>antes</em> de migrar.</li>
+<li><strong>Custo mora em storage lifecycle, bytes lidos, request count e egress</strong> — não na CPU.</li>
+<li><strong>Ferramenta nativa de bulk vence script artesanal</strong> (700× no meu caso).</li>
+<li><strong>IAM least-privilege + config em sincronia</strong> — e verifique que a config foi <em>aplicada</em> no runtime.</li>
+<li><strong>Resiliência: circuit breakers toleram o warmup; todo cron tem alarme próprio</strong> (falha calada mata).</li>
+<li><strong>Abstraia o que ainda não decidiu</strong> — uma camada de transporte adia compromissos caros.</li>
 </ol>
 <blockquote>
 <p>A AWS não recompensa quem conhece mais serviços. Recompensa quem sabe <strong>qual

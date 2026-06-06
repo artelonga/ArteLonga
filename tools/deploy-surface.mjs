@@ -16,12 +16,12 @@ const SURFACES = {
   yuri: {
     server: "tools/surfaces-server.mjs", env: { SURFACE: "/yuri/", FEEDBACK_UNIVERSE: "yuri" },
     config: "deploy/surfaces/yuri.toml", dockerfile: "deploy/surfaces/Dockerfile",
-    expect: ["system-graph.js", "feedback.js", "</html>"]
+    expect: ["system-graph.js", "feedback.js", "</html>"], dirCheck: "/aws"
   },
   hostinger: {
     server: "tools/surfaces-server.mjs", env: { SURFACE: "/yuri/hostinger/", FEEDBACK_UNIVERSE: "yuri" },
     config: "deploy/surfaces/hostinger.toml", dockerfile: "deploy/surfaces/Dockerfile",
-    expect: ["Data Analyst", "Hostinger", "feedback.js"]
+    expect: ["Data Analyst", "Hostinger", "feedback.js"], dirCheck: "/studies"
   },
   comunicacao: {
     server: "tools/surfaces-server.mjs",
@@ -84,6 +84,8 @@ try {
   for (const m of s.expect) checks.push([`/ contém "${m}"`, root.body.includes(m)]);
   const low = root.body.toLowerCase();
   for (const b of BAD) checks.push([`/ sem fallback "${b}"`, !low.includes(b)]);
+  // regressão de trailing-slash: diretório sem barra DEVE 301 (senão links relativos quebram → 404)
+  if (s.dirCheck) { const d = await get(s.dirCheck); checks.push([`${s.dirCheck} → 301 (trailing-slash)`, d.status === 301]); }
 
   ok = checks.every((c) => c[1]);
   for (const [label, pass] of checks) console.log(`  ${pass ? "✓" : "✗"} ${label}`);
