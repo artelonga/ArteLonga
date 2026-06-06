@@ -12,7 +12,7 @@ added: 2026-06-05
 tags: [baas, escala, infraestrutura]
 media:
   - kind: url
-    url: /docs/brain-as-a-service.html
+    url: https://artelonga.com.br/docs/brain-as-a-service.html
 ---
 
 Tese de escala horizontal a custo SaaS zero: cada brain (universe) soberana, infra-agnóstica, renderiza do cache. yuri é o template.

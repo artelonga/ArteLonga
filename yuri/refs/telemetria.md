@@ -12,7 +12,7 @@ added: 2026-06-05
 tags: [telemetria, analytics, privacidade]
 media:
   - kind: url
-    url: /docs/telemetry-surfaces.html
+    url: https://artelonga.com.br/docs/telemetry-surfaces.html
 ---
 
 Observabilidade soberana sem terceiros: geo embarcado (v4+v6+cidade), retenção, conversões — paridade com Google Analytics, custo SaaS zero.

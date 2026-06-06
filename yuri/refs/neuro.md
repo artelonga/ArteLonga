@@ -12,7 +12,7 @@ added: 2026-06-05
 tags: [neurociência, bibliografia, dados]
 media:
   - kind: url
-    url: /neuro/bibliografia.html
+    url: https://artelonga.com.br/neuro/bibliografia.html
 ---
 
 Bibliografia de neurociência aberta (ABNT) com identidade canônica de autores — filtra por autor resolvendo todas as variantes.

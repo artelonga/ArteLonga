@@ -12,7 +12,7 @@ added: 2026-06-05
 tags: [scrum, agile, entrega]
 media:
   - kind: url
-    url: /docs/scrum-retrospective.html
+    url: https://artelonga.com.br/docs/scrum-retrospective.html
 ---
 
 Funil → conversão → kanban; cadência quinzenal; roadmap/backlog como co tasks; retrospectiva dos releases reais com Definition of Done.
