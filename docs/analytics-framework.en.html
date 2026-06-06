@@ -1,0 +1,209 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Analytics framework — central, filterable, multi-tenant, extensible — Arte Longa</title>
+<meta name="robots" content="noindex, nofollow"><link rel="alternate" hreflang="en" href="analytics-framework.en.html"><link rel="alternate" hreflang="pt-br" href="analytics-framework.html">
+<style>
+  :root{--ink:#0a0a0a;--ink2:#444;--ink3:#888;--line:#e7e1da;--bg:#fbf9f6;--bg2:#fff;--accent:#9a3b2e}
+  *{box-sizing:border-box} body{font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+    max-width:820px;margin:0 auto;padding:4vh 1.4rem 10vh;line-height:1.6;color:var(--ink);background:var(--bg)}
+  a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(154,59,46,.25)}a:hover{border-bottom-color:var(--accent)}
+  h1{font-size:2.1rem;letter-spacing:-.02em;line-height:1.12;margin:.3em 0 .2em}
+  h2{font-size:1.3rem;margin:1.8em 0 .4em;border-top:1px solid var(--line);padding-top:.8em}
+  h3{font-size:1.02rem;margin:1.3em 0 .3em}
+  blockquote{margin:1.2em 0;padding:.7em 1.1em;background:var(--bg2);border-left:3px solid var(--accent);border-radius:8px;color:var(--ink2);font-size:.95rem}
+  ul,ol{padding-left:1.3em}li{margin:.15em 0}
+  table{border-collapse:collapse;width:100%;font-size:.86rem;margin:1.2em 0;display:block;overflow-x:auto}
+  th,td{border:1px solid var(--line);padding:.45rem .6rem;text-align:left;vertical-align:top}th{background:var(--bg2);font-weight:700}
+  code{background:var(--bg2);border:1px solid var(--line);border-radius:4px;padding:.05em .35em;font-size:.85em}
+  pre{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:1em;overflow-x:auto}pre code{border:0;background:none;padding:0}
+  hr{border:0;border-top:1px solid var(--line);margin:2em 0}
+  .mermaid svg{max-width:100%;height:auto;background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:.6rem}
+  .crumb{display:flex;justify-content:space-between;font-size:.8rem;color:var(--ink3);margin-bottom:2em}
+  .crumb .lang{font-weight:700;border:1px solid var(--line);border-radius:999px;padding:.1rem .6rem}
+  .grp{margin:1.4em 0}.grp h2{border:0;padding:0;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink3)}
+  .doclist{list-style:none;padding:0}.doclist li{margin:.5em 0}.doclist .src{font-size:.72rem;color:var(--ink3)}
+  .tag{font-size:.6rem;font-weight:700;border-radius:999px;padding:.05rem .45rem;letter-spacing:.04em;vertical-align:middle}
+  .tag.dev{background:#eef1f6;color:var(--ink3)}.tag.pub{background:#e6f1e8;color:#3a7d44}</style></head><body>
+<div class="crumb"><span><a href="/">Arte Longa</a> · <a href="/docs/">docs</a> · dev (noindex)</span><a class="lang" href="analytics-framework.html" hreflang="pt">PT</a></div>
+<h1>Analytics framework — central, filterable, multi-tenant, extensible</h1>
+<p>How the <strong>two telemetry systems</strong> of today (apex co-backed + universe-owned
+surfaces, see <a href="./telemetry-surfaces.en.html"><code>telemetry-surfaces.md</code></a>) become <strong>one</strong>
+central, filterable and extensible <strong>framework</strong> — for new partners and for any
+<code>co</code> universe, inside or outside artelonga.</p>
+<blockquote>
+<p><strong>Status:</strong> Phase 1 (this doc + canonical schema in
+<code>openapi/artelonga.yaml#/components/schemas/{TelemetryEvent,DailyRollup,…}</code>).
+Phases 2–5 below. What already exists is marked ✅.</p>
+</blockquote>
+<h2>Core idea</h2>
+<p>A <strong>canonical schema keyed by <code>universe</code></strong> + a <strong>central warehouse with a
+filterable query API</strong> + <strong>uniform, pluggable producers</strong> + <strong>a parametrized
+dashboard</strong>. Tenancy is the <code>universe</code> key — which <code>co</code> already models (recursive
+universes; a partner <strong>is</strong> a universe; see [[reference_co_recursive_universes]]).
+So "extend to new partners / other co universes" is not a new system — it is the
+same system with another tenant key.</p>
+<p><strong>The principle that reconciles "central" with "the universe owns its telemetry":</strong></p>
+<blockquote>
+<p>The <strong>edges own the RAW</strong> (sovereign, never leaves). The <strong>center keeps only
+CONSENTED aggregates, no PII</strong> (rollups). This is Option C
+(<a href="./telemetry-surfaces.en.html"><code>telemetry-surfaces.md §3</code></a>) generalized into a framework.</p>
+</blockquote>
+<pre><code>producers (edges, own the raw)             center (co warehouse)             consumers
+──────────────────────────────            ─────────────────────             ─────────
+surface artelonga (yuri)  ─┐                                                ┌─ dash apex   (scope=network)
+apex artelonga            ─┤  DailyRollup                                   ├─ dash surface (scope=yuri)
+parceiro novo (CNAME)     ─┼─ consentido, ──▶  tabela rollups  ──query──────┼─ dash parceiro (scope=&lt;id&gt;)
+qualquer universe co      ─┤  sem PII,         (multi-tenant,  API          ├─ view de rede (owner)
+stack externa (SDK)       ─┘  keyed by universe  filtrável)                 └─ componente embutível
+</code></pre>
+<h2>Canonical schema (source of truth: openapi)</h2>
+<p>The two systems already emit ~the same taxonomy. They converge on two shapes,
+versioned in <code>openapi/artelonga.yaml</code>:</p>
+<ul>
+<li><strong><code>TelemetryEvent</code></strong> — RAW, edge-owned, <strong>never centralized</strong>. Stays in the
+surface's NDJSON. Geo resolved at ingest from the IP (discarded). <code>vid/session/IP</code>
+do not leave the edge.</li>
+<li><strong><code>DailyRollup</code></strong> — <strong>consented, PII-free</strong> aggregate — the <strong>only</strong> thing that
+goes to the center, keyed by <code>(universe, day)</code>, idempotent (upsert). Fields:
+<code>metrics</code> (<code>RollupMetrics</code> — pageviews, visitors, returning, sessions, bounced,
+dwell_ms_sum, conversions) + <code>dims</code> (<code>RollupDims</code> — geo, device, source, pages,
+goals, referrers).</li>
+</ul>
+<p><code>teleAgg()</code> (<code>tools/surfaces-server.mjs</code>) <strong>already produces</strong> almost exactly
+<code>DailyRollup.dims</code> ✅ — the surface is one daily bucketing away from becoming a
+compliant producer.</p>
+<h2>Central warehouse + filterable API (co)</h2>
+<pre><code>POST /api/v1/analytics/{universe}/rollups     producer push (tenant-keyed; upsert por universe+day)
+GET  /api/v1/analytics/{scope}/summary        a ÚNICA leitura → AnalyticsSummary
+        scope   = &lt;universe&gt; | network         (network = owner: todas as universes)
+        ?from&amp;to                                intervalo de datas
+        ?groupBy=day|week|month                 bucket temporal
+        ?filter=geo.country:BR,device:mobile    facetas (dimensões de baixa cardinalidade)
+        ?breakdown=source|geo|device|page|goal  qual dimensão retornar
+GET  /api/v1/analytics/{scope}/recent          live tail (opt-in)
+</code></pre>
+<p>Response = <strong><code>AnalyticsSummary</code></strong> (openapi): <code>{ scope, range, filter, metrics, timeseries[], breakdown[] }</code>. This <strong>realizes the <code>?from</code>/<code>&amp;to</code>/<code>?universe</code> params</strong>
+that the apex dashboard already feature-detects today
+(<a href="./analytics-api.en.html"><code>analytics-api.md §9</code></a>).</p>
+<p><strong>Access is tenant-scoped:</strong> a partner's key → only their universe; the artelonga
+owner's key → <code>network</code>. Same endpoint, scope by auth.</p>
+<h2>Producers — uniform and pluggable (the extensibility)</h2>
+<p>The <strong>contract is the schema (<code>DailyRollup</code>), not the implementation.</strong> A
+partner/universe integrates in two ways:</p>
+<ol>
+<li><strong>Turnkey</strong> — stand up the universe-owned <code>surfaces-server</code> (already aggregates
+✅; only the rollup <em>push</em> is missing, at cold-start + a cron ping — Fly
+auto-stop machines have no resident timer). This is artelonga's CNAME path,
+already covered by the <a href="./universe-upgrade.en.html"><code>universe-upgrade.md</code></a> runbook.</li>
+<li><strong>SDK / raw contract</strong> — any external stack (a co universe, a non-artelonga
+site) does <code>POST DailyRollup</code> in the canonical schema with a tenant key.
+Collection and storage of the raw stay with it.</li>
+</ol>
+<p>Onboarding a producer = (a) pick a universe id, (b) emit/"push" a daily
+<code>DailyRollup</code>, (c) receive a tenant key. Nothing beyond the schema.</p>
+<h2>Consumers — one parametrized dashboard</h2>
+<p>Collapse the two <code>analytics/index.html</code> into a single
+<code>AnalyticsDashboard(scope, filters)</code> component that reads the central API:</p>
+<ul>
+<li><strong>apex</strong> = <code>scope=network</code> (whole network);</li>
+<li><strong>each surface</strong> = <code>scope=&lt;its universe&gt;</code> (keeps the local <code>/api/telemetry</code> for
+fine-grained live + reads the warehouse for history/cross-universe);</li>
+<li><strong>partners</strong> embed the same component with their own scope.</li>
+</ul>
+<p>The months chart + click-to-filter + facets that already exists ✅ becomes the
+shared filter surface.</p>
+<h2>The tension to design consciously: filterable vs sovereign raw</h2>
+<p>The <strong>rollup cubes</strong> give <strong>single-dimension</strong> facets at the center — "traffic from
+Brazil over time", "conversions by source", "mobile share" — which cover ~all of
+GA's reports. <strong>Arbitrary cross-dimension</strong> ("mobile users from Brazil who
+converted via HN") needs raw events, which stay at the edge. So:</p>
+<table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Where it's answered</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1-dimension facet + time</td>
+<td><strong>center</strong> (rollup cubes)</td>
+</tr>
+<tr>
+<td>Deep cross-dimension / individual session</td>
+<td><strong>owning edge</strong> (query on the surface) or a <strong>sampled</strong> opt-in event feed</td>
+</tr>
+</tbody></table>
+<p>GA also samples here. Per-tenant decision: most stays in cubes; whoever needs deep
+drill-down enables the sampled (consented) feed.</p>
+<h2>Privacy &amp; tenancy</h2>
+<ul>
+<li><strong>Sovereign raw at the edge</strong> (folder/state per owner — LGPD, <a href="./LESSONS.en.html"><code>docs/LESSONS.md#L-009</code></a>).</li>
+<li><strong>Only PII-free aggregate at the center</strong> (<code>DailyRollup</code> has no vid/sid/IP).</li>
+<li><strong>Geo/PII resolved at the edge</strong> (country v4+v6 + IPv4 city; IP never persists).</li>
+<li><strong>Access scoped by tenant key</strong> (a partner sees only their own; the owner sees
+the network).</li>
+<li>No third parties, no cross-site, no demographics via Google Signals (see the GA
+parity matrix in <a href="./telemetry-surfaces.en.html"><code>telemetry-surfaces.md §7</code></a>).</li>
+</ul>
+<h2>Phased rollout (incremental — builds on what exists)</h2>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Where</th>
+<th>State</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>1. Canonical schema</strong> (<code>TelemetryEvent</code>, <code>DailyRollup</code>, dims) + this doc</td>
+<td>ArteLonga</td>
+<td>✅ <strong>done</strong> (openapi + types)</td>
+</tr>
+<tr>
+<td><strong>2. co: <code>rollups</code> table + ingest + filterable <code>summary</code></strong> (scope/from/to/filter/breakdown)</td>
+<td><code>co</code> (Rust)</td>
+<td>⏳ the central half</td>
+</tr>
+<tr>
+<td><strong>3. surface emits <code>DailyRollup</code></strong> (producer half: daily bucketing + push)</td>
+<td>ArteLonga</td>
+<td>partial — <code>teleAgg</code> ✅, push missing</td>
+</tr>
+<tr>
+<td><strong>4. Single dashboard</strong> parametrized by scope</td>
+<td>ArteLonga</td>
+<td>chart/filter UI ✅, unification missing</td>
+</tr>
+<tr>
+<td><strong>5. Partner onboarding</strong> (turnkey + SDK + tenant key)</td>
+<td>docs</td>
+<td>extends <code>universe-upgrade.md</code></td>
+</tr>
+</tbody></table>
+<p><strong>Already de-risked:</strong> edge aggregation with all GA-parity dimensions ✅, geo
+(v4+v6 + city) ✅, the rollup <em>shape</em> (<code>teleAgg</code> ≈ <code>DailyRollup</code>) ✅, the
+filter-by-day UI with backend feature-detect ✅, the privacy/ownership model ✅,
+the upgrade runbook ✅. The real new work is <strong>Phase 2 in the <code>co</code> repo</strong> + wiring
+up the Phase 3 push.</p>
+<h2>Extension points</h2>
+<ul>
+<li><strong>New dimension</strong> → additive in <code>RollupDims</code> (schema versioned by <code>schema:</code>).</li>
+<li><strong>New producer</strong> → conforms to <code>DailyRollup</code> (turnkey surfaces-server or SDK).</li>
+<li><strong>New consumer</strong> → the <code>summary</code> API + the embeddable component.</li>
+<li><strong>Outside artelonga / a co universe</strong> → since <code>co</code> is already multi-universe,
+analytics becomes a <strong>universe capability</strong>: every universe gets a dashboard by
+emitting rollups; a non-co partner uses the public ingest endpoint with a tenant
+key.</li>
+</ul>
+<h2>References</h2>
+<ul>
+<li><a href="./telemetry-surfaces.en.html"><code>telemetry-surfaces.md</code></a> — the two systems, Option C,
+surface endpoints, geo, GA parity.</li>
+<li><a href="./universe-upgrade.en.html"><code>universe-upgrade.md</code></a> — path→CNAME runbook (becomes the
+turnkey producer onboarding).</li>
+<li><a href="./analytics-api.en.html"><code>analytics-api.md</code></a> — co marketing-batch contract + the
+<code>from/to/universe</code> params that Phase 2 realizes.</li>
+<li><code>openapi/artelonga.yaml#/components/schemas/</code> — <code>TelemetryEvent</code>, <code>DailyRollup</code>,
+<code>RollupMetrics</code>, <code>RollupDims</code>, <code>GeoCount</code>, <code>DimensionCount</code>, <code>AnalyticsSummary</code>.</li>
+</ul>
+
+</body></html>

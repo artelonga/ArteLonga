@@ -50,18 +50,18 @@ endpoint/código de fundo. Estado: ✅ entregue · ◑ parcial/design · ⏳ co-
 | D1 | Aquisição de lead (funil E2E) | discover→engage→intent→capture→qualify→register→convert→onboard | ◑ | [lead-acquisition](./lead-acquisition.md) |
 | D2 | Conversão → provisiona Kanban (board co) | tasks API do co; board semeado no momento da conversão | ⏳ | [scrum-retrospective](./scrum-retrospective.md) |
 | D3 | Entrega Scrum (cadência, roadmap/backlog, DoD) | quinzenal Thu 15h BRT; backlog/sprint como co tasks; retrospectiva | ◑ | scrum-retrospective |
-| D4 | Onboarding de parceiro | BaaS: register→provision→deploy→ingest→sync→convert→satisfy | ◑ | [brain-as-a-service](./brain-as-a-service.md) §4 |
+| D4 | Onboarding de parceiro | BaaS: register→provision→deploy→ingest→sync→convert→satisfy | ◑ | [intelligence-as-a-service](./intelligence-as-a-service.md) §4 |
 | D5 | Parceiro (ex. Scrum) referenciado, não embutido | `/scrum/` é o parceiro (draft/noindex); docs linkam | ✅ | /scrum/ |
 
 ## E · Plataforma & infra
 
 | # | Caso de uso | Solução | Estado | Artefato |
 |---|---|---|---|---|
-| E1 | Escala horizontal a custo SaaS zero | Brain as a Service — universe soberana, ~1 VM cada | ◑ | brain-as-a-service |
-| E2 | Liberdade de infra (qualquer domínio/máquina) | server stdlib + estático + data spec; artefato imutável portável | ✅ | brain-as-a-service §2 |
+| E1 | Escala horizontal a custo SaaS zero | Intelligence as a Service — universe soberana, ~1 VM cada | ◑ | intelligence-as-a-service |
+| E2 | Liberdade de infra (qualquer domínio/máquina) | server stdlib + estático + data spec; artefato imutável portável | ✅ | intelligence-as-a-service §2 |
 | E3 | Dado de runtime ≠ content (não commitar/servir) | geo bins build-time; `*.ndjson`/`*.enc` gitignored | ✅ | refactor geo · security |
 | E4 | Revisão de segurança (o que está exposto) | índice de superfície (todos os paths + endpoints) por sensibilidade | ✅ | tools/bake-security-index.mjs |
-| E5 | Conversão (registro → pagamento) | identidade + pagamento no co | ⏳ | brain-as-a-service §8 |
+| E5 | Conversão (registro → pagamento) | identidade + pagamento no co | ⏳ | intelligence-as-a-service §8 |
 
 ---
 
@@ -136,6 +136,6 @@ de R2/Fly/GH Pages) · *render-at-cache* (o ponteiro `current` É a garantia cac
 ## Índice de docs
 
 - [telemetry-surfaces](./telemetry-surfaces.md) · [analytics-framework](./analytics-framework.md) · [analytics-api](./analytics-api.md)
-- [universe-upgrade](./universe-upgrade.md) · [brain-as-a-service](./brain-as-a-service.md)
+- [universe-upgrade](./universe-upgrade.md) · [intelligence-as-a-service](./intelligence-as-a-service.md)
 - [lead-acquisition](./lead-acquisition.md) · [scrum-retrospective](./scrum-retrospective.md) · [scrum-universe](./scrum-universe.md)
 - Parceiro: [/scrum/](/scrum/) · Base: neuro `references.js`/`authors.js` · Backlog: `work/artelonga/AL-N.md`

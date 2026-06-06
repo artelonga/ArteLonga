@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Docs — Arte Longa</title>
-<meta name="description" content="Base de conhecimento Arte Longa: arquitetura, telemetria, BaaS, escala horizontal.">
+<meta name="description" content="Base de conhecimento Arte Longa (bilíngue): Intelligence as a Service, telemetria, escala horizontal.">
 <style>
   :root{--ink:#0a0a0a;--ink2:#444;--ink3:#888;--line:#e7e1da;--bg:#fbf9f6;--bg2:#fff;--accent:#9a3b2e}
   *{box-sizing:border-box} body{font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
@@ -12,30 +12,29 @@
   blockquote{margin:1.2em 0;padding:.7em 1.1em;background:var(--bg2);border-left:3px solid var(--accent);border-radius:8px;color:var(--ink2);font-size:.95rem}
   ul,ol{padding-left:1.3em}li{margin:.15em 0}
   table{border-collapse:collapse;width:100%;font-size:.86rem;margin:1.2em 0;display:block;overflow-x:auto}
-  th,td{border:1px solid var(--line);padding:.45rem .6rem;text-align:left;vertical-align:top}
-  th{background:var(--bg2);font-weight:700}
+  th,td{border:1px solid var(--line);padding:.45rem .6rem;text-align:left;vertical-align:top}th{background:var(--bg2);font-weight:700}
   code{background:var(--bg2);border:1px solid var(--line);border-radius:4px;padding:.05em .35em;font-size:.85em}
   pre{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:1em;overflow-x:auto}pre code{border:0;background:none;padding:0}
   hr{border:0;border-top:1px solid var(--line);margin:2em 0}
   .mermaid svg{max-width:100%;height:auto;background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:.6rem}
-  .crumb{font-size:.8rem;color:var(--ink3);margin-bottom:2em}
+  .crumb{display:flex;justify-content:space-between;font-size:.8rem;color:var(--ink3);margin-bottom:2em}
+  .crumb .lang{font-weight:700;border:1px solid var(--line);border-radius:999px;padding:.1rem .6rem}
   .grp{margin:1.4em 0}.grp h2{border:0;padding:0;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink3)}
   .doclist{list-style:none;padding:0}.doclist li{margin:.5em 0}.doclist .src{font-size:.72rem;color:var(--ink3)}
   .tag{font-size:.6rem;font-weight:700;border-radius:999px;padding:.05rem .45rem;letter-spacing:.04em;vertical-align:middle}
   .tag.dev{background:#eef1f6;color:var(--ink3)}.tag.pub{background:#e6f1e8;color:#3a7d44}</style></head><body>
-<div class="crumb"><a href="/">Arte Longa</a> · docs</div>
+<div class="crumb"><span><a href="/">Arte Longa</a> · docs</span></div>
 <h1>Documentação</h1>
-<p>Base de conhecimento — renderizada como conteúdo (markdown → estático, sem dependência de runtime).
-Promovível a <code>docs.artelonga.com.br</code> pelo runbook de <a href="/docs/universe-upgrade.html">universe-upgrade</a>.</p>
-<div class="grp"><h2>Conhecimento (público)</h2><ul class="doclist"><li><a href="/docs/use-cases.html">Use cases — artelonga / co universe platform</a> <span class="tag pub">público</span><br><span class="src">docs/use-cases.md</span></li>
-<li><a href="/docs/brain-as-a-service.html">Brain as a Service (BaaS) — yuri as the horizontal-scaling template</a> <span class="tag pub">público</span><br><span class="src">docs/brain-as-a-service.md</span></li>
-<li><a href="/docs/scrum-retrospective.html">Scrum no co — funil → conversão → kanban entregue</a> <span class="tag pub">público</span><br><span class="src">docs/scrum-retrospective.md</span></li>
-<li><a href="/docs/lead-acquisition.html">Lead acquisition — the E2E funnel (review)</a> <span class="tag pub">público</span><br><span class="src">docs/lead-acquisition.md</span></li>
-<li><a href="/yuri/aws/">AWS — caso de uso pela experiência</a> <span class="tag pub">público</span><br><span class="src">yuri/aws/ · pt+en · estudo de cloud do yuri</span></li></ul></div>
-<div class="grp"><h2>Engenharia · specs (dev)</h2><ul class="doclist"><li><a href="/docs/scrum-universe.html">Scrum — folder → published page → (upgradeable) surface</a> <span class="tag dev">dev</span><br><span class="src">docs/scrum-universe.md</span></li>
-<li><a href="/docs/analytics-framework.html">Analytics framework — central, filtrável, multi-tenant, extensível</a> <span class="tag dev">dev</span><br><span class="src">docs/analytics-framework.md</span></li>
-<li><a href="/docs/telemetry-surfaces.html">Telemetria — surfaces universe-owned &amp; convergência</a> <span class="tag dev">dev</span><br><span class="src">docs/telemetry-surfaces.md</span></li>
-<li><a href="/docs/universe-upgrade.html">Upgrade de universe — path → surface CNAME (runbook reproduzível)</a> <span class="tag dev">dev</span><br><span class="src">docs/universe-upgrade.md</span></li>
-<li><a href="/docs/analytics-api.html">Analytics API — wire contract</a> <span class="tag dev">dev</span><br><span class="src">docs/analytics-api.md</span></li></ul></div>
+<p>Base de conhecimento — conteúdo bilíngue (pt/en), renderizado estático (sem runtime). Forma em inglês, conteúdo no idioma. Promovível a <code>docs.artelonga.com.br</code>.</p>
+<div class="grp"><h2>Conhecimento (público)</h2><ul class="doclist"><li><a href="/docs/use-cases.html">Use cases — artelonga / co universe platform</a> <span class="tag pub">público</span> · <a href="/docs/use-cases.en.html">en</a><br><span class="src">docs/use-cases.{pt,en}.md</span></li>
+<li><a href="/docs/intelligence-as-a-service.html">Inteligência como Serviço (IaaS) — a linha entre o que é especificado e o que é criado</a> <span class="tag pub">público</span> · <a href="/docs/intelligence-as-a-service.en.html">en</a><br><span class="src">docs/intelligence-as-a-service.{pt,en}.md</span></li>
+<li><a href="/docs/scrum-retrospective.html">Scrum no co — funil → conversão → kanban entregue</a> <span class="tag pub">público</span> · <a href="/docs/scrum-retrospective.en.html">en</a><br><span class="src">docs/scrum-retrospective.{pt,en}.md</span></li>
+<li><a href="/docs/lead-acquisition.html">Aquisição de leads — o funil E2E (revisão)</a> <span class="tag pub">público</span> · <a href="/docs/lead-acquisition.en.html">en</a><br><span class="src">docs/lead-acquisition.{pt,en}.md</span></li>
+<li><a href="/yuri/aws/">AWS — caso de uso pela experiência</a> <span class="tag pub">público</span> · <a href="/yuri/aws/en/">en</a><br><span class="src">yuri/aws/ · estudo de cloud do yuri</span></li></ul></div>
+<div class="grp"><h2>Engenharia · specs (dev)</h2><ul class="doclist"><li><a href="/docs/scrum-universe.html">Scrum — pasta → página publicada → surface (upgradeable)</a> <span class="tag dev">dev</span> · <a href="/docs/scrum-universe.en.html">en</a><br><span class="src">docs/scrum-universe.{pt,en}.md</span></li>
+<li><a href="/docs/analytics-framework.html">Analytics framework — central, filtrável, multi-tenant, extensível</a> <span class="tag dev">dev</span> · <a href="/docs/analytics-framework.en.html">en</a><br><span class="src">docs/analytics-framework.{pt,en}.md</span></li>
+<li><a href="/docs/telemetry-surfaces.html">Telemetria — surfaces universe-owned &amp; convergência</a> <span class="tag dev">dev</span> · <a href="/docs/telemetry-surfaces.en.html">en</a><br><span class="src">docs/telemetry-surfaces.{pt,en}.md</span></li>
+<li><a href="/docs/universe-upgrade.html">Upgrade de universe — path → surface CNAME (runbook reproduzível)</a> <span class="tag dev">dev</span> · <a href="/docs/universe-upgrade.en.html">en</a><br><span class="src">docs/universe-upgrade.{pt,en}.md</span></li>
+<li><a href="/docs/analytics-api.html">Analytics API — wire contract</a> <span class="tag dev">dev</span> · <a href="/docs/analytics-api.en.html">en</a><br><span class="src">docs/analytics-api.{pt,en}.md</span></li></ul></div>
 <p class="src">+ Scrum (parceiro): <a href="/scrum/">/scrum/</a> · backlog: <code>work/artelonga/AL-N.md</code></p>
 </body></html>
