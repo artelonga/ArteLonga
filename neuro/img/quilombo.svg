@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="Quilombo Araucária">
+  <rect width="800" height="450" fill="#f4f1ee"/>
+  <rect x="10" y="10" width="780" height="430" fill="none" stroke="#dcdcdc" stroke-width="2"/>
+  <circle cx="400" cy="170" r="30" fill="none" stroke="#c9c9c9" stroke-width="4"/>
+  <circle cx="400" cy="170" r="11" fill="#c9c9c9"/>
+  <g font-family="Helvetica Neue,Helvetica,Arial,sans-serif" text-anchor="middle">
+    <text x="400" y="258" font-size="19" font-weight="700" letter-spacing="4" fill="#b4b4b4">IMAGEM · TEMPLATE</text>
+    <text x="400" y="290" font-size="22" fill="#9a9a9a">Quilombo Araucária</text>
+  </g>
+</svg>

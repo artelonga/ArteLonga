@@ -1,0 +1,16 @@
+/* neuro/type-mono.css — tipografia AZ2 (lab / Space Mono).
+   Forma escolhida. Usada por /yuri/neuro (rota real) e /neuroaz2 (protótipo).
+   Datas e rótulos em mono, grandes; corpo em sans pra leitura.
+   Produção: trocar o <link> do Google Fonts por Space Mono self-hosted (woff2). */
+:root { --mono: 'Space Mono', ui-monospace, 'SF Mono', Menlo, monospace; }
+.neuro-head h1 { font-family: var(--mono); font-weight: 700; letter-spacing: -0.04em; }
+.card .yr {
+  font-family: var(--mono); font-weight: 700; font-size: 1.5rem; line-height: 1;
+  letter-spacing: -0.02em; text-transform: none; color: var(--ink);
+}
+.card .yr::before { content: "› "; color: var(--ink-3); }
+.card h3 { font-family: var(--mono); font-weight: 700; font-size: 1rem; line-height: 1.2;
+           letter-spacing: -0.01em; margin-top: 0.35rem; }
+.card .teaser { font-size: 0.86rem; }
+.al-list { font-family: var(--mono); font-size: 0.8rem; }
+.neuro-draft, .neuro-rev a, .neuro-rev .tag { font-family: var(--mono); }

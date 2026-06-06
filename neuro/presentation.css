@@ -1,0 +1,175 @@
+/* neuro/presentation.css — apresentação /2026-05-29 (encontro).
+   Deck de slides em scroll contínuo: o título de cada objetivo gruda no topo
+   (position: sticky) enquanto o conteúdo rola; ao fim, o próximo título assume.
+   Tema mono herdado de type-mono.css. */
+
+/* fontes por variante (presentation-variants.css sobrescreve --display/--body).
+   Default = variante A (caderno/mono). O componente timeline mantém seu mono
+   próprio (type-mono.css), independente da variante. */
+:root { --display: 'Space Mono', ui-monospace, monospace;
+        --body: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+.p-hero, .slide-body, .p-form { font-family: var(--body); }
+
+/* escala padrão = 150% (pedido). Telas estreitas (celular) voltam a 100%. */
+body { zoom: 1.5; }
+@media (max-width: 820px) { body { zoom: 1; } }
+
+/* ── logo (extraído do convite — cérebro contínuo, PNG já transparente) ──
+   mora DENTRO do hero (rola junto com o título); sem fundo, sem blend */
+.p-logo { position: absolute; top: 5vh; right: 7vw; width: clamp(72px, 9vw, 120px); height: auto;
+          opacity: 0.9; pointer-events: none; }
+@media (max-width: 820px) { .p-logo { width: 64px; top: 3vh; right: 6vw; } }
+
+/* ── hero ── */
+.p-hero { position: relative; max-width: 1040px; margin: 0 auto; padding: 12vh 7vw 6vh; }
+.p-kicker { font-family: var(--display); font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+            font-weight: 700; color: var(--terra); }
+.p-hero h1 { font-family: var(--display); font-size: clamp(2.4rem, 7vw, 4.6rem); font-weight: 700;
+             letter-spacing: -0.04em; line-height: 1; margin-top: 0.7rem; }
+.p-date { margin-top: 0.9rem; font-family: var(--display); font-size: 0.82rem; letter-spacing: 0.04em;
+          color: var(--ink-3); }
+.p-obj-title { font-family: var(--display); font-size: 0.85rem; letter-spacing: 0.16em; text-transform: uppercase;
+               font-weight: 700; color: var(--ink-2); margin-top: 2.4rem; }
+.p-hero .lede { margin-top: 1.1rem; max-width: 48ch; font-size: 1rem; color: var(--ink-2); }
+.p-toc { list-style: none; margin-top: 1rem; border-top: 1px solid var(--line); }
+.p-toc li { border-bottom: 1px solid var(--line-2); }
+.p-toc a { display: flex; gap: 1rem; align-items: baseline; padding: 0.7rem 0;
+           text-decoration: none; color: var(--ink); }
+.p-toc a:hover { color: var(--terra); }
+.p-toc .n { font-family: var(--display); font-size: 0.78rem; font-weight: 700; color: var(--ink-3); width: 2rem; }
+.p-toc a:hover .n { color: var(--terra); }
+
+/* ── slides ── */
+.slide { position: relative; min-height: 100vh; }
+.slide-head { position: sticky; top: 0; z-index: 10; background: var(--bg);
+              border-top: 1px solid var(--ink); border-bottom: 1px solid var(--line-2); }
+.slide-head-inner { max-width: 1040px; margin: 0 auto; padding: 1.3rem 7vw;
+                    display: flex; align-items: baseline; gap: 1.1rem; }
+.slide-n { font-family: var(--display); font-size: 0.95rem; font-weight: 700; color: var(--terra); flex: 0 0 auto; }
+.slide-head h2 { font-family: var(--display); font-size: clamp(1.3rem, 3.4vw, 2rem); font-weight: 700;
+                 letter-spacing: -0.03em; line-height: 1.05; }
+.slide-body { max-width: 1040px; margin: 0 auto; padding: 4vh 7vw 9vh; }
+.slide-body .lede { font-size: 1.05rem; color: var(--ink); max-width: 56ch; }
+.slide-body p { max-width: 60ch; }
+.slide-body p + p { margin-top: 1rem; }
+.slide-body ul { margin: 1rem 0 0 1.1rem; max-width: 60ch; }
+.slide-body li { margin-top: 0.4rem; }
+.p-draft { display: inline-block; margin-bottom: 1.2rem; font-family: var(--display); font-size: 0.6rem;
+           letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; color: var(--terra);
+           border: 1px solid currentColor; border-radius: 2px; padding: 0.2rem 0.5rem; }
+
+/* slide da timeline: deixa o próprio #tl centralizar/respirar */
+.slide--timeline .slide-body { max-width: none; padding: 0; }
+
+/* ── form (feedback) ── */
+.p-form { max-width: 460px; margin-top: 1rem; }
+.p-field { margin-top: 1.1rem; }
+.p-field label { display: block; font-family: var(--display); font-size: 0.72rem; letter-spacing: 0.08em;
+                 text-transform: uppercase; font-weight: 700; color: var(--ink-2); margin-bottom: 0.35rem; }
+.p-field .opt { color: var(--ink-3); font-weight: 400; text-transform: none; letter-spacing: 0; }
+.p-field input, .p-field textarea { width: 100%; font: inherit; font-size: 0.95rem;
+   padding: 0.6rem 0.7rem; border: 1px solid var(--line); border-radius: 4px; background: var(--bg); color: var(--ink); }
+.p-field input:focus, .p-field textarea:focus { outline: none; border-color: var(--terra); }
+.p-field textarea { min-height: 5rem; resize: vertical; }
+.p-submit { margin-top: 1.3rem; font-family: var(--display); font-size: 0.8rem; letter-spacing: 0.1em;
+            text-transform: uppercase; font-weight: 700; color: #fff; background: var(--ink);
+            border: none; border-radius: 4px; padding: 0.7rem 1.3rem; cursor: pointer; }
+.p-submit:hover { background: var(--terra); }
+.p-thanks { font-size: 1.05rem; font-weight: 700; color: var(--terra); }
+
+/* ── contribuições colaborativas por seção (post-its) ── */
+.collab { margin-top: 2.4rem; }
+.collab-head { margin-bottom: 0.9rem; font-family: var(--display); font-size: 0.72rem;
+               letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; color: var(--ink-3); }
+.collab-compose { max-width: 460px; margin-bottom: 1.6rem; }
+.collab-empty { color: var(--ink-3); font-size: 0.9rem; }
+.collab-wall { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.1rem;
+               align-items: start; }
+/* na seção da timeline (s2) o corpo é full-width; alinhe o bloco colaborativo ao conteúdo */
+.slide--timeline .collab { max-width: 1040px; margin-left: auto; margin-right: auto; padding: 0 7vw; }
+.postit { position: relative; cursor: pointer; background: #fdf6c9; color: #3a3320;
+          border: 1px solid rgba(0,0,0,0.06); border-radius: 2px; padding: 0.9rem 0.95rem 0.75rem;
+          box-shadow: 0 6px 16px rgba(0,0,0,0.08); transition: transform .12s, box-shadow .12s; }
+/* todos os post-its na mesma cor — só uma leve variação de inclinação */
+.postit:nth-child(3n)   { transform: rotate(0.7deg); }
+.postit:nth-child(3n+1) { transform: rotate(-0.8deg); }
+.postit:nth-child(3n+2) { transform: rotate(0.4deg); }
+.postit:hover, .postit:focus { transform: rotate(0) scale(1.02); box-shadow: 0 10px 24px rgba(0,0,0,0.14);
+          outline: none; z-index: 2; }
+.postit-msg { font-size: 0.92rem; line-height: 1.4; white-space: pre-wrap; overflow: hidden;
+              display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; }
+.postit.is-open .postit-msg { -webkit-line-clamp: unset; }
+.postit-by { margin-top: 0.6rem; font-family: var(--display); font-size: 0.68rem; font-weight: 700;
+             letter-spacing: 0.04em; color: #6b6448; display: flex; align-items: center;
+             justify-content: space-between; gap: 0.5rem; }
+.postit-acts { display: inline-flex; gap: 0.35rem; }
+.postit-del, .postit-edit, .postit-save, .postit-cancel { font: inherit; font-size: 0.6rem; letter-spacing: 0.06em;
+  text-transform: uppercase; border-radius: 3px; padding: 0.1rem 0.45rem; cursor: pointer; }
+.postit-del { color: #9a5b4f; background: transparent; border: 1px solid rgba(154,91,79,0.4); }
+.postit-del:hover { background: var(--terra); color: #fff; border-color: var(--terra); }
+.postit-edit { color: #5a5440; background: transparent; border: 1px solid rgba(90,84,64,0.35); }
+.postit-edit:hover { background: #5a5440; color: #fff; border-color: #5a5440; }
+.postit-save { color: #fff; background: #2f9e44; border: 1px solid #2f9e44; }
+.postit-save:hover { background: #25803a; }
+.postit-cancel { color: #6b6448; background: transparent; border: 1px solid rgba(0,0,0,0.2); }
+.postit-edit-ta { width: 100%; min-height: 4rem; font: inherit; font-size: 0.92rem; line-height: 1.4;
+  border: 1px solid var(--line); border-radius: 3px; padding: 0.4rem 0.5rem; resize: vertical; background: #fff; }
+.postit.editing { cursor: default; }
+.collab-locked { font-style: italic; }
+.postit-extra { margin-top: 0.55rem; }
+.postit-link { font-family: var(--display); font-size: 0.72rem; font-weight: 700; color: #6b3b30;
+               text-decoration: none; border-bottom: 1px solid currentColor; }
+.postit-link:hover { color: var(--terra); }
+
+/* ── identidade: anônimo por padrão, nome/e-mail ao desmarcar ── */
+.collab-id { margin-top: 1rem; }
+.collab-anon { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--display);
+               font-size: 0.74rem; letter-spacing: 0.04em; color: var(--ink-2); cursor: pointer; }
+.collab-anon input { width: auto; }
+.collab-name { margin-top: 0.8rem; }
+
+/* ── bibliografia coletiva: bloco "Contribua" + modal ── */
+.refbox { margin-top: 2.6rem; }
+.refbox-intro { border: 1px solid var(--line); border-radius: 6px; padding: 1.3rem 1.4rem; background: var(--bg-soft); }
+.refbox-intro h3 { font-family: var(--display); font-size: 1.05rem; font-weight: 700; letter-spacing: -0.01em; }
+.refbox-intro p { margin-top: 0.5rem; max-width: 56ch; color: var(--ink-2); }
+.refbox-intro .p-submit { margin-top: 1.1rem; }
+
+.modal-ov { position: fixed; inset: 0; z-index: 100; background: rgba(20,16,14,0.42);
+            display: flex; align-items: flex-start; justify-content: center; padding: 6vh 4vw; overflow: auto; }
+.modal { position: relative; width: 100%; max-width: 540px; background: var(--bg); border-radius: 8px;
+         padding: 2rem 2rem 1.8rem; box-shadow: 0 24px 70px rgba(0,0,0,0.3); }
+.modal-x { position: absolute; top: 0.7rem; right: 0.9rem; font-size: 1.5rem; line-height: 1; color: var(--ink-3);
+           background: none; border: none; cursor: pointer; }
+.modal-x:hover { color: var(--terra); }
+.modal-badge { display: inline-block; font-family: var(--display); font-size: 0.6rem; letter-spacing: 0.16em;
+               text-transform: uppercase; font-weight: 700; color: #fff; background: var(--terra);
+               border-radius: 3px; padding: 0.2rem 0.55rem; }
+.modal-title { font-family: var(--display); font-size: 1.35rem; font-weight: 700; letter-spacing: -0.02em;
+               line-height: 1.1; margin-top: 0.8rem; }
+.modal-lede { margin-top: 0.6rem; color: var(--ink-2); }
+.modal-form { margin-top: 1.2rem; }
+.modal-actions { margin-top: 1.3rem; }
+.seg { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; }
+.seg label { display: inline-flex; align-items: center; gap: 0.4rem; font-family: var(--body);
+             font-size: 0.9rem; text-transform: none; letter-spacing: 0; color: var(--ink); cursor: pointer; }
+.seg input { width: auto; }
+
+/* ── registro opcional no fim (salvar respostas / associar nome ao uid) ── */
+.register { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--line); }
+.reg-form { max-width: 460px; }
+.reg-done { font-size: 1rem; color: var(--ink); }
+.reg-done b { color: var(--terra); }
+.reg-edit { font: inherit; font-size: 0.78rem; margin-left: 0.5rem; color: var(--ink-3);
+            background: none; border: none; text-decoration: underline; cursor: pointer; }
+.reg-edit:hover { color: var(--terra); }
+
+/* ── A/B: variante B mostra um contato compacto no hero ── */
+.p-hero-cta { display: none; }
+body[data-variant="b"] .p-hero-cta { display: block; margin-top: 1.8rem; padding: 1rem 1.1rem;
+   border: 1px solid var(--line); border-radius: 4px; background: var(--bg-soft); max-width: 460px; }
+body[data-variant="b"] .p-hero-cta .lede { margin: 0 0 0.6rem; font-size: 0.9rem; }
+.p-variant-tag { position: fixed; bottom: 8px; right: 10px; z-index: 60; font-family: var(--display);
+                 font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3);
+                 background: rgba(255,255,255,0.9); padding: 0.2rem 0.45rem; border: 1px solid var(--line-2);
+                 border-radius: 3px; }

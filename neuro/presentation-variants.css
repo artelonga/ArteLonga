@@ -1,0 +1,136 @@
+/* neuro/presentation-variants.css — VARIANTES como TESES de design.
+   Cada variante é uma hipótese sobre experiência do usuário + identidade
+   artística, pra serem testadas uma contra a outra (A/B/C). O componente
+   timeline mantém seu mono próprio em todas; o que muda é a moldura.
+
+   ─ A · CADERNO ────────────────────────────────────────────────────────────
+   TESE: rigor gera confiança. Tratar quem lê como par científico — monoespaçada,
+   densa, tudo citado — comunica seriedade e converte pela credibilidade.
+
+   ─ B · PROJEÇÃO ───────────────────────────────────────────────────────────
+   TESE: uma ideia por tela. Ritmo de palco — grotesca enorme, títulos centrados,
+   scroll-snap discreto — concentra a atenção e fixa a memória.
+
+   ─ C · ENSAIO ─────────────────────────────────────────────────────────────
+   TESE: uma conversa, não uma aula. Voz literária, serifa quente, leitura
+   corrida e capitular — convida curiosidade e conexão pessoal.
+*/
+
+/* ─ A · CADERNO ─ (default; mono já vem do :root) */
+body[data-variant="a"] { --display: 'Space Mono', ui-monospace, monospace;
+                         --body: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+
+/* ─ B · PROJEÇÃO ─ grotesca, slides cheios, títulos centrados, scroll-snap */
+body[data-variant="b"] { --display: 'Space Grotesk', 'Helvetica Neue', sans-serif;
+                         --body: 'Space Grotesk', 'Helvetica Neue', sans-serif; }
+html:has(body[data-variant="b"]) { scroll-snap-type: y proximity; }
+body[data-variant="b"] .p-hero { min-height: 92vh; display: flex; flex-direction: column;
+                                 justify-content: center; scroll-snap-align: start; }
+body[data-variant="b"] .p-hero h1 { font-size: clamp(3rem, 11vw, 7rem); letter-spacing: -0.05em; }
+body[data-variant="b"] .slide { scroll-snap-align: start; display: flex; flex-direction: column;
+                                justify-content: center; }
+body[data-variant="b"] .slide-head { position: static; background: transparent; border: none; }
+body[data-variant="b"] .slide-head-inner { flex-direction: column; align-items: center;
+                                           text-align: center; gap: 0.5rem; }
+body[data-variant="b"] .slide-head h2 { font-size: clamp(2rem, 6.5vw, 4.4rem); }
+body[data-variant="b"] .slide-body { text-align: center; }
+body[data-variant="b"] .slide-body .lede { margin: 0 auto; font-size: clamp(1.1rem, 2.2vw, 1.5rem); }
+body[data-variant="b"] .slide-body ul { display: inline-block; text-align: left; }
+body[data-variant="b"] .p-form, body[data-variant="b"] .p-toc { text-align: left; }
+/* a timeline (slide 2) rola normalmente, não centraliza nem snapa por dentro */
+body[data-variant="b"] .slide--timeline { display: block; scroll-snap-align: start; }
+
+/* ─ C · ENSAIO ─ serifa quente, leitura corrida, capitular */
+body[data-variant="c"] { --display: 'Fraunces', Georgia, 'Times New Roman', serif;
+                         --body: 'Fraunces', Georgia, 'Times New Roman', serif;
+                         background: #faf7f2; }
+body[data-variant="c"] .slide-head { background: #faf7f2; border-top-color: #e7ddcd;
+                                     border-bottom-color: #efe7d9; }
+body[data-variant="c"] .p-hero h1, body[data-variant="c"] .slide-head h2 { font-weight: 600;
+                                     letter-spacing: -0.015em; }
+body[data-variant="c"] .slide-body { max-width: 760px; }
+body[data-variant="c"] .slide-body .lede { font-size: 1.2rem; line-height: 1.5; color: var(--ink); }
+body[data-variant="c"] .slide-body p { font-size: 1.05rem; line-height: 1.6; }
+body[data-variant="c"] .p-date, body[data-variant="c"] .slide-n { font-style: italic; letter-spacing: 0.04em; }
+
+/* ════════════════════════════════════════════════════════════════════════
+   CONCEITO "mural primeiro, email depois" (variantes de FORMA 2–5)
+   ════════════════════════════════════════════════════════════════════════ */
+body[data-concept="board"] .p-hero-cta { display: none !important; }   /* sem email no topo */
+body[data-concept="board"] .concept-lede { margin-top: 1rem; max-width: 54ch; font-size: 1.05rem; color: var(--ink-2); }
+body[data-concept="board"] .collab-compose { max-width: 640px; }
+body[data-concept="board"] .collab-compose textarea { min-height: 4.6rem; font-size: 1.05rem; }
+/* convite de email tardio (flutuante, surge ao rolar) */
+.concept-invite { position: fixed; left: 50%; bottom: 1rem; z-index: 70; display: flex; align-items: center;
+  gap: 0.8rem; max-width: 92vw; background: var(--ink); color: #fff; padding: 0.65rem 0.8rem 0.65rem 1.1rem;
+  border-radius: 999px; box-shadow: 0 10px 30px rgba(0,0,0,0.28); font-size: 0.85rem;
+  transform: translateX(-50%) translateY(160%); transition: transform .35s ease; }
+.concept-invite.show { transform: translateX(-50%) translateY(0); }
+.concept-invite .ci-go { color: #fff; font-weight: 700; text-decoration: underline; white-space: nowrap; }
+.concept-invite .ci-x { background: none; border: none; color: #fff; font-size: 1.15rem; cursor: pointer; opacity: 0.7; }
+.concept-invite .ci-x:hover { opacity: 1; }
+@media (max-width: 600px) { .concept-invite > span { display: none; } }
+
+/* ─ 2 · MURAL (cortiça) ─ post-its primeiro, tátil */
+body[data-variant="mural"] { --display: 'Space Mono', ui-monospace, monospace;
+  --body: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: #c9b187; }
+body[data-variant="mural"] .slide-head { background: #c9b187; border-top-color: #9c8456; border-bottom-color: #b89f72; }
+body[data-variant="mural"] .card { background: #fffdf3; border: 1px solid rgba(0,0,0,0.10);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12); border-radius: 3px; }
+body[data-variant="mural"] .collab-compose { background: #fffdf3; padding: 1rem; border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+body[data-variant="mural"] .ref-section { background: #fffdf3; border-radius: 6px; padding: 1.6rem; }
+
+/* ─ 5 · LOUSA BRANCA (whiteboard) ─ limpo, marcador */
+body[data-variant="branca"] { --display: 'Space Grotesk', 'Helvetica Neue', sans-serif;
+  --body: 'Space Grotesk', 'Helvetica Neue', sans-serif; background: #ffffff; }
+body[data-variant="branca"] .slide-head { border-top-color: #111; border-bottom-color: #e3e3e3; }
+body[data-variant="branca"] .p-kicker, body[data-variant="branca"] .slide-n { color: #2b6cb0; }
+body[data-variant="branca"] .p-submit { background: #2b6cb0; }
+body[data-variant="branca"] .p-submit:hover { background: #1f4f87; }
+body[data-variant="branca"] .postit { background: #fff; border: 2px solid #2b6cb0; box-shadow: none; transform: none; }
+body[data-variant="branca"] .postit:nth-child(3n) { border-color: #c0392b; background: #fff; transform: none; }
+body[data-variant="branca"] .postit:nth-child(3n+2) { border-color: #2f9e44; background: #fff; transform: none; }
+body[data-variant="branca"] .card { border: 2px solid #e3e3e3; border-radius: 4px; }
+
+/* ─ tema ESCURO compartilhado (3 lousa-negra · 4 terminal): palco escuro, notas legíveis ─ */
+body[data-variant="lousa"], body[data-variant="terminal"] {
+  /* texto solto claro */
+}
+body[data-variant="lousa"] .p-hero h1, body[data-variant="terminal"] .p-hero h1,
+body[data-variant="lousa"] .slide-head h2, body[data-variant="terminal"] .slide-head h2,
+body[data-variant="lousa"] .p-date, body[data-variant="terminal"] .p-date,
+body[data-variant="lousa"] .p-obj-title, body[data-variant="terminal"] .p-obj-title,
+body[data-variant="lousa"] .p-toc a, body[data-variant="terminal"] .p-toc a,
+body[data-variant="lousa"] .slide-body .lede, body[data-variant="terminal"] .slide-body .lede,
+body[data-variant="lousa"] .concept-lede, body[data-variant="terminal"] .concept-lede,
+body[data-variant="lousa"] .net-hint, body[data-variant="terminal"] .net-hint,
+body[data-variant="lousa"] .p-field label, body[data-variant="terminal"] .p-field label,
+body[data-variant="lousa"] .collab-empty, body[data-variant="terminal"] .collab-empty,
+body[data-variant="lousa"] .reg-done, body[data-variant="terminal"] .reg-done {
+  color: #e8ece6;
+}
+/* painéis legíveis (notas/papel sobre o palco escuro) */
+body[data-variant="lousa"] .card, body[data-variant="terminal"] .card,
+body[data-variant="lousa"] .ref-section, body[data-variant="terminal"] .ref-section,
+body[data-variant="lousa"] .net-panel, body[data-variant="terminal"] .net-panel {
+  background: #f6f4ec; color: #1a1a1a; border-radius: 8px; }
+body[data-variant="lousa"] .ref-section, body[data-variant="terminal"] .ref-section,
+body[data-variant="lousa"] .net-panel, body[data-variant="terminal"] .net-panel { padding: 1.6rem; }
+
+/* ─ 3 · QUADRO-NEGRO ─ */
+body[data-variant="lousa"] { --display: 'Space Grotesk', sans-serif; --body: 'Space Grotesk', sans-serif;
+  background: #1f2a24; }
+body[data-variant="lousa"] .slide-head { background: #1f2a24; border-top-color: #44574c; border-bottom-color: #2c3a32; }
+
+/* ─ 4 · TERMINAL ─ */
+body[data-variant="terminal"] { --display: 'Space Mono', ui-monospace, monospace;
+  --body: 'Space Mono', ui-monospace, monospace; background: #0c100d; }
+body[data-variant="terminal"] .slide-head { background: #0c100d; border-top-color: #1f3a24; border-bottom-color: #16261a; }
+body[data-variant="terminal"] .p-kicker, body[data-variant="terminal"] .slide-n,
+body[data-variant="terminal"] .p-toc .n { color: #6ee7a0; }
+body[data-variant="terminal"] .p-submit { background: #1f3a24; color: #9ff0b0; }
+body[data-variant="terminal"] .p-submit:hover { background: #2b5233; }
+body[data-variant="terminal"] .postit { background: #0e160f; color: #cfe8d4; border: 1px solid #1f3a24;
+  border-left: 3px solid #6ee7a0; box-shadow: none; transform: none; }
+body[data-variant="terminal"] .postit-by { color: #6ee7a0; }
