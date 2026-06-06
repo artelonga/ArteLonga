@@ -5,9 +5,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <script>
   /* artelonga.com.br/yuri (GitHub Pages) → canônico em yuri.artelonga.com.br (a surface).
-     Só no domínio principal; na surface (yuri.*) é no-op. Preserva path/query/hash. */
+     A surface serve na PRÓPRIA raiz, então tira o prefixo /yuri (sem /yuri/?e=… duplicado).
+     Só no domínio principal; na surface (yuri.*) é no-op. Preserva query/hash. */
   (function(){var h=location.hostname;if(h==="artelonga.com.br"||h==="www.artelonga.com.br"){
-    location.replace("https://yuri.artelonga.com.br"+location.pathname+location.search+location.hash);}})();
+    location.replace("https://yuri.artelonga.com.br"+location.pathname.replace(/^\/yuri(?=\/|$)/,"")+location.search+location.hash);}})();
 </script>
 <title>Yuri — Índice</title>
 <meta name="description" content="Índice pessoal de Yuri: dias, referências (músicas, poemas, vídeos, páginas) e notas — com a linha do tempo da rede.">
@@ -30,7 +31,7 @@
   </nav>
   <main id="app"></main>
 </div>
-<script src="/yuri/system-graph.js?v=20260604b"></script>
+<script src="/yuri/system-graph.js?v=20260606a"></script>
 <script src="/neuro/authors.js?v=20260605a"></script>
 <script src="/yuri/garden.js?v=20260605b"></script>
 <script src="/yuri/chat.js?v=20260601a" defer></script>
