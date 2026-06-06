@@ -21,12 +21,12 @@ const DOCS = "https://artelonga.com.br/docs/";   // siblings absolutos — resol
 
 // pt = raiz da universe (/yuri/aws/ ou /), en = /en/
 const PAGES = [
-  { src: "aws.pt.md", out: "index.html", lang: "pt-BR", toHref: "en/", toLabel: "EN", self: APEX,
+  { src: "aws.pt.md", out: "index.html", lang: "pt-BR", toHref: "en/", toLabel: "EN", back: "../", self: APEX,
     desc: "AWS pela experiência: ferramentas, decisões, custos e postmortems de uma plataforma de dados real (~US$ 155/mês).",
     metrics: [["~US$ 155/mês", "custo operacional"], ["95% ↓", "custo DynamoDB→S3"], ["700×", "migração mais rápida"], ["226M", "itens migrados"]],
     seeLabel: "Ver também",
     seeAlso: [["Brain as a Service", DOCS + "brain-as-a-service.html"], ["Telemetria & Analytics", DOCS + "telemetry-surfaces.html"]] },
-  { src: "aws.en.md", out: "en/index.html", lang: "en", toHref: "../", toLabel: "PT", self: APEX + "en/",
+  { src: "aws.en.md", out: "en/index.html", lang: "en", toHref: "../", toLabel: "PT", back: "../../", self: APEX + "en/",
     desc: "AWS through experience: tools, decisions, costs and postmortems from a real data platform (~US$ 155/mo).",
     metrics: [["~US$ 155/mo", "operating cost"], ["95% ↓", "cost DynamoDB→S3"], ["700×", "faster migration"], ["226M", "items migrated"]],
     seeLabel: "See also",
@@ -71,7 +71,7 @@ function shell(p, title, body) {
 <link rel="alternate" hreflang="${p.lang === "pt-BR" ? "en" : "pt-br"}" href="${other}">
 <meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(p.desc)}"><meta property="og:type" content="article">
 <style>${CSS}</style></head><body>
-<div class="top"><a href="/yuri/">← yuri</a><a class="lang" href="${p.toHref}" hreflang="${p.toLabel === "EN" ? "en" : "pt-br"}">${p.toLabel}</a></div>
+<div class="top"><a href="${p.back}">← yuri</a><a class="lang" href="${p.toHref}" hreflang="${p.toLabel === "EN" ? "en" : "pt-br"}">${p.toLabel}</a></div>
 ${withStrip}
 ${seeAlso}
 <footer>Conteúdo: <code>yuri/aws/aws.${p.lang === "pt-BR" ? "pt" : "en"}.md</code> · forma separada de conteúdo, pré-renderizado.

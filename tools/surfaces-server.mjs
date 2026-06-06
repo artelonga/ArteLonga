@@ -493,20 +493,29 @@ const server = http.createServer(async (req, res) => {
   }
   if (url === "/" || url === "") url = SURFACE + "index.html";
 
-  let fp = path.normalize(path.join(ROOT, url));
-  if (fp !== ROOT && !fp.startsWith(ROOT + path.sep)) { res.writeHead(403); return res.end("forbidden"); }
-  try {
-    let st = await fs.stat(fp);
-    if (st.isDirectory()) { fp = path.join(fp, "index.html"); st = await fs.stat(fp); }
+  // resolve estático (traversal-safe + dir→index.html); retorna o filepath ou null
+  const tryServe = async (u) => {
+    let fp = path.normalize(path.join(ROOT, u));
+    if (fp !== ROOT && !fp.startsWith(ROOT + path.sep)) return null;
+    try {
+      let st = await fs.stat(fp);
+      if (st.isDirectory()) { fp = path.join(fp, "index.html"); await fs.stat(fp); }
+      return fp;
+    } catch { return null; }
+  };
+  // 1) caminho direto;  2) universe promovida serve na PRÓPRIA raiz → /aws = SURFACE/aws (yuri/aws/).
+  // O prefixo /yuri/ é artefato do apex; na surface o caminho limpo (/aws) resolve sem ele.
+  let fp = await tryServe(url);
+  if (!fp && SURFACE !== "/" && !url.startsWith(SURFACE)) fp = await tryServe(SURFACE + url.replace(/^\/+/, ""));
+  if (fp) {
     res.writeHead(200, {
       "content-type": MIME[path.extname(fp).toLowerCase()] || "application/octet-stream",
       "cache-control": "public, max-age=60"
     });
-    createReadStream(fp).pipe(res);
-  } catch (e) {
-    res.writeHead(404, { "content-type": "text/html; charset=utf-8" });
-    res.end('<!doctype html><meta charset=utf-8><title>404</title><body style="font-family:monospace;padding:3rem">404 — not found</body>');
+    return createReadStream(fp).pipe(res);
   }
+  res.writeHead(404, { "content-type": "text/html; charset=utf-8" });
+  res.end('<!doctype html><meta charset=utf-8><title>404</title><body style="font-family:monospace;padding:3rem">404 — not found</body>');
 });
 
 geoInit(); geo6Init(); cityInit();

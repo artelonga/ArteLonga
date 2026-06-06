@@ -12,7 +12,7 @@ added: 2026-06-05
 tags: [aws, cloud, infraestrutura]
 media:
   - kind: url
-    url: /yuri/aws/
+    url: aws/
 ---
 
 Ferramentas, decisões, custos e postmortems de operar uma plataforma de dados real na AWS (~US$ 155/mês). Bilíngue (pt/en).
