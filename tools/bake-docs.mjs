@@ -123,7 +123,8 @@ async function main() {
 <h1>Documentação</h1>
 <p>Base de conhecimento — renderizada como conteúdo (markdown → estático, sem dependência de runtime).
 Promovível a <code>docs.artelonga.com.br</code> pelo runbook de <a href="/docs/universe-upgrade.html">universe-upgrade</a>.</p>
-<div class="grp"><h2>Conhecimento (público)</h2><ul class="doclist">${li("publico")}</ul></div>
+<div class="grp"><h2>Conhecimento (público)</h2><ul class="doclist">${li("publico")}
+<li><a href="/yuri/aws/">AWS — caso de uso pela experiência</a> <span class="tag pub">público</span><br><span class="src">yuri/aws/ · pt+en · estudo de cloud do yuri</span></li></ul></div>
 <div class="grp"><h2>Engenharia · specs (dev)</h2><ul class="doclist">${li("dev")}</ul></div>
 <p class="src">+ Scrum (parceiro): <a href="/scrum/">/scrum/</a> · backlog: <code>work/artelonga/AL-N.md</code></p>
 </body></html>`;
