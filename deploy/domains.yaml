@@ -1,0 +1,98 @@
+# Single source of truth for domains · CNAMEs · surfaces.
+# Records what was scattered (CNAME + */fly.toml + deploy-surface.mjs) AND the DNS
+# records that live only at the registrar/Fly. Drives tools/deploy-surface.mjs and
+# the map at /docs/domains.html (tools/bake-domains.mjs). Audit warns on drift.
+#
+# Promotion (path → CNAME) is the recursive-universe model: a content folder served
+# as an apex path graduates to its own subdomain — same key/history/analytics.
+# Runbook: docs/universe-upgrade.html
+#
+# status: live | path-only (served at apex path, not yet promoted) | planned
+
+domains:
+  - domain: artelonga.com.br
+    type: apex
+    host: github-pages
+    content: "(whole repo)"
+    dns: "registrar: A/ALIAS → GitHub Pages (185.199.108–111.153)"
+    config: CNAME
+    status: live
+
+  - domain: yuri.artelonga.com.br
+    type: surface
+    host: fly
+    app: artelonga-yuri
+    region: gru
+    content: yuri/
+    surface: /yuri/
+    dns: "registrar: CNAME yuri → artelonga-yuri.fly.dev (+ fly certs)"
+    config: deploy/surfaces/yuri.toml
+    status: live
+    deploy:
+      key: yuri
+      server: tools/surfaces-server.mjs
+      dockerfile: deploy/surfaces/Dockerfile
+      env: { SURFACE: "/yuri/", FEEDBACK_UNIVERSE: "yuri" }
+      expect: ["system-graph.js", "feedback.js", "</html>"]
+      dirCheck: "/aws"
+
+  - domain: hostinger.artelonga.com.br
+    type: surface
+    host: fly
+    app: artelonga-hostinger
+    region: gru
+    content: yuri/hostinger/
+    surface: /yuri/hostinger/
+    dns: "registrar: CNAME hostinger → artelonga-hostinger.fly.dev (+ fly certs)"
+    config: deploy/surfaces/hostinger.toml
+    status: live
+    deploy:
+      key: hostinger
+      server: tools/surfaces-server.mjs
+      dockerfile: deploy/surfaces/Dockerfile
+      env: { SURFACE: "/yuri/hostinger/", FEEDBACK_UNIVERSE: "yuri" }
+      expect: ["Data Analyst", "Hostinger", "feedback.js"]
+      dirCheck: "/studies"
+
+  - domain: comunicacao.artelonga.com.br
+    type: surface
+    host: fly
+    app: artelonga-comunicacao
+    region: gru
+    content: "(iframe → yggdrasil)"
+    surface: iframe
+    dns: "registrar: CNAME comunicacao → artelonga-comunicacao.fly.dev (+ fly certs)"
+    config: deploy/surfaces/comunicacao.toml
+    status: live
+    deploy:
+      key: comunicacao
+      server: tools/surfaces-server.mjs
+      dockerfile: deploy/surfaces/Dockerfile
+      env: { MODE: "iframe", FEEDBACK_UNIVERSE: "comunicacao", REDIRECT_URL: "https://yggdrasil.artelonga.com.br/universos/comunicacao" }
+      expect: ["<iframe", "feedback.js"]
+
+  - domain: neuro.artelonga.com.br
+    type: surface
+    host: fly
+    app: artelonga-neuro
+    region: gru
+    content: neuro/
+    dns: "registrar: CNAME neuro → artelonga-neuro.fly.dev (+ fly certs)"
+    config: deploy/neuro/fly.toml
+    status: live
+
+  - domain: retroumarizal.com.br
+    type: graduated
+    host: fly
+    app: artelonga-retro
+    region: gru
+    content: retro-umarizal/
+    dns: "registrar: A/CNAME → artelonga-retro.fly.dev (+ fly certs)"
+    config: deploy/retro/fly.toml
+    status: live
+    deploy:
+      key: retro
+      server: tools/retro-server.mjs
+      dockerfile: deploy/retro/Dockerfile
+      env: {}
+      expect: ["Cardápio", "feedback.js"]

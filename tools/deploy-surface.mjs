@@ -11,30 +11,16 @@
  * Saída ≠ 0 se o smoke check OU o deploy falhar. */
 import { spawn } from "node:child_process";
 import http from "node:http";
+import { readFileSync } from "node:fs";
+import yaml from "js-yaml";
 
-const SURFACES = {
-  yuri: {
-    server: "tools/surfaces-server.mjs", env: { SURFACE: "/yuri/", FEEDBACK_UNIVERSE: "yuri" },
-    config: "deploy/surfaces/yuri.toml", dockerfile: "deploy/surfaces/Dockerfile",
-    expect: ["system-graph.js", "feedback.js", "</html>"], dirCheck: "/aws"
-  },
-  hostinger: {
-    server: "tools/surfaces-server.mjs", env: { SURFACE: "/yuri/hostinger/", FEEDBACK_UNIVERSE: "yuri" },
-    config: "deploy/surfaces/hostinger.toml", dockerfile: "deploy/surfaces/Dockerfile",
-    expect: ["Data Analyst", "Hostinger", "feedback.js"], dirCheck: "/studies"
-  },
-  comunicacao: {
-    server: "tools/surfaces-server.mjs",
-    env: { MODE: "iframe", FEEDBACK_UNIVERSE: "comunicacao", REDIRECT_URL: "https://yggdrasil.artelonga.com.br/universos/comunicacao" },
-    config: "deploy/surfaces/comunicacao.toml", dockerfile: "deploy/surfaces/Dockerfile",
-    expect: ["<iframe", "feedback.js"]
-  },
-  retro: {
-    server: "tools/retro-server.mjs", env: {},
-    config: "deploy/retro/fly.toml", dockerfile: "deploy/retro/Dockerfile",
-    expect: ["Cardápio", "feedback.js"]
-  }
-};
+// SURFACES vêm de deploy/domains.yaml (fonte única) — entradas com bloco `deploy`.
+const reg = yaml.load(readFileSync("deploy/domains.yaml", "utf8"));
+const SURFACES = Object.fromEntries((reg.domains || []).filter(d => d.deploy).map(d => [d.deploy.key, {
+  server: d.deploy.server, env: d.deploy.env || {},
+  config: d.config, dockerfile: d.deploy.dockerfile,
+  expect: d.deploy.expect || [], dirCheck: d.deploy.dirCheck
+}]));
 
 // strings que indicam falha de render (L-002) — NUNCA devem aparecer numa página saudável
 const BAD = ["algo deu errado", "erro ao renderizar", "failed to render", "cannot read prop", "is not defined", "undefined is not"];
