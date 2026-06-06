@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-06-05T08:08:10.068580067+00:00",
+  "as_of": "2026-06-06T06:53:38.331600911+00:00",
   "items": [
     {
       "path": "/servicos/",
@@ -8,21 +8,27 @@
       "visitors": 5
     },
     {
-      "path": "/servicos/traducao-en-pt/",
-      "slug": "traducao-en-pt",
-      "views": 3,
-      "visitors": 1
-    },
-    {
       "path": "/servicos/pensamento-islamico/",
       "slug": "pensamento-islamico",
-      "views": 2,
-      "visitors": 1
+      "views": 8,
+      "visitors": 3
     },
     {
       "path": "/servicos/alimentacao-e-bebidas/",
       "slug": "alimentacao-e-bebidas",
-      "views": 1,
+      "views": 6,
+      "visitors": 4
+    },
+    {
+      "path": "/servicos/gestao-administrativa/",
+      "slug": "gestao-administrativa",
+      "views": 6,
+      "visitors": 3
+    },
+    {
+      "path": "/servicos/traducao-en-pt/",
+      "slug": "traducao-en-pt",
+      "views": 3,
       "visitors": 1
     },
     {
@@ -58,12 +64,6 @@
     {
       "path": "/servicos/desenvolvimento-de-api/",
       "slug": "desenvolvimento-de-api",
-      "views": 1,
-      "visitors": 1
-    },
-    {
-      "path": "/servicos/gestao-administrativa/",
-      "slug": "gestao-administrativa",
       "views": 1,
       "visitors": 1
     },
