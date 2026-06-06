@@ -61,7 +61,11 @@
   function esc(s) { return String(s == null ? "" : s).replace(/[<>&"]/g, function (c) {
     return { "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" }[c]; }); }
 
-  var POST = window.NEURO_FORM_ENDPOINT || "/api/feedback";
+  // As respostas gravadas vivem na surface neuro (universe-owned, CORS *, anônimas).
+  // Na própria surface usa same-origin; em qualquer outro host (apex /2026-05-29, localhost,
+  // neuroN…) aponta pro absoluto — senão /api/feedback.json dá 404 (sem respostas).
+  var POST = window.NEURO_FORM_ENDPOINT ||
+    (location.hostname === "neuro.artelonga.com.br" ? "/api/feedback" : "https://neuro.artelonga.com.br/api/feedback");
   var LIST = POST.replace(/\/feedback$/, "/feedback.json");
   var DEL = POST.replace(/\/feedback$/, "/feedback/delete");
   var EDIT = POST.replace(/\/feedback$/, "/feedback/edit");
