@@ -1,0 +1,56 @@
+/* neuro/gallery.css — galeria sensível com porta de consentimento + slideshow.
+   Usada pela timeline (botão {galeria:...} renderizado por parse.js). Conteúdo
+   educacional com peças anatômicas humanas; consentimento pedido a cada abertura. */
+
+/* gatilho inline no corpo do card */
+.neuro-gallery { font: inherit; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.02em;
+  color: var(--terra, #c0392b); background: transparent; border: 1px solid currentColor;
+  border-radius: 4px; padding: 0.35rem 0.7rem; margin-top: 0.5rem; cursor: pointer; }
+.neuro-gallery::before { content: "⚠ "; }
+.neuro-gallery:hover { background: var(--terra, #c0392b); color: #fff; }
+
+/* overlay base (consentimento e slideshow) */
+.gal-ov { position: fixed; inset: 0; z-index: 200; display: flex; align-items: center;
+  justify-content: center; padding: 5vh 4vw; }
+
+/* ── porta de consentimento ── */
+.gal-consent { background: rgba(20,16,14,0.55); }
+.gal-card { width: 100%; max-width: 520px; background: #fff; color: #0a0a0a; border-radius: 8px;
+  padding: 2rem 2rem 1.7rem; box-shadow: 0 24px 70px rgba(0,0,0,0.35);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+.gal-badge { display: inline-block; font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase;
+  font-weight: 700; color: #fff; background: #c0392b; border-radius: 3px; padding: 0.25rem 0.6rem; }
+.gal-card h3 { margin-top: 0.9rem; font-size: 1.35rem; letter-spacing: -0.02em; line-height: 1.1; }
+.gal-card p { margin-top: 0.8rem; font-size: 0.95rem; line-height: 1.55; }
+.gal-fine { font-size: 0.82rem !important; color: #555; }
+.gal-actions { display: flex; gap: 0.7rem; justify-content: flex-end; margin-top: 1.5rem; }
+.gal-cancel { font: inherit; font-size: 0.82rem; padding: 0.6rem 1rem; border: 1px solid #e0e0e0;
+  background: #fff; border-radius: 4px; cursor: pointer; }
+.gal-cancel:hover { border-color: #c0392b; color: #c0392b; }
+.gal-accept { font: inherit; font-size: 0.82rem; font-weight: 700; padding: 0.6rem 1.2rem; border: none;
+  border-radius: 4px; background: #0a0a0a; color: #fff; cursor: pointer; }
+.gal-accept:hover { background: #c0392b; }
+
+/* ── slideshow ── */
+.gal-show { background: rgba(8,6,6,0.94); flex-direction: column; }
+.gal-stage { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  width: 100%; min-height: 0; gap: 0.8rem; }
+.gal-img { max-width: 100%; max-height: 78vh; object-fit: contain; border-radius: 3px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+.gal-cap { font-family: 'Space Mono', ui-monospace, monospace; font-size: 0.8rem; letter-spacing: 0.04em;
+  color: #f0e6e0; }
+.gal-close { position: absolute; top: 1rem; right: 1.3rem; font-size: 2rem; line-height: 1; color: #fff;
+  background: none; border: none; cursor: pointer; opacity: 0.8; }
+.gal-close:hover { opacity: 1; }
+.gal-nav { position: absolute; top: 50%; transform: translateY(-50%); font-size: 2.4rem; line-height: 1;
+  width: 3rem; height: 4rem; color: #fff; background: rgba(0,0,0,0.25); border: none; cursor: pointer;
+  border-radius: 6px; opacity: 0.7; }
+.gal-nav:hover { opacity: 1; background: rgba(0,0,0,0.45); }
+.gal-prev { left: 1.5vw; } .gal-next { right: 1.5vw; }
+.gal-foot { margin-top: 0.9rem; font-family: 'Space Mono', ui-monospace, monospace; font-size: 0.66rem;
+  letter-spacing: 0.04em; color: #b8aaa3; text-align: center; max-width: 60ch; }
+.gal-count { color: #fff; font-weight: 700; }
+@media (max-width: 720px) {
+  .gal-nav { font-size: 1.8rem; width: 2.2rem; height: 3rem; }
+  .gal-img { max-height: 64vh; }
+}

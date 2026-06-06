@@ -1,0 +1,147 @@
+/* neuro/neuro.css — tokens base compartilhados pelas 3 formas.
+   Espelha a paleta do site (assets/site.css): preto #0a0a0a sobre branco,
+   acento terra #c0392b, Helvetica Neue. NÃO contém layout de timeline —
+   cada /neuroN tem o seu. Isto é só o "form base". */
+
+:root {
+  --ink: #0a0a0a;
+  --ink-2: #555;
+  --ink-3: #888;
+  --line: #e0e0e0;
+  --line-2: #eee;
+  --bg: #fff;
+  --bg-soft: #fafafa;
+  --terra: #c0392b;
+  --maxw: 920px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; }
+
+/* barra de revisão — só pra alternar entre as 3 formas em localhost */
+.neuro-rev {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  display: flex; align-items: center; gap: 1.2rem;
+  padding: 0.55rem 7vw;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--line-2);
+  font-size: 0.68rem; letter-spacing: 0.04em;
+}
+.neuro-rev b { font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; }
+.neuro-rev .sp { flex: 1; }
+.neuro-rev a {
+  text-decoration: none; color: var(--ink-3);
+  text-transform: uppercase; letter-spacing: 0.14em; font-weight: 700;
+}
+.neuro-rev a.on { color: var(--ink); border-bottom: 2px solid var(--terra); padding-bottom: 2px; }
+.neuro-rev a:hover { color: var(--terra); }
+.neuro-rev .tag { color: var(--ink-3); text-transform: none; letter-spacing: 0; font-weight: 400; }
+
+/* cabeçalho de página comum */
+.neuro-head { max-width: var(--maxw); margin: 0 auto; padding: 7.5rem 7vw 1rem; }
+.neuro-head h1 {
+  font-size: clamp(1.9rem, 5vw, 3.2rem); font-weight: 800; letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+.neuro-head .sub { margin-top: 0.6rem; color: var(--ink-2); font-size: 0.9rem; max-width: 46ch; }
+.neuro-draft {
+  display: inline-block; margin-top: 0.8rem;
+  font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700;
+  color: var(--terra); border: 1px solid currentColor; border-radius: 2px; padding: 0.2rem 0.5rem;
+}
+.neuro-back {
+  display: inline-block; margin-top: 0.9rem; font-size: 0.72rem; letter-spacing: 0.1em;
+  text-transform: uppercase; font-weight: 700; color: var(--ink-3); text-decoration: none;
+}
+.neuro-back:hover { color: var(--terra); }
+
+/* links do corpo */
+.neuro-jump { color: var(--terra); text-decoration: none; border-bottom: 1px dashed currentColor; }
+.neuro-jump:hover { border-bottom-style: solid; }
+
+.neuro-loading { max-width: var(--maxw); margin: 0 auto; padding: 2rem 7vw; color: var(--ink-3); }
+
+/* templates de mídia e links no corpo dos marcos (renderizados do markdown) */
+.al-img { display: block; width: 100%; height: auto; }
+.al-thumb { margin-bottom: 0.75rem; border-radius: 3px; overflow: hidden; border: 1px solid var(--line-2); }
+.al-thumb .al-img { border-radius: 0; }
+.al-fig { margin: 0.85rem 0; text-align: left; }
+.al-fig .al-img { border-radius: 3px; border: 1px solid var(--line-2); }
+.al-fig figcaption { margin-top: 0.35rem; font-size: 0.72rem; color: var(--ink-3); }
+.al-list { margin: 0.7rem 0 0; padding-left: 1.1rem; font-size: 0.85rem; text-align: left; }
+.al-list li { margin-top: 0.25rem; }
+
+/* sílabo de ensino — lista discreta de cursos, menor, baixa ênfase */
+.al-syllabus { margin-top: 0.7rem; text-align: left; border-left: 2px solid var(--line); padding-left: 0.7rem; }
+.al-syl-h { display: block; font-size: 0.56rem; letter-spacing: 0.18em; text-transform: uppercase;
+            font-weight: 700; color: var(--ink-3); margin-bottom: 0.3rem; }
+.al-syllabus ul { list-style: none; margin: 0; padding: 0; }
+.al-syllabus li { font-size: 0.72rem; color: var(--ink-2); line-height: 1.45; }
+.al-syllabus li + li { margin-top: 0.1rem; }
+/* variante inline (ex.: Cadernos: a · b · c) — compacta, não ocupa várias linhas */
+.al-syl-inline ul { display: inline; }
+.al-syl-inline li { display: inline; }
+.al-syl-inline li + li { margin-top: 0; }
+.al-syl-inline li:not(:last-child)::after { content: " · "; color: var(--line); }
+
+/* citação ABNT inline (autor-data) — NÃO é link; abre o popover da referência */
+.neuro-cite { color: var(--terra); cursor: pointer; white-space: nowrap; font-variant-numeric: tabular-nums;
+              border-bottom: 1px dotted currentColor; }
+.neuro-cite:hover, .neuro-cite:focus { border-bottom-style: solid; outline: none; }
+.neuro-cite-missing { color: var(--ink-3); }
+
+/* lista de referências ABNT no fim da página */
+.ref-section { max-width: 760px; margin: 1rem auto 0; padding: 2.4rem 7vw 6vh; border-top: 1px solid var(--line); }
+.ref-section h2 { font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-3);
+                  font-weight: 700; }
+.ref-section .ref-note { margin-top: 0.4rem; font-size: 0.68rem; color: var(--terra); }
+.ref-top { display: flex; align-items: center; gap: 0.5rem; }
+.ref-sub { margin-top: 1.6rem; font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase;
+           font-weight: 700; color: var(--ink-2); }
+.ref-sub:first-of-type { margin-top: 1rem; }
+
+/* ícone de ajuda com tooltip (referências × bibliografia) */
+.ref-help { position: relative; display: inline-flex; align-items: center; justify-content: center;
+            width: 16px; height: 16px; border-radius: 50%; border: 1px solid var(--ink-3);
+            color: var(--ink-3); font-size: 0.62rem; font-weight: 700; cursor: help; flex: 0 0 auto; }
+.ref-help:hover, .ref-help:focus { border-color: var(--terra); color: var(--terra); outline: none; }
+.ref-tip { position: absolute; top: calc(100% + 8px); left: 0; z-index: 20; width: 260px;
+           background: var(--ink); color: #fff; font-size: 0.72rem; font-weight: 400; line-height: 1.45;
+           letter-spacing: 0; text-transform: none; padding: 0.6rem 0.75rem; border-radius: 4px;
+           opacity: 0; visibility: hidden; transition: opacity .15s; pointer-events: none; }
+.ref-tip b { font-weight: 700; }
+.ref-help:hover .ref-tip, .ref-help:focus .ref-tip { opacity: 1; visibility: visible; }
+
+.ref-list { list-style: none; margin-top: 1rem; }
+.ref-list li { padding: 0.75rem 0; border-bottom: 1px solid var(--line-2); font-size: 0.85rem;
+               line-height: 1.5; scroll-margin-top: 4.5rem; }
+.ref-list li:last-child { border-bottom: none; }
+.ref-list li a { color: var(--terra); word-break: break-word; }
+
+/* popover da referência (hover = prévia, clique = fixa). Contém o link à fonte. */
+.neuro-cite-pop { position: absolute; z-index: 80; display: none; width: 320px; max-width: 88vw;
+                  background: var(--ink); color: #fff; font-size: 0.78rem; line-height: 1.5;
+                  padding: 0.7rem 0.85rem 0.75rem; border-radius: 6px; box-shadow: 0 12px 32px rgba(0,0,0,0.32); }
+.neuro-cite-pop a { color: #ffb3a8; word-break: break-word; text-decoration: underline; }
+.neuro-cite-pop a:hover { color: #fff; }
+.neuro-cite-pop em, .neuro-cite-pop strong { color: #fff; }
+.neuro-cite-pop.pinned { box-shadow: 0 0 0 2px var(--terra), 0 12px 32px rgba(0,0,0,0.32); }
+
+/* destaque ao pular via link interno */
+@keyframes neuro-flash {
+  0% { background: rgba(192,57,43,0.16); }
+  100% { background: transparent; }
+}
+.neuro-flash { animation: neuro-flash 1.4s ease-out; }

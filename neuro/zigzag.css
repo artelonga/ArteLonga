@@ -1,0 +1,63 @@
+/* neuro/zigzag.css — LAYOUT compartilhado das formas em zigzag (AZ, AZ1-3).
+   Estrutura/espaçamento/eixo. A tipografia/expressão fica em cada página
+   (AZ1/AZ2/AZ3 sobrescrevem fontes, tamanho de data, etc). */
+.tl { max-width: 1040px; margin: 0 auto; padding: 1rem 5vw 12vh; position: relative; }
+.tl::before {                       /* espinha central */
+  content: ""; position: absolute; top: 0; bottom: 0; left: 50%;
+  width: 2px; background: var(--line); transform: translateX(-1px);
+}
+.cols { display: flex; align-items: flex-start; }
+.col { width: 50%; }
+.col.left { padding-right: 2.5rem; }
+.col.right { padding-left: 2.5rem; margin-top: 3.5rem; }   /* defasagem do zigzag */
+
+/* modo EIXO DO TEMPO (desktop): cards posicionados por ano (JS define o top).
+   Posição absoluta relativa a .tl → espaçamento vertical ∝ anos decorridos. */
+.cols.axis { display: block; }
+.cols.axis .col.right { display: none; }
+.cols.axis .col.left { width: auto; padding: 0; margin: 0; }
+.cols.axis .card { position: absolute; width: calc(50% - 2.6rem); margin-bottom: 0; }
+.cols.axis .card.s-esq { left: 0; }
+.cols.axis .card.s-dir { right: 0; }
+.cols.axis .card.open { z-index: 5; }   /* card aberto sobrepõe vizinhos legível */
+
+.card {
+  position: relative; margin-bottom: 0.85rem; cursor: pointer;
+  border: 1px solid var(--line); border-radius: 4px; padding: 0.8rem 1rem; background: var(--bg);
+  transition: border-color .15s, box-shadow .15s;
+}
+.card:hover { border-color: var(--ink); box-shadow: 0 4px 18px rgba(0,0,0,0.05); }
+.card.open { border-color: var(--terra); }
+.card.s-esq { text-align: right; }
+.card.s-dir { text-align: left; }
+
+/* conector + bolinha até o eixo, na altura do título */
+.card::before { content: ""; position: absolute; top: 1.35rem; width: 2.5rem; height: 2px; background: var(--line); }
+.card.s-esq::before { right: -2.5rem; }
+.card.s-dir::before { left: -2.5rem; }
+.card::after { content: ""; position: absolute; top: calc(1.35rem - 5px); width: 12px; height: 12px;
+               border-radius: 50%; background: var(--bg); border: 2px solid var(--ink); z-index: 2; }
+.card.s-esq::after { right: calc(-2.5rem - 6px); }
+.card.s-dir::after { left: calc(-2.5rem - 6px); }
+.card.open::after { background: var(--terra); border-color: var(--terra); }
+
+/* defaults tipográficos (cada filho sobrescreve) */
+.card .yr { font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700;
+            color: var(--ink-3); }
+.card.open .yr { color: var(--terra); }
+.card h3 { font-size: 1.02rem; font-weight: 700; letter-spacing: -0.01em; margin-top: 0.12rem; }
+.card .teaser { margin-top: 0.3rem; font-size: 0.85rem; color: var(--ink-2); }
+.card .body { margin-top: 0.7rem; padding-top: 0.7rem; border-top: 1px solid var(--line-2);
+              font-size: 0.87rem; color: var(--ink); text-align: left; }
+.card.s-esq .body { text-align: right; }
+.card .body p + p { margin-top: 0.6rem; }
+
+/* mobile: coluna única, espinha à esquerda, ordem cronológica */
+@media (max-width: 720px) { .tl::before { left: 6px; } }
+.cols.mobile { display: block; }
+.cols.mobile .col.right { display: none; }
+.cols.mobile .col.left { width: auto; padding-right: 0; margin-top: 0; }
+.cols.mobile .card, .cols.mobile .card.s-esq, .cols.mobile .card.s-dir { text-align: left; margin-left: 2rem; }
+.cols.mobile .card .body { text-align: left; }
+.cols.mobile .card::before { display: none; }
+.cols.mobile .card::after { left: -2rem; right: auto; }

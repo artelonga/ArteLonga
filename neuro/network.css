@@ -1,0 +1,40 @@
+/* neuro/network.css — grafo orgânico (canvas) estilo Obsidian, painel escuro.
+   FORMA aqui; dados/comportamento em network.js. */
+
+.net-wrap { margin-top: 1.2rem; }
+.net-stage { position: relative; width: 100%; height: 420px; background: #14171a; border-radius: 10px;
+  overflow: hidden; cursor: grab; touch-action: none; user-select: none; }
+.net-stage.dragging { cursor: grabbing; }
+.net-stage canvas { display: block; width: 100%; height: 100%; }
+@media (max-width: 720px) { .net-stage { height: 360px; } }
+
+/* legenda de teclas — sempre visível, explica os comandos */
+.net-legend { position: absolute; left: 12px; bottom: 12px; z-index: 4; pointer-events: none;
+  font-family: var(--display, 'Space Mono', monospace); font-size: 0.64rem; letter-spacing: 0.03em;
+  color: #8d959d; background: rgba(0,0,0,0.28); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 6px; padding: 0.35rem 0.6rem; }
+.net-legend b { color: #cfd6dc; font-weight: 700; }
+
+/* restaurar vista — sempre volta ao padrão */
+.net-btn { position: absolute; top: 12px; right: 12px; z-index: 4; font-family: var(--display, 'Space Mono', monospace);
+  font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; color: #cfd6dc;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); border-radius: 6px;
+  padding: 0.42rem 0.7rem; cursor: pointer; }
+.net-btn:hover { background: rgba(255,255,255,0.16); color: #fff; }
+
+/* tooltip de hover — resumo curto do nó */
+.net-tip { position: absolute; z-index: 5; pointer-events: none; background: rgba(0,0,0,0.88); color: #fff;
+  font-family: var(--body, sans-serif); font-size: 0.74rem; line-height: 1.35; padding: 0.35rem 0.6rem;
+  border-radius: 5px; max-width: 240px; transform: translate(-50%, -100%); opacity: 0; transition: opacity .1s; }
+.net-tip.show { opacity: 1; }
+
+/* painel de info no clique — referência + LINK pra fonte (não abre direto) */
+.net-info { position: absolute; left: 12px; right: 12px; bottom: 48px; z-index: 6; display: none;
+  background: #fbfbf9; color: #1a1a1a; border-radius: 8px; padding: 1rem 2.4rem 1rem 1rem;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.4); max-width: 560px; font-size: 0.84rem; line-height: 1.5; }
+.net-info.show { display: block; }
+.net-info-body a { color: var(--terra, #c0392b); word-break: break-word; }
+.net-info-x { position: absolute; top: 6px; right: 8px; font-size: 1.3rem; line-height: 1; color: #999;
+  background: none; border: none; cursor: pointer; }
+.net-info-x:hover { color: var(--terra, #c0392b); }
+@media (max-width: 720px) { .net-info { bottom: 44px; padding-right: 2.2rem; } }
