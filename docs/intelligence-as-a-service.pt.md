@@ -1,7 +1,7 @@
 # Inteligência como Serviço (IaaS) — a linha entre o que é especificado e o que é criado
 
 **Tese.** Existem duas inteligências, e a arquitetura traça a linha entre
-elas honestamente. De um lado, a **inteligência delimitada** — tudo o que um *schema* ou
+elas honestamente. De um lado, a **inteligência de máquina** (determinística) — tudo o que um *schema* ou
 um *contrato de API* consegue capturar: determinístico, funcional, verificável, reprodutível.
 *Isso* é o que renderizamos **como serviço** — a inteligência "artificial", de máquina.
 Do outro lado, o **cérebro** — a inteligência biológica, o humano — que
@@ -30,7 +30,7 @@ flowchart LR
     CR["Creativity · free expression"]
     HW["Hardware<br/>computer · phone · pen & paper"]
   end
-  subgraph Service["Intelligence as a Service — the bounded part"]
+  subgraph Service["Intelligence as a Service — the machine (deterministic) part"]
     SCH["Schemas + API contracts<br/>deterministic · verifiable"]
     R["Renderer (form)"]
     D["Local data (data spec)"]
@@ -48,7 +48,7 @@ flowchart LR
 ```
 
 **Inteligência como Serviço** = a linha. O **cérebro permanece livre** (criatividade, livre
-expressão); o **serviço é a inteligência delimitada que *pode* ser especificada** —
+expressão); o **serviço é a inteligência de máquina (determinística) que *pode* ser especificada** —
 schemas e contratos. **co** (software livre, *ñandé* — compartilhado) provê identidade,
 memória (warehouse), metabolismo (payment) e sinapses (sync). O contrato é a
 spec, nunca um dono.
