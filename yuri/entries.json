@@ -1,7 +1,193 @@
 {
   "generated": "static",
-  "count": 14,
+  "count": 20,
   "entries": [
+    {
+      "slug": "aws",
+      "path": "/yuri/refs/aws.md",
+      "folder": "refs",
+      "type": "page",
+      "kind": "systems",
+      "lang": "pt-BR",
+      "tkey": "aws",
+      "category": "tecnologia",
+      "title": "AWS — uma introdução pela experiência",
+      "author": "yuri",
+      "mine": true,
+      "created": "2026",
+      "added": "2026-06-05",
+      "date": null,
+      "published": true,
+      "tags": [
+        "aws",
+        "cloud",
+        "infraestrutura"
+      ],
+      "media": [
+        {
+          "kind": "url",
+          "url": "/yuri/aws/"
+        }
+      ],
+      "caderno": null,
+      "pagina": null,
+      "snippet": "Ferramentas, decisões, custos e postmortems de operar uma plataforma de dados real na AWS (~US$ 155/mês). Bilíngue (pt/en)."
+    },
+    {
+      "slug": "brain-as-a-service",
+      "path": "/yuri/refs/brain-as-a-service.md",
+      "folder": "refs",
+      "type": "project",
+      "kind": "systems",
+      "lang": "pt-BR",
+      "tkey": "brain-as-a-service",
+      "category": "sistemas",
+      "title": "Brain as a Service — escala horizontal",
+      "author": "yuri",
+      "mine": true,
+      "created": "2026",
+      "added": "2026-06-05",
+      "date": null,
+      "published": true,
+      "tags": [
+        "baas",
+        "escala",
+        "infraestrutura"
+      ],
+      "media": [
+        {
+          "kind": "url",
+          "url": "/docs/brain-as-a-service.html"
+        }
+      ],
+      "caderno": null,
+      "pagina": null,
+      "snippet": "Tese de escala horizontal a custo SaaS zero: cada brain (universe) soberana, infra-agnóstica, renderiza do cache. yuri é o template."
+    },
+    {
+      "slug": "hostinger",
+      "path": "/yuri/refs/hostinger.md",
+      "folder": "refs",
+      "type": "project",
+      "kind": "systems",
+      "lang": "pt-BR",
+      "tkey": "hostinger",
+      "category": "dados",
+      "title": "Hostinger — do lugar do cliente",
+      "author": "yuri",
+      "mine": true,
+      "created": "2026",
+      "added": "2026-06-05",
+      "date": null,
+      "published": true,
+      "tags": [
+        "data",
+        "funil",
+        "customer success"
+      ],
+      "media": [
+        {
+          "kind": "url",
+          "url": "/yuri/hostinger/"
+        }
+      ],
+      "caderno": null,
+      "pagina": null,
+      "snippet": "Estudo de Data Analyst: funil, fricção de onboarding e sinais de CS, do lugar do cliente. Bilíngue (pt/en)."
+    },
+    {
+      "slug": "neuro",
+      "path": "/yuri/refs/neuro.md",
+      "folder": "refs",
+      "type": "project",
+      "kind": "systems",
+      "lang": "pt-BR",
+      "tkey": "neuro",
+      "category": "neurociência",
+      "title": "Neuro — bibliografia aberta + identidade de autores",
+      "author": "yuri",
+      "mine": true,
+      "created": "2026",
+      "added": "2026-06-05",
+      "date": null,
+      "published": true,
+      "tags": [
+        "neurociência",
+        "bibliografia",
+        "dados"
+      ],
+      "media": [
+        {
+          "kind": "url",
+          "url": "/neuro/bibliografia.html"
+        }
+      ],
+      "caderno": null,
+      "pagina": null,
+      "snippet": "Bibliografia de neurociência aberta (ABNT) com identidade canônica de autores — filtra por autor resolvendo todas as variantes."
+    },
+    {
+      "slug": "scrum-delivery",
+      "path": "/yuri/refs/scrum-delivery.md",
+      "folder": "refs",
+      "type": "project",
+      "kind": "systems",
+      "lang": "pt-BR",
+      "tkey": "scrum-delivery",
+      "category": "metodologia",
+      "title": "Scrum — entrega & retrospectiva",
+      "author": "yuri",
+      "mine": true,
+      "created": "2026",
+      "added": "2026-06-05",
+      "date": null,
+      "published": true,
+      "tags": [
+        "scrum",
+        "agile",
+        "entrega"
+      ],
+      "media": [
+        {
+          "kind": "url",
+          "url": "/docs/scrum-retrospective.html"
+        }
+      ],
+      "caderno": null,
+      "pagina": null,
+      "snippet": "Funil → conversão → kanban; cadência quinzenal; roadmap/backlog como co tasks; retrospectiva dos releases reais com Definition of Done."
+    },
+    {
+      "slug": "telemetria",
+      "path": "/yuri/refs/telemetria.md",
+      "folder": "refs",
+      "type": "project",
+      "kind": "systems",
+      "lang": "pt-BR",
+      "tkey": "telemetria",
+      "category": "sistemas",
+      "title": "Telemetria & Analytics universe-owned",
+      "author": "yuri",
+      "mine": true,
+      "created": "2026",
+      "added": "2026-06-05",
+      "date": null,
+      "published": true,
+      "tags": [
+        "telemetria",
+        "analytics",
+        "privacidade"
+      ],
+      "media": [
+        {
+          "kind": "url",
+          "url": "/docs/telemetry-surfaces.html"
+        }
+      ],
+      "caderno": null,
+      "pagina": null,
+      "snippet": "Observabilidade soberana sem terceiros: geo embarcado (v4+v6+cidade), retenção, conversões — paridade com Google Analytics, custo SaaS zero."
+    },
     {
       "slug": "bystander-rats",
       "path": "/yuri/refs/bystander-rats.md",
@@ -30,7 +216,7 @@
       ],
       "caderno": null,
       "pagina": null,
-      "snippet": "Havlik, J. L., Vieira Sugano, Y. Y., Jacobi, M. C., et al. (2020). *Science Advances*, 6(28), eabb4205."
+      "snippet": "Havlik, J. L., Vieira Sugano, Y. Y., Jacobi, M. C., et al. (2020). Science Advances, 6(28), eabb4205."
     },
     {
       "slug": "dehydration-toads",
@@ -60,7 +246,7 @@
       ],
       "caderno": null,
       "pagina": null,
-      "snippet": "Madelaire, C. B., Vieira Sugano, Y. Y., et al. (2020). *Behavioral Ecology and Sociobiology*."
+      "snippet": "Madelaire, C. B., Vieira Sugano, Y. Y., et al. (2020). Behavioral Ecology and Sociobiology."
     },
     {
       "slug": "helping-rats",
@@ -90,7 +276,7 @@
       ],
       "caderno": null,
       "pagina": null,
-      "snippet": "Vieira Sugano, Y. Y., Shan, H., Molasky, N. M. R., & Mason, P. (2022). *bioRxiv* (preprint)."
+      "snippet": "Vieira Sugano, Y. Y., Shan, H., Molasky, N. M. R., & Mason, P. (2022). bioRxiv (preprint)."
     },
     {
       "slug": "portfolio",
@@ -117,7 +303,7 @@
       "media": [],
       "caderno": null,
       "pagina": null,
-      "snippet": "ArteLonga (2024) builds co: one identity, one bill, storage and compute as a service — free software handed to whoever arrives, from a quilo"
+      "snippet": "Two parallel tracks tell this story above — switch between them and step through. One is mine; the other is ours."
     },
     {
       "slug": "portfolio.pt",
@@ -144,7 +330,7 @@
       "media": [],
       "caderno": null,
       "pagina": null,
-      "snippet": "A ArteLonga (2024) constrói o co: uma identidade, uma fatura, storage e compute como serviço — software livre entregue a quem chega, de um q"
+      "snippet": "Duas faixas paralelas contam esta história acima — troque entre elas e avance. Uma é minha; a outra é nossa."
     },
     {
       "slug": "proprioception-thesis",
