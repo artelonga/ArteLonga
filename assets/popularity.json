@@ -1,11 +1,11 @@
 {
-  "as_of": "2026-06-07T07:55:55.745720793+00:00",
+  "as_of": "2026-06-08T08:55:42.107132162+00:00",
   "items": [
     {
       "path": "/servicos/",
       "slug": "",
-      "views": 11,
-      "visitors": 5
+      "views": 12,
+      "visitors": 6
     },
     {
       "path": "/servicos/pensamento-islamico/",
@@ -24,6 +24,12 @@
       "slug": "gestao-administrativa",
       "views": 6,
       "visitors": 3
+    },
+    {
+      "path": "/servicos/desenvolvimento-de-api/",
+      "slug": "desenvolvimento-de-api",
+      "views": 3,
+      "visitors": 2
     },
     {
       "path": "/servicos/traducao-en-pt/",
@@ -64,12 +70,6 @@
     {
       "path": "/servicos/comunicacao-visual/",
       "slug": "comunicacao-visual",
-      "views": 1,
-      "visitors": 1
-    },
-    {
-      "path": "/servicos/desenvolvimento-de-api/",
-      "slug": "desenvolvimento-de-api",
       "views": 1,
       "visitors": 1
     },
