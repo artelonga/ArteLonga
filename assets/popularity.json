@@ -1,16 +1,16 @@
 {
-  "as_of": "2026-06-08T08:55:42.107132162+00:00",
+  "as_of": "2026-06-09T07:50:44.583308206+00:00",
   "items": [
     {
       "path": "/servicos/",
       "slug": "",
-      "views": 12,
+      "views": 11,
       "visitors": 6
     },
     {
       "path": "/servicos/pensamento-islamico/",
       "slug": "pensamento-islamico",
-      "views": 8,
+      "views": 7,
       "visitors": 3
     },
     {
@@ -35,18 +35,6 @@
       "path": "/servicos/traducao-en-pt/",
       "slug": "traducao-en-pt",
       "views": 3,
-      "visitors": 1
-    },
-    {
-      "path": "/servicos/inteligencia-e-tecnologia/",
-      "slug": "inteligencia-e-tecnologia",
-      "views": 2,
-      "visitors": 2
-    },
-    {
-      "path": "/servicos/auditoria/",
-      "slug": "auditoria",
-      "views": 1,
       "visitors": 1
     },
     {
@@ -82,6 +70,12 @@
     {
       "path": "/servicos/gestao-de-vendas/",
       "slug": "gestao-de-vendas",
+      "views": 1,
+      "visitors": 1
+    },
+    {
+      "path": "/servicos/inteligencia-e-tecnologia/",
+      "slug": "inteligencia-e-tecnologia",
       "views": 1,
       "visitors": 1
     },
