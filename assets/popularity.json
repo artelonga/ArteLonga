@@ -1,0 +1,103 @@
+{
+  "as_of": "2026-06-12T08:26:08.609114760+00:00",
+  "items": [
+    {
+      "path": "/servicos/",
+      "slug": "",
+      "views": 10,
+      "visitors": 5
+    },
+    {
+      "path": "/servicos/alimentacao-e-bebidas/",
+      "slug": "alimentacao-e-bebidas",
+      "views": 6,
+      "visitors": 4
+    },
+    {
+      "path": "/servicos/gestao-administrativa/",
+      "slug": "gestao-administrativa",
+      "views": 6,
+      "visitors": 3
+    },
+    {
+      "path": "/servicos/pensamento-islamico/",
+      "slug": "pensamento-islamico",
+      "views": 6,
+      "visitors": 2
+    },
+    {
+      "path": "/servicos/desenvolvimento-de-api/",
+      "slug": "desenvolvimento-de-api",
+      "views": 3,
+      "visitors": 2
+    },
+    {
+      "path": "/servicos/traducao-en-pt/",
+      "slug": "traducao-en-pt",
+      "views": 3,
+      "visitors": 1
+    },
+    {
+      "path": "/servicos/autocuidado/",
+      "slug": "autocuidado",
+      "views": 1,
+      "visitors": 1
+    },
+    {
+      "path": "/servicos/automacao-de-processos/",
+      "slug": "automacao-de-processos",
+      "views": 1,
+      "visitors": 1
+    },
+    {
+      "path": "/servicos/computacao/",
+      "slug": "computacao",
+      "views": 1,
+      "visitors": 1
+    },
+    {
+      "path": "/servicos/comunicacao-visual/",
+      "slug": "comunicacao-visual",
+      "views": 1,
+      "visitors": 1
+    },
+    {
+      "path": "/servicos/gestao-de-logistica/",
+      "slug": "gestao-de-logistica",
+      "views": 1,
+      "visitors": 1
+    },
+    {
+      "path": "/servicos/gestao-de-vendas/",
+      "slug": "gestao-de-vendas",
+      "views": 1,
+      "visitors": 1
+    },
+    {
+      "path": "/servicos/inteligencia-e-tecnologia/",
+      "slug": "inteligencia-e-tecnologia",
+      "views": 1,
+      "visitors": 1
+    },
+    {
+      "path": "/servicos/producao-musical/",
+      "slug": "producao-musical",
+      "views": 1,
+      "visitors": 1
+    },
+    {
+      "path": "/servicos/psicologia-social-e-comunitaria/",
+      "slug": "psicologia-social-e-comunitaria",
+      "views": 1,
+      "visitors": 1
+    },
+    {
+      "path": "/servicos/saude-mental/",
+      "slug": "saude-mental",
+      "views": 1,
+      "visitors": 1
+    }
+  ],
+  "prefix": "/servicos/",
+  "window_days": 30
+}
