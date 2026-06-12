@@ -177,6 +177,8 @@ a{color:inherit}
 .sg-ov:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
 .sg-ov-prev{left:1rem} .sg-ov-next{right:1rem}
 .sg-ov:disabled{opacity:0;pointer-events:none}
+/* telas estreitas: as setas flutuantes cobrem o grafo — os controles de baixo bastam */
+@media (max-width:600px){.sg-ov{display:none}}
 /* painel da linha do tempo (anos + descrição + controles) */
 .sg-time{border-top:1px solid var(--line);background:var(--bg2);padding:.6rem .9rem 1rem}
 .sg-track{display:flex;gap:.3rem;overflow-x:auto;padding-bottom:.5rem}

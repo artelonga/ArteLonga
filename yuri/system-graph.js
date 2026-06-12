@@ -74,17 +74,17 @@
   function webModel() {
     var nodes = [
       // âncora (topo)
-      { id: "arte", label: "ArteLonga", cat: "origin", step: 0, url: "https://artelonga.com.br",
+      { id: "arte", lp: "right", label: "ArteLonga", cat: "origin", step: 0, url: "https://artelonga.com.br",
         repo: "https://github.com/artelonga/home",
         stack: "Vite · Markdown · GitHub Pages",
         desc: { "pt-BR": "Na ArteLonga nós construímos: é a nossa rede de carreira, marca, tecnologia e comunicação, e a origem de tudo que vem depois.",
                 "en": "At ArteLonga we build: it's our network for career, brand, technology and communication, and the origin of everything that follows." } },
       // 1º cliente: Quilombo (web hosting), ANTES do co
-      { id: "quilombo", lp: "left", label: "Quilombo", title: "Quilombo Araucária", cat: "organizacao", step: 1, url: "https://quilomboaraucaria.org",
+      { id: "quilombo", lp: "right", label: "Quilombo", title: "Quilombo Araucária", cat: "organizacao", step: 1, url: "https://quilomboaraucaria.org",
         desc: { "pt-BR": "Quilombo Araucária — cliente comunitário e o primeiro site que hospedamos: espaço de resistência cultural, social e ambiental na periferia de São Paulo.",
                 "en": "Quilombo Araucária — community client and the first site we hosted: a space of cultural, social and environmental resistance in São Paulo's periphery." } },
       // a plataforma — tudo depois pendura aqui
-      { id: "co", lp: "left", label: "co", cat: "system", step: 2, url: "https://co.artelonga.com.br",
+      { id: "co", lp: "right", label: "co", cat: "system", step: 2, url: "https://co.artelonga.com.br",
         repo: "https://github.com/artelonga/co",
         stack: "Rust · Axum · SvelteKit · LiteFS",
         desc: { "pt-BR": "co — a plataforma que construímos na ArteLonga: uma identidade e uma fatura só, software livre (GPL) pra pequenos negócios. Todo sistema novo nós subimos nela.",
@@ -110,14 +110,19 @@
         stack: "Godot 4 · WASM · Node",
         desc: { "pt-BR": "neuro — uma bibliografia de neurociência aberta e o atlas neuroanatomy (cérebro pra aprender brincando) que construímos com o Neuro Notebook Brasil.",
                 "en": "neuro — an open neuroscience bibliography and the neuroanatomy atlas (a playable brain) we built with Neuro Notebook Brasil." } },
-      { id: "nnb", label: "Neuro Notebook", title: "Neuro Notebook Brasil", cat: "organizacao", step: 6,
+      { id: "nnb", label: "Neuro Notebook", slabel: "NNB", title: "Neuro Notebook Brasil", cat: "organizacao", step: 6,
         desc: { "pt-BR": "Neuro Notebook Brasil — comunidade de neurociência, nosso parceiro no neuro.",
                 "en": "Neuro Notebook Brasil — neuroscience community, our partner on neuro." } },
-      { id: "hfs", label: "HFS", title: "HFS Associados", cat: "organizacao", step: 2, url: "https://hfsassociados.com.br/",
+      // a aresta: o nó entre os dois eixos (neurociência ↔ tecnologia)
+      { id: "nlp", lp: "below", label: "nlp", title: "nlp — a aresta neuro↔tech", cat: "system", step: 6, url: "https://yuri.artelonga.com.br/?e=sensory-speech",
+        stack: "Python · NLP · SensorySpeech (2023)",
+        desc: { "pt-BR": "nlp — o nó entre o eixo da neurociência e o da tecnologia: o SensorySpeech (2023) importado no co, ligando o PLN em máquinas ao processamento de linguagem no cérebro. A aresta É a referência. Universo privado; o link abre o artigo-ponte.",
+                "en": "nlp — the node between the neuroscience and technology axes: SensorySpeech (2023) imported into co, linking NLP in machines to language processing in the brain. The edge IS the reference. Private universe; the link opens the bridge article." } },
+      { id: "hfs", lp: "left", label: "HFS", title: "HFS Associados", cat: "organizacao", step: 2, url: "https://hfsassociados.com.br/",
         desc: { "pt-BR": "HFS Associados — contabilidade, fiscal e jurídico, nosso parceiro na ArteLonga.",
                 "en": "HFS Associados — accounting, tax and legal, our partner at ArteLonga." } },
       // "agora" — clientes atuais que sobem na hora (web hosting as a service)
-      { id: "retroum", label: "Retro Umarizal", cat: "organizacao", step: 7, url: "https://retroumarizal.com.br",
+      { id: "retroum", label: "Retro Umarizal", slabel: "Retro", cat: "organizacao", step: 7, url: "https://retroumarizal.com.br",
         stack: "Hostinger Horizons",
         desc: { "pt-BR": "Retro Umarizal — restaurante, o primeiro cliente que graduamos: validamos num MVP self-hosted (em 24h) e convertemos pro domínio próprio na Hostinger Horizons (retroumarizal.com.br). A nossa prova de que o funil escala.",
                 "en": "Retro Umarizal — restaurant, the first customer we graduated: we validated it on a self-hosted MVP (in 24h) and converted it to its own Hostinger Horizons domain (retroumarizal.com.br). Our proof the funnel scales." } },
@@ -128,7 +133,7 @@
       { id: "hostinger", label: "hostinger", title: "Hostinger — estudo de caso", cat: "system", step: 7, url: "https://hostinger.artelonga.com.br/",
         desc: { "pt-BR": "Estudo de caso Hostinger — a minha candidatura a Data Analyst, com as estatísticas e insights desta rede. Clique pra abrir.",
                 "en": "Hostinger case study — my Data Analyst application, with the stats and insights from this network. Click to open." } },
-      { id: "cca", lp: "below", label: "CCA Projeto Vida", title: "CCA Projeto Vida", cat: "organizacao", step: 7, url: "https://voluntarios.com.br/entidade/3257",
+      { id: "cca", lp: "below", label: "CCA Projeto Vida", slabel: "CCA", title: "CCA Projeto Vida", cat: "organizacao", step: 7, url: "https://voluntarios.com.br/entidade/3257",
         desc: { "pt-BR": "CCA Projeto Vida — assistência social; nosso parceiro desde jun 2026.",
                 "en": "CCA Projeto Vida — social assistance; our partner since jun 2026." } },
       // futuro — pilha sobreposta faded = "muito mais" (negócio horizontalmente escalável)
@@ -146,9 +151,10 @@
       { a: "rfq", b: "hedix", type: "partner" },
       { a: "co", b: "ygg", type: "builds" },
       { a: "co", b: "comunicacao", type: "builds" },
-      { a: "comunicacao", b: "quilombo", type: "partner" },
+      { a: "comunicacao", b: "quilombo", type: "partner", bow: -430 },
       { a: "co", b: "neuro", type: "builds" },
       { a: "neuro", b: "nnb", type: "partner" },
+      { a: "neuro", b: "nlp", type: "iaas", lt: 0.62, label: { "pt-BR": "aresta", "en": "bridge" } },
       { a: "co", b: "retroum", type: "partner" },
       { a: "co", b: "yurisurf", type: "builds" },
       { a: "co", b: "hostinger", type: "builds" },
@@ -189,19 +195,19 @@
                 "en": "For us, adding a customer is instant: we take it live as a subdomain (a self-hosted MVP), validate, then graduate it to Hostinger. We already graduated Retro Umarizal (retroumarizal.com.br) — and we have many more to come. The chart shows our growth." },
         growth: true }
     ];
-    // eixo vertical: y cresce com o tempo; x espalha o que pendura no co
+    // árvore vertical (org-chart): espinha arte→quilombo→co no centro; sistemas
+    // descem do co em linhas por época; parceiros penduram AO LADO do seu sistema.
     var pos = {
       arte: [0, -300],
-      quilombo: [0, -185],
-      co: [0, -65],
-      hfs: [-320, -55],
-      rfq: [-250, 80], hedix: [-360, 165],
-      ygg: [-95, 80],
-      comunicacao: [130, 80],
-      neuro: [330, 80], nnb: [420, 160],
-      retroum: [-185, 255], yurisurf: [25, 265], hostinger: [225, 255],
-      cca: [-70, 345],
-      lead1: [375, 252], lead2: [393, 266], lead3: [411, 282]
+      quilombo: [0, -220],
+      co: [0, -140],
+      hfs: [-260, -140],
+      rfq: [-150, -40], hedix: [-310, -40],
+      ygg: [160, 20],
+      comunicacao: [-300, 80],
+      neuro: [100, 150], nnb: [365, 150], nlp: [330, 235],
+      retroum: [-270, 235], cca: [-85, 235], yurisurf: [45, 235], hostinger: [195, 235],
+      lead1: [375, 295], lead2: [391, 308], lead3: [407, 322]
     };
     return { key: "web", nodes: nodes, edges: edges, steps: steps, pos: pos };
   }
@@ -210,7 +216,7 @@
   function dataModel() {
     var nodes = [
       // âncora (topo) — espelha a ArteLonga no web
-      { id: "yuri", label: "Yuri", cat: "origin", step: 0, url: "https://github.com/yurisugano",
+      { id: "yuri", lp: "right", label: "Yuri", cat: "origin", step: 0, url: "https://github.com/yurisugano",
         desc: { "pt-BR": "Eu sou neurocientista e cientista de dados — a prática que percorre a minha pesquisa, indústria e quant.",
                 "en": "I'm a neuroscientist and data scientist — the practice that runs through my research, industry and quant." } },
       // organizações (spine à esquerda) — MESMO esquema das orgs do web
@@ -220,7 +226,7 @@
       { id: "butantan", lp: "left", label: "Butantan", title: "Instituto Butantan", cat: "organizacao", step: 1, url: "https://bv.fapesp.br/pt/bolsas/134702/origem-e-evolucao-das-serpentes-e-sua-diversificacao-na-regiao-neotropical/",
         desc: { "pt-BR": "Instituto Butantan (2012), onde fui bolsista FAPESP — o meu primeiro cliente de dados: pesquisa de público no Museu Biológico do Butantan e no Museu de Zoologia da USP, aplicando questionários e analisando a variação no número de visitantes pra traçar o perfil do público e avaliar a adequação das exposições de longa e curta duração. Orientação de Erika Hingst-Zaher. Foi aqui que comecei a coletar dados de campo.",
                 "en": "Instituto Butantan (2012), where I was a FAPESP scholar — my first data client: audience research at Butantan's Biological Museum and USP's Museum of Zoology, running questionnaires and analyzing visitor-count variation to profile the public and assess how well the long- and short-run exhibitions landed. Advised by Erika Hingst-Zaher. This is where I began collecting field data." } },
-      { id: "uchicago", lp: "left", label: "U. Chicago", title: "University of Chicago — Neurobiology", cat: "organizacao", step: 2, url: "https://www.google.com/search?q=peggy+mason+uchicago",
+      { id: "uchicago", lp: "left", label: "U. Chicago", title: "University of Chicago — Neurobiology", cat: "organizacao", step: 2, url: "https://artelonga.com.br/universidade-de-chicago/",
         desc: { "pt-BR": "University of Chicago (2015–2022) — onde fui Research Assistant em Neurobiologia: eu fiz aquisição, armazenamento e gestão de dados, e compliance HIPAA.",
                 "en": "University of Chicago (2015–2022) — where I was a Research Assistant in Neurobiology: I did data acquisition, storage and management, and HIPAA compliance." } },
       { id: "propz", lp: "left", label: "Propz", cat: "organizacao", step: 3, url: "https://rockencantech.com.br/",
@@ -273,7 +279,16 @@
         repo: "https://github.com/yurisugano/ProprioSuite",
         img: "https://raw.githubusercontent.com/yurisugano/ProprioSuite/main/data/figures/smoothing_example.png",
         desc: { "pt-BR": "Theseometer — meu instrumento patenteado pra medir propriocepção (US 11.589.798 B2). Eu deixei o processamento de sinal (ProprioSuite) com código aberto no GitHub.",
-                "en": "Theseometer — my patented proprioception instrument (US 11,589,798 B2). I open-sourced the signal processing (ProprioSuite) on GitHub." } }
+                "en": "Theseometer — my patented proprioception instrument (US 11,589,798 B2). I open-sourced the signal processing (ProprioSuite) on GitHub." } },
+      // a aresta (lado dados): SensorySpeech 2023 → nlp — espelha o web, ligando a pesquisa ao eixo da tecnologia
+      { id: "sensoryspeech", lp: "below", label: "SensorySpeech", title: "SensorySpeech (2023)", cat: "system", step: 2, url: "https://github.com/yurisugano/SensorySpeech",
+        repo: "https://github.com/yurisugano/SensorySpeech", stack: "Python · NLP · spaCy · transformers",
+        desc: { "pt-BR": "SensorySpeech (2023) — colaboração Neurobiologia × Linguística na University of Chicago: NLP pra referências sensoriais na fala natural, e a trilha que ensinou Python→NLP nos primeiros dias dos LLMs. O meu marco de NLP.",
+                "en": "SensorySpeech (2023) — a Neurobiology × Linguistics collaboration at the University of Chicago: NLP for sensory references in natural speech, and the trail that taught Python→NLP in the early days of LLMs. My NLP landmark." } },
+      { id: "nlp", lp: "right", label: "nlp", title: "nlp — a aresta neuro↔tech", cat: "system", step: 2, url: "https://yuri.artelonga.com.br/?e=sensory-speech",
+        stack: "ipynb→co · privado",
+        desc: { "pt-BR": "nlp — o nó entre o eixo da neurociência e o da tecnologia: o SensorySpeech importado no co. A aresta É a referência, ligando o PLN em máquinas ao processamento de linguagem no cérebro. Universo privado; o link abre o artigo-ponte.",
+                "en": "nlp — the node between the neuroscience and technology axes: SensorySpeech imported into co. The edge IS the reference, linking NLP in machines to language processing in the brain. Private universe; the link opens the bridge article." } }
     ];
     var edges = [
       // spine de organizações (cronológico)
@@ -294,7 +309,10 @@
       // publicações / patente ← University of Chicago
       { a: "uchicago", b: "bystander", type: "contains" },
       { a: "uchicago", b: "helping", type: "contains" },
-      { a: "uchicago", b: "theseo", type: "contains" }
+      { a: "uchicago", b: "theseo", type: "contains" },
+      // a aresta: UChicago constrói o SensorySpeech (2023) → nlp (o nó-ponte pro eixo tech)
+      { a: "uchicago", b: "sensoryspeech", type: "builds" },
+      { a: "sensoryspeech", b: "nlp", type: "iaas", label: { "pt-BR": "aresta", "en": "bridge" } }
     ];
     var steps = [
       { year: { "pt-BR": "2012 — início", "en": "2012 — start" }, focus: "ibusp",
@@ -322,15 +340,17 @@
         body: { "pt-BR": "co (ArteLonga) — o topo do meu espectro: eu ofereço privacidade e segurança de dados como serviço, cada cliente dono dos seus dados, isolados por design.",
                 "en": "co (ArteLonga) — the top of my spectrum: I offer data privacy and security as a service, each client owning their data, isolated by design." } }
     ];
-    // eixo vertical: orgs à esquerda do centro, sistemas (espectro) à direita, publicações na borda esquerda
+    // três colunas limpas: publicações (esquerda) ← espinha de orgs (centro) → trilho
+    // de sistemas (direita), cada sistema na ALTURA da org que o entregou; o tempo desce.
     var pos = {
-      yuri: [-60, -300],
-      ibusp: [-60, -200], butantan: [-60, -110], uchicago: [-60, -10],
-      propz: [-60, 110], pointset: [-60, 210], co: [-60, 305],
-      collect: [150, -110], dataviz: [150, -200],
-      storage: [150, -45], hipaa: [150, 35],
-      retailint: [150, 110], quant: [150, 210], privsec: [150, 305],
-      bystander: [-345, -45], helping: [-345, 35], theseo: [-345, -125]
+      yuri: [-40, -300],
+      ibusp: [-40, -220], butantan: [-40, -140], uchicago: [-40, -40],
+      propz: [-40, 70], pointset: [-40, 150], co: [-40, 230],
+      dataviz: [180, -220], collect: [180, -140],
+      storage: [180, -95], hipaa: [180, -40], sensoryspeech: [180, 15],
+      retailint: [180, 70], quant: [180, 150], privsec: [180, 230],
+      theseo: [-320, -125], bystander: [-320, -72], helping: [-320, -5],
+      nlp: [420, 15]
     };
     return { key: "data", nodes: nodes, edges: edges, steps: steps, pos: pos };
   }
@@ -407,14 +427,57 @@
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
 
-    function labelOf(n) { return (n.label && typeof n.label === "object") ? (n.label[LANG] || n.label.en) : n.label; }
+    function labelOf(n) {
+      if (n.slabel && cam.scale < 0.45) return n.slabel;   // rótulo curto em zoom pequeno (telas estreitas)
+      return (n.label && typeof n.label === "object") ? (n.label[LANG] || n.label.en) : n.label;
+    }
     function vis(n) { return n.step <= cur; }
     function visE(e) { return vis(byId[e.a]) && vis(byId[e.b]); }
     function toScreen(n) { return { x: W / 2 + (n.x + cam.x) * cam.scale, y: H / 2 + (n.y + cam.y) * cam.scale }; }
+    function toXY(wx, wy) { return { x: W / 2 + (wx + cam.x) * cam.scale, y: H / 2 + (wy + cam.y) * cam.scale }; }
     function toWorld(px, py) { return { x: (px - W / 2) / cam.scale - cam.x, y: (py - H / 2) / cam.scale - cam.y }; }
     function radius(n) {
       return n.cat === "origin" ? 24 : n.cat === "system" ? 17 :
         n.cat === "work" ? 8 : 13;   // organizacao / lead = 13
+    }
+    // nós têm um PISO de tamanho no zoom-out: sem isso as bordas tracejadas viram rabisco
+    function rScale() { return Math.max(0.7, Math.min(cam.scale, 1.3)); }
+    function trimPt(p, r, tx, ty) { var dx = tx - p.x, dy = ty - p.y, m = Math.hypot(dx, dy) || 1; return { x: p.x + dx / m * (r + 3), y: p.y + dy / m * (r + 3) }; }
+    function bezAt(p0, p1, p2, p3, t) {
+      var u = 1 - t;
+      return { x: u * u * u * p0.x + 3 * u * u * t * p1.x + 3 * u * t * t * p2.x + t * t * t * p3.x,
+               y: u * u * u * p0.y + 3 * u * u * t * p1.y + 3 * u * t * t * p2.y + t * t * t * p3.y };
+    }
+    // rota de cada aresta: curvas-S com tangentes alinhadas aos eixos (estilo organograma/sankey),
+    // aparadas na borda dos círculos — nada atravessa nó, e o leque que sai de um nó lê como leque.
+    function edgeGeom(e) {
+      var na = byId[e.a], nb = byId[e.b];
+      var a = toScreen(na), b = toScreen(nb);
+      var ra = radius(na) * rScale(), rb = radius(nb) * rScale();
+      var p0, p1, p2, p3, straight = false;
+      if (e.bow != null) {   // desvio lateral explícito (rota pela margem)
+        p1 = toXY(e.bow, na.y + (nb.y - na.y) * 0.3);
+        p2 = toXY(e.bow, na.y + (nb.y - na.y) * 0.7);
+        p0 = trimPt(a, ra, p1.x, p1.y); p3 = trimPt(b, rb, p2.x, p2.y);
+      } else {
+        var dx = b.x - a.x, dy = b.y - a.y;
+        if (e.type === "contains" || Math.abs(dx) < 14 || Math.abs(dy) < 14) {
+          straight = true; p0 = trimPt(a, ra, b.x, b.y); p3 = trimPt(b, rb, a.x, a.y); p1 = p0; p2 = p3;
+        } else if (Math.abs(dy) >= Math.abs(dx)) {   // tangentes verticais (árvore)
+          // partida/chegada espalhadas pelo arco do nó (meio-ângulo na direção do alvo):
+          // o leque que sai de um hub abre já na origem em vez de virar uma trança de tinta.
+          var sy = dy > 0 ? 1 : -1, th = Math.atan2(dx, Math.abs(dy)) * 0.5;
+          p0 = { x: a.x + Math.sin(th) * (ra + 3), y: a.y + sy * Math.cos(th) * (ra + 3) };
+          p3 = { x: b.x - Math.sin(th) * (rb + 3), y: b.y - sy * Math.cos(th) * (rb + 3) };
+          var my = (p0.y + p3.y) / 2; p1 = { x: p0.x, y: my }; p2 = { x: p3.x, y: my };
+        } else {                                      // tangentes horizontais (trilho)
+          var sx = dx > 0 ? 1 : -1, ph = Math.atan2(dy, Math.abs(dx)) * 0.5;
+          p0 = { x: a.x + sx * Math.cos(ph) * (ra + 3), y: a.y + Math.sin(ph) * (ra + 3) };
+          p3 = { x: b.x - sx * Math.cos(ph) * (rb + 3), y: b.y - Math.sin(ph) * (rb + 3) };
+          var mx = (p0.x + p3.x) / 2; p1 = { x: mx, y: p0.y }; p2 = { x: mx, y: p3.y };
+        }
+      }
+      return { p0: p0, p1: p1, p2: p2, p3: p3, straight: straight };
     }
     function easeBack(t) { if (t <= 0) return 0; if (t >= 1) return 1; var c1 = 1.7, c3 = c1 + 1, u = t - 1; return 1 + c3 * u * u * u + c1 * u * u; }
 
@@ -425,14 +488,35 @@
       });
     }
     function frameTarget() {
+      // enquadra a CAIXA dos nós visíveis (com estimativa dos rótulos) — não centra no foco,
+      // que desperdiçava metade do canvas quando o foco ficava na borda do grafo.
+      // Duas passadas: rótulos NÃO encolhem na mesma proporção do zoom (piso de 0.7),
+      // então no zoom-out eles ocupam mais "mundo" do que uma estimativa ingênua diz.
       var v = nodes.filter(vis); if (!v.length) return null;
-      var fx, fy;
-      if (focusNode && vis(focusNode)) { fx = focusNode.x; fy = focusNode.y; }
-      else { var sx = 0, sy = 0; v.forEach(function (n) { sx += n.x; sy += n.y; }); fx = sx / v.length; fy = sy / v.length; }
-      var P = 48, mdx = 1, mdy = 1;
-      v.forEach(function (n) { var r = radius(n) + 24; mdx = Math.max(mdx, Math.abs(n.x - fx) + r); mdy = Math.max(mdy, Math.abs(n.y - fy) + r + 12); });
-      var ts = Math.max(0.34, Math.min(1.15, Math.min((W / 2 - P) / mdx, (H / 2 - P) / mdy)));
-      return { scale: ts, x: -fx, y: -fy };
+      function fit(f) {
+        var minX = 1e9, maxX = -1e9, minY = 1e9, maxY = -1e9;
+        var hideWork = f > 1.7;   // f grande ⇒ zoom pequeno ⇒ rótulos de publicação ocultos no draw
+        v.forEach(function (n) {
+          var lblLen = (hideWork && n.cat === "work") ? 0 : String(labelOf(n) || "").length;
+          var r = radius(n), lw = (10 + lblLen * 7.4) * f, lp = n.lp || "below";
+          var x0 = n.x - r - (lp === "left" ? lw + 7 : 0), x1 = n.x + r + (lp === "right" ? lw + 7 : 0);
+          if (lp === "below") { x0 = Math.min(x0, n.x - lw / 2); x1 = Math.max(x1, n.x + lw / 2); }
+          var y0 = n.y - r, y1 = n.y + r + (lp === "below" ? 22 * f : 0);
+          if (x0 < minX) minX = x0; if (x1 > maxX) maxX = x1;
+          if (y0 < minY) minY = y0; if (y1 > maxY) maxY = y1;
+        });
+        maxY += 34 * f;             // respiro embaixo (a dica de uso sobrepõe a base do canvas)
+        if (W < 560) minY -= 64 * f;   // tela estreita: a legenda cobre o topo-esquerda
+        var P = 26, bw = Math.max(1, maxX - minX), bh = Math.max(1, maxY - minY);
+        var ts = Math.max(0.3, Math.min(1.15, Math.min((W - 2 * P) / bw, (H - 2 * P) / bh)));
+        return { scale: ts, x: -(minX + maxX) / 2, y: -(minY + maxY) / 2 };
+      }
+      var t = fit(1);
+      for (var i = 0; i < 3; i++) {   // itera até o fator rótulo/zoom convergir
+        var lsc = Math.max(0.7, Math.min(1, t.scale + 0.34));
+        t = fit(lsc / t.scale);
+      }
+      return t;
     }
     function frame(snap) {
       var t = frameTarget(); if (!t) return;
@@ -450,22 +534,38 @@
       ctx.clearRect(0, 0, W, H);
       var hl = hover || pinned, near = hl ? connected(hl.id) : null, now = perfNow();
       function prog(n) { var t = stepAt[n.step]; if (n.step < cur || t == null) return 1; return Math.max(0, Math.min(1, (now - t) / POP)); }
-      // ── arestas ──
+      // ── arestas (curvas-S aparadas na borda dos nós) ──
+      ctx.lineCap = "round";
       edges.forEach(function (e) {
         if (!visE(e)) return;
         var al = Math.min(prog(byId[e.a]), prog(byId[e.b])); if (al <= 0) return;
-        var a = toScreen(byId[e.a]), b = toScreen(byId[e.b]), on = hl && (e.a === hl.id || e.b === hl.id);
-        ctx.globalAlpha = al; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
+        var on = hl && (e.a === hl.id || e.b === hl.id);
+        var g = edgeGeom(e);
+        ctx.globalAlpha = al;
+        ctx.beginPath(); ctx.moveTo(g.p0.x, g.p0.y);
+        if (g.straight) ctx.lineTo(g.p3.x, g.p3.y);
+        else ctx.bezierCurveTo(g.p1.x, g.p1.y, g.p2.x, g.p2.y, g.p3.x, g.p3.y);
         if (e.type === "builds") { ctx.setLineDash([]); ctx.strokeStyle = on ? C.ink : "#6b6058"; ctx.lineWidth = on ? 3 : 2.2; }
         else if (e.type === "iaas") { ctx.setLineDash([]); ctx.strokeStyle = on ? C.accent : "rgba(154,59,46,.75)"; ctx.lineWidth = on ? 2.8 : 2; }
-        else if (e.type === "contains") { ctx.setLineDash([]); ctx.strokeStyle = on ? C.ink2 : C.line; ctx.lineWidth = on ? 2 : 1.3; }
-        else { ctx.setLineDash([2, 3]); ctx.strokeStyle = on ? C.ink2 : "rgba(154,148,141,.85)"; ctx.lineWidth = on ? 1.8 : 1.2; }  // partner
+        else if (e.type === "contains") { ctx.setLineDash([]); ctx.strokeStyle = on ? C.ink2 : "#c9c2b8"; ctx.lineWidth = on ? 2 : 1.4; }
+        else { ctx.setLineDash([4, 5]); ctx.strokeStyle = on ? C.ink2 : "rgba(154,148,141,.85)"; ctx.lineWidth = on ? 1.8 : 1.3; }  // partner
         ctx.stroke(); ctx.setLineDash([]);
-        if (e.label && al > 0.85) {
-          var txt = e.label[LANG] || e.label.en || "", mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
-          ctx.font = "600 10px 'Space Mono', ui-monospace, monospace"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
-          var tw = ctx.measureText(txt).width, pw = tw + 12;
-          ctx.fillStyle = "rgba(251,249,246,.95)"; roundRect(mx - pw / 2, my - 8, pw, 16, 5); ctx.fill();
+        if (e.label && al > 0.85 && cam.scale >= 0.45) {   // em zoom pequeno a cor da aresta basta
+          // rótulo da aresta DESLOCADO na normal da curva (nunca em cima de nó/rótulo)
+          var txt = e.label[LANG] || e.label.en || "";
+          var lt = e.lt || 0.5;   // posição do rótulo ao longo da curva (0→1), ajustável por aresta
+          var mid = g.straight
+            ? { x: g.p0.x + (g.p3.x - g.p0.x) * lt, y: g.p0.y + (g.p3.y - g.p0.y) * lt }
+            : bezAt(g.p0, g.p1, g.p2, g.p3, lt);
+          var ex = g.p3.x - g.p0.x, ey = g.p3.y - g.p0.y, em = Math.hypot(ex, ey) || 1;
+          var nx = -ey / em, ny = ex / em; if (ny > 0) { nx = -nx; ny = -ny; }   // normal sempre pro lado de cima
+          var elsc = Math.max(0.7, Math.min(1, cam.scale + 0.34));   // pílula encolhe junto com os rótulos
+          var mx = mid.x + nx * 14 * elsc, my = mid.y + ny * 14 * elsc;
+          ctx.font = "600 " + (10 * elsc).toFixed(1) + "px 'Space Mono', ui-monospace, monospace"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+          var tw = ctx.measureText(txt).width, pw = tw + 12 * elsc, phh = 8 * elsc;
+          ctx.fillStyle = "rgba(251,249,246,.95)"; roundRect(mx - pw / 2, my - phh, pw, phh * 2, 5); ctx.fill();
+          ctx.strokeStyle = e.type === "iaas" ? "rgba(154,59,46,.4)" : "rgba(154,148,141,.4)"; ctx.lineWidth = 1;
+          roundRect(mx - pw / 2, my - phh, pw, phh * 2, 5); ctx.stroke();
           ctx.fillStyle = e.type === "iaas" ? C.accent : C.ink2; ctx.fillText(txt, mx, my);
         }
         ctx.globalAlpha = 1;
@@ -474,33 +574,47 @@
       ctx.textAlign = "center";
       nodes.filter(vis).forEach(function (n) {
         var pr = prog(n); if (pr <= 0) return;
-        var p = toScreen(n), rFull = radius(n) * Math.min(cam.scale, 1.3), r = rFull * easeBack(pr);
+        var p = toScreen(n), rFull = radius(n) * rScale(), r = rFull * easeBack(pr);
         var dim = hl && n !== hl && !(near && near[n.id]), isHL = n === hl, cat = n.cat, ghost = n.ghost;
         ctx.globalAlpha = (dim ? 0.3 : 1) * Math.min(1, pr * 1.5) * (ghost ? 0.4 : 1);
         ctx.save();
-        ctx.shadowColor = "rgba(22,20,19,.16)"; ctx.shadowBlur = isHL ? 13 : 6; ctx.shadowOffsetY = 2;
+        ctx.shadowColor = "rgba(22,20,19,.14)"; ctx.shadowBlur = isHL ? 12 : 4; ctx.shadowOffsetY = 1.5;
         // forma + preenchimento — todas as categorias são círculos
         var fill = cat === "origin" ? C.ink : cat === "work" ? C.ink3 : C.cream;
         ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
         ctx.fillStyle = fill; ctx.fill(); ctx.restore();
-        // borda — distingue as 5 categorias
+        // borda — distingue as 5 categorias; tracejado PROPORCIONAL ao raio (anel lê como anel)
+        ctx.lineCap = "butt";
         ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
         if (cat === "origin") { ctx.lineWidth = isHL ? 3 : 2; ctx.strokeStyle = "#000"; ctx.stroke(); }
-        else if (cat === "organizacao") { ctx.setLineDash([3, 3]); ctx.lineWidth = isHL ? 2.2 : 1.6; ctx.strokeStyle = C.ink3; ctx.stroke(); ctx.setLineDash([]); }
-        else if (cat === "lead") { ctx.setLineDash([1, 3]); ctx.lineWidth = isHL ? 2.2 : 1.6; ctx.strokeStyle = C.lead; ctx.stroke(); ctx.setLineDash([]); }
+        else if (cat === "organizacao") {
+          var per = 2 * Math.PI * Math.max(r, 1) / 9;
+          ctx.setLineDash([per * 0.62, per * 0.38]); ctx.lineWidth = isHL ? 2.4 : 1.8; ctx.strokeStyle = C.ink3; ctx.stroke(); ctx.setLineDash([]);
+        }
+        else if (cat === "lead") {
+          var perl = 2 * Math.PI * Math.max(r, 1) / 12;
+          ctx.lineCap = "round"; ctx.setLineDash([0.5, perl]); ctx.lineWidth = isHL ? 2.6 : 2.2; ctx.strokeStyle = C.lead; ctx.stroke(); ctx.setLineDash([]); ctx.lineCap = "butt";
+        }
         else if (cat === "work") { ctx.lineWidth = 1; ctx.strokeStyle = C.ink2; ctx.stroke(); }
         else { ctx.lineWidth = isHL ? 2.6 : 1.8; ctx.strokeStyle = C.ink; ctx.stroke(); }   // system (sólido)
-        // rótulo — lp: "left" | "right" | "below"(default). Evita sobreposição em spines verticais.
-        if ((pr > 0.5 && cat !== "work") || (cat === "work" && pr > 0.7)) {
+        // rótulo — lp: "left" | "right" | "below"(default), sempre com HALO cor-de-papel:
+        // mesmo que uma linha passe por baixo, o texto continua legível.
+        // em zoom pequeno (telas estreitas) os rótulos das publicações saem — os rótulos
+        // não encolhem na proporção do zoom e atropelavam a coluna do spine; o tooltip cobre.
+        var workHidden = cat === "work" && cam.scale < 0.45;
+        if (!workHidden && ((pr > 0.5 && cat !== "work") || (cat === "work" && pr > 0.7))) {
           ctx.globalAlpha = (dim ? 0.4 : 1) * (ghost ? 0.55 : 1) * Math.min(1, (pr - 0.5) * 3);
           var lsc = Math.max(0.7, Math.min(1, cam.scale + 0.34));   // rótulos encolhem ao dar zoom-out (evita sobreposição)
           var fpx = (cat === "origin" ? 13 : cat === "work" ? 10 : cat === "organizacao" ? 11 : 12) * lsc;
           ctx.font = (cat === "origin" ? "700 " : "600 ") + fpx.toFixed(1) + "px 'Space Mono', ui-monospace, monospace";
+          var lp = n.lp || "below", lx, ly;
+          if (lp === "left") { ctx.textAlign = "right"; ctx.textBaseline = "middle"; lx = p.x - rFull - 7; ly = p.y; }
+          else if (lp === "right") { ctx.textAlign = "left"; ctx.textBaseline = "middle"; lx = p.x + rFull + 7; ly = p.y; }
+          else { ctx.textAlign = "center"; ctx.textBaseline = "top"; lx = p.x; ly = p.y + rFull + 5; }
+          ctx.strokeStyle = "rgba(251,249,246,.92)"; ctx.lineWidth = 3.5; ctx.lineJoin = "round";
+          ctx.strokeText(labelOf(n), lx, ly);
           ctx.fillStyle = cat === "origin" ? C.ink : (cat === "organizacao" || cat === "work") ? C.ink2 : cat === "lead" ? C.lead : C.ink;
-          var lp = n.lp || "below";
-          if (lp === "left") { ctx.textAlign = "right"; ctx.textBaseline = "middle"; ctx.fillText(labelOf(n), p.x - rFull - 7, p.y); }
-          else if (lp === "right") { ctx.textAlign = "left"; ctx.textBaseline = "middle"; ctx.fillText(labelOf(n), p.x + rFull + 7, p.y); }
-          else { ctx.textAlign = "center"; ctx.textBaseline = "top"; ctx.fillText(labelOf(n), p.x, p.y + rFull + 5); }
+          ctx.fillText(labelOf(n), lx, ly);
           ctx.textAlign = "center";
         }
         ctx.globalAlpha = 1;
