@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-06-12T08:26:08.609114760+00:00",
+  "as_of": "2026-06-13T07:48:57.442403483+00:00",
   "items": [
     {
       "path": "/servicos/",
@@ -76,12 +76,6 @@
     {
       "path": "/servicos/inteligencia-e-tecnologia/",
       "slug": "inteligencia-e-tecnologia",
-      "views": 1,
-      "visitors": 1
-    },
-    {
-      "path": "/servicos/producao-musical/",
-      "slug": "producao-musical",
       "views": 1,
       "visitors": 1
     },
