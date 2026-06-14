@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-06-13T07:48:57.442403483+00:00",
+  "as_of": "2026-06-14T08:16:20.175353087+00:00",
   "items": [
     {
       "path": "/servicos/",
@@ -14,15 +14,15 @@
       "visitors": 4
     },
     {
-      "path": "/servicos/gestao-administrativa/",
-      "slug": "gestao-administrativa",
-      "views": 6,
-      "visitors": 3
-    },
-    {
       "path": "/servicos/pensamento-islamico/",
       "slug": "pensamento-islamico",
       "views": 6,
+      "visitors": 2
+    },
+    {
+      "path": "/servicos/gestao-administrativa/",
+      "slug": "gestao-administrativa",
+      "views": 5,
       "visitors": 2
     },
     {
@@ -35,12 +35,6 @@
       "path": "/servicos/traducao-en-pt/",
       "slug": "traducao-en-pt",
       "views": 3,
-      "visitors": 1
-    },
-    {
-      "path": "/servicos/autocuidado/",
-      "slug": "autocuidado",
-      "views": 1,
       "visitors": 1
     },
     {
