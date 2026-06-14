@@ -46,7 +46,7 @@ The marketing-batch client (<code>assets/analytics.js</code>) is the canonical s
 system: the apex site <code>artelonga.com.br</code> and its paths send rich GA-like
 events to co; it powers <code>/analytics/</code>. The second system —
 <strong>universe-owned surfaces</strong> (promoted CNAME surfaces such as
-<code>yuri.artelonga.com.br</code> that own their telemetry locally) — and the
+<code>user.artelonga.com.br</code> that own their telemetry locally) — and the
 convergence design that keeps a parceiro's time-series continuous across the
 path→CNAME upgrade are documented in <strong><code>docs/telemetry-surfaces.md</code></strong>.</p>
 </blockquote>
@@ -103,7 +103,7 @@ the rest of <code>co</code>'s admin surface). Suggested first endpoints:</p>
   vid: string,                 // visitor ID (UUID, persists in localStorage)
   ts: number,                  // event timestamp, epoch ms (client clock — backend records its own received_at too)
   tz?: string | null,          // IANA timezone, e.g. "America/Sao_Paulo"
-  path: string,                // normalized pathname, e.g. "/yuri/" (trailing slash, no /index.html)
+  path: string,                // normalized pathname, e.g. "/user/" (trailing slash, no /index.html)
   query?: string | null,       // raw location.search, including leading "?"
   ref?: string | null,         // document.referrer
   vw: number, vh: number,      // viewport in CSS pixels
@@ -364,7 +364,7 @@ not <code>range</code>):</p>
 </tr>
 <tr>
 <td><code>universe</code></td>
-<td>Filter by universe/surface (<code>?universe=yuri</code>). Needed to separate the observability of <code>/yuri</code> (now CNAME <code>yuri.artelonga.com.br</code>) from the network-wide aggregate. Today it is <strong>ignored</strong> (same numbers with or without). See convergence in <code>docs/telemetry-surfaces.md</code>.</td>
+<td>Filter by universe/surface (<code>?universe=user</code>). Needed to separate the observability of <code>/user</code> (now CNAME <code>user.artelonga.com.br</code>) from the network-wide aggregate. Today it is <strong>ignored</strong> (same numbers with or without). See convergence in <code>docs/telemetry-surfaces.md</code>.</td>
 <td><strong>TODO co</strong></td>
 </tr>
 </tbody></table>

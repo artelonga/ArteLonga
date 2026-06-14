@@ -20,6 +20,7 @@ const esc = s => String(s).replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", 
 
 // curadoria: { slug, group: "publico"|"dev" } — títulos derivam do frontmatter de cada idioma
 const MANIFEST = [
+  { slug: "user-template", group: "publico" },
   { slug: "use-cases", group: "publico" },
   { slug: "intelligence-as-a-service", group: "publico" },
   { slug: "scrum-retrospective", group: "publico" },
@@ -383,8 +384,9 @@ async function main() {
   // Cada seção pode trazer um bloco HTML inline (`html`) além dos cartões de doc.
   const JOURNEY = [
     { n: "①", title: "O que é", cards: [
+      docCard("user-template", "O que é um /user e como ele vira user.artelonga.com.br — troque user por você.", "O modelo /user"),
       docCard("intelligence-as-a-service", "Cada site é soberano; um só conjunto de ferramentas; custo marginal quase zero.", "Inteligência como serviço (IaaS)"),
-    ], html: `<p class="concept">Do que uma máquina executa sozinha à experiência sob medida de uma pessoa — um só conjunto de ferramentas serve as duas pontas.</p>` },
+    ], html: `<p class="concept">Do que uma máquina executa sozinha à experiência sob medida de uma pessoa — um só conjunto de ferramentas serve as duas pontas. Nos exemplos, <code>user</code> é você.</p>` },
     { n: "②", title: "Construir", cards: [
       docCard("use-cases", "O que dá pra fazer na rede, do primeiro contato à publicação.", "Casos de uso"),
       docCard("scrum-universe", "Como um site nasce: de uma pasta a uma página no ar.", "Do arquivo ao site publicado"),

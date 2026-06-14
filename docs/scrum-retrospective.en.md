@@ -2,7 +2,7 @@
 title: Scrum in co — funnel → conversion → kanban delivered
 type: doc
 draft: true
-lead: yuri
+lead: user
 created: 2026-06-05
 lang: en
 ---
@@ -102,7 +102,7 @@ task**. Shape (the `createTask` API):
 
 ```json
 { "title": "AL-56 — OpenAPI como source of truth + gen-types",
-  "status": "done", "sprint": "Phase C", "owner": "yuri",
+  "status": "done", "sprint": "Phase C", "owner": "user",
   "dod": ["tsc --noEmit OK", "validate-yaml OK", "tipos regenerados"],
   "release": "0.14.0", "delivered": "2026-05-21" }
 ```
@@ -123,13 +123,13 @@ that was met**:
 
 | Requirement (co task) | Version | Definition of Done met |
 |---|---|---|
-| Observability parity across surfaces + apex chart | `0.15.0` | local smoke · deploy yuri+hostinger · **verified live** · changelog |
+| Observability parity across surfaces + apex chart | `0.15.0` | local smoke · deploy user+hostinger · **verified live** · changelog |
 | Geo IPv6 + acquisition (UTM) + device | `0.16.0` | tests · deploy · **live (IPv4+IPv6)** |
 | City geo (DB-IP) | `0.17.0` | compiled bin · deploy · **live (Taboão da Serra, BR)** |
 | Build-time geo bins (not content) | `0.17.1` | reproducible deploy (no local state) |
 | Analytics framework — canonical schema | `0.18.0` | openapi + types · **typecheck + validate-yaml OK** |
 | Bidirectional rollup integration (push + read-back) | `0.19.0` | tested local+live · **co PR #152** |
-| Unified author identity (neuro=base, yuri=UI) | `0.20.0` | **12 green tests** · neuro deploy · live |
+| Unified author identity (neuro=base, user=UI) | `0.20.0` | **12 green tests** · neuro deploy · live |
 | Scrum (partner) — folder + references | — | draft (noindex) · **green CI** |
 
 ### Sprint "Phase C" — release 2026-05-21 (`0.14.0`)

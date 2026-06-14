@@ -5,19 +5,19 @@ Companion to [`analytics-api.md`](./analytics-api.md). That one documents the
 `/analytics/`). This one documents the **second system** — **universe-owned**
 telemetry of the CNAME surfaces — and the **convergence design** that keeps a
 partner's time-based observability continuous when they are promoted from a
-path (`/yuri/`) to their own surface (`yuri.artelonga.com.br`).
+path (`/user/`) to their own surface (`user.artelonga.com.br`).
 
 ## Map of the two systems
 
 | | **co marketing-batch** | **universe-owned surface** |
 |---|---|---|
-| Where it runs | `artelonga.com.br` + paths | CNAME surfaces (`yuri.artelonga.com.br`, `hostinger.…`, `comunicacao.…`) |
-| Client | `assets/analytics.js` (rich, GA-like) | `yuri/telemetry.js` (minimal beacon) + `yuri/feedback.js` |
+| Where it runs | `artelonga.com.br` + paths | CNAME surfaces (`user.artelonga.com.br`, `hostinger.…`, `comunicacao.…`) |
+| Client | `assets/analytics.js` (rich, GA-like) | `user/telemetry.js` (minimal beacon) + `user/feedback.js` |
 | Ingest | `POST co/api/v1/telemetry/events` | `POST /api/track`, `POST /api/feedback` (same origin) |
 | Server | `artelonga/co` (Rust/Axum, SQLite) | `tools/surfaces-server.mjs` (Node stdlib, Fly) |
 | Storage | `telemetry_events` (SQL) | NDJSON `/data/telemetry-<universe>.jsonl` (Fly volume) |
 | Read | `co/api/v1/analytics/public/{summary,recent}` | `GET /api/telemetry` (aggregates sibling surfaces server-side) |
-| Dashboard | `artelonga.com.br/analytics/` | `<surface>/analytics/` (e.g. `yuri.artelonga.com.br/analytics`) |
+| Dashboard | `artelonga.com.br/analytics/` | `<surface>/analytics/` (e.g. `user.artelonga.com.br/analytics`) |
 | Principle | co is the read source | **the universe owns the telemetry; co is a consented broadcast target, never a read source** (`surfaces-server.mjs:28`) |
 
 The universe-owned principle is deliberate: access/interaction do **not** go to
@@ -32,7 +32,7 @@ dependencies beyond Node's stdlib.
 
 ### `POST /api/track` — access + interaction (beacon)
 
-Receives pageview/interaction from the client (`yuri/telemetry.js`, via
+Receives pageview/interaction from the client (`user/telemetry.js`, via
 `sendBeacon`). Same origin, no CORS. Body ≤ 8 KiB. Response `204 No Content`.
 
 Request body:
@@ -66,7 +66,7 @@ type TrackEvent = {
 
 ### `POST /api/feedback` — consented feedback (broadcast to co)
 
-Receives the "Talk to Us" modal (`yuri/feedback.js`). Body ≤ 16 KiB. Logs to
+Receives the "Talk to Us" modal (`user/feedback.js`). Body ≤ 16 KiB. Logs to
 stdout (→ `fly logs`), persists to the universe's NDJSON **and** forwards to co.
 
 Request body:
@@ -99,7 +99,7 @@ avoid recursion). Cache: none (computed on-read over `TELE_MEM`). Real shape
 ```ts
 type TelemetryResponse = {
   universe: string,
-  surface: string,           // ex. "/yuri/"
+  surface: string,           // ex. "/user/"
   source: "universe-state",
   durable: boolean,          // true só com volume montado (TELEMETRY_DURABLE=1)
   co: { endpoint, role: "broadcast-target", read: false, verify: string },
@@ -137,7 +137,7 @@ type TelemetryResponse = {
 
 ### `GET /api/health`
 
-`200 {"ok":true,"surface":"/yuri/","mode":"static"}`.
+`200 {"ok":true,"surface":"/user/","mode":"static"}`.
 
 ### Non-telemetry
 
@@ -147,7 +147,7 @@ Everything else = static file (cache `max-age=60`).
 
 ---
 
-## 2. Embedded geo (`yuri/geo/*.bin`)
+## 2. Embedded geo (`user/geo/*.bin`)
 
 Geo is resolved **embedded, self-hosted, with no external call per request** —
 a conscious choice vs. GeoLite2 (license key + prohibits redistribution).
@@ -158,11 +158,11 @@ Country via
 > **Geo is runtime DATA, not content+form.** The binaries **are not committed**
 > nor served by GH Pages — they are **downloaded + compiled in the image build**
 > (`Dockerfile` → `RUN bake-geo`), and excluded from git (`.gitignore`) and from
-> the build-context (`.dockerignore yuri/geo/*.bin`). This keeps the content
+> the build-context (`.dockerignore user/geo/*.bin`). This keeps the content
 > repo clean and makes the deploy reproducible regardless of local state.
 >
 > **Local dev:** run `node tools/bake-geo.mjs` (country) and `node
-> tools/bake-geo.mjs --city` (city) once to populate `yuri/geo/` in your clone;
+> tools/bake-geo.mjs --city` (city) once to populate `user/geo/` in your clone;
 > without it the server boots without geo (degrades to `null`, no crash).
 
 Compiled by `tools/bake-geo.mjs` (downloads the CSVs → compact binaries).
@@ -190,9 +190,9 @@ git and the build context. If missing, the surface falls back to country geo.
 **IPv6 resolves at country level** (no city v6).
 
 Regenerate: `node tools/bake-geo.mjs` (or pass a CSV: `… /tmp/geo4.csv`).
-The `.bin` enters the image via `COPY yuri` (Dockerfile) — the reader is
+The `.bin` enters the image via `COPY user` (Dockerfile) — the reader is
 **inline** in `surfaces-server.mjs` (the Dockerfile only copies that `.mjs` +
-`yuri/`).
+`user/`).
 
 > **Privacy:** the country is derived at ingest from `Fly-Client-IP` and only
 > the country is stored — the raw IP is **never** persisted nor leaves the
@@ -202,8 +202,8 @@ The `.bin` enters the image via `COPY yuri` (Dockerfile) — the reader is
 
 ## 3. Convergence — partner upgrade & continuous time-based observability
 
-**Problem:** when a partner is promoted from a path (`/yuri/`, telemetry in co:
-timeseries/geo/retention) to a CNAME surface (`yuri.artelonga.com.br`, NDJSON:
+**Problem:** when a partner is promoted from a path (`/user/`, telemetry in co:
+timeseries/geo/retention) to a CNAME surface (`user.artelonga.com.br`, NDJSON:
 counts only), they (a) **lose** the time chart, geo, retention and (b) suffer a
 **discontinuity** in the series (history in co, new data in the NDJSON). The
 upgrade should be a strict improvement — today it is a regression.
@@ -220,9 +220,9 @@ visitante → surface
                               dwell, geo[], goals[]} — consentido, só contagens,
                               zero PII ──▶ co warehouse
 co warehouse (série diária por universe)
-  ├─ histórico pré-upgrade (rollup único dos eventos /yuri raw do co)
+  ├─ histórico pré-upgrade (rollup único dos eventos /user raw do co)
   └─ rollups pós-upgrade (append)  ──▶ UMA série contínua, keyed by universe
-dashboard rede: /analytics?universe=yuri ──lê──▶ co warehouse
+dashboard rede: /analytics?universe=user ──lê──▶ co warehouse
 ```
 
 Why C: it honors the universe-owned principle (raw stays at the edge; only
@@ -236,7 +236,7 @@ histogram leaves).
 
 ```ts
 type DailyRollup = {
-  universe: string,          // "yuri" — estável path↔CNAME
+  universe: string,          // "user" — estável path↔CNAME
   day: string,               // YYYY-MM-DD (UTC)
   views: number, visitors: number, sessions: number,
   bounce: number,            // sessões com 1 pageview e 0 interação / total
@@ -284,7 +284,7 @@ long-horizon warehouse surviving sleep. C = continuity of A + ownership of B.
 
 Goal: telemetry that delivers **as much and as granular as GA** — no
 third-party cookies, no cross-site, self-hosted, exportable raw. Where "surface"
-appears, it is the current state of `yuri.artelonga.com.br`.
+appears, it is the current state of `user.artelonga.com.br`.
 
 | GA4 | apex (co) | surface | note |
 |---|---|---|---|
@@ -329,14 +329,14 @@ depth, multi-step funnel and cohort curve. Prioritize on demand.
 
 | Env | Default | What it does |
 |---|---|---|
-| `SURFACE` | `/yuri/` | surface path served at the root `/` |
-| `FEEDBACK_UNIVERSE` | `yuri` | universe (telemetry key + feedback routing) |
+| `SURFACE` | `/user/` | surface path served at the root `/` |
+| `FEEDBACK_UNIVERSE` | `user` | universe (telemetry key + feedback routing) |
 | `TELEMETRY_DIR` | `/data` | where the `.jsonl` is written |
 | `TELEMETRY_DURABLE` | `` (off) | `1` = persist to the volume; otherwise in-memory/ephemeral |
 | `SIBLINGS` | `` | URLs of sibling surfaces of the same universe (aggregation) |
 | `CO_FEEDBACK` | `co…/api/v1/feedback` | feedback broadcast target |
 | `MODE` | `static` | `static` / `iframe` / `redirect` |
-| `GEO_DB` (planned) | `yuri/geo/ip4-country.bin` | geo binary (§2) |
+| `GEO_DB` (planned) | `user/geo/ip4-country.bin` | geo binary (§2) |
 
 Auto-stop surfaces (`min_machines_running=0`): collection continues (the machine
 auto-starts on request, the durable NDJSON persists), but **there is no resident
@@ -353,7 +353,7 @@ rollup** — that is why the rollup runs on-cold-start + external cron (§3).
 
 The apex's `al_vid` is a cookie on the **registrable domain**
 `.artelonga.com.br`, so it **survives** the move to the subdomain
-`yuri.artelonga.com.br` — *if* the surface adopts `al_vid` instead of the
+`user.artelonga.com.br` — *if* the surface adopts `al_vid` instead of the
 per-tab `al.sid`. Today the surface only has a per-tab session → `sessions`
 overcounts and there is no concept of a returning visitor. Closing this is step
 3 of the runbook (§3).

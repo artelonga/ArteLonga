@@ -31,7 +31,7 @@ sistema <strong>co marketing-batch</strong> (apex <code>artelonga.com.br</code> 
 <code>/analytics/</code>). Este documenta o <strong>segundo sistema</strong> — telemetria
 <strong>universe-owned</strong> das surfaces CNAME — e o <strong>design de convergência</strong> que mantém
 a observabilidade de tempo de um parceiro contínua quando ele é promovido de
-path (<code>/yuri/</code>) pra surface própria (<code>yuri.artelonga.com.br</code>).</p>
+path (<code>/user/</code>) pra surface própria (<code>user.artelonga.com.br</code>).</p>
 <h2>Mapa dos dois sistemas</h2>
 <table>
 <thead>
@@ -44,12 +44,12 @@ path (<code>/yuri/</code>) pra surface própria (<code>yuri.artelonga.com.br</co
 <tbody><tr>
 <td>Onde roda</td>
 <td><code>artelonga.com.br</code> + paths</td>
-<td>surfaces CNAME (<code>yuri.artelonga.com.br</code>, <code>hostinger.…</code>, <code>comunicacao.…</code>)</td>
+<td>surfaces CNAME (<code>user.artelonga.com.br</code>, <code>hostinger.…</code>, <code>comunicacao.…</code>)</td>
 </tr>
 <tr>
 <td>Cliente</td>
 <td><code>assets/analytics.js</code> (rico, GA-like)</td>
-<td><code>yuri/telemetry.js</code> (beacon mínimo) + <code>yuri/feedback.js</code></td>
+<td><code>user/telemetry.js</code> (beacon mínimo) + <code>user/feedback.js</code></td>
 </tr>
 <tr>
 <td>Ingest</td>
@@ -74,7 +74,7 @@ path (<code>/yuri/</code>) pra surface própria (<code>yuri.artelonga.com.br</co
 <tr>
 <td>Dashboard</td>
 <td><code>artelonga.com.br/analytics/</code></td>
-<td><code>&lt;surface&gt;/analytics/</code> (ex. <code>yuri.artelonga.com.br/analytics</code>)</td>
+<td><code>&lt;surface&gt;/analytics/</code> (ex. <code>user.artelonga.com.br/analytics</code>)</td>
 </tr>
 <tr>
 <td>Princípio</td>
@@ -84,12 +84,27 @@ path (<code>/yuri/</code>) pra surface própria (<code>yuri.artelonga.com.br</co
 </tbody></table>
 <p>O princípio universe-owned é deliberado: acesso/interação <strong>não</strong> vão pro co —
 só o <strong>feedback</strong> (consentido no envio) é broadcastado. Ver <code>feedback</code> abaixo.</p>
+<h3>Chave de universo no co marketing-batch (<code>site</code> = universo)</h3>
+<p>No ingest co marketing-batch, o universo é <strong>o campo <code>site</code> do evento</strong>
+(<code>co-web/src/platform/telemetry.rs</code> → <code>universe_key = site</code>), <strong>não</strong> o path.
+Então <strong>cada app que carrega <code>assets/analytics.js</code> declara o seu próprio
+universo</strong> assim — uma linha antes do beacon:</p>
+<pre><code class="language-html">&lt;script&gt;window.AL_SITE = "neuro";&lt;/script&gt;   &lt;!-- ou data-site no &lt;script&gt; --&gt;
+&lt;script src="/assets/analytics.js?v=YYYYMMDD" defer&gt;&lt;/script&gt;
+</code></pre>
+<p>Default = <code>artelonga</code> (apex). Apps fora do padrão surfaces-server (ex. <strong>neuro</strong>,
+servido por <code>tools/neuro-form-server.mjs</code>, com paths heterogêneos <code>/2026-05-29/</code>,
+<code>/neuro/…</code>) usam isso pra atribuir <strong>todo</strong> o tráfego ao seu universo de uma vez,
+independente do path. É o caminho mínimo pra dar <strong>analytics atual</strong> a qualquer
+app (base pra A/B, engajamento, user paths) antes mesmo de virar surface CNAME.
+Universos co nativos (ex. <code>nlp</code>, sob <code>user</code>) reportam pela própria plataforma ao
+serem servidos pelo co — herdam telemetria sem wiring extra.</p>
 <hr>
 <h2>1. Endpoints da surface (<code>tools/surfaces-server.mjs</code>)</h2>
 <p>Servidor de UMA surface por app Fly, parametrizado por env (§4). Sem
 dependências além da stdlib do Node.</p>
 <h3><code>POST /api/track</code> — acesso + interação (beacon)</h3>
-<p>Recebe pageview/interaction do cliente (<code>yuri/telemetry.js</code>, via <code>sendBeacon</code>).
+<p>Recebe pageview/interaction do cliente (<code>user/telemetry.js</code>, via <code>sendBeacon</code>).
 Mesma origem, sem CORS. Body ≤ 8 KiB. Resposta <code>204 No Content</code>.</p>
 <p>Request body:</p>
 <pre><code class="language-ts">type TrackBody = {
@@ -115,7 +130,7 @@ Mesma origem, sem CORS. Body ≤ 8 KiB. Resposta <code>204 No Content</code>.</p
 }
 </code></pre>
 <h3><code>POST /api/feedback</code> — feedback consentido (broadcast pro co)</h3>
-<p>Recebe o modal "Fale Conosco" (<code>yuri/feedback.js</code>). Body ≤ 16 KiB. Loga no
+<p>Recebe o modal "Fale Conosco" (<code>user/feedback.js</code>). Body ≤ 16 KiB. Loga no
 stdout (→ <code>fly logs</code>), persiste no NDJSON da universe <strong>e</strong> encaminha pro co.</p>
 <p>Request body:</p>
 <pre><code class="language-ts">type FeedbackBody = {
@@ -139,7 +154,7 @@ CORS). <code>?local=1</code> = só esta surface (usado na agregação pra evitar
 Cache: nenhum (calculado on-read sobre <code>TELE_MEM</code>). Shape real (verificado):</p>
 <pre><code class="language-ts">type TelemetryResponse = {
   universe: string,
-  surface: string,           // ex. "/yuri/"
+  surface: string,           // ex. "/user/"
   source: "universe-state",
   durable: boolean,          // true só com volume montado (TELEMETRY_DURABLE=1)
   co: { endpoint, role: "broadcast-target", read: false, verify: string },
@@ -175,13 +190,13 @@ Cache: nenhum (calculado on-read sobre <code>TELE_MEM</code>). Shape real (verif
 }
 </code></pre>
 <h3><code>GET /api/health</code></h3>
-<p><code>200 {"ok":true,"surface":"/yuri/","mode":"static"}</code>.</p>
+<p><code>200 {"ok":true,"surface":"/user/","mode":"static"}</code>.</p>
 <h3>Não-telemetria</h3>
 <p><code>/analytics</code> → serve <code>&lt;surface&gt;/analytics/index.html</code>. <code>MODE=iframe</code> →
 joga <code>REDIRECT_URL</code> num iframe + carrega feedback. <code>MODE=redirect</code> → 302.
 Resto = arquivo estático (cache <code>max-age=60</code>).</p>
 <hr>
-<h2>2. Geo embarcado (<code>yuri/geo/*.bin</code>)</h2>
+<h2>2. Geo embarcado (<code>user/geo/*.bin</code>)</h2>
 <p>Geo é resolvido <strong>embarcado, self-hosted, sem chamada externa por request</strong> —
 escolha consciente vs. GeoLite2 (license key + proíbe redistribuição). País via
 <a href="https://github.com/sapics/ip-location-db"><code>sapics/ip-location-db</code></a>
@@ -190,9 +205,9 @@ escolha consciente vs. GeoLite2 (license key + proíbe redistribuição). País 
 <p><strong>Geo é DATA de runtime, não content+form.</strong> Os binários <strong>não são commitados</strong>
 nem servidos por GH Pages — são <strong>baixados + compilados no build da imagem</strong>
 (<code>Dockerfile</code> → <code>RUN bake-geo</code>), e excluídos do git (<code>.gitignore</code>) e do
-build-context (<code>.dockerignore yuri/geo/*.bin</code>). Assim o repo de conteúdo fica
+build-context (<code>.dockerignore user/geo/*.bin</code>). Assim o repo de conteúdo fica
 limpo e o deploy é reproduzível independente do estado local.</p>
-<p><strong>Local dev:</strong> rode <code>node tools/bake-geo.mjs</code> (país) e <code>node tools/bake-geo.mjs --city</code> (cidade) uma vez pra popular <code>yuri/geo/</code> no seu clone; sem isso o server
+<p><strong>Local dev:</strong> rode <code>node tools/bake-geo.mjs</code> (país) e <code>node tools/bake-geo.mjs --city</code> (cidade) uma vez pra popular <code>user/geo/</code> no seu clone; sem isso o server
 sobe sem geo (degrada pra <code>null</code>, sem crash).</p>
 </blockquote>
 <p>Compilado por <code>tools/bake-geo.mjs</code> (baixa os CSVs → binários compactos).
@@ -215,16 +230,16 @@ DB-IP", presente no dashboard). É grande (~31 MB, e o set IPv6 é ~98 MB gz), e
 faltar, a surface cai pra geo de país. <strong>IPv6 resolve em nível de país</strong> (sem city
 v6).</p>
 <p>Regenerar: <code>node tools/bake-geo.mjs</code> (ou passar um CSV: <code>… /tmp/geo4.csv</code>).
-O <code>.bin</code> entra na imagem via <code>COPY yuri</code> (Dockerfile) — o reader é <strong>inline</strong> no
-<code>surfaces-server.mjs</code> (o Dockerfile só copia esse <code>.mjs</code> + <code>yuri/</code>).</p>
+O <code>.bin</code> entra na imagem via <code>COPY user</code> (Dockerfile) — o reader é <strong>inline</strong> no
+<code>surfaces-server.mjs</code> (o Dockerfile só copia esse <code>.mjs</code> + <code>user/</code>).</p>
 <blockquote>
 <p><strong>Privacidade:</strong> o país é derivado no ingest a partir de <code>Fly-Client-IP</code> e só o
 país é gravado — o IP cru <strong>nunca</strong> é persistido nem sai da surface.</p>
 </blockquote>
 <hr>
 <h2>3. Convergência — parceiro upgrade &amp; observabilidade de tempo contínua</h2>
-<p><strong>Problema:</strong> quando um parceiro é promovido de path (<code>/yuri/</code>, telemetria no co:
-timeseries/geo/retenção) pra surface CNAME (<code>yuri.artelonga.com.br</code>, NDJSON:
+<p><strong>Problema:</strong> quando um parceiro é promovido de path (<code>/user/</code>, telemetria no co:
+timeseries/geo/retenção) pra surface CNAME (<code>user.artelonga.com.br</code>, NDJSON:
 só contagens), ele (a) <strong>perde</strong> o gráfico de tempo, geo, retenção e (b) sofre
 <strong>descontinuidade</strong> na série (histórico no co, novo na NDJSON). O upgrade deveria
 ser melhoria estrita — hoje é regressão.</p>
@@ -238,9 +253,9 @@ consentidos (sem PII).</strong></p>
                               dwell, geo[], goals[]} — consentido, só contagens,
                               zero PII ──▶ co warehouse
 co warehouse (série diária por universe)
-  ├─ histórico pré-upgrade (rollup único dos eventos /yuri raw do co)
+  ├─ histórico pré-upgrade (rollup único dos eventos /user raw do co)
   └─ rollups pós-upgrade (append)  ──▶ UMA série contínua, keyed by universe
-dashboard rede: /analytics?universe=yuri ──lê──▶ co warehouse
+dashboard rede: /analytics?universe=user ──lê──▶ co warehouse
 </code></pre>
 <p>Por que C: honra o princípio universe-owned (raw fica no edge; só agregado
 consentido sem PII vai pro co — mesmo modelo do feedback); a série é contínua no
@@ -249,7 +264,7 @@ cold-start + cron externo, não timer residente — surfaces têm
 <code>min_machines_running=0</code>); PII fica no edge (só histograma de país sai).</p>
 <p><strong>Rollup schema (planejado):</strong></p>
 <pre><code class="language-ts">type DailyRollup = {
-  universe: string,          // "yuri" — estável path↔CNAME
+  universe: string,          // "user" — estável path↔CNAME
   day: string,               // YYYY-MM-DD (UTC)
   views: number, visitors: number, sessions: number,
   bounce: number,            // sessões com 1 pageview e 0 interação / total
@@ -339,7 +354,7 @@ horizonte longo sobrevivendo ao sleep. C = continuidade do A + ownership do B.</
 <h2>7. Paridade com Google Analytics (GA4)</h2>
 <p>Objetivo: a telemetria entregar <strong>tanto e tão granular quanto o GA</strong> — sem cookies
 de terceiros, sem cross-site, self-hosted, raw exportável. Onde "surface" aparece,
-é o estado atual de <code>yuri.artelonga.com.br</code>.</p>
+é o estado atual de <code>user.artelonga.com.br</code>.</p>
 <table>
 <thead>
 <tr>
@@ -519,12 +534,12 @@ depth, funil multi-step e curva de coorte. Priorizar sob demanda.</p>
 </thead>
 <tbody><tr>
 <td><code>SURFACE</code></td>
-<td><code>/yuri/</code></td>
+<td><code>/user/</code></td>
 <td>path da surface servido na raiz <code>/</code></td>
 </tr>
 <tr>
 <td><code>FEEDBACK_UNIVERSE</code></td>
-<td><code>yuri</code></td>
+<td><code>user</code></td>
 <td>universe (key de telemetria + roteamento de feedback)</td>
 </tr>
 <tr>
@@ -554,7 +569,7 @@ depth, funil multi-step e curva de coorte. Priorizar sob demanda.</p>
 </tr>
 <tr>
 <td><code>GEO_DB</code> (planejado)</td>
-<td><code>yuri/geo/ip4-country.bin</code></td>
+<td><code>user/geo/ip4-country.bin</code></td>
 <td>binário geo (§2)</td>
 </tr>
 </tbody></table>
@@ -583,7 +598,7 @@ auto-starta no request, NDJSON durável persiste), mas <strong>não há rollup r
 </tr>
 </tbody></table>
 <p>O <code>al_vid</code> do apex é cookie no <strong>domínio registrável</strong> <code>.artelonga.com.br</code>, então
-<strong>sobrevive</strong> à mudança pro subdomínio <code>yuri.artelonga.com.br</code> — <em>se</em> a surface
+<strong>sobrevive</strong> à mudança pro subdomínio <code>user.artelonga.com.br</code> — <em>se</em> a surface
 adotar <code>al_vid</code> em vez do <code>al.sid</code> por-aba. Hoje a surface só tem session por-aba
 → <code>sessions</code> superestima e não há conceito de visitante recorrente. Fechar isso é
 o passo 3 do runbook (§3).</p>

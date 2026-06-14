@@ -1,0 +1,30 @@
+# Modelo de surface — o template do /user.
+# Copie pra deploy/surfaces/<seu-handle>.toml e troque "user" pelo seu handle.
+# Promove um /user (path no apex, artelonga.com.br/user/) pra domínio próprio
+# (user.artelonga.com.br). Runbook: docs/universe-upgrade · conceito: docs/user-template.
+app = "artelonga-user"
+primary_region = "gru"
+
+[build]
+
+[env]
+  SURFACE = "/user/"            # path servido na raiz da surface
+  FEEDBACK_UNIVERSE = "user"    # key de telemetria + roteamento de feedback
+  TELEMETRY_DIR = "/data"
+  TELEMETRY_DURABLE = "1"
+  SIBLINGS = ""                 # URLs de surfaces irmãs do mesmo user (agregação)
+
+[[mounts]]
+  source = "tele"
+  destination = "/data"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "256mb"

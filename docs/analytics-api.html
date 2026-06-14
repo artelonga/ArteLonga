@@ -46,7 +46,7 @@ The marketing-batch client (<code>assets/analytics.js</code>) is the canonical s
 system: the apex site <code>artelonga.com.br</code> and its paths send rich GA-like
 events to co; it powers <code>/analytics/</code>. The second system —
 <strong>universe-owned surfaces</strong> (promoted CNAME surfaces such as
-<code>yuri.artelonga.com.br</code> that own their telemetry locally) — and the
+<code>user.artelonga.com.br</code> that own their telemetry locally) — and the
 convergence design that keeps a parceiro's time-series continuous across the
 path→CNAME upgrade are documented in <strong><code>docs/telemetry-surfaces.md</code></strong>.</p>
 </blockquote>
@@ -103,7 +103,7 @@ the rest of <code>co</code>'s admin surface). Suggested first endpoints:</p>
   vid: string,                 // visitor ID (UUID, persists in localStorage)
   ts: number,                  // event timestamp, epoch ms (client clock — backend records its own received_at too)
   tz?: string | null,          // IANA timezone, e.g. "America/Sao_Paulo"
-  path: string,                // normalized pathname, e.g. "/yuri/" (trailing slash, no /index.html)
+  path: string,                // normalized pathname, e.g. "/user/" (trailing slash, no /index.html)
   query?: string | null,       // raw location.search, including leading "?"
   ref?: string | null,         // document.referrer
   vw: number, vh: number,      // viewport in CSS pixels
@@ -364,7 +364,7 @@ não <code>range</code>):</p>
 </tr>
 <tr>
 <td><code>universe</code></td>
-<td>Filtra por universe/surface (<code>?universe=yuri</code>). Necessário pra separar a observabilidade de <code>/yuri</code> (agora CNAME <code>yuri.artelonga.com.br</code>) do agregado da rede. Hoje é <strong>ignorado</strong> (mesmos números com ou sem). Ver convergência em <code>docs/telemetry-surfaces.md</code>.</td>
+<td>Filtra por universe/surface (<code>?universe=user</code>). Necessário pra separar a observabilidade de <code>/user</code> (agora CNAME <code>user.artelonga.com.br</code>) do agregado da rede. Hoje é <strong>ignorado</strong> (mesmos números com ou sem). Ver convergência em <code>docs/telemetry-surfaces.md</code>.</td>
 <td><strong>TODO co</strong></td>
 </tr>
 </tbody></table>
