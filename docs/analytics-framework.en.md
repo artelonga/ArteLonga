@@ -27,8 +27,8 @@ same system with another tenant key.
 ```
 producers (edges, own the raw)             center (co warehouse)             consumers
 ──────────────────────────────            ─────────────────────             ─────────
-surface artelonga (yuri)  ─┐                                                ┌─ dash apex   (scope=network)
-apex artelonga            ─┤  DailyRollup                                   ├─ dash surface (scope=yuri)
+surface artelonga (user)  ─┐                                                ┌─ dash apex   (scope=network)
+apex artelonga            ─┤  DailyRollup                                   ├─ dash surface (scope=user)
 parceiro novo (CNAME)     ─┼─ consentido, ──▶  tabela rollups  ──query──────┼─ dash parceiro (scope=<id>)
 qualquer universe co      ─┤  sem PII,         (multi-tenant,  API          ├─ view de rede (owner)
 stack externa (SDK)       ─┘  keyed by universe  filtrável)                 └─ componente embutível

@@ -10,7 +10,7 @@ member CRUD-ing scrum content**, and a **scrum partner invited into the universe
 
 ```
 scrum/
-├── scrum.md                 # the content (draft) — lead: yuri
+├── scrum.md                 # the content (draft) — lead: user
 ├── 2020-Scrum-Guide-US.pdf  # the attachment (why it's a folder)
 └── index.html               # the form — publishes at artelonga.com.br/scrum
 ```
@@ -165,4 +165,4 @@ flowchart TB
 - [`brain-as-a-service.md`](./brain-as-a-service.md) — the paradigm, onboarding steps, KPIs.
 - [`universe-upgrade.md`](./universe-upgrade.md) — folder → CNAME surface runbook.
 - [`analytics-framework.md`](./analytics-framework.md) — the multi-tenant contract.
-- `scrum/scrum.md` — the content (draft, lead: yuri).
+- `scrum/scrum.md` — the content (draft, lead: user).

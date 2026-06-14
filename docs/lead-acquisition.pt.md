@@ -22,7 +22,7 @@ flowchart TB
 
 | # | Passo | Usuário faz | Conectado | Observado por |
 |---|---|---|---|---|
-| 1 | **Discover** | chega (search / referral / social / direto) | apex + surfaces (yuri, neuro, /scrum) | `acquisition` = utm_source → referrer → "(direto)" |
+| 1 | **Discover** | chega (search / referral / social / direto) | apex + surfaces (user, neuro, /scrum) | `acquisition` = utm_source → referrer → "(direto)" |
 | 2 | **Engage** | navega pelo jardim, bibliografia, portfólio | content = topo de funil; cache-first | `page_view` · `scroll_depth` · `page_end`/dwell · device · geo |
 | 3 | **Intent** | clica em "Para parceiros" (`/faca-parte/`), feedback, outbound | CTAs → `/faca-parte/` · `/parceiros/` · "Fale Conosco" | `click_cta` · `goal` (conversions) |
 | 4a | **Capture — lead form** | envia contato/interesse | **`POST /api/v1/leads`** → status `new`, admin notificado (CO-183) | a fila de leads |

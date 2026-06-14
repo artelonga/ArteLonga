@@ -30,7 +30,7 @@ endpoint/code. State: ✅ delivered · ◑ partial/design · ⏳ co-side/next.
 | B1 | Represent each domain as a universe | It's co's abstraction (`/api/v1/universes/:slug`); the domain declares `_universe.yaml` | ◑ | co · `work/artelonga/_universe.yaml` |
 | B2 | Promote universe path → CNAME without friction | Same universe, same key/history/changelog/analytics | ✅ | [universe-upgrade](./universe-upgrade.md) |
 | B3 | A universe owns its own state | Raw at the edge; co is the target of a consented broadcast | ✅ | telemetry-surfaces |
-| B4 | Don't duplicate shared data | Shared data is a universe, referenced (yuri → neuro) | ✅ | author identity |
+| B4 | Don't duplicate shared data | Shared data is a universe, referenced (user → neuro) | ✅ | author identity |
 
 ## C · Content: verify & publish
 
@@ -39,7 +39,7 @@ endpoint/code. State: ✅ delivered · ◑ partial/design · ⏳ co-side/next.
 | C1 | **Verify and publish content from MANY universes** | **co**: entries + proposals + reindex (verify) → immutable artifact + `current` pointer (publish) | ⏳ | **§ co Contract (below)** |
 | C2 | Content separated from form | markdown/data (content) + renderer (form); bakes; `bake-docs` | ✅ | [scrum-universe](./scrum-universe.md) |
 | C3 | Knowledge base / references as data | neuro references + author registry; queryable | ✅ | neuro/references.js · authors.js |
-| C4 | Canonical author identity (resolves variants) | `author=yuri` resolves "Vieira Sugano"/"Yuri"/ABNT | ✅ | neuro/authors.js |
+| C4 | Canonical author identity (resolves variants) | `author=user` resolves "Vieira Sugano"/"Yuri"/ABNT | ✅ | neuro/authors.js |
 | C5 | Docs as rendered content | `/docs/` hub (markdown+mermaid → static), public/dev split | ✅ | tools/bake-docs.mjs |
 | C6 | Publish fast/easy, scalable | folder + `draft:false`; N universes, one template | ◑ | scrum-universe |
 

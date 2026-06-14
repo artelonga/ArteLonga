@@ -1,14 +1,14 @@
 # Upgrade de universe — path → surface CNAME (runbook reproduzível)
 
-Como promover uma **universe** servida como **path no apex** (`artelonga.com.br/yuri/`)
-pra **surface própria num CNAME** (`yuri.artelonga.com.br`), **sem perder
+Como promover uma **universe** servida como **path no apex** (`artelonga.com.br/user/`)
+pra **surface própria num CNAME** (`user.artelonga.com.br`), **sem perder
 observabilidade nem partir a série temporal**. Princípio (universos **recursivos /
 fractais** — a mesma unidade em qualquer escala, sem "sub"): uma universe aninhada
 promove pra surface sem fricção, continua sendo a mesma universe (mesma chave,
 histórico, changelog, analytics) e passa a **ser dona do próprio estado**.
 
-Worked example ao longo do doc: **yuri** (`handle=yuri`, app `artelonga-yuri`,
-host `yuri.artelonga.com.br`). Troque `yuri`/`artelonga-yuri`/o host pelos seus.
+Worked example ao longo do doc: **user** (`handle=user`, app `artelonga-user`,
+host `user.artelonga.com.br`). Troque `user`/`artelonga-user`/o host pelos seus.
 
 > Pré-requisitos: `fly` autenticado (`fly auth whoami`), acesso ao DNS em
 > **Hostinger** (registrar do `artelonga.com.br`), repo clonado, conteúdo da
@@ -20,7 +20,7 @@ host `yuri.artelonga.com.br`). Troque `yuri`/`artelonga-yuri`/o host pelos seus.
 
 | | Antes (path) | Depois (surface CNAME) |
 |---|---|---|
-| URL | `artelonga.com.br/yuri/` | `yuri.artelonga.com.br` |
+| URL | `artelonga.com.br/user/` | `user.artelonga.com.br` |
 | Servidor | GH Pages (apex) | `tools/surfaces-server.mjs` num app Fly |
 | Telemetria | co (rico) | **universe-owned** (NDJSON local, à paridade — geo/retenção/timeseries/conversões/aquisição) |
 | Fonte da verdade | `telemetry_events` no co | `/data/telemetry-<handle>.jsonl` na surface |
@@ -35,14 +35,14 @@ A continuidade tem 3 partes, todas cobertas abaixo: **série** (backfill), **ide
 
 ### 1. Conteúdo servível na raiz da surface
 
-A surface serve `SURFACE` (ex. `/yuri/`) na raiz `/`. Os HTML usam caminhos
-absolutos `/yuri/*`, então só `/` é mapeado pro `index.html` da surface; o resto
+A surface serve `SURFACE` (ex. `/user/`) na raiz `/`. Os HTML usam caminhos
+absolutos `/user/*`, então só `/` é mapeado pro `index.html` da surface; o resto
 serve o arquivo direto. Garanta que `<handle>/index.html` existe e carrega o
 beacon de telemetria + feedback:
 
 ```html
-<script src="/yuri/telemetry.js?v=YYYYMMDDx" defer></script>
-<script src="/yuri/feedback.js?v=YYYYMMDDx" defer></script>
+<script src="/user/telemetry.js?v=YYYYMMDDx" defer></script>
+<script src="/user/feedback.js?v=YYYYMMDDx" defer></script>
 ```
 
 ### 2. Registrar a surface no deploy tooling
@@ -59,7 +59,7 @@ Adicione a entrada em `tools/deploy-surface.mjs` (`SURFACES`) e crie o toml:
 }
 ```
 
-`deploy/surfaces/<handle>.toml` (copie de `deploy/surfaces/yuri.toml`):
+`deploy/surfaces/<handle>.toml` (copie de `deploy/surfaces/user.toml`):
 
 ```toml
 app = "artelonga-<handle>"
@@ -85,12 +85,12 @@ primary_region = "gru"
 ```
 
 > O `Dockerfile` (`deploy/surfaces/Dockerfile`) já copia `tools/surfaces-server.mjs`
-> + `yuri/` — então o reader de geo e os binários `yuri/geo/ip{4,6}-country.bin`
+> + `user/` — então o reader de geo e os binários `user/geo/ip{4,6}-country.bin`
 > vão junto. Nada a mudar aqui.
 
 ### 3. Criar o app Fly + volume durável + deploy
 
-Da raiz do repo (valores reais do yuri como exemplo):
+Da raiz do repo (valores reais do user como exemplo):
 
 ```bash
 fly apps create artelonga-<handle>
@@ -115,7 +115,7 @@ CNAME   <handle>   artelonga-<handle>.fly.dev.
 ```
 
 Aguarde a emissão (`fly certs show <handle>.artelonga.com.br --app artelonga-<handle>`
-→ `Status: Issued`). No yuri: cert **Issued** (Fly-managed), IPs `v6 dedicado`
+→ `Status: Issued`). No user: cert **Issued** (Fly-managed), IPs `v6 dedicado`
 + `v4 compartilhado` — o Fly cuida disso ao adicionar o cert.
 
 ### 5. Continuidade de telemetria (Option C)
@@ -196,4 +196,4 @@ aquisição.
 - `docs/telemetry-surfaces.md` — endpoints da surface, binário geo, **Option C** e
   schema de rollup. Este runbook é o §3 daquele doc, expandido e executável.
 - `tools/deploy-surface.mjs` — gate de smoke check + deploy.
-- `deploy/surfaces/*.toml` — configs reais (yuri, hostinger, comunicacao).
+- `deploy/surfaces/*.toml` — configs reais (user, hostinger, comunicacao).

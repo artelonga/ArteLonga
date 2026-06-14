@@ -26,14 +26,14 @@
   .tag.app{background:#fbeae6;color:var(--accent)}.tag.ext{background:#f0ece6;color:var(--ink2)}</style></head><body>
 <div class="crumb"><span><a href="/">Arte Longa</a> · <a href="/docs/">docs</a> · dev (noindex)</span><a class="lang" href="universe-upgrade.html" hreflang="pt">PT</a></div>
 <h1>Universe upgrade — path → CNAME surface (reproducible runbook)</h1>
-<p>How to promote a <strong>universe</strong> served as a <strong>path on the apex</strong> (<code>artelonga.com.br/yuri/</code>)
-to its <strong>own surface on a CNAME</strong> (<code>yuri.artelonga.com.br</code>), <strong>without losing
+<p>How to promote a <strong>universe</strong> served as a <strong>path on the apex</strong> (<code>artelonga.com.br/user/</code>)
+to its <strong>own surface on a CNAME</strong> (<code>user.artelonga.com.br</code>), <strong>without losing
 observability or breaking the time series</strong>. Principle (<strong>recursive / fractal</strong>
 universes — the same unit at any scale, no "sub"): a nested universe promotes to a
 surface frictionlessly, stays the same universe (same key, history, changelog,
 analytics) and becomes the <strong>owner of its own state</strong>.</p>
-<p>Worked example throughout the doc: <strong>yuri</strong> (<code>handle=yuri</code>, app <code>artelonga-yuri</code>,
-host <code>yuri.artelonga.com.br</code>). Swap <code>yuri</code>/<code>artelonga-yuri</code>/the host for your own.</p>
+<p>Worked example throughout the doc: <strong>user</strong> (<code>handle=user</code>, app <code>artelonga-user</code>,
+host <code>user.artelonga.com.br</code>). Swap <code>user</code>/<code>artelonga-user</code>/the host for your own.</p>
 <blockquote>
 <p>Prerequisites: <code>fly</code> authenticated (<code>fly auth whoami</code>), DNS access on
 <strong>Hostinger</strong> (registrar of <code>artelonga.com.br</code>), repo cloned, universe content
@@ -51,8 +51,8 @@ already in <code>&lt;handle&gt;/</code> with a servable <code>index.html</code> 
 </thead>
 <tbody><tr>
 <td>URL</td>
-<td><code>artelonga.com.br/yuri/</code></td>
-<td><code>yuri.artelonga.com.br</code></td>
+<td><code>artelonga.com.br/user/</code></td>
+<td><code>user.artelonga.com.br</code></td>
 </tr>
 <tr>
 <td>Server</td>
@@ -76,12 +76,12 @@ already in <code>&lt;handle&gt;/</code> with a servable <code>index.html</code> 
 <hr>
 <h2>Step by step</h2>
 <h3>1. Servable content at the root of the surface</h3>
-<p>The surface serves <code>SURFACE</code> (e.g. <code>/yuri/</code>) at the root <code>/</code>. The HTML uses absolute
-paths <code>/yuri/*</code>, so only <code>/</code> is mapped to the surface's <code>index.html</code>; everything else
+<p>The surface serves <code>SURFACE</code> (e.g. <code>/user/</code>) at the root <code>/</code>. The HTML uses absolute
+paths <code>/user/*</code>, so only <code>/</code> is mapped to the surface's <code>index.html</code>; everything else
 serves the file directly. Make sure <code>&lt;handle&gt;/index.html</code> exists and loads the
 telemetry + feedback beacon:</p>
-<pre><code class="language-html">&lt;script src="/yuri/telemetry.js?v=YYYYMMDDx" defer&gt;&lt;/script&gt;
-&lt;script src="/yuri/feedback.js?v=YYYYMMDDx" defer&gt;&lt;/script&gt;
+<pre><code class="language-html">&lt;script src="/user/telemetry.js?v=YYYYMMDDx" defer&gt;&lt;/script&gt;
+&lt;script src="/user/feedback.js?v=YYYYMMDDx" defer&gt;&lt;/script&gt;
 </code></pre>
 <h3>2. Register the surface in the deploy tooling</h3>
 <p>Add the entry in <code>tools/deploy-surface.mjs</code> (<code>SURFACES</code>) and create the toml:</p>
@@ -93,7 +93,7 @@ telemetry + feedback beacon:</p>
   expect: ["&lt;string única do index&gt;", "feedback.js", "&lt;/html&gt;"]   // smoke check pré-deploy
 }
 </code></pre>
-<p><code>deploy/surfaces/&lt;handle&gt;.toml</code> (copy from <code>deploy/surfaces/yuri.toml</code>):</p>
+<p><code>deploy/surfaces/&lt;handle&gt;.toml</code> (copy from <code>deploy/surfaces/user.toml</code>):</p>
 <pre><code class="language-toml">app = "artelonga-&lt;handle&gt;"
 primary_region = "gru"
 [env]
@@ -118,12 +118,12 @@ primary_region = "gru"
 <blockquote>
 <p>The <code>Dockerfile</code> (<code>deploy/surfaces/Dockerfile</code>) already copies <code>tools/surfaces-server.mjs</code></p>
 <ul>
-<li><code>yuri/</code> — so the geo reader and the <code>yuri/geo/ip{4,6}-country.bin</code> binaries
+<li><code>user/</code> — so the geo reader and the <code>user/geo/ip{4,6}-country.bin</code> binaries
 go along with it. Nothing to change here.</li>
 </ul>
 </blockquote>
 <h3>3. Create the Fly app + durable volume + deploy</h3>
-<p>From the repo root (real yuri values as an example):</p>
+<p>From the repo root (real user values as an example):</p>
 <pre><code class="language-bash">fly apps create artelonga-&lt;handle&gt;
 fly volumes create tele --region gru --size 1 --app artelonga-&lt;handle&gt; --yes   # NDJSON durável em /data
 node tools/deploy-surface.mjs &lt;handle&gt;        # smoke check local (health, strings) → fly deploy --remote-only --ha=false
@@ -138,7 +138,7 @@ smoke check fails → deploy aborted.</p>
 <pre><code>CNAME   &lt;handle&gt;   artelonga-&lt;handle&gt;.fly.dev.
 </code></pre>
 <p>Wait for issuance (<code>fly certs show &lt;handle&gt;.artelonga.com.br --app artelonga-&lt;handle&gt;</code>
-→ <code>Status: Issued</code>). For yuri: cert <strong>Issued</strong> (Fly-managed), IPs <code>dedicated v6</code></p>
+→ <code>Status: Issued</code>). For user: cert <strong>Issued</strong> (Fly-managed), IPs <code>dedicated v6</code></p>
 <ul>
 <li><code>shared v4</code> — Fly handles this when you add the cert.</li>
 </ul>
@@ -212,7 +212,7 @@ break returning visitors.</li>
 <li><code>docs/telemetry-surfaces.md</code> — surface endpoints, geo binary, <strong>Option C</strong> and
 rollup schema. This runbook is §3 of that doc, expanded and executable.</li>
 <li><code>tools/deploy-surface.mjs</code> — smoke check gate + deploy.</li>
-<li><code>deploy/surfaces/*.toml</code> — real configs (yuri, hostinger, comunicacao).</li>
+<li><code>deploy/surfaces/*.toml</code> — real configs (user, hostinger, comunicacao).</li>
 </ul>
 
 </body></html>

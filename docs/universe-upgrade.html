@@ -26,14 +26,14 @@
   .tag.app{background:#fbeae6;color:var(--accent)}.tag.ext{background:#f0ece6;color:var(--ink2)}</style></head><body>
 <div class="crumb"><span><a href="/">Arte Longa</a> · <a href="/docs/">docs</a> · dev (noindex)</span><a class="lang" href="universe-upgrade.en.html" hreflang="en">EN</a></div>
 <h1>Upgrade de universe — path → surface CNAME (runbook reproduzível)</h1>
-<p>Como promover uma <strong>universe</strong> servida como <strong>path no apex</strong> (<code>artelonga.com.br/yuri/</code>)
-pra <strong>surface própria num CNAME</strong> (<code>yuri.artelonga.com.br</code>), <strong>sem perder
+<p>Como promover uma <strong>universe</strong> servida como <strong>path no apex</strong> (<code>artelonga.com.br/user/</code>)
+pra <strong>surface própria num CNAME</strong> (<code>user.artelonga.com.br</code>), <strong>sem perder
 observabilidade nem partir a série temporal</strong>. Princípio (universos <strong>recursivos /
 fractais</strong> — a mesma unidade em qualquer escala, sem "sub"): uma universe aninhada
 promove pra surface sem fricção, continua sendo a mesma universe (mesma chave,
 histórico, changelog, analytics) e passa a <strong>ser dona do próprio estado</strong>.</p>
-<p>Worked example ao longo do doc: <strong>yuri</strong> (<code>handle=yuri</code>, app <code>artelonga-yuri</code>,
-host <code>yuri.artelonga.com.br</code>). Troque <code>yuri</code>/<code>artelonga-yuri</code>/o host pelos seus.</p>
+<p>Worked example ao longo do doc: <strong>user</strong> (<code>handle=user</code>, app <code>artelonga-user</code>,
+host <code>user.artelonga.com.br</code>). Troque <code>user</code>/<code>artelonga-user</code>/o host pelos seus.</p>
 <blockquote>
 <p>Pré-requisitos: <code>fly</code> autenticado (<code>fly auth whoami</code>), acesso ao DNS em
 <strong>Hostinger</strong> (registrar do <code>artelonga.com.br</code>), repo clonado, conteúdo da
@@ -51,8 +51,8 @@ universe já em <code>&lt;handle&gt;/</code> com um <code>index.html</code> serv
 </thead>
 <tbody><tr>
 <td>URL</td>
-<td><code>artelonga.com.br/yuri/</code></td>
-<td><code>yuri.artelonga.com.br</code></td>
+<td><code>artelonga.com.br/user/</code></td>
+<td><code>user.artelonga.com.br</code></td>
 </tr>
 <tr>
 <td>Servidor</td>
@@ -76,12 +76,12 @@ universe já em <code>&lt;handle&gt;/</code> com um <code>index.html</code> serv
 <hr>
 <h2>Passo a passo</h2>
 <h3>1. Conteúdo servível na raiz da surface</h3>
-<p>A surface serve <code>SURFACE</code> (ex. <code>/yuri/</code>) na raiz <code>/</code>. Os HTML usam caminhos
-absolutos <code>/yuri/*</code>, então só <code>/</code> é mapeado pro <code>index.html</code> da surface; o resto
+<p>A surface serve <code>SURFACE</code> (ex. <code>/user/</code>) na raiz <code>/</code>. Os HTML usam caminhos
+absolutos <code>/user/*</code>, então só <code>/</code> é mapeado pro <code>index.html</code> da surface; o resto
 serve o arquivo direto. Garanta que <code>&lt;handle&gt;/index.html</code> existe e carrega o
 beacon de telemetria + feedback:</p>
-<pre><code class="language-html">&lt;script src="/yuri/telemetry.js?v=YYYYMMDDx" defer&gt;&lt;/script&gt;
-&lt;script src="/yuri/feedback.js?v=YYYYMMDDx" defer&gt;&lt;/script&gt;
+<pre><code class="language-html">&lt;script src="/user/telemetry.js?v=YYYYMMDDx" defer&gt;&lt;/script&gt;
+&lt;script src="/user/feedback.js?v=YYYYMMDDx" defer&gt;&lt;/script&gt;
 </code></pre>
 <h3>2. Registrar a surface no deploy tooling</h3>
 <p>Adicione a entrada em <code>tools/deploy-surface.mjs</code> (<code>SURFACES</code>) e crie o toml:</p>
@@ -93,7 +93,7 @@ beacon de telemetria + feedback:</p>
   expect: ["&lt;string única do index&gt;", "feedback.js", "&lt;/html&gt;"]   // smoke check pré-deploy
 }
 </code></pre>
-<p><code>deploy/surfaces/&lt;handle&gt;.toml</code> (copie de <code>deploy/surfaces/yuri.toml</code>):</p>
+<p><code>deploy/surfaces/&lt;handle&gt;.toml</code> (copie de <code>deploy/surfaces/user.toml</code>):</p>
 <pre><code class="language-toml">app = "artelonga-&lt;handle&gt;"
 primary_region = "gru"
 [env]
@@ -118,12 +118,12 @@ primary_region = "gru"
 <blockquote>
 <p>O <code>Dockerfile</code> (<code>deploy/surfaces/Dockerfile</code>) já copia <code>tools/surfaces-server.mjs</code></p>
 <ul>
-<li><code>yuri/</code> — então o reader de geo e os binários <code>yuri/geo/ip{4,6}-country.bin</code>
+<li><code>user/</code> — então o reader de geo e os binários <code>user/geo/ip{4,6}-country.bin</code>
 vão junto. Nada a mudar aqui.</li>
 </ul>
 </blockquote>
 <h3>3. Criar o app Fly + volume durável + deploy</h3>
-<p>Da raiz do repo (valores reais do yuri como exemplo):</p>
+<p>Da raiz do repo (valores reais do user como exemplo):</p>
 <pre><code class="language-bash">fly apps create artelonga-&lt;handle&gt;
 fly volumes create tele --region gru --size 1 --app artelonga-&lt;handle&gt; --yes   # NDJSON durável em /data
 node tools/deploy-surface.mjs &lt;handle&gt;        # smoke check local (health, strings) → fly deploy --remote-only --ha=false
@@ -138,7 +138,7 @@ deploy abortado.</p>
 <pre><code>CNAME   &lt;handle&gt;   artelonga-&lt;handle&gt;.fly.dev.
 </code></pre>
 <p>Aguarde a emissão (<code>fly certs show &lt;handle&gt;.artelonga.com.br --app artelonga-&lt;handle&gt;</code>
-→ <code>Status: Issued</code>). No yuri: cert <strong>Issued</strong> (Fly-managed), IPs <code>v6 dedicado</code></p>
+→ <code>Status: Issued</code>). No user: cert <strong>Issued</strong> (Fly-managed), IPs <code>v6 dedicado</code></p>
 <ul>
 <li><code>v4 compartilhado</code> — o Fly cuida disso ao adicionar o cert.</li>
 </ul>
@@ -212,7 +212,7 @@ os visitantes recorrentes.</li>
 <li><code>docs/telemetry-surfaces.md</code> — endpoints da surface, binário geo, <strong>Option C</strong> e
 schema de rollup. Este runbook é o §3 daquele doc, expandido e executável.</li>
 <li><code>tools/deploy-surface.mjs</code> — gate de smoke check + deploy.</li>
-<li><code>deploy/surfaces/*.toml</code> — configs reais (yuri, hostinger, comunicacao).</li>
+<li><code>deploy/surfaces/*.toml</code> — configs reais (user, hostinger, comunicacao).</li>
 </ul>
 
 </body></html>

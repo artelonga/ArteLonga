@@ -1,0 +1,66 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0"><title>O modelo /user — Arte Longa</title>
+<link rel="alternate" hreflang="pt-br" href="user-template.html"><link rel="alternate" hreflang="en" href="user-template.en.html">
+<style>
+  :root{--ink:#0a0a0a;--ink2:#444;--ink3:#888;--line:#e7e1da;--bg:#fbf9f6;--bg2:#fff;--accent:#9a3b2e}
+  *{box-sizing:border-box} body{font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+    max-width:820px;margin:0 auto;padding:4vh 1.4rem 10vh;line-height:1.6;color:var(--ink);background:var(--bg)}
+  a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(154,59,46,.25)}a:hover{border-bottom-color:var(--accent)}
+  h1{font-size:2.1rem;letter-spacing:-.02em;line-height:1.12;margin:.3em 0 .2em}
+  h2{font-size:1.3rem;margin:1.8em 0 .4em;border-top:1px solid var(--line);padding-top:.8em}
+  h3{font-size:1.02rem;margin:1.3em 0 .3em}
+  blockquote{margin:1.2em 0;padding:.7em 1.1em;background:var(--bg2);border-left:3px solid var(--accent);border-radius:8px;color:var(--ink2);font-size:.95rem}
+  ul,ol{padding-left:1.3em}li{margin:.15em 0}
+  table{border-collapse:collapse;width:100%;font-size:.86rem;margin:1.2em 0;display:block;overflow-x:auto}
+  th,td{border:1px solid var(--line);padding:.45rem .6rem;text-align:left;vertical-align:top}th{background:var(--bg2);font-weight:700}
+  code{background:var(--bg2);border:1px solid var(--line);border-radius:4px;padding:.05em .35em;font-size:.85em}
+  pre{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:1em;overflow-x:auto}pre code{border:0;background:none;padding:0}
+  hr{border:0;border-top:1px solid var(--line);margin:2em 0}
+  .mermaid svg{max-width:100%;height:auto;background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:.6rem}
+  .crumb{display:flex;justify-content:space-between;font-size:.8rem;color:var(--ink3);margin-bottom:2em}
+  .crumb .lang{font-weight:700;border:1px solid var(--line);border-radius:999px;padding:.1rem .6rem}
+  .grp{margin:1.4em 0}.grp h2{border:0;padding:0;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink3)}
+  .doclist{list-style:none;padding:0}.doclist li{margin:.5em 0}.doclist .src{font-size:.72rem;color:var(--ink3)}
+  .tag{font-size:.6rem;font-weight:700;border-radius:999px;padding:.05rem .45rem;letter-spacing:.04em;vertical-align:middle}
+  .tag.dev{background:#eef1f6;color:var(--ink3)}.tag.pub{background:#e6f1e8;color:#3a7d44}
+  .tag.app{background:#fbeae6;color:var(--accent)}.tag.ext{background:#f0ece6;color:var(--ink2)}</style></head><body>
+<div class="crumb"><span><a href="/">Arte Longa</a> · <a href="/docs/">docs</a></span><a class="lang" href="user-template.en.html" hreflang="en">EN</a></div>
+<h1>O modelo <code>/user</code></h1>
+<p>Em toda a documentação, <strong><code>user</code></strong> é o espaço de exemplo — o seu. Onde você lê
+<code>/user/</code> ou <code>user.artelonga.com.br</code>, troque <code>user</code> pelo seu handle. É um modelo,
+não uma pessoa: serve igual pra um restaurante, uma comunidade ou você.</p>
+<h2>O que é um <code>/user</code></h2>
+<p>Um <code>/user</code> é um <strong>espaço de conteúdo que você possui</strong> na rede. O conteúdo são
+arquivos de texto simples (markdown + frontmatter); tudo o mais deriva deles:</p>
+<pre><code>/user/                     → o seu espaço na rede (servido pelo co)
+  ├─ entradas (.md)        → o conteúdo: texto + frontmatter, que você possui
+  ├─ site                  → derivado das entradas
+  ├─ quadro                → as tarefas
+  └─ wiki                  → as notas ligadas entre si
+user.artelonga.com.br      → o mesmo /user, graduado pro domínio próprio
+</code></pre>
+<p>Você é dono dos arquivos: exporte e leve embora quando quiser. Banco, índice e
+site são derivados — nunca um portão.</p>
+<h2>O ciclo de vida</h2>
+<pre><code>artelonga.com.br/user/   ──promover──►   user.artelonga.com.br
+   (path na rede,                          (domínio próprio,
+    custo marginal ≈ zero)                  observabilidade contínua)
+</code></pre>
+<ol>
+<li>Você entra como <code>/user</code> na rede compartilhada (na hora, custo marginal ≈ zero).</li>
+<li>Valida com conteúdo e números próprios (telemetria first-party).</li>
+<li><strong>Gradua</strong> pro domínio próprio quando fizer sentido — sem perder histórico.</li>
+</ol>
+<h2>O template, em arquivos</h2>
+<ul>
+<li><strong><code>deploy/surfaces/user.toml</code></strong> — a configuração da surface. Copie pra
+<code>deploy/surfaces/&lt;seu-handle&gt;.toml</code> e troque <code>user</code> pelo seu handle.</li>
+<li>Runbook completo da promoção: <a href="./universe-upgrade.html">universe-upgrade</a>.</li>
+<li>A tese por trás (custo marginal ≈ zero, soberania): <a href="./intelligence-as-a-service.html">intelligence-as-a-service</a>.</li>
+</ul>
+<blockquote>
+<p>Regra da casa: nos docs, exemplos usam sempre <code>/user</code> — nunca um handle
+pessoal. <code>user</code> é o template; você é o <code>user</code>.</p>
+</blockquote>
+
+</body></html>

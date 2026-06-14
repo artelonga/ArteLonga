@@ -8,13 +8,13 @@ Do outro lado, o **cérebro** — a inteligência biológica, o humano — que
 **deliberadamente excluímos da maquinaria determinística** e deixamos **livre para vagar**,
 rumo à criatividade e à livre expressão. O serviço não transforma o cérebro em commodity; ele
 absorve o trabalho determinístico *para que o cérebro seja libertado*. (Este é o próprio
-tagline do yuri tornado literal: *escrevendo inteligência biológica e de máquina — pela livre
+tagline do user tornado literal: *escrevendo inteligência biológica e de máquina — pela livre
 expressão do ser*.)
 
-`yuri` é o caso de referência. `artelonga` é a **rede livre** — *ñandé*, "nós,
+`user` é o caso de referência. `artelonga` é a **rede livre** — *ñandé*, "nós,
 você incluído" (Guarani: *ñandé* = nós-com-você, não *oré* = nós-sem-você). **co é
 software livre** que qualquer pessoa pode rodar. Este doc é o ensaio empírico + o playbook
-de onboarding + o contrato de integração — fundamentado no que a surface do yuri já
+de onboarding + o contrato de integração — fundamentado no que a surface do user já
 comprova: [`telemetry-surfaces.md`](./telemetry-surfaces.md),
 [`analytics-framework.md`](./analytics-framework.md),
 [`universe-upgrade.md`](./universe-upgrade.md), `openapi/artelonga.yaml`.
@@ -55,7 +55,7 @@ spec, nunca um dono.
 
 ---
 
-## 1. O estudo de caso — o que `yuri` comprovou
+## 1. O estudo de caso — o que `user` comprovou
 
 | Building block que entregamos | O que comprova para IaaS |
 |---|---|
@@ -67,7 +67,7 @@ spec, nunca um dono.
 | **Separação form / content / data** | Rendering, dados e schema são camadas independentes. **Agnóstico de infra.** |
 
 Cada um destes é uma *propriedade que um novo cérebro herda de graça* ao clonar o template
-do yuri.
+do user.
 
 ---
 
@@ -92,8 +92,8 @@ Quatro invariantes arquiteturais tornam um cérebro uma unidade barata e indepen
 
 ```mermaid
 flowchart TB
-  TPL["yuri = the template (reference brain)"]
-  TPL -->|"clone + data spec"| B1["brain 1<br/>yuri.artelonga.com.br (Fly)"]
+  TPL["user = the template (reference brain)"]
+  TPL -->|"clone + data spec"| B1["brain 1<br/>user.artelonga.com.br (Fly)"]
   TPL -->|"clone + data spec"| B2["brain 2<br/>client.newdomain.com (anywhere)"]
   TPL -->|"clone + data spec"| B3["brain N<br/>a Raspberry Pi, a VPS, GH Pages…"]
   B1 -->|"universe key"| CO["co — multi-tenant platform"]
@@ -101,7 +101,7 @@ flowchart TB
   B3 -->|"universe key"| CO
 ```
 
-> **Liberdade de infra (hoje, literalmente verdade).** `yuri.artelonga.com.br` roda na Fly,
+> **Liberdade de infra (hoje, literalmente verdade).** `user.artelonga.com.br` roda na Fly,
 > mas a surface é um server Node de stdlib + arquivos estáticos + um DB embarcado. Pode rodar
 > em outro domínio, em outra máquina, no GH Pages ou num laptop — **não estamos
 > presos a nenhuma escolha de infra.** O único contrato é a **data spec**, não o host.
@@ -116,7 +116,7 @@ que já existe, versionada, em `openapi/artelonga.yaml`:
 | Camada | Schema (fonte da verdade) | Quem fornece |
 |---|---|---|
 | **Identity** | email → usuário único (um *ADD* ao user DB do co) | co |
-| **Content entries** | tipadas: `article · poem · reference · song · file` (o shape de entrada do garden, `yuri/_schema.md`) | o cérebro |
+| **Content entries** | tipadas: `article · poem · reference · song · file` (o shape de entrada do garden, `user/_schema.md`) | o cérebro |
 | **References / authors** | registry `neuro/authors.js` + refs ABNT | o cérebro |
 | **Telemetria / analytics** | `TelemetryEvent` (cru, edge) · `DailyRollup` (consentido, central) | ambos |
 | **Payment / subscription** | billing do co | co |
@@ -135,7 +135,7 @@ sequenceDiagram
   participant S as Surface (the brain)
   U->>CO: 1. register (email)
   Note over CO: ADD → unique user · t_register ≈ instant
-  CO->>S: 2. provision universe + clone yuri template
+  CO->>S: 2. provision universe + clone user template
   S->>S: 3. deploy on a domain / machine (infra-agnostic)
   Note over S: t_deploy
   U->>S: 4. add content (article/poem/ref/song/any file)
@@ -152,7 +152,7 @@ sequenceDiagram
 KPI — ver §5):
 
 1. **Register** — email → usuário único (`ADD` ao user DB do co). *Dono: co.*
-2. **Provision** — cria o universe; clona o template do yuri (form + server).
+2. **Provision** — cria o universe; clona o template do user (form + server).
    *Dono: co + tooling.*
 3. **Deploy** — surface no ar em qualquer domínio/máquina; cert + DNS (o
    runbook `universe-upgrade.md` generaliza isso). *Dono: ops.*
@@ -164,7 +164,7 @@ KPI — ver §5):
 7. **Satisfy** — conteúdo atualizado em todo lugar, downstream disponível. *Dono: o
    loop.*
 
-Esta é a receita repetível: **clone o yuri, forneça a data spec, faça deploy em qualquer lugar,
+Esta é a receita repetível: **clone o user, forneça a data spec, faça deploy em qualquer lugar,
 conecte a universe key.**
 
 ---
@@ -209,7 +209,7 @@ flowchart LR
 ```
 
 Mapeado para as mecânicas reais que temos:
-- **Write** = soltar uma entrada markdown tipada (`yuri/_schema.md`) + o arquivo no
+- **Write** = soltar uma entrada markdown tipada (`user/_schema.md`) + o arquivo no
   universe; é a fonte da verdade.
 - **Register** = o passo de bake (`tools/bake-*.mjs`) valida por schema contra
   `openapi/artelonga.yaml` e reconstrói o index (`entries.json`, registry de autores,
@@ -218,7 +218,7 @@ Mapeado para as mecânicas reais que temos:
   completar**.
 - **Sync** = push consentido para o co (mesmo padrão do broadcast de rollup/feedback);
   entra no KB + warehouse, chaveado por universe.
-- **Downstream** = consultável por entidade (a resolução de identidade de autor → "onde yuri
+- **Downstream** = consultável por entidade (a resolução de identidade de autor → "onde user
   é autor"), por analytics, por agents — *disponível para processos downstream*.
 
 **Garantia de resiliência:** se o caminho de sync/ingestão quebrar, o cérebro ainda
@@ -278,7 +278,7 @@ Nada mais é sob medida.
 | Afirmação no brief | Veredito | Evidência |
 |---|---|---|
 | Upgrade de telemetria (path → CNAME) | ✅ entregue + verificado no ar | `universe-upgrade.md`, a integração bidirecional |
-| CNAME para escalabilidade horizontal | ✅ cada cérebro = domínio próprio | surfaces yuri/hostinger, server agnóstico de infra |
+| CNAME para escalabilidade horizontal | ✅ cada cérebro = domínio próprio | surfaces user/hostinger, server agnóstico de infra |
 | Conversão (register → payment) | ◑ design + KPI definidos | identity + payment do co; §5 — falta o wiring do billing do co |
 | Custo SaaS zero | ✅ verdade hoje | telemetria self-hosted + geo CC0/DB-IP, sem terceiros |
 | Infra separada / livre de escolhas de infra | ✅ verdade hoje | server de stdlib + estático + data spec; roda em qualquer lugar |
@@ -286,27 +286,28 @@ Nada mais é sob medida.
 | Render a partir do cache mesmo se a ingestão quebrar | ✅ entregue | cache-first + fallback de localStorage + geo gracioso |
 | Adicionar qualquer conteúdo/arquivo tipado → sincronizado/entregue | ◑ parcial | bake + render entregues; sync completo do KB = o próximo build |
 
-**Resumo:** o paradigma é real e majoritariamente comprovado no yuri. O trabalho restante é o
+**Resumo:** o paradigma é real e majoritariamente comprovado no user. O trabalho restante é o
 **wiring de conversão/payment** e o **sync content→KB** (o padrão de rollup
 generaliza para ele). Ambos cabem nas costuras existentes; nenhum precisa de nova infra ou SaaS.
 
 ---
 
-## 9. yuri como o template — a receita repetível
+## 9. user como o template — a receita repetível
 
 Para fazer onboarding do cérebro N:
 
 1. **`add-user(email)`** → co (instantâneo, um ADD).
 2. **`mint-universe(handle)`** → tenancy key.
-3. **`clone-surface(yuri)`** → form + server de stdlib + slots de data-spec.
+3. **`clone-surface(user)`** → form + server de stdlib + slots de data-spec.
 4. **`deploy(any-host)`** → cert + DNS (runbook `universe-upgrade.md`).
 5. **`set CO_ROLLUP_TOKEN` + `CO_HISTORY`** → integração bidirecional ligada.
 6. **`supply data spec`** → o cérebro preenche o conteúdo; o bake o registra.
 7. **Revise os 7 gates de onboarding (§4) contra os KPIs (§5).**
 
-`yuri` não é um caso especial — é o **template de fato** de como a artelonga escala
+`user` não é um caso especial — é o **template de fato** de como a artelonga escala
 para N cérebros, cada um soberano, cada um na infra que for mais barata, cada um custando ~uma
 VM pequena, integrados a uma plataforma livre que todos nós compartilhamos (ñandé).
+Veja [o modelo /user](./user-template.html).
 
 ---
 

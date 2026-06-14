@@ -10,7 +10,7 @@ da ArteLonga fazendo CRUD de conteúdo scrum**, e um **partner de scrum convidad
 
 ```
 scrum/
-├── scrum.md                 # the content (draft) — lead: yuri
+├── scrum.md                 # the content (draft) — lead: user
 ├── 2020-Scrum-Guide-US.pdf  # the attachment (why it's a folder)
 └── index.html               # the form — publishes at artelonga.com.br/scrum
 ```
@@ -165,4 +165,4 @@ flowchart TB
 - [`brain-as-a-service.md`](./brain-as-a-service.md) — o paradigma, passos de onboarding, KPIs.
 - [`universe-upgrade.md`](./universe-upgrade.md) — runbook pasta → surface CNAME.
 - [`analytics-framework.md`](./analytics-framework.md) — o contrato multi-tenant.
-- `scrum/scrum.md` — o conteúdo (draft, lead: yuri).
+- `scrum/scrum.md` — o conteúdo (draft, lead: user).

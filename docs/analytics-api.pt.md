@@ -22,7 +22,7 @@ contract. Bump `SCHEMA_VERSION` in both this doc and `analytics.js` together.
 > system: the apex site `artelonga.com.br` and its paths send rich GA-like
 > events to co; it powers `/analytics/`. The second system —
 > **universe-owned surfaces** (promoted CNAME surfaces such as
-> `yuri.artelonga.com.br` that own their telemetry locally) — and the
+> `user.artelonga.com.br` that own their telemetry locally) — and the
 > convergence design that keeps a parceiro's time-series continuous across the
 > path→CNAME upgrade are documented in **`docs/telemetry-surfaces.md`**.
 
@@ -75,7 +75,7 @@ type Event = {
   vid: string,                 // visitor ID (UUID, persists in localStorage)
   ts: number,                  // event timestamp, epoch ms (client clock — backend records its own received_at too)
   tz?: string | null,          // IANA timezone, e.g. "America/Sao_Paulo"
-  path: string,                // normalized pathname, e.g. "/yuri/" (trailing slash, no /index.html)
+  path: string,                // normalized pathname, e.g. "/user/" (trailing slash, no /index.html)
   query?: string | null,       // raw location.search, including leading "?"
   ref?: string | null,         // document.referrer
   vw: number, vh: number,      // viewport in CSS pixels
@@ -290,7 +290,7 @@ Bucketing: `days=1` → hora, demais → dia. Limite top_pages = 30, geo = 50.
 | Param            | Efeito                                                        | Status |
 | ---              | ---                                                           | ---    |
 | `from`, `to`     | Fatia por intervalo de datas (`YYYY-MM-DD`). O dashboard usa pra **clique-no-gráfico filtra dados abaixo**: ao clicar numa barra ele chama `?from=DIA&to=DIA` e, se o backend devolver `timeseries.length === 1` com aquele bucket, assume suporte e usa o slice; senão cai no fallback client-side (recomputa top-pages do dia a partir de `/recent`). Implementar = fatiar todos os agregados (KPIs/top_pages/geo/timeseries) por `[from,to]`. | **TODO co** |
-| `universe`       | Filtra por universe/surface (`?universe=yuri`). Necessário pra separar a observabilidade de `/yuri` (agora CNAME `yuri.artelonga.com.br`) do agregado da rede. Hoje é **ignorado** (mesmos números com ou sem). Ver convergência em `docs/telemetry-surfaces.md`. | **TODO co** |
+| `universe`       | Filtra por universe/surface (`?universe=user`). Necessário pra separar a observabilidade de `/user` (agora CNAME `user.artelonga.com.br`) do agregado da rede. Hoje é **ignorado** (mesmos números com ou sem). Ver convergência em `docs/telemetry-surfaces.md`. | **TODO co** |
 
 > Bot/datacenter skew: `geo` hoje é dominado por IPs de datacenter (Washington,
 > Boydton, Chicago, San Jose, Phoenix, Cheyenne = AWS/Azure/GCP). Recomenda-se
