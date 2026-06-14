@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Docs — Arte Longa</title>
-<meta name="description" content="Base de conhecimento Arte Longa (bilíngue): Intelligence as a Service, telemetria, escala horizontal.">
+<meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Documentação — o mapa · Arte Longa</title>
+<meta name="description" content="O mapa da documentação Arte Longa: a rede te dá um site que é seu, a infraestrutura pra mantê-lo no ar e os números pra crescer. Comece por onde quiser.">
 <style>
   :root{--ink:#0a0a0a;--ink2:#444;--ink3:#888;--line:#e7e1da;--bg:#fbf9f6;--bg2:#fff;--accent:#9a3b2e}
   *{box-sizing:border-box} body{font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
@@ -22,19 +22,370 @@
   .grp{margin:1.4em 0}.grp h2{border:0;padding:0;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink3)}
   .doclist{list-style:none;padding:0}.doclist li{margin:.5em 0}.doclist .src{font-size:.72rem;color:var(--ink3)}
   .tag{font-size:.6rem;font-weight:700;border-radius:999px;padding:.05rem .45rem;letter-spacing:.04em;vertical-align:middle}
-  .tag.dev{background:#eef1f6;color:var(--ink3)}.tag.pub{background:#e6f1e8;color:#3a7d44}</style></head><body>
+  .tag.dev{background:#eef1f6;color:var(--ink3)}.tag.pub{background:#e6f1e8;color:#3a7d44}
+  .tag.app{background:#fbeae6;color:var(--accent)}.tag.ext{background:#f0ece6;color:var(--ink2)}
+  .lede{font-size:1.05rem;color:var(--ink2);max-width:62ch}
+  .spine{display:flex;align-items:center;gap:.7rem;margin:2.2em 0 .2em}
+  .spine .end{font-size:.66rem;font-weight:700;letter-spacing:.04em;color:var(--ink3);white-space:nowrap}
+  .spine .bar{flex:1;height:8px;border-radius:999px;
+    background:linear-gradient(90deg,#cdd6e2 0%,#d9cfc6 50%,var(--accent) 100%)}
+  .spine-cap{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);text-align:center;margin:.2em 0 2.4em}
+  .jgroup{margin:2.2em 0;padding-left:1rem;border-left:3px solid var(--line)}
+  .jgroup h2{border:0;padding:0;margin:0 0 .9em;font-size:1.18rem;letter-spacing:-.01em;display:flex;align-items:baseline;gap:.55rem}
+  .jgroup .jn{display:inline-flex;align-items:center;justify-content:center;width:1.5rem;height:1.5rem;flex:none;
+    font-size:.74rem;font-weight:700;color:#fff;background:var(--accent);border-radius:999px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:.7rem}
+  /* card = div com link de título "esticado" (cobre o card). Sem <a> aninhado:
+     o link "en" é irmão, clicável acima do esticado. Evita o bug do card vazio. */
+  .card{position:relative;display:flex;flex-direction:column;gap:.3rem;padding:.85rem .95rem;background:var(--bg2);
+    border:1px solid var(--line);border-radius:10px;transition:border-color .15s}
+  .card:hover{border-color:var(--accent)}
+  .card .ct{font-weight:700;font-size:.95rem;line-height:1.25}
+  .card .ct a{color:var(--ink);border:0}
+  .card .ct a::after{content:"";position:absolute;inset:0;border-radius:10px}
+  .card .cl{font-size:.82rem;color:var(--ink2);line-height:1.4}
+  .card .cf{margin-top:auto;padding-top:.15em;display:flex;align-items:center;gap:.5rem}
+  .card .en{font-size:.68rem;color:var(--ink3);border:0;position:relative;z-index:1}
+  .card .en:hover{color:var(--accent)}
+  .jgroup .src{font-size:.78rem;color:var(--ink3);margin:.7em 0 0}
+  .maplinks{margin:3em 0 0;padding-top:1.2em;border-top:1px solid var(--line);font-size:.82rem;color:var(--ink3)}
+  .maplinks a{color:var(--ink2)}
+  /* prosa conceitual (① O que é) — sem widget, o espinhaço acima já visualiza */
+  .concept{font-size:.95rem;color:var(--ink2);max-width:62ch;margin:.2em 0 1.4em}
+  /* cartões de comando (② Construir) — adaptado de .codocs-cmd → paleta dos docs */
+  .map-cmds{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:.7rem;margin:.2em 0 1.2em}
+  .map-cmd{display:flex;flex-direction:column;gap:.4rem;padding:.85rem .95rem;background:var(--bg2);
+    border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px}
+  .map-cmd-name{align-self:flex-start;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86rem;
+    font-weight:700;color:var(--ink);background:var(--bg);border:1px solid var(--line);padding:.18em .5em;border-radius:6px}
+  .map-cmd-syn{font-size:.85rem;font-weight:700;color:var(--ink);margin:0}
+  .map-cmd-faz{font-size:.8rem;color:var(--ink2);margin:0;line-height:1.4}
+  .map-cmd-onde{font-size:.76rem;color:var(--ink3);margin:auto 0 0}
+  .map-cmd-onde span{display:inline-block;font-size:.62rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--accent);margin-right:.45em}
+  .map-note{font-size:.82rem;color:var(--ink3);margin:.4em 0 0}
+  .map-note code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.85em;background:var(--bg2);border:1px solid var(--line);border-radius:4px;padding:.05em .35em;color:var(--ink2)}
+  /* grupos de API (③ API) — adaptado de .codocs-api-group + .codocs-ep */
+  .map-api{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:.7rem;margin:.2em 0 1.2em}
+  .map-api-group{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:.85rem .95rem}
+  .map-api-head{display:flex;align-items:center;justify-content:space-between;gap:1em;margin:0 0 .6em}
+  .map-api-name{font-size:.98rem;font-weight:700;color:var(--ink);margin:0}
+  .map-auth{font-size:.6rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:.2em .6em;border-radius:999px;white-space:nowrap}
+  .map-auth-publico{background:#e6f1e8;color:#3a7d44}
+  .map-auth-jwt{background:#eef1f6;color:#4452a6}
+  .map-auth-token{background:#fbeae6;color:var(--accent)}
+  table.map-ep{width:100%;border-collapse:collapse;font-size:.78rem;display:table;margin:0;overflow:visible}
+  table.map-ep td{border:0;border-bottom:1px solid var(--line);padding:.45em .5em .45em 0;vertical-align:top}
+  table.map-ep tr:last-child td{border-bottom:0}
+  .map-ep-m{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:700;font-size:.68rem;color:var(--accent);white-space:nowrap}
+  .map-ep-p code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.74rem;color:var(--ink);word-break:break-all}
+  .map-ep-d{color:var(--ink2)}
+  .map-callout{margin:.6em 0 0;border:1px solid var(--accent);border-radius:14px;padding:1rem 1.1rem;background:var(--bg2);
+    display:flex;flex-wrap:wrap;align-items:baseline;gap:.4em 1.2em}
+  .map-callout strong{color:var(--ink);font-size:.98rem;flex-basis:100%}
+  .map-callout a{font-weight:700}
+  /* tabela de funcionalidades (④) — adaptado de .codocs-func */
+  .map-func-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:.2em 0 0}
+  table.map-func{width:100%;border-collapse:collapse;font-size:.84rem;display:table;margin:0;overflow:visible}
+  table.map-func th{text-align:left;font-size:.66rem;letter-spacing:.05em;text-transform:uppercase;color:var(--ink3);
+    background:var(--bg2);font-weight:700;padding:.7em .9em;border:0;border-bottom:1px solid var(--line)}
+  table.map-func td{padding:.65em .9em;border:0;border-bottom:1px solid var(--line);vertical-align:top}
+  table.map-func tr:last-child td{border-bottom:0}
+  .map-func-name{font-weight:700;color:var(--ink)}
+  .map-func-onde code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.74rem;color:var(--ink2)}
+  @media(max-width:560px){.cards,.map-cmds,.map-api{grid-template-columns:1fr}.spine{flex-wrap:wrap}.spine .bar{order:3;flex-basis:100%}}</style></head><body>
 <div class="crumb"><span><a href="/">Arte Longa</a> · docs</span></div>
-<h1>Documentação</h1>
-<p>Base de conhecimento — conteúdo bilíngue (pt/en), renderizado estático (sem runtime). Forma em inglês, conteúdo no idioma. Promovível a <code>docs.artelonga.com.br</code>.</p>
-<div class="grp"><h2>Conhecimento (público)</h2><ul class="doclist"><li><a href="/docs/use-cases.html">Use cases — artelonga / co universe platform</a> <span class="tag pub">público</span> · <a href="/docs/use-cases.en.html">en</a><br><span class="src">docs/use-cases.{pt,en}.md</span></li>
-<li><a href="/docs/intelligence-as-a-service.html">Inteligência como Serviço (IaaS) — a linha entre o que é especificado e o que é criado</a> <span class="tag pub">público</span> · <a href="/docs/intelligence-as-a-service.en.html">en</a><br><span class="src">docs/intelligence-as-a-service.{pt,en}.md</span></li>
-<li><a href="/docs/scrum-retrospective.html">Scrum no co — funil → conversão → kanban entregue</a> <span class="tag pub">público</span> · <a href="/docs/scrum-retrospective.en.html">en</a><br><span class="src">docs/scrum-retrospective.{pt,en}.md</span></li>
-<li><a href="/docs/lead-acquisition.html">Aquisição de leads — o funil E2E (revisão)</a> <span class="tag pub">público</span> · <a href="/docs/lead-acquisition.en.html">en</a><br><span class="src">docs/lead-acquisition.{pt,en}.md</span></li>
-<li><a href="/yuri/aws/">AWS — caso de uso pela experiência</a> <span class="tag pub">público</span> · <a href="/yuri/aws/en/">en</a><br><span class="src">yuri/aws/ · estudo de cloud do yuri</span></li></ul></div>
-<div class="grp"><h2>Engenharia · specs (dev)</h2><ul class="doclist"><li><a href="/docs/scrum-universe.html">Scrum — pasta → página publicada → surface (upgradeable)</a> <span class="tag dev">dev</span> · <a href="/docs/scrum-universe.en.html">en</a><br><span class="src">docs/scrum-universe.{pt,en}.md</span></li>
-<li><a href="/docs/analytics-framework.html">Analytics framework — central, filtrável, multi-tenant, extensível</a> <span class="tag dev">dev</span> · <a href="/docs/analytics-framework.en.html">en</a><br><span class="src">docs/analytics-framework.{pt,en}.md</span></li>
-<li><a href="/docs/telemetry-surfaces.html">Telemetria — surfaces universe-owned &amp; convergência</a> <span class="tag dev">dev</span> · <a href="/docs/telemetry-surfaces.en.html">en</a><br><span class="src">docs/telemetry-surfaces.{pt,en}.md</span></li>
-<li><a href="/docs/universe-upgrade.html">Upgrade de universe — path → surface CNAME (runbook reproduzível)</a> <span class="tag dev">dev</span> · <a href="/docs/universe-upgrade.en.html">en</a><br><span class="src">docs/universe-upgrade.{pt,en}.md</span></li>
-<li><a href="/docs/analytics-api.html">Analytics API — wire contract</a> <span class="tag dev">dev</span> · <a href="/docs/analytics-api.en.html">en</a><br><span class="src">docs/analytics-api.{pt,en}.md</span></li></ul></div>
-<p class="src">+ Scrum (parceiro): <a href="/scrum/">/scrum/</a> · backlog: <code>work/artelonga/AL-N.md</code></p>
+<h1>Documentação — o mapa</h1>
+<p class="lede">Este é o ponto de entrada. A rede te dá um site que é seu, a infraestrutura pra mantê-lo no ar e os números pra crescer — um <code>/user</code> vira <code>user.artelonga.com.br</code>. Comece por onde quiser.</p>
+
+<div class="spine" role="img" aria-label="espectro: 0 máquina a 100 pessoa">
+  <span class="end left">0 · máquina (IA)</span>
+  <span class="bar"></span>
+  <span class="end right">100 · pessoa (você)</span>
+</div>
+<p class="spine-cap">uma só documentação, o espectro inteiro</p>
+
+<section class="jgroup">
+      <h2><span class="jn">①</span> O que é</h2>
+      <div class="cards"><div class="card">
+      <span class="ct"><a href="/docs/intelligence-as-a-service.html">Inteligência como serviço (IaaS)</a></span>
+      <span class="cl">Cada site é soberano; um só conjunto de ferramentas; custo marginal quase zero.</span>
+      <span class="cf"><span class="tag pub">doc</span> <a class="en" href="/docs/intelligence-as-a-service.en.html">en ↗</a></span></div></div><p class="concept">Do que uma máquina executa sozinha à experiência sob medida de uma pessoa — um só conjunto de ferramentas serve as duas pontas.</p>
+    </section>
+<section class="jgroup">
+      <h2><span class="jn">②</span> Construir</h2>
+      <div class="cards"><div class="card">
+      <span class="ct"><a href="/docs/use-cases.html">Casos de uso</a></span>
+      <span class="cl">O que dá pra fazer na rede, do primeiro contato à publicação.</span>
+      <span class="cf"><span class="tag pub">doc</span> <a class="en" href="/docs/use-cases.en.html">en ↗</a></span></div><div class="card">
+      <span class="ct"><a href="/docs/scrum-universe.html">Do arquivo ao site publicado</a></span>
+      <span class="cl">Como um site nasce: de uma pasta a uma página no ar.</span>
+      <span class="cf"><span class="tag dev">spec</span> <a class="en" href="/docs/scrum-universe.en.html">en ↗</a></span></div><div class="card">
+      <span class="ct"><a href="/docs/universe-upgrade.html">Promover a domínio próprio</a></span>
+      <span class="cl">De uma página na rede ao seu próprio endereço.</span>
+      <span class="cf"><span class="tag dev">spec</span> <a class="en" href="/docs/universe-upgrade.en.html">en ↗</a></span></div></div><div class="map-cmds"><div class="map-cmd">
+      <code class="map-cmd-name">co serve</code>
+      <p class="map-cmd-syn">Sobe o servidor web do co localmente (localhost-first).</p>
+      <p class="map-cmd-faz">Inicia o servidor HTTP do co na sua máquina. Flags: --port (54321), --data-dir, --open, --public (bind 0.0.0.0).</p>
+      <p class="map-cmd-onde"><span>onde se aplica</span>Rodar o co na sua máquina; inspeção local antes de publicar.</p>
+    </div><div class="map-cmd">
+      <code class="map-cmd-name">co-auto</code>
+      <p class="map-cmd-syn">Motor de automação de tarefas (binário separado, dev/co-auto).</p>
+      <p class="map-cmd-faz">Lê o board work/&lt;space&gt;/&lt;KEY&gt;-&lt;id&gt;.md e orquestra agentes LLM no loop planejar→executar→revisar (roteamento de modelo por tarefa).</p>
+      <p class="map-cmd-onde"><span>onde se aplica</span>Entrega contínua dirigida por tarefas.</p>
+    </div><div class="map-cmd">
+      <code class="map-cmd-name">co init &lt;name&gt;</code>
+      <p class="map-cmd-syn">Inicializa um novo espaço de conteúdo.</p>
+      <p class="map-cmd-faz">Cria a estrutura de um espaço novo com a key derivada do nome.</p>
+      <p class="map-cmd-onde"><span>onde se aplica</span>Começar um projeto.</p>
+    </div><div class="map-cmd">
+      <code class="map-cmd-name">co push  ·  co sync push</code>
+      <p class="map-cmd-syn">Publica o conteúdo no servidor remoto (idempotente).</p>
+      <p class="map-cmd-faz">POST /api/v1/universes + PUT .../vault/{path}; delta jj por padrão. Flags: --dry-run, --bootstrap.</p>
+      <p class="map-cmd-onde"><span>onde se aplica</span>Publicar/atualizar conteúdo.</p>
+    </div><div class="map-cmd">
+      <code class="map-cmd-name">co construir</code>
+      <p class="map-cmd-syn">Gera o site estático (Quartz) em public/.</p>
+      <p class="map-cmd-faz">Constrói o site público estático a partir do markdown (exclui _source/ com dados sensíveis).</p>
+      <p class="map-cmd-onde"><span>onde se aplica</span>Site público estático.</p>
+    </div><div class="map-cmd">
+      <code class="map-cmd-name">co board</code>
+      <p class="map-cmd-syn">Sobe o quadro de gestão (Kanban/Calendar), porta 3000.</p>
+      <p class="map-cmd-faz">Abre o quadro de tarefas (visões Kanban e Calendar).</p>
+      <p class="map-cmd-onde"><span>onde se aplica</span>Quadro de tarefas.</p>
+    </div><div class="map-cmd">
+      <code class="map-cmd-name">co launch</code>
+      <p class="map-cmd-syn">Transforma o diretório atual em espaço no co local.</p>
+      <p class="map-cmd-faz">Deriva a key do nome do diretório e sobe o conteúdo no co local na hora.</p>
+      <p class="map-cmd-onde"><span>onde se aplica</span>Subir um MVP na hora.</p>
+    </div><div class="map-cmd">
+      <code class="map-cmd-name">co deploy</code>
+      <p class="map-cmd-syn">Publica o build num alvo (ex.: static-on-r2).</p>
+      <p class="map-cmd-faz">Faz o deploy do site estático no alvo configurado. rollback --deploy-id reverte.</p>
+      <p class="map-cmd-onde"><span>onde se aplica</span>Deploy de site estático.</p>
+    </div><div class="map-cmd">
+      <code class="map-cmd-name">co auth token create</code>
+      <p class="map-cmd-syn">Cria token de API de 90 dias.</p>
+      <p class="map-cmd-faz">POST /api/v1/auth/token — emite um token portador para acesso programático.</p>
+      <p class="map-cmd-onde"><span>onde se aplica</span>Acesso programático / API.</p>
+    </div></div>
+    <p class="map-note">Lista completa em <code>co --help</code> e <code>co help &lt;tópico&gt;</code>.</p>
+    </section>
+<section class="jgroup">
+      <h2><span class="jn">③</span> API</h2>
+      <div class="map-api"><div class="map-api-group">
+        <div class="map-api-head">
+          <h3 class="map-api-name">Auth</h3>
+          <span class="map-auth map-auth-jwt">JWT</span>
+        </div>
+        <table class="map-ep"><tbody><tr>
+        <td class="map-ep-m">POST</td>
+        <td class="map-ep-p"><code>/api/v1/auth/login</code></td>
+        <td class="map-ep-d">Inicia sessão (magic link / credenciais).</td>
+      </tr><tr>
+        <td class="map-ep-m">POST</td>
+        <td class="map-ep-p"><code>/api/v1/auth/verify</code></td>
+        <td class="map-ep-d">Verifica o código e emite o JWT.</td>
+      </tr><tr>
+        <td class="map-ep-m">POST</td>
+        <td class="map-ep-p"><code>/api/v1/auth/token</code></td>
+        <td class="map-ep-d">Cria token de API de 90 dias.</td>
+      </tr><tr>
+        <td class="map-ep-m">GET</td>
+        <td class="map-ep-p"><code>/api/v1/auth/me</code></td>
+        <td class="map-ep-d">Identidade da sessão atual.</td>
+      </tr></tbody></table>
+      </div><div class="map-api-group">
+        <div class="map-api-head">
+          <h3 class="map-api-name">Universes</h3>
+          <span class="map-auth map-auth-jwt">JWT</span>
+        </div>
+        <table class="map-ep"><tbody><tr>
+        <td class="map-ep-m">GET</td>
+        <td class="map-ep-p"><code>/api/v1/universes</code></td>
+        <td class="map-ep-d">Lista os espaços do usuário.</td>
+      </tr><tr>
+        <td class="map-ep-m">GET</td>
+        <td class="map-ep-p"><code>/api/v1/universes/public</code></td>
+        <td class="map-ep-d">Lista os espaços públicos.</td>
+      </tr><tr>
+        <td class="map-ep-m">POST</td>
+        <td class="map-ep-p"><code>/api/v1/universes</code></td>
+        <td class="map-ep-d">Cria um espaço (idempotente).</td>
+      </tr><tr>
+        <td class="map-ep-m">GET</td>
+        <td class="map-ep-p"><code>/api/v1/universes/{slug}/manifest</code></td>
+        <td class="map-ep-d">Manifesto/metadados do espaço.</td>
+      </tr></tbody></table>
+      </div><div class="map-api-group">
+        <div class="map-api-head">
+          <h3 class="map-api-name">Conteúdo (entries)</h3>
+          <span class="map-auth map-auth-jwt">JWT</span>
+        </div>
+        <table class="map-ep"><tbody><tr>
+        <td class="map-ep-m">GET·POST</td>
+        <td class="map-ep-p"><code>/api/v1/universes/{slug}/entries</code></td>
+        <td class="map-ep-d">Lista ou cria entradas (markdown + frontmatter).</td>
+      </tr><tr>
+        <td class="map-ep-m">GET·PUT·DELETE</td>
+        <td class="map-ep-p"><code>.../entries/{*path}</code></td>
+        <td class="map-ep-d">Lê, grava ou remove uma entrada.</td>
+      </tr><tr>
+        <td class="map-ep-m">GET</td>
+        <td class="map-ep-p"><code>.../changelog</code></td>
+        <td class="map-ep-d">Histórico de mudanças do espaço.</td>
+      </tr></tbody></table>
+      </div><div class="map-api-group">
+        <div class="map-api-head">
+          <h3 class="map-api-name">Vault (compatível Obsidian)</h3>
+          <span class="map-auth map-auth-token">token de API</span>
+        </div>
+        <table class="map-ep"><tbody><tr>
+        <td class="map-ep-m">GET·PUT·DELETE</td>
+        <td class="map-ep-p"><code>/api/v1/universes/{slug}/vault/{*path}</code></td>
+        <td class="map-ep-d">Lê, grava ou remove um arquivo do vault.</td>
+      </tr><tr>
+        <td class="map-ep-m">POST</td>
+        <td class="map-ep-p"><code>.../vault/search</code></td>
+        <td class="map-ep-d">Busca no vault (60 req/min).</td>
+      </tr></tbody></table>
+      </div><div class="map-api-group">
+        <div class="map-api-head">
+          <h3 class="map-api-name">Tempo real / sync</h3>
+          <span class="map-auth map-auth-token">token de API</span>
+        </div>
+        <table class="map-ep"><tbody><tr>
+        <td class="map-ep-m">GET</td>
+        <td class="map-ep-p"><code>/api/v1/sync/ws</code></td>
+        <td class="map-ep-d">WebSocket de sync CRDT.</td>
+      </tr><tr>
+        <td class="map-ep-m">GET</td>
+        <td class="map-ep-p"><code>/ws/doc/{slug}/{doc_id}</code></td>
+        <td class="map-ep-d">WebSocket por documento.</td>
+      </tr><tr>
+        <td class="map-ep-m">GET</td>
+        <td class="map-ep-p"><code>/api/v1/events</code></td>
+        <td class="map-ep-d">Stream de eventos (SSE).</td>
+      </tr></tbody></table>
+      </div><div class="map-api-group">
+        <div class="map-api-head">
+          <h3 class="map-api-name">Analytics</h3>
+          <span class="map-auth map-auth-publico">público</span>
+        </div>
+        <table class="map-ep"><tbody><tr>
+        <td class="map-ep-m">GET</td>
+        <td class="map-ep-p"><code>/api/v1/analytics/public/...</code></td>
+        <td class="map-ep-d">Métricas públicas agregadas.</td>
+      </tr><tr>
+        <td class="map-ep-m">POST</td>
+        <td class="map-ep-p"><code>/api/v1/telemetry</code></td>
+        <td class="map-ep-d">Ingestão de telemetria.</td>
+      </tr></tbody></table>
+      </div><div class="map-api-group">
+        <div class="map-api-head">
+          <h3 class="map-api-name">Feedback / contato</h3>
+          <span class="map-auth map-auth-publico">público</span>
+        </div>
+        <table class="map-ep"><tbody><tr>
+        <td class="map-ep-m">POST</td>
+        <td class="map-ep-p"><code>/api/v1/feedback</code></td>
+        <td class="map-ep-d">Envia feedback.</td>
+      </tr><tr>
+        <td class="map-ep-m">POST</td>
+        <td class="map-ep-p"><code>/api/v1/contact</code></td>
+        <td class="map-ep-d">Envia mensagem de contato.</td>
+      </tr></tbody></table>
+      </div></div>
+    <div class="map-callout">
+      <strong>Referência completa e interativa → Swagger.</strong>
+      <a href="https://co.artelonga.com.br/api/docs" target="_blank" rel="noopener">Abrir o Swagger →</a>
+      <a href="https://co.artelonga.com.br/api/openapi.json" target="_blank" rel="noopener">Spec OpenAPI →</a>
+    </div>
+    </section>
+<section class="jgroup">
+      <h2><span class="jn">④</span> Funcionalidades → onde se aplicam</h2>
+      <div class="map-func-wrap">
+      <table class="map-func">
+        <thead><tr><th>Funcionalidade</th><th>Onde se aplica</th></tr></thead>
+        <tbody><tr>
+      <td class="map-func-name">Espaços de conteúdo, isolados por cliente</td>
+      <td class="map-func-onde"><code>co init · co launch · GET·POST /api/v1/universes</code></td>
+    </tr><tr>
+      <td class="map-func-name">Conteúdo markdown + frontmatter</td>
+      <td class="map-func-onde"><code>GET·PUT .../entries/{*path} · co serve</code></td>
+    </tr><tr>
+      <td class="map-func-name">Vault Obsidian</td>
+      <td class="map-func-onde"><code>GET·PUT·DELETE .../vault/{*path} · POST .../vault/search</code></td>
+    </tr><tr>
+      <td class="map-func-name">Sincronização em tempo real (CRDT)</td>
+      <td class="map-func-onde"><code>GET /api/v1/sync/ws · GET /ws/doc/{slug}/{doc_id}</code></td>
+    </tr><tr>
+      <td class="map-func-name">Separação por cliente</td>
+      <td class="map-func-onde"><code>slug em todos os caminhos · JWT por usuário</code></td>
+    </tr><tr>
+      <td class="map-func-name">Autenticação (JWT / token de API / OAuth)</td>
+      <td class="map-func-onde"><code>POST /api/v1/auth/login · /auth/verify · co auth token create</code></td>
+    </tr><tr>
+      <td class="map-func-name">Automação co-auto</td>
+      <td class="map-func-onde"><code>co-auto (board work/&lt;space&gt;/&lt;KEY&gt;-&lt;id&gt;.md)</code></td>
+    </tr><tr>
+      <td class="map-func-name">Construção / serviço estático</td>
+      <td class="map-func-onde"><code>co construir · co serve · co deploy</code></td>
+    </tr></tbody>
+      </table>
+    </div>
+    </section>
+<section class="jgroup">
+      <h2><span class="jn">⑤</span> Medir</h2>
+      <div class="cards"><div class="card">
+      <span class="ct"><a href="/docs/telemetry-surfaces.html">Telemetria — números próprios</a></span>
+      <span class="cl">Métricas de origem, sem terceiros, que pertencem a você.</span>
+      <span class="cf"><span class="tag dev">spec</span> <a class="en" href="/docs/telemetry-surfaces.en.html">en ↗</a></span></div><div class="card">
+      <span class="ct"><a href="/docs/analytics-framework.html">Estrutura de análise</a></span>
+      <span class="cl">O modelo de medição por trás de tudo.</span>
+      <span class="cf"><span class="tag dev">spec</span> <a class="en" href="/docs/analytics-framework.en.html">en ↗</a></span></div><div class="card">
+      <span class="ct"><a href="/docs/analytics-api.html">API de análise</a></span>
+      <span class="cl">A interface que entrega os números.</span>
+      <span class="cf"><span class="tag dev">spec</span> <a class="en" href="/docs/analytics-api.en.html">en ↗</a></span></div></div>
+    </section>
+<section class="jgroup">
+      <h2><span class="jn">⑥</span> Crescer</h2>
+      <div class="cards"><div class="card">
+      <span class="ct"><a href="/infra">Infraestrutura — preços e implantações</a></span>
+      <span class="cl">O que roda, quanto custa, do primeiro contato à escala.</span>
+      <span class="cf"><span class="tag app">página</span></span></div><div class="card">
+      <span class="ct"><a href="/yuri/aws/">AWS — estudo de escala</a></span>
+      <span class="cl">Quando trocar de serviço: −95% de custo, 157h→13min.</span>
+      <span class="cf"><span class="tag app">página</span> <a class="en" href="/yuri/aws/en/">en ↗</a></span></div><div class="card">
+      <span class="ct"><a href="/docs/lead-acquisition.html">Aquisição de clientes</a></span>
+      <span class="cl">O funil completo: do primeiro contato ao cliente.</span>
+      <span class="cf"><span class="tag pub">doc</span> <a class="en" href="/docs/lead-acquisition.en.html">en ↗</a></span></div><div class="card">
+      <span class="ct"><a href="/docs/scrum-retrospective.html">Entrega e retrospectiva</a></span>
+      <span class="cl">O ciclo: contato → conversão → entrega.</span>
+      <span class="cf"><span class="tag pub">doc</span> <a class="en" href="/docs/scrum-retrospective.en.html">en ↗</a></span></div></div>
+    </section>
+<section class="jgroup">
+      <h2><span class="jn">⑦</span> O mapa da rede</h2>
+      <div class="cards"><div class="card">
+      <span class="ct"><a href="https://github.com/artelonga/co" target="_blank" rel="noopener">co</a></span>
+      <span class="cl">gestão de conteúdo em grafo: texto, quadros e wiki, sincronizados em tempo real.</span>
+      <span class="cf"><span class="tag ext">externo</span></span></div><div class="card">
+      <span class="ct"><a href="https://github.com/artelonga/yggdrasil" target="_blank" rel="noopener">yggdrasil</a></span>
+      <span class="cl">mundos digitais navegáveis; reaproveita o motor 2D do co (em construção).</span>
+      <span class="cf"><span class="tag ext">externo</span></span></div><div class="card">
+      <span class="ct"><a href="https://github.com/artelonga/ArteLonga" target="_blank" rel="noopener">ArteLonga</a></span>
+      <span class="cl">o site público + o conteúdo da rede (perfis, serviços, missões).</span>
+      <span class="cf"><span class="tag ext">externo</span></span></div><div class="card">
+      <span class="ct"><a href="https://github.com/artelonga/redearte" target="_blank" rel="noopener">redearte</a></span>
+      <span class="cl">modelo de site de conteúdo (Quartz v4), com autonomia de dados.</span>
+      <span class="cf"><span class="tag ext">externo</span></span></div><div class="card">
+      <span class="ct"><a href="https://github.com/artelonga/rfq" target="_blank" rel="noopener">rfq</a></span>
+      <span class="cl">motor de cotações sob demanda, de baixa latência (formação de mercado).</span>
+      <span class="cf"><span class="tag ext">externo</span></span></div><div class="card">
+      <span class="ct"><a href="https://github.com/artelonga/quilombo-blog" target="_blank" rel="noopener">quilombo</a></span>
+      <span class="cl">plataforma comunitária (SvelteKit + SQLite), quilomboaraucaria.org.</span>
+      <span class="cf"><span class="tag ext">externo</span></span></div></div>
+      <p class="src">um <code>/user</code> vive na rede e pode ganhar um endereço próprio.</p>
+    </section>
+
+<footer class="maplinks"><a href="https://co.artelonga.com.br" target="_blank" rel="noopener">plataforma</a> · <a href="https://co.artelonga.com.br/api/docs" target="_blank" rel="noopener">API</a> · <a href="https://co.artelonga.com.br/api/openapi.json" target="_blank" rel="noopener">OpenAPI</a> · <a href="https://github.com/artelonga" target="_blank" rel="noopener">GitHub</a> · <a href="https://co.artelonga.com.br/health" target="_blank" rel="noopener">saúde</a></footer>
 </body></html>

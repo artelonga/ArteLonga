@@ -4,6 +4,7 @@ const pageMap: Record<string, () => Promise<{ render: () => void }>> = {
     servicos: () => import("./pages/servicos"),
     solucoes: () => import("./pages/solucoes"),
     recursos: () => import("./pages/recursos"),
+    infra: () => import("./pages/infra"),
     profile: () => import("./pages/profile"),
     service: () => import("./pages/service"),
     poem: () => import("./pages/poem"),
