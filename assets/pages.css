@@ -2768,3 +2768,67 @@ body { padding-bottom: 7vh; }
     .fp-loc-grid { grid-template-columns: 1fr 1fr; }
     .fp-loc-grid input:first-child { grid-column: 1 / -1; }
 }
+
+/* ═══ /infra/ — infraestrutura da rede (deploys · preço · pipeline) ════════ */
+.infra-title { font-size: 2rem; margin: 2vh 0 0.5vh; }
+.infra-lede { color: #3a3a3a; max-width: 70ch; margin: 0 0 1vh; }
+.infra-lede strong { color: #0a0a0a; }
+.infra-lede code { font-family: 'Space Mono', ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em; background: #f4f4f4; padding: 0.05em 0.3em; border-radius: 4px; }
+
+.infra-section { margin: 4vh 0 0; }
+.infra-h2 { font-size: 1.35rem; margin: 0 0 0.6vh; }
+.infra-section-lede { color: #3a3a3a; max-width: 70ch; margin: 0 0 2.4vh; font-size: 0.95rem; }
+.infra-section-lede strong { color: #0a0a0a; }
+.infra-section-lede code { font-family: 'Space Mono', ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.88em; color: #2a2a2a; }
+.infra-mark-infra { color: #2f6f6a; }
+.infra-mark-scale { color: #9a3b2e; }
+
+/* — cards de preço por caso de uso — */
+.infra-prices { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1.4vw; margin: 0 0 3vh; }
+.infra-price-card { border: 1px solid #ececec; border-radius: 12px; padding: 1.8vh 1.4vw; background: #fcfcfc; }
+.infra-price-faixa { font-family: 'Space Mono', ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 1.15rem; font-weight: 700; color: #9a3b2e; }
+.infra-price-titulo { font-size: 0.82rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #5a5a5a; margin: 0.4vh 0 1vh; }
+.infra-price-desc { font-size: 0.86rem; color: #3a3a3a; margin: 0 0 0.8vh; }
+.infra-price-ex { font-size: 0.8rem; color: #6a6a6a; font-style: italic; margin: 0; }
+
+/* — tabela de deploys — */
+.infra-table-wrap { overflow-x: auto; border: 1px solid #ececec; border-radius: 12px; }
+.infra-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.infra-table th { text-align: left; font-size: 0.72rem; letter-spacing: 0.05em; text-transform: uppercase; color: #6a6a6a; padding: 1.2vh 1vw; border-bottom: 1px solid #ececec; white-space: nowrap; }
+.infra-table td { padding: 1.2vh 1vw; border-bottom: 1px solid #f3f3f3; color: #2a2a2a; vertical-align: top; }
+.infra-table tr:last-child td { border-bottom: none; }
+.infra-app { font-family: 'Space Mono', ui-monospace, SFMono-Regular, Menlo, monospace; font-weight: 700; white-space: nowrap; }
+.infra-dom { display: block; font-family: inherit; font-weight: 400; font-size: 0.72rem; color: #8a8a8a; margin-top: 0.3vh; }
+.infra-state { font-size: 0.72rem; font-weight: 700; padding: 0.2em 0.6em; border-radius: 20px; white-space: nowrap; }
+.infra-state-running { background: #e8f3f2; color: #2f6f6a; }
+.infra-state-staging { background: #fef3e6; color: #b4571d; }
+.infra-state-parked { background: #f0f0f0; color: #6a6a6a; }
+
+/* — pipeline lead → scale — */
+.infra-pipeline { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 1.2vw; counter-reset: none; }
+.infra-step { border: 1px solid #ececec; border-radius: 12px; padding: 1.6vh 1.2vw; background: #fcfcfc; position: relative; }
+.infra-step.is-infra { border-color: #2f6f6a; background: #f6fbfa; }
+.infra-step.is-scale { border-color: #9a3b2e; background: #fdf6f5; }
+.infra-step-head { display: flex; align-items: center; justify-content: space-between; margin: 0 0 0.6vh; }
+.infra-step-num { font-size: 1.3rem; font-weight: 700; color: #161413; }
+.infra-step-tag { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #2f6f6a; background: #e8f3f2; padding: 0.2em 0.6em; border-radius: 20px; }
+.infra-step-tag.is-scale { color: #9a3b2e; background: #f7e7e4; }
+.infra-step-nome { font-size: 0.98rem; font-weight: 700; color: #161413; }
+.infra-step-ev { font-family: 'Space Mono', ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.72rem; color: #6a6a6a; margin: 0.4vh 0; }
+.infra-step-owner { font-size: 0.72rem; letter-spacing: 0.03em; text-transform: uppercase; color: #8a8a8a; margin: 0 0 0.8vh; }
+.infra-step-nota { font-size: 0.8rem; color: #3a3a3a; margin: 0; }
+
+/* — escalabilidade / quando trocar — */
+.infra-scale-box { border: 1px solid #9a3b2e; border-radius: 14px; padding: 2.4vh 1.8vw; background: #fdf6f5; }
+.infra-scale-metrics { margin: 0 0 1.8vh; padding-left: 1.2em; }
+.infra-scale-metrics li { font-size: 0.92rem; color: #2a2a2a; margin: 0.4vh 0; }
+.infra-scale-cta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4em 1.2em; margin: 0; }
+.infra-scale-link { font-size: 1rem; font-weight: 700; color: #9a3b2e; text-decoration: none; }
+.infra-scale-link:hover { text-decoration: underline; }
+.infra-scale-link-alt { font-size: 0.84rem; color: #6a6a6a; text-decoration: none; }
+.infra-scale-link-alt:hover { text-decoration: underline; }
+
+@media (max-width: 640px) {
+    .infra-table { font-size: 0.78rem; }
+    .infra-prices, .infra-pipeline { grid-template-columns: 1fr; }
+}
