@@ -1,17 +1,11 @@
 {
-  "as_of": "2026-06-14T08:16:20.175353087+00:00",
+  "as_of": "2026-06-15T10:23:42.003733883+00:00",
   "items": [
     {
       "path": "/servicos/",
       "slug": "",
-      "views": 10,
+      "views": 11,
       "visitors": 5
-    },
-    {
-      "path": "/servicos/alimentacao-e-bebidas/",
-      "slug": "alimentacao-e-bebidas",
-      "views": 6,
-      "visitors": 4
     },
     {
       "path": "/servicos/pensamento-islamico/",
@@ -20,15 +14,21 @@
       "visitors": 2
     },
     {
-      "path": "/servicos/gestao-administrativa/",
-      "slug": "gestao-administrativa",
+      "path": "/servicos/alimentacao-e-bebidas/",
+      "slug": "alimentacao-e-bebidas",
       "views": 5,
-      "visitors": 2
+      "visitors": 3
     },
     {
       "path": "/servicos/desenvolvimento-de-api/",
       "slug": "desenvolvimento-de-api",
-      "views": 3,
+      "views": 5,
+      "visitors": 2
+    },
+    {
+      "path": "/servicos/gestao-administrativa/",
+      "slug": "gestao-administrativa",
+      "views": 5,
       "visitors": 2
     },
     {
