@@ -9,6 +9,7 @@
     infra: () => Promise.resolve().then(() => infra),
     profile: () => Promise.resolve().then(() => profile),
     service: () => Promise.resolve().then(() => service),
+    missao: () => Promise.resolve().then(() => missao),
     poem: () => Promise.resolve().then(() => poem),
     essay: () => Promise.resolve().then(() => essay),
     contato: () => Promise.resolve().then(() => contato),
@@ -401,7 +402,7 @@
     ] }
   ];
   const BASE_URL = "https://artelonga.com.br";
-  async function render$c() {
+  async function render$d() {
     setPageSEO({
       title: "Arte Longa — Semeando Sonhos",
       description: "Arte Longa — agência de gestão de carreira, marca e produto, tecnologia e comunicação.",
@@ -660,7 +661,7 @@
   }
   const home = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
     __proto__: null,
-    render: render$c
+    render: render$d
   }, Symbol.toStringTag, { value: "Module" }));
   function ProfileCard(props) {
     const e = props.entity;
@@ -748,7 +749,7 @@
       if (e.key === "Escape") closeAll();
     });
   }
-  function render$b() {
+  function render$c() {
     setPageSEO({
       title: "Parceiros — Arte Longa",
       description: "Conheça os profissionais e comunidades parceiras da rede Arte Longa.",
@@ -757,10 +758,10 @@
     const h = (location.hash || "").toLowerCase();
     if (h === "#todos" || h === "#showall") {
       renderParceirosShowAll();
-      window.addEventListener("hashchange", render$b);
+      window.addEventListener("hashchange", render$c);
       return;
     }
-    window.addEventListener("hashchange", render$b);
+    window.addEventListener("hashchange", render$c);
     renderParceiros();
   }
   function renderParceirosShowAll() {
@@ -914,9 +915,9 @@
   }
   const parceiros = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
     __proto__: null,
-    render: render$b
+    render: render$c
   }, Symbol.toStringTag, { value: "Module" }));
-  function render$a() {
+  function render$b() {
     var _a;
     setPageSEO({
       title: "Serviços — Arte Longa",
@@ -1008,9 +1009,9 @@
   }
   const servicos = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
     __proto__: null,
-    render: render$a
+    render: render$b
   }, Symbol.toStringTag, { value: "Module" }));
-  function render$9() {
+  function render$a() {
     setPageSEO({
       title: "Soluções — Arte Longa",
       description: "Universos e soluções desenvolvidas pela Arte Longa.",
@@ -1108,9 +1109,9 @@
   }
   const solucoes = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
     __proto__: null,
-    render: render$9
+    render: render$a
   }, Symbol.toStringTag, { value: "Module" }));
-  function render$8() {
+  function render$9() {
     setPageSEO({
       title: "Recursos — Arte Longa",
       description: "Transparência financeira: receita, custos e metas da Arte Longa.",
@@ -1292,7 +1293,7 @@
   }
   const recursos = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
     __proto__: null,
-    render: render$8
+    render: render$9
   }, Symbol.toStringTag, { value: "Module" }));
   const INFRA_COST = { value: 2e3, label: "Armazenamento e computação" };
   const PRICE_BANDS = [
@@ -1372,7 +1373,7 @@
         <p class="infra-step-nota">${esc(s.nota)}</p>
     </li>`;
   }
-  function render$7() {
+  function render$8() {
     document.title = "Infraestrutura — Arte Longa";
     setPageSEO({
       title: "Infraestrutura — Arte Longa",
@@ -1443,7 +1444,7 @@
   }
   const infra = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
     __proto__: null,
-    render: render$7
+    render: render$8
   }, Symbol.toStringTag, { value: "Module" }));
   function mdInline(s) {
     return esc(s).replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (_, label, title) => {
@@ -1456,7 +1457,7 @@
     }).replace(/\*([^*\n]+)\*/g, "<em>$1</em>");
   }
   const REDE_EMAIL$2 = "rede@artelonga.com.br";
-  async function render$6() {
+  async function render$7() {
     var _a;
     const handle = document.body.dataset["handle"] ?? "";
     const AL = window.AL;
@@ -1813,7 +1814,7 @@
   }
   const profile = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
     __proto__: null,
-    render: render$6
+    render: render$7
   }, Symbol.toStringTag, { value: "Module" }));
   const EXEMPLOS = {
     "Desenvolvimento Web": [{ name: "Quilombo Araucária", url: "/quilomboaraucaria/" }],
@@ -1822,7 +1823,7 @@
     "Privacidade e Segurança": [{ name: "Quilombo Araucária", url: "/quilomboaraucaria/" }],
     "Criação de Conteúdo": [{ name: "Quilombo Araucária", url: "/relatos/" }]
   };
-  function render$5() {
+  function render$6() {
     const slug = document.body.dataset["slug"] ?? "";
     const AL = window.AL;
     const s = AL.serviceBySlug(slug);
@@ -1984,6 +1985,55 @@
     return `<svg class="svc-cta-icon" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.05.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.05.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.42-.36-1.05-.41-2.23-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.05-.36 2.23-.41 1.27-.06 1.65-.07 4.85-.07M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63c-.79.3-1.46.71-2.13 1.38S.93 3.35.63 4.14C.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.3.79.71 1.46 1.38 2.13.67.67 1.34 1.08 2.13 1.38.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56.79-.3 1.46-.71 2.13-1.38.67-.67 1.08-1.34 1.38-2.13.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91-.3-.79-.71-1.46-1.38-2.13C21.32 1.32 20.65.91 19.86.61c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0zm0 5.84a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32zm0 10.16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.4-11.85a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88z"/></svg>`;
   }
   const service = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+    __proto__: null,
+    render: render$6
+  }, Symbol.toStringTag, { value: "Module" }));
+  function render$5() {
+    const slug = document.body.dataset["slug"] ?? "";
+    const AL = window.AL;
+    const m = AL.missions.find((x) => x.handle === slug);
+    if (!m) {
+      document.body.innerHTML = `${siteHeader()}<main class="main"><p>Missão não encontrada.</p><a class="back" href="/">← voltar pra home</a></main>${siteFooter()}`;
+      return;
+    }
+    document.title = `${m.nome} — Missão — Arte Longa`;
+    const desc = m.objetivo ?? m.subtitle;
+    setPageSEO({
+      title: `${m.nome} — Arte Longa`,
+      ...desc ? { description: desc } : {},
+      url: `/missoes/${m.handle}/`
+    });
+    const com = m.comunidade ? AL.get(m.comunidade) : void 0;
+    const autor = m.objetivoAutor ? AL.get(m.objetivoAutor) : void 0;
+    const servicos2 = (m.servicos ?? []).map((t) => AL.serviceByTitle(t)).filter((s) => s !== void 0);
+    const subMissions = AL.subMissionsOf(m.handle);
+    const subtitleHtml = m.subtitle ? `<p class="service-summary">${esc(m.subtitle)}</p>` : "";
+    const comHtml = com ? `<div class="service-resp">Comunidade: <a href="/${esc(com.handle)}/">${esc(com.nome)}</a>${autor ? ` · por <a href="/${esc(autor.handle)}/">${esc(autor.nome)}</a>` : ""}</div>` : autor ? `<div class="service-resp">Por <a href="/${esc(autor.handle)}/">${esc(autor.nome)}</a></div>` : "";
+    const objetivoHtml = m.objetivo ? `<p class="service-summary"><strong>Objetivo.</strong> ${esc(m.objetivo)}</p>` : "";
+    const tagsHtml = (m.tags ?? []).length ? `<div class="svc-meta">${(m.tags ?? []).map((t) => `<span class="svc-meta-chunk">${esc(t)}</span>`).join(`<span class="svc-meta-sep">·</span>`)}</div>` : "";
+    const servicosHtml = servicos2.length ? `<div class="section-header"><h2>Serviços</h2><span class="label">o que esta missão mobiliza</span></div>
+           <ul class="service-related">${servicos2.map((s) => `<li><a href="/servicos/${esc(s.slug ?? "")}/">${esc(s.titulo)}</a></li>`).join("")}</ul>` : "";
+    const subHtml = subMissions.length ? `<div class="section-header"><h2>Sub-missões</h2><span class="label">${subMissions.length}</span></div>
+           <ul class="service-related">${subMissions.map((s) => `<li><a href="/missoes/${esc(s.handle)}/">${esc(s.nome)}</a></li>`).join("")}</ul>` : "";
+    const ctaUrl = `/contato/?missao=${encodeURIComponent(m.nome)}`;
+    document.body.innerHTML = `
+        ${siteHeader()}
+        <main class="main">
+            <div class="service-crumb"><a href="/parceiros/">← Rede</a>${com ? ` · <a href="/${esc(com.handle)}/">${esc(com.nome)}</a>` : ""}</div>
+            <h1 class="service-title">${esc(m.nome)}</h1>
+            ${tagsHtml}
+            ${subtitleHtml}
+            ${comHtml}
+            ${objetivoHtml}
+            ${servicosHtml}
+            ${subHtml}
+            <p class="svc-cta"><a class="svc-cta-btn" href="${ctaUrl}">Falar conosco →</a></p>
+            <a class="back" href="/">← voltar pra home</a>
+        </main>
+        ${siteFooter()}
+    `;
+  }
+  const missao = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
     __proto__: null,
     render: render$5
   }, Symbol.toStringTag, { value: "Module" }));
