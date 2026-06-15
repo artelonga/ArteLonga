@@ -2673,6 +2673,26 @@
             "Dança e Expressão Corporal",
             "Alimentação e Bebidas"
           ]
+        },
+        {
+          "handle": "pesquisa-quilombo",
+          "type": "mission",
+          "nome": "Pesquisa de Público — Quilombo Araucária",
+          "subtitle": "Diagnóstico participativo · escutar, priorizar e conectar demandas a serviços públicos",
+          "comunidade": "quilomboaraucaria",
+          "objetivo": "Escutar a comunidade de forma sistemática, ordenar as demandas por prioridade (frequência × urgência) e ligá-las aos serviços públicos — em apoio à regularização do espaço.",
+          "objetivoAutor": "yuri",
+          "tags": [
+            "pesquisa",
+            "dados",
+            "social"
+          ],
+          "servicos": [
+            "Coleta de Dados",
+            "Análise de Dados",
+            "Visualização de Dados",
+            "Comunicação Científica"
+          ]
         }
     ];
     // AUTO-GENERATED:MISSIONS-END
