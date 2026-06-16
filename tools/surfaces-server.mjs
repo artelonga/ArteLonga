@@ -12,17 +12,28 @@
 import http from "node:http";
 import { promises as fs } from "node:fs";
 import { createReadStream, readFileSync } from "node:fs";
+import { execSync } from "node:child_process";
 import path from "node:path";
 import os from "node:os";
 import { appendFile, readFile, mkdir } from "node:fs/promises";
 
+// versão observável: SURFACE_VERSION (env) → SHA curto do git (capturado no boot) → "dev"
+function surfaceVersion() {
+  if (process.env.SURFACE_VERSION) return process.env.SURFACE_VERSION;
+  try { return execSync("git rev-parse --short HEAD", { stdio: ["ignore", "pipe", "ignore"] }).toString().trim() || "dev"; }
+  catch { return "dev"; }
+}
+const VERSION = surfaceVersion();
+
 const PORT = +(process.env.PORT || 8080);
 const ROOT = path.resolve(process.env.ROOT || process.cwd());
-const SURFACE = (process.env.SURFACE || "/yuri/").replace(/\/?$/, "/");   // garante "/" no fim
+const FEEDBACK_UNIVERSE = process.env.FEEDBACK_UNIVERSE || "";   // universo do co p/ encaminhar feedback (por app)
+// default da SURFACE deriva da universe (FEEDBACK_UNIVERSE) em vez de hardcodar "/yuri/",
+// pra cada deploy reportar a SUA superfície mesmo sem SURFACE setado (ex. comunicacao).
+const SURFACE = (process.env.SURFACE || (FEEDBACK_UNIVERSE ? "/" + FEEDBACK_UNIVERSE + "/" : "/yuri/")).replace(/\/?$/, "/");
 const MODE = process.env.MODE || "static";
 const REDIRECT_URL = process.env.REDIRECT_URL || "https://yggdrasil.artelonga.com.br/universos/comunicacao";
 const FRAME_TITLE = process.env.FRAME_TITLE || "comunicação · Arte Longa";
-const FEEDBACK_UNIVERSE = process.env.FEEDBACK_UNIVERSE || "";   // universo do co p/ encaminhar feedback (por app)
 
 // ── telemetria: estado DA universe (fonte da verdade local) ─────────────────
 // Princípio (decisão do dono): a universe é DONA da sua telemetria, salva no
@@ -454,7 +465,7 @@ const server = http.createServer(async (req, res) => {
 
   if (url === "/api/health") {
     res.writeHead(200, { "content-type": "application/json" });
-    return res.end('{"ok":true,"surface":"' + SURFACE + '","mode":"' + MODE + '"}');
+    return res.end(JSON.stringify({ ok: true, version: VERSION, surface: SURFACE, mode: MODE }));
   }
 
   // telemetria DA universe (estado local). ?local=1 = só este surface (usado p/ agregar).
