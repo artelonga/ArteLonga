@@ -4,6 +4,7 @@ primary_region = "gru"
 [build]
 
 [env]
+  SURFACE = "/comunicacao/"   # superfície própria — sem isto o servidor caía no default "/yuri/"
   MODE = "iframe"
   FEEDBACK_UNIVERSE = "comunicacao"
   REDIRECT_URL = "https://yggdrasil.artelonga.com.br/universos/comunicacao"
