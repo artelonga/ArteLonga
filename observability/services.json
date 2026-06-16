@@ -1,0 +1,74 @@
+[
+  {
+    "name": "co",
+    "url": "https://co.artelonga.com.br",
+    "type": "warehouse",
+    "fly_app": "co-artelonga",
+    "health_path": "/api/health",
+    "notes": "Content warehouse (graph CMS). /api/health returns version."
+  },
+  {
+    "name": "yggdrasil",
+    "url": "https://yggdrasil.artelonga.com.br",
+    "type": "surface",
+    "fly_app": "yggdrasil-artelonga",
+    "health_path": "/api/health",
+    "notes": "Digital-universes platform. /api/health added in PR #103; /health also responds."
+  },
+  {
+    "name": "quilombo",
+    "url": "https://quilomboaraucaria.org",
+    "type": "surface",
+    "fly_app": "quilombo-araucaria",
+    "health_path": "/api/health",
+    "notes": "Community platform (SvelteKit + SQLite)."
+  },
+  {
+    "name": "yuri",
+    "url": "https://yuri.artelonga.com.br",
+    "type": "surface",
+    "fly_app": "artelonga-yuri",
+    "health_path": "/api/health",
+    "notes": "Personal surface. Full telemetry per telemetry-surfaces spec."
+  },
+  {
+    "name": "neuro",
+    "url": "https://neuro.artelonga.com.br",
+    "type": "surface",
+    "fly_app": "artelonga-neuro",
+    "health_path": "/api/health",
+    "notes": "Neuroscience surface."
+  },
+  {
+    "name": "comunicacao",
+    "url": "https://artelonga-comunicacao.fly.dev",
+    "type": "surface",
+    "fly_app": "artelonga-comunicacao",
+    "health_path": "/api/health",
+    "notes": "Cross-linguistic meaning-topology universe. Custom DNS pending — served on fly.dev for now."
+  },
+  {
+    "name": "rfq",
+    "url": "https://rfq.artelonga.com.br",
+    "type": "headless",
+    "fly_app": "rfq",
+    "health_path": "/health",
+    "notes": "Headless RFQ trading API. Telemetry spec N/A; dormant."
+  },
+  {
+    "name": "artelonga-apex",
+    "url": "https://artelonga.com.br",
+    "type": "static",
+    "fly_app": null,
+    "health_path": null,
+    "notes": "Apex agency site (GitHub Pages). No health endpoint. Hosts the warehouse dashboard."
+  },
+  {
+    "name": "retro",
+    "url": "https://retro.artelonga.com.br",
+    "type": "undeployed",
+    "fly_app": "artelonga-retro",
+    "health_path": "/api/health",
+    "notes": "Retro Umarizal partner universe. NOT deployed, no DNS — flagged. fly_app reserved but inactive."
+  }
+]

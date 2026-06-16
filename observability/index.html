@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Observability — Arte Longa</title>
+    <style>
+        :root {
+            --ink: #0a0a0a;
+            --muted: #888;
+            --line: #e0e0e0;
+            --green: #1a7f37;
+            --green-bg: #e9f6ec;
+            --red: #c0392b;
+            --red-bg: #fbeae8;
+            --amber: #9a6700;
+            --amber-bg: #fdf6e3;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            color: var(--ink);
+            background: #fff;
+        }
+        .obs-wrap { max-width: 1280px; margin: 0 auto; padding: 4vh 1.2rem 6vh; }
+        h1 {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.05;
+            margin: 0 0 0.6vh;
+        }
+        .sub {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #555;
+            max-width: 80ch;
+            margin-bottom: 1vh;
+        }
+        .meta {
+            font-size: 0.68rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--muted);
+            font-weight: 700;
+            margin-bottom: 0.8vh;
+        }
+        .refresh-note {
+            font-size: 0.78rem;
+            color: #555;
+            background: #fafafa;
+            border: 1px solid var(--line);
+            border-radius: 4px;
+            padding: 1.2vh 1rem;
+            margin-bottom: 3.5vh;
+        }
+        .refresh-note code {
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            background: #f0f0f0;
+            padding: 0.1rem 0.35rem;
+            border-radius: 3px;
+            font-size: 0.92em;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.82rem;
+            font-variant-numeric: tabular-nums;
+        }
+        thead th {
+            text-align: left;
+            font-size: 0.62rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--muted);
+            font-weight: 700;
+            border-bottom: 2px solid var(--ink);
+            padding: 1vh 0.6rem;
+            white-space: nowrap;
+        }
+        tbody td {
+            padding: 1.2vh 0.6rem;
+            border-bottom: 1px solid var(--line);
+            vertical-align: top;
+        }
+        tbody tr:hover { background: #fafafa; }
+        .svc-name { font-weight: 700; }
+        .svc-name a { color: var(--ink); text-decoration: none; border-bottom: 1px dotted #bbb; }
+        .svc-type {
+            display: inline-block;
+            font-size: 0.6rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-top: 0.3vh;
+        }
+        .pill {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 999px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+        }
+        .pill-up { color: var(--green); background: var(--green-bg); }
+        .pill-down { color: var(--red); background: var(--red-bg); }
+        .pill-amber { color: var(--amber); background: var(--amber-bg); }
+        tr.row-down { background: var(--red-bg); }
+        tr.row-down:hover { background: #f7ddd9; }
+        tr.row-undeployed td { color: #777; font-style: italic; }
+        .flag {
+            display: inline-block;
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--amber);
+            background: var(--amber-bg);
+            padding: 0.15rem 0.45rem;
+            border-radius: 3px;
+        }
+        .dim { color: var(--muted); }
+        .notes { font-size: 0.74rem; color: #666; max-width: 32ch; line-height: 1.4; }
+        .err { font-size: 0.7rem; color: var(--red); margin-top: 0.3vh; }
+        .legend { margin-top: 3vh; font-size: 0.74rem; color: #555; display: flex; flex-wrap: wrap; gap: 1.2rem; }
+        .legend span { display: inline-flex; align-items: center; gap: 0.4rem; }
+        .swatch { width: 0.9rem; height: 0.9rem; border-radius: 3px; display: inline-block; }
+        .loading, .error-box { padding: 4vh 0; font-size: 0.95rem; color: #555; }
+        .error-box { color: var(--red); }
+    </style>
+</head>
+<body>
+    <div class="obs-wrap">
+        <div class="meta">Arte Longa · Observability</div>
+        <h1>Web services — ops &amp; usage</h1>
+        <p class="sub">
+            Vista unificada de <strong>operação</strong> (Fly: release#, último deploy, estado da máquina, checks)
+            e <strong>uso</strong> (telemetria: health, versão, pageviews/sessions) de todos os web services
+            da Arte Longa. Página estática — lê <code>./snapshot.json</code>, sem build step.
+        </p>
+        <div class="refresh-note">
+            <strong>Como atualizar o snapshot:</strong> rode
+            <code>node tools/observability-collect.mjs</code> na raiz do repo (exige <code>flyctl</code>
+            instalado e autenticado para os campos de Fly). O coletor regrava
+            <code>observability/snapshot.json</code>; recarregue esta página para ver os dados novos.
+        </div>
+
+        <div id="generated" class="meta"></div>
+
+        <div id="content">
+            <div class="loading">Carregando snapshot…</div>
+        </div>
+
+        <div class="legend">
+            <span><span class="swatch" style="background:var(--green-bg)"></span> Up</span>
+            <span><span class="swatch" style="background:var(--red-bg)"></span> Down</span>
+            <span><span class="swatch" style="background:var(--amber-bg)"></span> Versão ausente / undeployed</span>
+        </div>
+    </div>
+
+    <script>
+        const COLS = [
+            "Service", "Up?", "HTTP", "App version", "Fly release#",
+            "Last deploy", "Machine state", "Checks", "Usage", "Notes"
+        ];
+
+        function esc(s) {
+            return String(s == null ? "" : s)
+                .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        function fmtDeploy(iso) {
+            if (!iso) return '<span class="dim">—</span>';
+            const d = new Date(iso);
+            if (isNaN(d.getTime())) return esc(iso);
+            return d.toISOString().slice(0, 16).replace("T", " ") + " UTC";
+        }
+
+        function usageCell(u) {
+            if (!u) return '<span class="dim">—</span>';
+            const pv = u.pageviews == null ? "?" : u.pageviews;
+            const ss = u.sessions == null ? "?" : u.sessions;
+            return esc(pv) + " pv / " + esc(ss) + " ss";
+        }
+
+        function render(snapshot) {
+            const gen = document.getElementById("generated");
+            gen.textContent = snapshot.generated_at
+                ? "Snapshot gerado em " + snapshot.generated_at
+                : "Snapshot sem timestamp";
+
+            const services = snapshot.services || [];
+            let html = "<table><thead><tr>";
+            for (const c of COLS) html += "<th>" + esc(c) + "</th>";
+            html += "</tr></thead><tbody>";
+
+            for (const s of services) {
+                const undeployed = s.type === "undeployed";
+                const down = !undeployed && !s.up;
+                const rowClass = undeployed ? "row-undeployed" : (down ? "row-down" : "");
+                // Amber when the app's reported semver version is absent (health
+                // endpoint exposed no `version`). NOTE: app version (semver from
+                // /health) and Fly release# (a monotonic integer) live in different
+                // namespaces — they are NOT compared for "mismatch".
+                const versionAbsent = s.version == null;
+
+                html += '<tr class="' + rowClass + '">';
+
+                // Service
+                html += '<td><div class="svc-name"><a href="' + esc(s.url) + '" target="_blank" rel="noopener">'
+                    + esc(s.name) + '</a></div><div class="svc-type">' + esc(s.type) + '</div>';
+                if (s.error) html += '<div class="err">' + esc(s.error) + '</div>';
+                html += '</td>';
+
+                // Up?
+                if (undeployed) {
+                    html += '<td><span class="flag">undeployed</span></td>';
+                } else if (s.up) {
+                    html += '<td><span class="pill pill-up">UP</span></td>';
+                } else {
+                    html += '<td><span class="pill pill-down">DOWN</span></td>';
+                }
+
+                // HTTP
+                html += '<td>' + (s.http_status != null ? esc(s.http_status) : '<span class="dim">—</span>') + '</td>';
+
+                // App version (semver from health endpoint)
+                if (s.version != null) {
+                    html += '<td>' + esc(s.version) + '</td>';
+                } else if (undeployed) {
+                    html += '<td><span class="dim">—</span></td>';
+                } else {
+                    html += '<td><span class="pill pill-amber">ausente</span></td>';
+                }
+
+                // Fly release#
+                html += '<td>' + (s.fly_version != null ? "#" + esc(s.fly_version) : '<span class="dim">—</span>') + '</td>';
+
+                // Last deploy
+                html += '<td>' + fmtDeploy(s.last_deploy) + '</td>';
+
+                // Machine state
+                html += '<td>' + (s.state ? esc(s.state) : '<span class="dim">—</span>') + '</td>';
+
+                // Checks
+                html += '<td>' + (s.checks ? esc(s.checks) : '<span class="dim">—</span>') + '</td>';
+
+                // Usage
+                html += '<td>' + usageCell(s.usage) + '</td>';
+
+                // Notes
+                let note = "";
+                const svcMeta = (window.__REGISTRY_NOTES__ || {})[s.name];
+                if (svcMeta) note = svcMeta;
+                html += '<td><div class="notes">' + esc(note) + '</div></td>';
+
+                html += '</tr>';
+            }
+            html += "</tbody></table>";
+            document.getElementById("content").innerHTML = html;
+        }
+
+        async function load() {
+            try {
+                // Notes live in the registry; fetch it for richer per-row context (best-effort).
+                try {
+                    const reg = await fetch("../observability/services.json").then(r => r.ok ? r.json() : null)
+                        .catch(() => null);
+                    if (Array.isArray(reg)) {
+                        window.__REGISTRY_NOTES__ = Object.fromEntries(reg.map(s => [s.name, s.notes || ""]));
+                    }
+                } catch { /* notes are optional */ }
+
+                const res = await fetch("./snapshot.json", { cache: "no-store" });
+                if (!res.ok) throw new Error("HTTP " + res.status + " fetching snapshot.json");
+                const snapshot = await res.json();
+                render(snapshot);
+            } catch (e) {
+                document.getElementById("content").innerHTML =
+                    '<div class="error-box">Não foi possível carregar <code>snapshot.json</code>: '
+                    + esc(e.message) + '<br>Rode <code>node tools/observability-collect.mjs</code> primeiro.</div>';
+            }
+        }
+
+        load();
+    </script>
+</body>
+</html>
