@@ -12,6 +12,22 @@ co-auto. Convenção em CLAUDE.md.
 
 ## [Unreleased]
 
+### Fixed (`fix`)
+
+- **`/sobre/` Manifesto em branco em produção (L-001 + L-002).** A seção
+  Missão · Visão · Valores não renderizava nada no site publicado — o valor
+  *Objetivos de Desenvolvimento Sustentável* (Agenda 2030 · ONU 2015) **estava
+  no dado** (`AL.manifesto.valores`, 3 entradas) mas invisível. Causa: o script
+  inline no fim de `sobre/index.html` roda no parse, antes de `bootstrap.js`
+  terminar de carregar a cadeia de dados (`async=false` executa *depois* do
+  inline), então `window.AL` era `undefined` e o guard `if (!AL) return` saía
+  em silêncio sem nunca re-renderizar. Fix: `data.core.js` dispara um evento
+  `al:ready` (+ helper `AL.ready(fn)`) ao terminar de exportar `window.AL`; o
+  consumer em `/sobre/` renderiza imediatamente se `AL` já existe, senão escuta
+  `al:ready` — cobrindo as duas ordens de carga. Único consumer inline de
+  `window.AL` no repo (os outros `window.AL_*` são atribuição de analytics).
+  V → `20260617a`. Verificado com render headless (Playwright) antes/depois.
+
 ## [0.22.0] — 2026-06-06 — Intelligence as a Service · docs bilíngues · surfaces na raiz · mapa de domínios
 
 ### Added (`feat`)

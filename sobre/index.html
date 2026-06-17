@@ -336,7 +336,10 @@
 
     <script>
     (function () {
-        if (!window.AL || !AL.manifesto) return;
+        // L-001/L-002: bootstrap loads AL async, so this inline script may run
+        // before window.AL exists. Render now if ready, else on al:ready — never
+        // bail silently (the whole Manifesto section was blank in prod otherwise).
+        function render() {
         const m = AL.manifesto;
         const esc = s => String(s || "").replace(/[&<>"']/g, c => ({
             "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
@@ -381,6 +384,10 @@
                 <ul class="valores-list">${m.valores.map(valorLi).join("")}</ul>
             </div>
         `;
+        }
+
+        if (window.AL && AL.manifesto) render();
+        else document.addEventListener("al:ready", render, { once: true });
     })();
     </script>
 </body>
