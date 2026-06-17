@@ -28,13 +28,7 @@ domains:
     dns: "registrar: CNAME yuri → artelonga-yuri.fly.dev (+ fly certs)"
     config: deploy/surfaces/yuri.toml
     status: live
-    deploy:
-      key: yuri
-      server: tools/surfaces-server.mjs
-      dockerfile: deploy/surfaces/Dockerfile
-      env: { SURFACE: "/yuri/", FEEDBACK_UNIVERSE: "yuri" }
-      expect: ["system-graph.js", "feedback.js", "</html>"]
-      dirCheck: "/aws"
+    note: "graduado → github.com/artelonga/yuri (repo e deploy próprios; NÃO deployar daqui)"
 
   - domain: hostinger.artelonga.com.br
     type: surface

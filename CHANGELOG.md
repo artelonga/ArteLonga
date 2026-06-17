@@ -12,6 +12,16 @@ co-auto. Convenção em CLAUDE.md.
 
 ## [Unreleased]
 
+### Changed (`chore`)
+
+- **yuri graduou para repo próprio** (`github.com/artelonga/yuri`). A surface do
+  portfólio passou a ter repo e deploy próprios (`npm run deploy` direto, sem PR):
+  grafo único de carreira+relações, abstracts na voz simples, cards dos artigos,
+  `related`, tipo×categoria ortogonais. Removido o bloco `deploy` de `yuri` em
+  `deploy/domains.yaml` — o monorepo não deploya mais o app `artelonga-yuri` (evita
+  duas fontes para o mesmo app). A pasta `yuri/` permanece no monorepo porque a
+  surface **hostinger** serve de `yuri/hostinger/`.
+
 ### Fixed (`fix`)
 
 - **`/sobre/` Manifesto em branco em produção (L-001 + L-002).** A seção
