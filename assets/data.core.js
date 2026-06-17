@@ -494,4 +494,20 @@
         poemBySlug, poemsByAuthor
     });
 
+    // ─── READINESS SIGNAL (L-001 guard) ────────────────────────────────────────
+    // bootstrap loads the data chain with async=false, so an inline page script
+    // at the bottom of <body> (e.g. /sobre/ manifesto) can parse-and-run BEFORE
+    // this file executes — window.AL is undefined then, and a naive
+    // `if (!AL) return` bails silently and never re-renders (L-001 + L-002).
+    // Pattern for any inline consumer (works regardless of load order):
+    //   if (window.AL && AL.manifesto) render();
+    //   else document.addEventListener("al:ready", render, { once: true });
+    // If AL loaded first, the `if` catches it; if the inline script ran first,
+    // it attached the listener and this dispatch fires it. Both orderings covered.
+    AL.ready = function (fn) {
+        if (AL.manifesto) { fn(AL); return; }
+        if (global.document) document.addEventListener("al:ready", function () { fn(AL); }, { once: true });
+    };
+    try { if (global.document) document.dispatchEvent(new Event("al:ready")); } catch (e) { /* SSR/no-DOM */ }
+
 })(typeof window !== "undefined" ? window : globalThis);

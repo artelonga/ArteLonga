@@ -20,7 +20,7 @@
 // select the minimal data modules for each known page type. Unknown paths
 // fall back to loading all modules (safe for profile, poem, essay pages).
 (function () {
-    var V = "20260519c";
+    var V = "20260617a";
     var head = document.head;
 
     ["site.css", "components.css", "pages.css"].forEach(function (name) {
