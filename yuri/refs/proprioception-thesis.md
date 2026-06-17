@@ -1,9 +1,9 @@
 ---
 title: Uncovering Human Proprioceptive Function and Malfunction
-type: paper
+type: tese
 lang: en
 tkey: proprioception-thesis
-category: tese
+category: neurociência
 author: Vieira Sugano
 mine: true
 created: "2022"

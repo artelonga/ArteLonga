@@ -47,7 +47,10 @@ a{color:inherit}
 .card .ct .cat{margin-left:auto;border:1px solid var(--line);border-radius:3px;padding:.05rem .35rem}
 .card h3{margin-top:.5rem;font-size:1.05rem;letter-spacing:-.01em}
 .card .by{margin-top:.25rem;font-size:.82rem;color:var(--ink2)}
-.card .snip{margin-top:.55rem;font-size:.82rem;color:var(--ink3);line-height:1.45}
+.card .sig{margin-top:.5rem;font-size:.82rem;color:var(--ink);line-height:1.45;font-weight:600}
+.card .snip{margin-top:.4rem;font-size:.8rem;color:var(--ink3);line-height:1.45}
+.entry .sig{font-size:1.02rem;color:var(--ink2);line-height:1.55;max-width:64ch;margin:.2rem 0 1.2rem;
+  border-left:3px solid var(--accent);padding-left:.85rem}
 .card .mk{margin-top:.6rem;display:flex;gap:.35rem;flex-wrap:wrap}
 .card .mk span{font-family:var(--mono);font-size:.56rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);border:1px solid var(--line);border-radius:3px;padding:.05rem .35rem}
 .empty{color:var(--ink3);font-style:italic;margin-top:1rem}
@@ -177,6 +180,8 @@ a{color:inherit}
 .sg-ov:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
 .sg-ov-prev{left:1rem} .sg-ov-next{right:1rem}
 .sg-ov:disabled{opacity:0;pointer-events:none}
+/* telas estreitas: as setas flutuantes cobrem o grafo — os controles de baixo bastam */
+@media (max-width:600px){.sg-ov{display:none}}
 /* painel da linha do tempo (anos + descrição + controles) */
 .sg-time{border-top:1px solid var(--line);background:var(--bg2);padding:.6rem .9rem 1rem}
 .sg-track{display:flex;gap:.3rem;overflow-x:auto;padding-bottom:.5rem}
@@ -316,3 +321,60 @@ a{color:inherit}
 .index-foot{margin:2rem 0 .5rem;padding-top:1rem;border-top:1px solid var(--line);text-align:center}
 .index-foot a{font-family:var(--mono);font-size:.8rem;color:var(--ink2);text-decoration:none}
 .index-foot a:hover{color:var(--ink)}
+
+/* tabela (dashboard de deployments etc.) */
+.entry .tbl{width:100%;border-collapse:collapse;margin:1.3rem 0;font-size:.9rem}
+.entry .tbl th,.entry .tbl td{text-align:left;padding:.5rem .7rem;border-bottom:1px solid var(--line);vertical-align:top}
+.entry .tbl th{font-weight:700;color:var(--ink);border-bottom:2px solid var(--accent);white-space:nowrap}
+.entry .tbl td{color:var(--ink2)}
+.entry .tbl tr:last-child td{border-bottom:none}
+.entry .tbl tr:hover td{background:var(--bg2)}
+@media(max-width:640px){.entry .tbl{font-size:.82rem}.entry .tbl th,.entry .tbl td{padding:.4rem .45rem}}
+
+/* filtro de tech-stack: grupo (AWS) + expansão */
+.grp-tech .techgroup{display:inline-flex;align-items:center;flex-wrap:wrap;gap:.3rem;margin:0 .35rem .3rem 0;padding:.1rem .25rem;border-radius:6px}
+.grp-tech .techgroup.open{background:var(--bg2);outline:1px solid var(--line)}
+.chip.parent{font-weight:700}
+.chip.child{font-size:.76rem;opacity:.92}
+.techexp{border:none;background:none;cursor:pointer;font-size:.75rem;color:var(--ink2);padding:0 .15rem;line-height:1}
+/* abstract (propósito · achados · consequência) */
+.entry .abstract{font-size:1.02rem;color:var(--ink2);line-height:1.55;border-left:3px solid var(--accent);padding-left:.85rem;margin:.3rem 0 1rem}
+.entry .abstract strong{color:var(--ink);font-weight:700}
+/* tech-tags na entrada */
+.entry .techtags{display:flex;flex-wrap:wrap;gap:.35rem;margin:0 0 1.3rem}
+.entry .techtags .tt{font-size:.72rem;font-family:var(--mono);background:var(--bg2);border:1px solid var(--line);border-radius:3px;padding:.13rem .42rem;color:var(--ink2)}
+
+/* rodapé "Relacionados" — grafo de relações entre as peças */
+.entry .related{margin-top:2rem;padding-top:1rem;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;align-items:center;gap:.5rem}
+.entry .related .rl{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink3);font-weight:700;margin-right:.2rem}
+.entry .related a{font-size:.82rem;background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:.2rem .6rem;color:var(--accent);text-decoration:none}
+.entry .related a:hover{border-color:var(--accent)}
+
+/* grafo de relações (relations-graph.js) no portfólio */
+.relgraph{margin:1.6rem 0}
+.rg-head{display:flex;align-items:baseline;gap:.6rem;margin-bottom:.4rem}
+.rg-title{font-weight:700;color:var(--ink)}
+.rg-hint{font-size:.74rem;color:var(--ink3)}
+.rg-svg{width:100%;height:auto;background:var(--bg2);border:1px solid var(--line);border-radius:10px}
+.rg-edge{stroke:var(--line);stroke-width:1.2}
+.rg-node circle{cursor:pointer}
+.rg-node:hover circle{stroke:var(--ink);stroke-width:2}
+.rg-label{font-size:10px;fill:var(--ink2);text-anchor:middle;font-family:var(--mono);pointer-events:none}
+.rg-node:hover .rg-label{fill:var(--ink);font-weight:700}
+
+/* grafo unificado: âncoras (épocas) + espinha cronológica */
+.rg-spine{stroke:var(--ink2);stroke-width:2}
+.rg-edge.rg-rel{stroke-dasharray:3 3;opacity:.7}
+.rg-anchor{cursor:default}
+.rg-alabel{font-size:12px;font-weight:700;fill:var(--ink);text-anchor:middle;font-family:var(--mono)}
+.rg-era{font-size:9px;fill:var(--ink3);text-anchor:middle;font-family:var(--mono)}
+
+/* tooltip de hover do grafo (thumbnail + serviços) */
+.relgraph{position:relative}
+.rg-tip{position:absolute;z-index:20;max-width:262px;background:var(--bg2);border:1px solid var(--ink2);border-radius:8px;padding:.55rem .65rem;box-shadow:0 4px 14px rgba(0,0,0,.14);pointer-events:none;font-size:.8rem}
+.rg-tip strong{color:var(--ink)}
+.rg-tip .rg-tera{font-size:.68rem;color:var(--ink3);font-family:var(--mono)}
+.rg-tip p{margin:.32rem 0 0;color:var(--ink2);line-height:1.4}
+.rg-tip img{width:100%;border-radius:5px;margin-top:.42rem;display:block;background:#fff}
+.rg-tip .rg-svc{margin-top:.45rem;font-size:.72rem;color:var(--ink2);font-family:var(--mono);line-height:1.5}
+.rg-tip .rg-svc span{color:var(--accent);font-weight:700}

@@ -1,9 +1,9 @@
 ---
 title: Theseometer for Measuring Proprioception Performance
-type: paper
+type: patente
 lang: en
 tkey: theseometer-patent
-category: patente
+category: neurociência
 author: Mason, Vieira Sugano, Hilvert, Riley
 mine: true
 created: "2023"

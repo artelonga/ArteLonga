@@ -1,7 +1,326 @@
 {
   "generated": "static",
-  "count": 21,
+  "count": 29,
   "entries": [
+    {
+      "slug": "user-template",
+      "path": "/yuri/refs/user-template.md",
+      "folder": "refs",
+      "type": "page",
+      "kind": "systems",
+      "lang": "pt-BR",
+      "tkey": "user-template",
+      "category": "sistemas",
+      "title": "O modelo /user",
+      "author": "yuri",
+      "mine": true,
+      "created": "2026",
+      "added": "2026-06-17",
+      "date": null,
+      "published": true,
+      "tags": [],
+      "media": [
+        {
+          "kind": "url",
+          "url": "https://artelonga.com.br/docs/user-template.html",
+          "title": "Ler o artigo"
+        }
+      ],
+      "caderno": null,
+      "pagina": null,
+      "snippet": "Onde a documentação diz \"user\", é um modelo a preencher. A rede serve para qualquer um.",
+      "significance": "Na documentação, \"user\" é só um exemplo: o seu espaço. Serve igual para um restaurante, uma comunidade ou uma pessoa. É só trocar \"user\" pelo seu nome.",
+      "abstract": "**Propósito.** Mostrar que a rede serve para qualquer um, com um exemplo genérico. **Achados.** Onde a documentação diz \"user\", é um modelo a preencher, não uma pessoa. **Consequência.** O mesmo passo a passo vale para um negócio, um coletivo ou você.",
+      "pop": 58,
+      "related": [
+        "intelligence-as-a-service",
+        "use-cases"
+      ]
+    },
+    {
+      "slug": "use-cases",
+      "path": "/yuri/refs/use-cases.md",
+      "folder": "refs",
+      "type": "page",
+      "kind": "systems",
+      "lang": "pt-BR",
+      "tkey": "use-cases",
+      "category": "sistemas",
+      "title": "Casos de uso",
+      "author": "yuri",
+      "mine": true,
+      "created": "2026",
+      "added": "2026-06-17",
+      "date": null,
+      "published": true,
+      "tags": [],
+      "media": [
+        {
+          "kind": "url",
+          "url": "https://artelonga.com.br/docs/use-cases.html",
+          "title": "Ler o artigo"
+        }
+      ],
+      "caderno": null,
+      "pagina": null,
+      "snippet": "Índice de tudo que a plataforma resolve, com problema, solução e estado de cada caso.",
+      "significance": "O catálogo de tudo que a plataforma resolve. Para cada caso: o problema, a solução e em que pé está.",
+      "abstract": "**Propósito.** Reunir num só lugar tudo que a plataforma já resolve. **Achados.** Cada caso vem com problema, solução, estado (pronto, em parte ou a fazer) e onde ver. **Consequência.** Um índice para achar rápido o que serve para o seu caso.",
+      "pop": 60,
+      "related": [
+        "domains",
+        "intelligence-as-a-service",
+        "lead-acquisition",
+        "scrum-delivery",
+        "telemetria",
+        "user-template"
+      ]
+    },
+    {
+      "slug": "lead-acquisition",
+      "path": "/yuri/refs/lead-acquisition.md",
+      "folder": "refs",
+      "type": "page",
+      "kind": "systems",
+      "lang": "pt-BR",
+      "tkey": "lead-acquisition",
+      "category": "dados",
+      "title": "Aquisição de clientes",
+      "author": "yuri",
+      "mine": true,
+      "created": "2026",
+      "added": "2026-06-17",
+      "date": null,
+      "published": true,
+      "tags": [],
+      "media": [
+        {
+          "kind": "url",
+          "url": "https://artelonga.com.br/docs/lead-acquisition.html",
+          "title": "Ler o artigo"
+        }
+      ],
+      "caderno": null,
+      "pagina": null,
+      "snippet": "A jornada de quem chega ao site até virar cliente, com os pontos onde se perde gente.",
+      "significance": "O caminho de quem chega ao site até virar cliente, passo a passo, mostrando onde a pessoa pode desistir.",
+      "abstract": "**Propósito.** Mapear a jornada de quem chega até virar cliente. **Achados.** Seis passos: chega, lê, clica, deixa contato, assina e recebe o próprio espaço; cada passo mostra onde a pessoa pode parar. **Consequência.** Fica claro onde melhorar para perder menos gente no caminho.",
+      "pop": 52,
+      "related": [
+        "scrum-delivery",
+        "use-cases"
+      ]
+    },
+    {
+      "slug": "fitts-game",
+      "path": "/yuri/refs/fitts-game.md",
+      "folder": "refs",
+      "type": "project",
+      "kind": "systems",
+      "lang": "pt-BR",
+      "tkey": "fitts-game",
+      "category": "tecnologia",
+      "title": "FittsGame",
+      "author": "yuri",
+      "mine": true,
+      "created": "2023",
+      "added": "2026-06-16",
+      "date": null,
+      "published": true,
+      "tags": [
+        "psicofísica",
+        "hci",
+        "dados"
+      ],
+      "media": [
+        {
+          "kind": "url",
+          "url": "https://github.com/yurisugano/FittsGame",
+          "title": "FittsGame · GitHub"
+        }
+      ],
+      "caderno": null,
+      "pagina": null,
+      "snippet": "Jogo de navegador que mede a Lei de Fitts no toque. A precisão do apontar registrada por um link.",
+      "significance": "A Lei de Fitts descreve o gesto de apontar. Um jogo de navegador mede isso por um link, sem laboratório.",
+      "pop": 40,
+      "abstract": "**Propósito.** Medir a precisão do gesto de apontar fora do laboratório. **Achados.** Um jogo de navegador registra distância, tamanho, acerto e tempo a cada toque, validando a Lei de Fitts. **Consequência.** Psicofísica do movimento por um link, em qualquer celular.",
+      "tech": [
+        "JavaScript"
+      ],
+      "related": [
+        "proprioception-thesis"
+      ]
+    },
+    {
+      "slug": "lateral-movement",
+      "path": "/yuri/refs/lateral-movement.md",
+      "folder": "refs",
+      "type": "project",
+      "kind": "systems",
+      "lang": "pt-BR",
+      "tkey": "lateral-movement",
+      "category": "dados",
+      "title": "Lateral Movement",
+      "author": "yuri",
+      "mine": true,
+      "created": null,
+      "added": "2026-06-16",
+      "date": null,
+      "published": true,
+      "tags": [
+        "rust",
+        "dados",
+        "segurança"
+      ],
+      "media": [
+        {
+          "kind": "url",
+          "url": "https://github.com/yurisugano/Data-Processing-Lateral-Movement-Detection",
+          "title": "Data-Processing-Lateral-Movement-Detection · GitHub"
+        }
+      ],
+      "caderno": null,
+      "pagina": null,
+      "snippet": "Preparação em Rust de uma base de rede para detectar movimento lateral. Dezenas de gigabytes rotulados.",
+      "significance": "Movimento lateral é o invasor passando de um computador para outro. Preparo em Rust os exemplos rotulados que um modelo precisa para aprender a detectar isso.",
+      "pop": 66,
+      "abstract": "**Propósito.** Preparar dados de rede para um modelo aprender a detectar movimento lateral. **Achados.** Dezenas de gigabytes do dataset LANL, marcados como ataque ou uso normal e organizados em Rust, sem estourar a memória. **Consequência.** O modelo só existe se essa etapa funcionar. É o trabalho invisível que sustenta a detecção.",
+      "tech": [
+        "Rust"
+      ],
+      "related": [
+        "aws"
+      ]
+    },
+    {
+      "slug": "propriosuite",
+      "path": "/yuri/refs/propriosuite.md",
+      "folder": "refs",
+      "type": "project",
+      "kind": "systems",
+      "lang": "pt-BR",
+      "tkey": "propriosuite",
+      "category": "sistemas",
+      "title": "ProprioSuite",
+      "author": "yuri",
+      "mine": true,
+      "created": "2022",
+      "added": "2026-06-16",
+      "date": null,
+      "published": true,
+      "tags": [
+        "propriocepção",
+        "neurociência",
+        "sistemas"
+      ],
+      "media": [
+        {
+          "kind": "url",
+          "url": "https://github.com/yurisugano/ProprioSuite",
+          "title": "ProprioSuite · GitHub"
+        }
+      ],
+      "caderno": null,
+      "pagina": null,
+      "snippet": "Pacote aberto para medir propriocepção. A análise por trás do Theseometer, o aparelho que ajudei a patentear.",
+      "significance": "Propriocepção é saber onde seu corpo está sem olhar. O ProprioSuite padroniza a medição e a comparação entre pessoas.",
+      "pop": 78,
+      "abstract": "**Propósito.** Medir propriocepção de forma comparável entre pessoas. **Achados.** Um pacote aplica os testes, processa os dados e gera o resultado, sempre do mesmo jeito. É a análise por trás do Theseometer (patente US 11.589.798 B2), agora aberta. **Consequência.** Qualquer pesquisador compara um sujeito com o esperado usando o mesmo método.",
+      "tech": [
+        "Python"
+      ],
+      "related": [
+        "proprioception-thesis",
+        "theseometer-patent"
+      ],
+      "image": "https://raw.githubusercontent.com/yurisugano/ProprioSuite/main/data/figures/smoothing_example.png"
+    },
+    {
+      "slug": "pesquisa-quilombo",
+      "path": "/yuri/refs/pesquisa-quilombo.md",
+      "folder": "refs",
+      "type": "project",
+      "kind": "systems",
+      "lang": "pt-BR",
+      "tkey": "pesquisa-quilombo",
+      "category": "social",
+      "title": "Pesquisa de Público — Quilombo Araucária",
+      "author": "yuri",
+      "mine": true,
+      "created": "2026",
+      "added": "2026-06-15",
+      "date": null,
+      "published": true,
+      "tags": [
+        "pesquisa",
+        "dados",
+        "social",
+        "impacto"
+      ],
+      "media": [
+        {
+          "kind": "url",
+          "url": "https://artelonga.com.br/missoes/pesquisa-quilombo/",
+          "title": "artelonga.com.br"
+        }
+      ],
+      "caderno": null,
+      "pagina": null,
+      "snippet": "Pesquisa de público aplicada à comunidade: escutar quem frequenta o Quilombo Araucária — online e presencial — priorizar as demandas e conectá-las a serviços públicos, em apoio à regularização do espaço.",
+      "significance": "O problema: justificar a regularização e atender a comunidade sem achismo. A pesquisa de público (método Butantan) vira evidência priorizada que liga demanda a serviço público.",
+      "pop": 76,
+      "abstract": "**Propósito.** Escutar quem frequenta o Quilombo Araucária e priorizar as demandas. **Achados.** Método de pesquisa de público de museu aplicado à comunidade: perfil, demandas e priorização por frequência e urgência, ligadas a serviços públicos. **Consequência.** Evidência para a regularização do espaço junto à Subprefeitura.",
+      "related": [
+        "neuro"
+      ]
+    },
+    {
+      "slug": "sensory-speech",
+      "path": "/yuri/refs/sensory-speech.md",
+      "folder": "refs",
+      "type": "paper",
+      "kind": "systems",
+      "lang": "pt-BR",
+      "tkey": "sensory-speech",
+      "category": "neurociência",
+      "title": "Sensory speech — NLP em computadores e processamento de linguagem no cérebro",
+      "author": "yuri",
+      "mine": true,
+      "created": "2023",
+      "added": "2026-06-12",
+      "date": null,
+      "published": true,
+      "tags": [
+        "nlp",
+        "neurociência",
+        "sensoryspeech",
+        "linguagem",
+        "2023"
+      ],
+      "media": [
+        {
+          "kind": "url",
+          "url": "https://neuro.artelonga.com.br/bibliografia?author=yuri",
+          "title": "neuro.artelonga.com.br"
+        }
+      ],
+      "caderno": null,
+      "pagina": null,
+      "snippet": "Quando alguém descreve um objeto, quanto da fala é sensorial — textura, · peso, temperatura, cor — e como medir isso de forma padronizada na fala · natural?",
+      "significance": "Quanto da fala natural é sensorial, e como medir isso de forma padronizada? Processo de medição e trilha de ensino, entre Neurobiologia e Linguística (UChicago, 2023).",
+      "pop": 80,
+      "abstract": "**Propósito.** Medir quanto da fala natural é sensorial: textura, peso, cor. **Achados.** Um processo padronizado de medição e, no caminho, uma trilha de ensino de Python a modelos de linguagem. **Consequência.** Liga uma pergunta de neurociência à ferramenta de PLN, em 2023, no começo dos LLMs.",
+      "tech": [
+        "Python",
+        "NLP",
+        "Transformers"
+      ],
+      "related": [
+        "neuro"
+      ],
+      "image": "https://raw.githubusercontent.com/yurisugano/SensorySpeech/main/nltk-speech-codes.png"
+    },
     {
       "slug": "domains",
       "path": "/yuri/refs/domains.md",
@@ -28,12 +347,25 @@
       "media": [
         {
           "kind": "url",
-          "url": "https://artelonga.com.br/docs/domains.html"
+          "url": "https://artelonga.com.br/docs/domains.html",
+          "title": "artelonga.com.br"
         }
       ],
       "caderno": null,
       "pagina": null,
-      "snippet": "Fonte única dos domínios/CNAMEs/surfaces (`deploy/domains.yaml`) + ciclo de deploy (path → CNAME, modelo recursivo de universes). Mapa gerad"
+      "snippet": "Fonte única dos domínios/CNAMEs/surfaces (`deploy/domains.yaml`) + ciclo de deploy (path → CNAME, modelo recursivo de universes). Mapa gerad",
+      "pop": 48,
+      "significance": "Fonte única dos domínios e CNAMEs da rede, com auditoria de divergência. Cada universo novo entra como caminho que vira CNAME.",
+      "abstract": "**Propósito.** Ter uma fonte única dos domínios e do ciclo de deploy da rede. **Achados.** Um arquivo (deploy/domains.yaml) gera o mapa de domínios, CNAMEs e endereços, com auditoria de divergência. Cada universo novo entra como um caminho que vira um CNAME. **Consequência.** O deploy de um universo novo é repetível, não artesanal.",
+      "tech": [
+        "DNS",
+        "Fly.io",
+        "Terraform"
+      ],
+      "related": [
+        "intelligence-as-a-service",
+        "use-cases"
+      ]
     },
     {
       "slug": "aws",
@@ -59,12 +391,37 @@
       "media": [
         {
           "kind": "url",
-          "url": "aws/"
+          "url": "aws/",
+          "title": "Estudo completo"
         }
       ],
       "caderno": null,
       "pagina": null,
-      "snippet": "Ferramentas, decisões, custos e postmortems de operar uma plataforma de dados real na AWS (~US$ 155/mês). Bilíngue (pt/en)."
+      "snippet": "Ferramentas, decisões e custos de operar uma plataforma de dados real na AWS, por cerca de US$ 155 por mês.",
+      "significance": "Como operar uma plataforma de dados real na nuvem por cerca de US$ 155 por mês, escolhendo cada serviço por um limite de custo definido antes.",
+      "pop": 95,
+      "abstract": "**Propósito.** Operar uma plataforma de dados em tempo real na nuvem sem desperdício. **Achados.** Cada serviço entra por um limite de custo definido antes da adoção. O sistema todo custou cerca de US$ 155 por mês. **Consequência.** As escolhas viram regra reaproveitável: comece gerenciado e suba de degrau só com um número na mão.",
+      "tech": [
+        "Terraform"
+      ],
+      "related": [
+        "hostinger",
+        "intelligence-as-a-service",
+        "lateral-movement",
+        "telemetria"
+      ],
+      "services": [
+        "S3",
+        "Athena",
+        "Glue",
+        "Fargate",
+        "Lambda",
+        "DynamoDB",
+        "CloudWatch",
+        "IAM",
+        "EventBridge",
+        "ECR"
+      ]
     },
     {
       "slug": "hostinger",
@@ -90,12 +447,24 @@
       "media": [
         {
           "kind": "url",
-          "url": "hostinger/"
+          "url": "hostinger/",
+          "title": "Estudo completo"
         }
       ],
       "caderno": null,
       "pagina": null,
-      "snippet": "Estudo de Data Analyst: funil, fricção de onboarding e sinais de CS, do lugar do cliente. Bilíngue (pt/en)."
+      "snippet": "Estudo de dados do ponto de vista do cliente: onde o funil trava e o que mostra que ele vai ficar ou sair.",
+      "significance": "Onde o cliente desiste? Análise de funil do ponto de vista de quem usa o produto: o que trava no primeiro uso e o que aponta o que corrigir.",
+      "pop": 68,
+      "abstract": "**Propósito.** Achar onde o cliente desiste do produto. **Achados.** Análise do funil do ponto de vista de quem usa: onde trava no primeiro uso e que sinais mostram se o cliente fica ou sai. **Consequência.** O estudo aponta o que corrigir primeiro.",
+      "tech": [
+        "SQL",
+        "Python"
+      ],
+      "related": [
+        "aws",
+        "telemetria"
+      ]
     },
     {
       "slug": "intelligence-as-a-service",
@@ -106,7 +475,7 @@
       "lang": "pt-BR",
       "tkey": "intelligence-as-a-service",
       "category": "sistemas",
-      "title": "Intelligence as a Service — IaaS Â· escala horizontal",
+      "title": "Intelligence as a Service",
       "author": "yuri",
       "mine": true,
       "created": "2026",
@@ -121,12 +490,29 @@
       "media": [
         {
           "kind": "url",
-          "url": "https://artelonga.com.br/docs/intelligence-as-a-service.html"
+          "url": "https://artelonga.com.br/docs/intelligence-as-a-service.html",
+          "title": "Documentação: Intelligence as a Service"
         }
       ],
       "caderno": null,
       "pagina": null,
-      "snippet": "Tese de IaaS Â· escala horizontal a custo SaaS zero: cada brain (universe) soberana, infra-agnóstica, renderiza do cache. yuri é o template."
+      "snippet": "Como atender muita gente sem pagar servidor para cada um. A rede inteira, com o que cada site é e quanto custa.",
+      "significance": "Num serviço de software, atender mais um usuário custa quase nada: é só uma linha a mais no banco de dados. Servidor é diferente: cada usuário gasta processamento e espaço de verdade. A rede resolve deixando cada site dormir quando ninguém acessa. A entrada custa zero e você só paga pelo tempo de uso.",
+      "pop": 100,
+      "abstract": "**Propósito.** Atender muita gente sem pagar um servidor para cada um. **Achados.** Mais um usuário num serviço é quase de graça. Aqui o servidor também fica barato: cada site dorme quando ninguém acessa e acorda na hora da visita. No último mês a rede toda recebeu 784 visitantes a um custo perto de zero por site. **Consequência.** Cada site entra de graça e cresce no próprio ritmo. A conta segue o uso, não um valor fixo.",
+      "tech": [
+        "Fly.io",
+        "Rust",
+        "SvelteKit",
+        "Docker"
+      ],
+      "related": [
+        "aws",
+        "domains",
+        "telemetria",
+        "use-cases",
+        "user-template"
+      ]
     },
     {
       "slug": "neuro",
@@ -152,12 +538,27 @@
       "media": [
         {
           "kind": "url",
-          "url": "https://artelonga.com.br/neuro/bibliografia.html"
+          "url": "https://artelonga.com.br/neuro/bibliografia.html",
+          "title": "artelonga.com.br"
         }
       ],
       "caderno": null,
       "pagina": null,
-      "snippet": "Bibliografia de neurociência aberta (ABNT) com identidade canônica de autores — filtra por autor resolvendo todas as variantes."
+      "snippet": "Bibliografia de neurociência aberta (ABNT) com identidade canônica de autores — filtra por autor resolvendo todas as variantes.",
+      "significance": "Bibliografia de neurociência aberta (ABNT), filtrável por autor com identidade canônica que resolve todas as variantes do nome.",
+      "pop": 85,
+      "abstract": "**Propósito.** Publicar uma bibliografia de neurociência aberta e filtrável por autor. **Achados.** Referências em ABNT com identidade canônica de autores: um filtro resolve todas as variantes de um mesmo nome. **Consequência.** Achar a obra de um autor deixa de depender de como o nome foi escrito.",
+      "tech": [
+        "JavaScript"
+      ],
+      "related": [
+        "bystander-rats",
+        "dehydration-toads",
+        "helping-rats",
+        "pesquisa-quilombo",
+        "proprioception-thesis",
+        "sensory-speech"
+      ]
     },
     {
       "slug": "scrum-delivery",
@@ -168,7 +569,7 @@
       "lang": "pt-BR",
       "tkey": "scrum-delivery",
       "category": "metodologia",
-      "title": "Scrum — entrega & retrospectiva",
+      "title": "Processo como Serviço",
       "author": "yuri",
       "mine": true,
       "created": "2026",
@@ -183,12 +584,20 @@
       "media": [
         {
           "kind": "url",
-          "url": "https://artelonga.com.br/docs/scrum-retrospective.html"
+          "url": "https://artelonga.com.br/docs/scrum-retrospective.html",
+          "title": "Ler o artigo"
         }
       ],
       "caderno": null,
       "pagina": null,
-      "snippet": "Funil → conversão → kanban; cadência quinzenal; roadmap/backlog como co tasks; retrospectiva dos releases reais com Definition of Done."
+      "snippet": "Não vendemos Scrum, vendemos processo: o ritmo que leva da conversa solta à entrega publicada.",
+      "pop": 35,
+      "significance": "A gente não vende Scrum, vende processo: o ritmo que leva uma conversa solta até uma entrega no ar. Scrum é só a referência que dá nome a esse ritmo.",
+      "abstract": "**Propósito.** Entregar com ritmo e aprender a cada entrega. **Achados.** Um ciclo curto que se repete: planeja, faz, mostra, revisa. Scrum dá o vocabulário; o que vale é a entrega real, contra uma régua de pronto combinada antes. **Consequência.** Sai do papo solto para o que está publicado, a cada duas semanas.",
+      "related": [
+        "lead-acquisition",
+        "use-cases"
+      ]
     },
     {
       "slug": "telemetria",
@@ -214,12 +623,27 @@
       "media": [
         {
           "kind": "url",
-          "url": "https://artelonga.com.br/docs/telemetry-surfaces.html"
+          "url": "https://artelonga.com.br/docs/telemetry-surfaces.html",
+          "title": "artelonga.com.br"
         }
       ],
       "caderno": null,
       "pagina": null,
-      "snippet": "Observabilidade soberana sem terceiros: geo embarcado (v4+v6+cidade), retenção, conversões — paridade com Google Analytics, custo SaaS zero."
+      "snippet": "Observabilidade soberana sem terceiros: geo embarcado (v4+v6+cidade), retenção, conversões — paridade com Google Analytics, custo SaaS zero.",
+      "significance": "Analytics próprio, sem terceiros: geolocalização, retenção e conversões em Rust e SQLite. Paridade com o Google Analytics, sem custo de serviço externo.",
+      "pop": 70,
+      "abstract": "**Propósito.** Ter analytics próprio, sem entregar o dado do visitante a terceiros. **Achados.** Telemetria embarcada em Rust e SQLite, com geolocalização (IPv4, IPv6 e cidade), retenção e conversões. Paridade com o Google Analytics, a custo zero de serviço externo. **Consequência.** Cada universo é dono da própria medição.",
+      "tech": [
+        "Rust",
+        "Axum",
+        "SQLite"
+      ],
+      "related": [
+        "aws",
+        "hostinger",
+        "intelligence-as-a-service",
+        "use-cases"
+      ]
     },
     {
       "slug": "bystander-rats",
@@ -229,7 +653,7 @@
       "kind": "systems",
       "lang": "en",
       "tkey": "bystander-rats",
-      "category": "publicação",
+      "category": "neurociência",
       "title": "The Bystander Effect in Rats",
       "author": "Havlik, Vieira Sugano et al.",
       "mine": true,
@@ -244,12 +668,28 @@
       "media": [
         {
           "kind": "url",
-          "url": "https://doi.org/10.1126/sciadv.abb4205"
+          "url": "https://doi.org/10.1126/sciadv.abb4205",
+          "title": "Artigo (DOI)"
+        },
+        {
+          "kind": "url",
+          "url": "https://github.com/yurisugano/Bystander-Effect-Rat-Analysis",
+          "title": "Bystander-Effect-Rat-Analysis · GitHub"
         }
       ],
       "caderno": null,
       "pagina": null,
-      "snippet": "Havlik, J. L., Vieira Sugano, Y. Y., Jacobi, M. C., et al. (2020). Science Advances, 6(28), eabb4205."
+      "snippet": "Havlik, J. L., Vieira Sugano, Y. Y., Jacobi, M. C., et al. (2020). Science Advances, 6(28), eabb4205.",
+      "significance": "Efeito espectador: quanto mais gente assiste, menos alguém age. Testado em ratos, com a estatística do comportamento multi-sujeito. Science Advances, 2020.",
+      "pop": 90,
+      "abstract": "**Propósito.** Testar o efeito espectador, antes só estudado em pessoas, em ratos. **Achados.** Métodos estatísticos para comportamento multi-sujeito comparam um rato sozinho com duplas e trios sem confundir os números. **Consequência.** Publicado na Science Advances (2020).",
+      "tech": [
+        "R"
+      ],
+      "related": [
+        "helping-rats",
+        "neuro"
+      ]
     },
     {
       "slug": "dehydration-toads",
@@ -259,7 +699,7 @@
       "kind": "systems",
       "lang": "en",
       "tkey": "dehydration-toads",
-      "category": "publicação",
+      "category": "biologia",
       "title": "Challenges of Dehydration in Invasive Toads",
       "author": "Madelaire, Vieira Sugano et al.",
       "mine": true,
@@ -274,12 +714,29 @@
       "media": [
         {
           "kind": "url",
-          "url": "https://www.jstor.org/stable/48727773"
+          "url": "https://www.jstor.org/stable/48727773",
+          "title": "Artigo (JSTOR)"
+        },
+        {
+          "kind": "url",
+          "url": "https://github.com/yurisugano/Dehydration-Behavior-Toads-Analysis",
+          "title": "Dehydration-Behavior-Toads-Analysis · GitHub"
         }
       ],
       "caderno": null,
       "pagina": null,
-      "snippet": "Madelaire, C. B., Vieira Sugano, Y. Y., et al. (2020). Behavioral Ecology and Sociobiology."
+      "snippet": "Madelaire, C. B., Vieira Sugano, Y. Y., et al. (2020). Behavioral Ecology and Sociobiology.",
+      "significance": "Sapos invasores perdem água e mudam de comportamento. Análise e figuras em R, com tutorial de gráfico de publicação.",
+      "pop": 50,
+      "abstract": "**Propósito.** Mostrar como a desidratação muda o comportamento de sapos invasores. **Achados.** Análise e figuras em R, e um tutorial de gráfico de publicação. **Consequência.** Foi aqui que comecei a trabalhar com visualização de dados.",
+      "tech": [
+        "R",
+        "ggplot"
+      ],
+      "related": [
+        "neuro"
+      ],
+      "image": "https://raw.githubusercontent.com/yurisugano/Dehydration-Behavior-Toads-Analysis/main/figures/Fig5_ProportionMoving.png"
     },
     {
       "slug": "helping-rats",
@@ -289,7 +746,7 @@
       "kind": "systems",
       "lang": "en",
       "tkey": "helping-rats",
-      "category": "publicação",
+      "category": "neurociência",
       "title": "Helping Can Be Motivated by Non-Affective Cues in Rats",
       "author": "Vieira Sugano et al.",
       "mine": true,
@@ -304,12 +761,28 @@
       "media": [
         {
           "kind": "url",
-          "url": "https://doi.org/10.1101/2022.07.01.498150"
+          "url": "https://doi.org/10.1101/2022.07.01.498150",
+          "title": "Artigo (DOI)"
+        },
+        {
+          "kind": "url",
+          "url": "https://github.com/yurisugano/NonAffective-Empathy-Behavior-Rat-Analysis",
+          "title": "NonAffective-Empathy-Behavior-Rat-Analysis · GitHub"
         }
       ],
       "caderno": null,
       "pagina": null,
-      "snippet": "Vieira Sugano, Y. Y., Shan, H., Molasky, N. M. R., & Mason, P. (2022). bioRxiv (preprint)."
+      "snippet": "Vieira Sugano, Y. Y., Shan, H., Molasky, N. M. R., & Mason, P. (2022). bioRxiv (preprint).",
+      "significance": "Ratos ajudam outros ratos. Mostro que não é só empatia: a ajuda também responde a pistas de comportamento, testáveis uma a uma.",
+      "pop": 64,
+      "abstract": "**Propósito.** Entender por que um rato ajuda outro. **Achados.** A ajuda também responde a sinais do comportamento do outro, não só ao estado emocional. O método separa os dois motivos e testa um de cada vez. **Consequência.** Empatia não explica tudo. O pró-social se decompõe em pistas que dá para isolar.",
+      "tech": [
+        "R"
+      ],
+      "related": [
+        "bystander-rats",
+        "neuro"
+      ]
     },
     {
       "slug": "portfolio",
@@ -319,7 +792,7 @@
       "kind": "systems",
       "lang": "en",
       "tkey": "portfolio",
-      "category": "systems",
+      "category": "sistemas",
       "title": "Technical Portfolio",
       "author": "yuri",
       "mine": true,
@@ -336,7 +809,8 @@
       "media": [],
       "caderno": null,
       "pagina": null,
-      "snippet": "Two parallel tracks tell this story above — switch between them and step through. One is mine; the other is ours."
+      "snippet": "Two parallel tracks tell this story above — switch between them and step through. One is mine; the other is ours.",
+      "pop": 74
     },
     {
       "slug": "portfolio.pt",
@@ -346,7 +820,7 @@
       "kind": "systems",
       "lang": "pt-BR",
       "tkey": "portfolio",
-      "category": "systems",
+      "category": "sistemas",
       "title": "Portfólio Técnico",
       "author": "yuri",
       "mine": true,
@@ -363,17 +837,18 @@
       "media": [],
       "caderno": null,
       "pagina": null,
-      "snippet": "Duas faixas paralelas contam esta história acima — troque entre elas e avance. Uma é minha; a outra é nossa."
+      "snippet": "Duas faixas paralelas contam esta história acima — troque entre elas e avance. Uma é minha; a outra é nossa.",
+      "pop": 74
     },
     {
       "slug": "proprioception-thesis",
       "path": "/yuri/refs/proprioception-thesis.md",
       "folder": "refs",
-      "type": "paper",
+      "type": "tese",
       "kind": "systems",
       "lang": "en",
       "tkey": "proprioception-thesis",
-      "category": "tese",
+      "category": "neurociência",
       "title": "Uncovering Human Proprioceptive Function and Malfunction",
       "author": "Vieira Sugano",
       "mine": true,
@@ -388,12 +863,25 @@
       "media": [
         {
           "kind": "url",
-          "url": "/yuri/uncovering-human-proprioceptive-function-and-malfunction.pdf"
+          "url": "/yuri/uncovering-human-proprioceptive-function-and-malfunction.pdf",
+          "title": "PDF"
         }
       ],
       "caderno": null,
       "pagina": null,
-      "snippet": "Senior thesis, B.S. Neuroscience — University of Chicago (2022)."
+      "snippet": "Senior thesis, B.S. Neuroscience — University of Chicago (2022).",
+      "pop": 82,
+      "significance": "Como a propriocepção humana funciona e falha. Tese de graduação em Neurociência (UChicago, 2022).",
+      "abstract": "**Propósito.** Entender como a propriocepção humana funciona e falha. **Achados.** Tese de graduação em Neurociência (Universidade de Chicago, 2022) que mede e caracteriza o sentido de posição do corpo. **Consequência.** É a base científica do Theseometer e do ProprioSuite.",
+      "tech": [
+        "R"
+      ],
+      "related": [
+        "fitts-game",
+        "neuro",
+        "propriosuite",
+        "theseometer-patent"
+      ]
     },
     {
       "slug": "rerum-novarum",
@@ -418,22 +906,24 @@
       "media": [
         {
           "kind": "url",
-          "url": "https://www.vatican.va/content/leo-xiii/pt/encyclicals/documents/hf_l-xiii_enc_15051891_rerum-novarum.html"
+          "url": "https://www.vatican.va/content/leo-xiii/pt/encyclicals/documents/hf_l-xiii_enc_15051891_rerum-novarum.html",
+          "title": "vatican.va"
         }
       ],
       "caderno": null,
       "pagina": null,
-      "snippet": "A terceira utilidade (d'A Economia como meio de conciliação de Classes) será a suspensão do movimento de emigração; ninguém, com efeito, quereria trocar por uma região estrangeira a sua pátria e a sua terra natal, se nesta encontrasse os meios de levar uma vida mais tolerável."
+      "snippet": "A terceira utilidade (d'A Economia como meio de conciliação de Classes) será a suspensão do movimento de emigração; ninguém, com efeito, quereria trocar por uma região estrangeira a sua pátria e a sua terra natal, se nesta encontrasse os meios de levar uma vida mais tolerável.",
+      "pop": 0
     },
     {
       "slug": "theseometer-patent",
       "path": "/yuri/refs/theseometer-patent.md",
       "folder": "refs",
-      "type": "paper",
+      "type": "patente",
       "kind": "systems",
       "lang": "en",
       "tkey": "theseometer-patent",
-      "category": "patente",
+      "category": "neurociência",
       "title": "Theseometer for Measuring Proprioception Performance",
       "author": "Mason, Vieira Sugano, Hilvert, Riley",
       "mine": true,
@@ -448,12 +938,20 @@
       "media": [
         {
           "kind": "url",
-          "url": "https://patents.google.com/patent/US11589798B2/en"
+          "url": "https://patents.google.com/patent/US11589798B2/en",
+          "title": "Patente (Google Patents)"
         }
       ],
       "caderno": null,
       "pagina": null,
-      "snippet": "Patente US 11.589.798 B2 — University of Chicago (2023)."
+      "snippet": "Patente US 11.589.798 B2 — University of Chicago (2023).",
+      "pop": 92,
+      "significance": "Instrumento patenteado para medir propriocepção (US 11.589.798 B2, UChicago, 2023).",
+      "abstract": "**Propósito.** Medir desempenho proprioceptivo de forma padronizada. **Achados.** Um instrumento patenteado (US 11.589.798 B2, Universidade de Chicago, 2023) aplica e quantifica os testes. **Consequência.** Vira produto o que era método de laboratório. O ProprioSuite é a análise aberta dele.",
+      "related": [
+        "proprioception-thesis",
+        "propriosuite"
+      ]
     },
     {
       "slug": "voar-livre",
@@ -477,7 +975,8 @@
       "media": [],
       "caderno": null,
       "pagina": null,
-      "snippet": "Pra onde você voaria se fosse livre?"
+      "snippet": "Pra onde você voaria se fosse livre?",
+      "pop": 0
     },
     {
       "slug": "terra",
@@ -499,7 +998,8 @@
       "media": [],
       "caderno": null,
       "pagina": null,
-      "snippet": "Filho de Kiyoshi e Soninha e fascinado por todos que me inspiram"
+      "snippet": "Filho de Kiyoshi e Soninha e fascinado por todos que me inspiram",
+      "pop": 0
     },
     {
       "slug": "2026-05-31",
@@ -521,7 +1021,8 @@
       "media": [],
       "caderno": null,
       "pagina": null,
-      "snippet": ""
+      "snippet": "",
+      "pop": 0
     },
     {
       "slug": "grace-kelly",
@@ -551,7 +1052,8 @@
       ],
       "caderno": null,
       "pagina": null,
-      "snippet": "The last time we talked, Mr. Smith, you reduced me to tears · I promise you, it won't happen again"
+      "snippet": "The last time we talked, Mr. Smith, you reduced me to tears · I promise you, it won't happen again",
+      "pop": 0
     },
     {
       "slug": "virtual-insanity",
@@ -581,7 +1083,8 @@
       ],
       "caderno": null,
       "pagina": null,
-      "snippet": "Virtual insanity is what we're living in · Yeah! · Well, It's alright now"
+      "snippet": "Virtual insanity is what we're living in · Yeah! · Well, It's alright now",
+      "pop": 0
     },
     {
       "slug": "maes",
@@ -606,7 +1109,8 @@
       "media": [],
       "caderno": null,
       "pagina": null,
-      "snippet": "Tudo em casa deixou de ser asséptico,"
+      "snippet": "Tudo em casa deixou de ser asséptico,",
+      "pop": 0
     }
   ]
 }

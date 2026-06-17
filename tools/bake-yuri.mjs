@@ -10,7 +10,7 @@ const DIRS = ["dias", "refs", "notas", "escrita"];  // pastas escaneadas (cada a
 const OUT = path.join(ROOT, "yuri/entries.json");
 
 // kind: separa Portfólio de Sistemas do Criativo. Default deriva do type; frontmatter `kind:` sobrepõe.
-const SYS_TYPES = new Set(["portfolio", "nota", "page", "url", "resume", "paper", "project"]);
+const SYS_TYPES = new Set(["portfolio", "nota", "page", "url", "resume", "paper", "project", "tese", "patente"]);
 const kindFromType = (type) => (SYS_TYPES.has(type) ? "systems" : "creative");
 
 function parseScalar(v) {
@@ -62,7 +62,9 @@ function parseFrontmatter(text) {
 function plain(s) {
   return s
     .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
-    .replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (_, a, b) => (b || a).trim());
+    .replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (_, a, b) => (b || a).trim())
+    .replace(/\*\*([^*]+)\*\*/g, "$1")
+    .replace(/\*([^*\n]+)\*/g, "$1");
 }
 // trecho de prévia: a 1ª citação [!quote] ou a 1ª linha de texto
 function snippet(body) {
@@ -100,7 +102,8 @@ for (const dir of DIRS) {
       tags: Array.isArray(fm.tags) ? fm.tags : (fm.tags ? [fm.tags] : []),
       media: Array.isArray(fm.media) ? fm.media : [],
       caderno: fm.caderno || null, pagina: fm.pagina != null ? fm.pagina : null,
-      snippet: snippet(body),
+      snippet: fm.resumo || snippet(body),            // resumo: sobrepõe a prévia auto
+      significance: fm.significance || null,          // significância (problema que resolve)
     });
   }
 }

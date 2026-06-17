@@ -37,14 +37,26 @@
   function L(){ return STR[LANG]; }
   // rótulos de tipo localizados — segue o idioma do site; o valor cru continua sendo a chave de filtro
   var TYPE_LABELS = {
-    page:{ "pt-BR":"página", en:"page" }, project:{ "pt-BR":"projeto", en:"project" },
+    page:{ "pt-BR":"portfólio", en:"portfolio" }, project:{ "pt-BR":"projeto", en:"project" },
     paper:{ "pt-BR":"artigo", en:"paper" }, portfolio:{ "pt-BR":"portfólio", en:"portfolio" },
     ref:{ "pt-BR":"referência", en:"reference" }, nota:{ "pt-BR":"nota", en:"note" },
     song:{ "pt-BR":"música", en:"song" }, poem:{ "pt-BR":"poema", en:"poem" },
     dia:{ "pt-BR":"diário", en:"journal" }, url:{ "pt-BR":"link", en:"link" },
-    video:{ "pt-BR":"vídeo", en:"video" }, resume:{ "pt-BR":"currículo", en:"résumé" }
+    video:{ "pt-BR":"vídeo", en:"video" }, resume:{ "pt-BR":"currículo", en:"résumé" },
+    tese:{ "pt-BR":"tese", en:"thesis" }, patente:{ "pt-BR":"patente", en:"patent" }
   };
   function typeLabel(t){ var m = TYPE_LABELS[t]; return (m && m[LANG]) ? m[LANG] : t; }
+  // rótulos de categoria localizados (mesma ideia: valor cru = chave de filtro, label segue o idioma)
+  var CAT_LABELS = {
+    sistemas:{ "pt-BR":"sistemas", en:"systems" }, systems:{ "pt-BR":"sistemas", en:"systems" },
+    dados:{ "pt-BR":"dados", en:"data" }, "neurociência":{ "pt-BR":"neurociência", en:"neuroscience" },
+    tecnologia:{ "pt-BR":"tecnologia", en:"technology" }, "publicação":{ "pt-BR":"publicação", en:"publication" },
+    tese:{ "pt-BR":"tese", en:"thesis" }, patente:{ "pt-BR":"patente", en:"patent" },
+    metodologia:{ "pt-BR":"metodologia", en:"methodology" }, "citação":{ "pt-BR":"citação", en:"quote" },
+    escrita:{ "pt-BR":"escrita", en:"writing" }, music:{ "pt-BR":"música", en:"music" },
+    biologia:{ "pt-BR":"biologia", en:"biology" }, social:{ "pt-BR":"social", en:"social" }
+  };
+  function catLabel(c){ var m = CAT_LABELS[c]; return (m && m[LANG]) ? m[LANG] : c; }
   function setLang(l){
     if (!STR[l] || l===LANG) return;
     LANG = l; try{ localStorage.setItem("yuri.lang", l); }catch(e){}
@@ -77,11 +89,25 @@
   function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
   function ytId(u){var m=String(u||"").match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{6,})/);return m?m[1]:null;}
 
+  // título de um link: usa m.title se houver; senão deriva um rótulo legível do alvo
+  // (nunca mostra a URL crua). Default = "título do alvo"; o autor pode sobrepor via title:.
+  function hostOf(u){try{return new URL(u,location.origin).hostname.replace(/^www\./,"");}catch(e){return u;}}
+  function linkTitle(m){
+    if(m.title)return m.title;
+    var u=m.url||"";
+    var gh=u.match(/github\.com\/[^/]+\/([^/?#]+)/);if(gh)return gh[1]+" · GitHub";
+    if(/doi\.org/.test(u))return "Artigo (DOI)";
+    if(/patents\.google/.test(u))return "Patente (Google Patents)";
+    if(/jstor\.org/.test(u))return "Artigo (JSTOR)";
+    if(/\.pdf($|[?#])/i.test(u))return "PDF";
+    if(/youtu\.?be/.test(u))return "Vídeo (YouTube)";
+    return hostOf(u);
+  }
   function mediaHtml(media){
     return (media||[]).map(function(m){
       if(m.kind==="youtube"){var id=ytId(m.url);if(id)return '<div class="media"><div class="yt"><iframe src="https://www.youtube.com/embed/'+esc(id)+'" title="YouTube" allow="encrypted-media;picture-in-picture" allowfullscreen loading="lazy"></iframe></div></div>';}
       if(m.kind==="mp3")return '<div class="media"><audio controls src="'+esc(m.url)+'"></audio></div>';
-      return '<div class="media ext"><a href="'+esc(m.url)+'" target="_blank" rel="noopener">'+esc(m.kind||"link")+' ↗</a></div>';
+      return '<div class="media ext"><a href="'+esc(m.url)+'" target="_blank" rel="noopener">'+esc(linkTitle(m))+' ↗</a></div>';
     }).join("");
   }
 
@@ -113,6 +139,15 @@
       if(h){out.push("<h"+h[1].length+">"+inline(h[2])+"</h"+h[1].length+">");i++;continue;}
       if(/^---+\s*$/.test(ln)){out.push("<hr>");i++;continue;}                       // regra horizontal
       if(/^\s*-\s+/.test(ln)){var items=[];while(i<lines.length&&/^\s*-\s+/.test(lines[i])){items.push("<li>"+inline(lines[i].replace(/^\s*-\s+/,""))+"</li>");i++;}out.push("<ul>"+items.join("")+"</ul>");continue;}
+      // tabela GFM: linha | a | b | seguida de separador | --- | --- |
+      if(/^\|.*\|\s*$/.test(ln)&&i+1<lines.length&&/^\|[\s:|-]+\|\s*$/.test(lines[i+1])){
+        var hdr=ln,rws=[];i+=2;
+        while(i<lines.length&&/^\|.*\|\s*$/.test(lines[i])){rws.push(lines[i]);i++;}
+        var cels=function(r){return r.replace(/^\s*\||\|\s*$/g,"").split("|").map(function(c){return inline(c.trim());});};
+        var thead="<tr>"+cels(hdr).map(function(c){return "<th>"+c+"</th>";}).join("")+"</tr>";
+        var tbody=rws.map(function(r){return "<tr>"+cels(r).map(function(c){return "<td>"+c+"</td>";}).join("")+"</tr>";}).join("");
+        out.push('<table class="tbl"><thead>'+thead+"</thead><tbody>"+tbody+"</tbody></table>");continue;
+      }
       if(ln.trim()===""){i++;continue;}
       var para=[lines[i]];i++;                                                        // consome a linha atual (evita loop em '-')
       while(i<lines.length&&lines[i].trim()!==""&&!/^>|^#{1,3}\s|^!\[\[|^---+\s*$|^\s*-\s+/.test(lines[i])){para.push(lines[i]);i++;}
@@ -164,17 +199,22 @@
         return fetchBody(t.path).then(function(b){var rr=renderBody(b);return '<div class="embed"><div class="eh"><a href="?e='+encodeURIComponent(t.slug)+'">'+esc(t.title)+(t.author?" — "+esc(t.author):"")+' ↗</a></div>'+mediaHtml(t.media)+rr.html+'</div>';});
       })).then(function(rendered){
         var html=r.html;rendered.forEach(function(h,idx){html=html.replace("__EMB"+idx+"__",h);});
-        var meta=[];meta.push(typeLabel(e.type));if(e.category)meta.push(L().cat+": "+e.category);if(e.author)meta.push(e.author);
+        var meta=[];meta.push(typeLabel(e.type));if(e.category)meta.push(L().cat+": "+catLabel(e.category));if(e.author)meta.push(e.author);
         if(e.created)meta.push(e.created);if(e.added&&e.added!==e.created)meta.push("add "+e.added);
         if(e.type==="nota"&&(e.caderno||e.pagina!=null))meta.push("caderno "+(e.caderno||"?")+(e.pagina!=null?" · p."+e.pagina:""));
         // portfolio: as duas linhas do tempo vivas acima do texto (banner Hostinger vive em /yuri/hostinger/)
         // tabs (padrão) ou empilhado A/B (?layout=stacked ou window.YURI_STACKED) — duas linhas de uma vez
+        // rodapé "Relacionados": liga peças da mesma linha de trabalho (campo related = tkeys)
+        var relMap={};DATA.forEach(function(x){if(!relMap[x.tkey])relMap[x.tkey]=x;});
+        var relHtml="";
+        if(e.related&&e.related.length){
+          var rl=e.related.map(function(tkk){var t=resolveLang(relMap[tkk]);return t?'<a href="?e='+encodeURIComponent(t.slug)+'">'+esc(t.title)+'</a>':'';}).filter(Boolean).join("");
+          if(rl)relHtml='<nav class="related"><span class="rl">'+(LANG==="pt-BR"?"Relacionados":"Related")+'</span>'+rl+'</nav>';
+        }
         var graph="", ghlinks="", stacked=false;
         if(e.type==="portfolio"){
           stacked = (new URL(location.href).searchParams.get("layout")==="stacked") || window.YURI_STACKED===true;
-          graph = stacked
-            ? '<div class="sysgraph" id="sysgraph-web"></div><div class="sysgraph" id="sysgraph-data"></div>'
-            : '<div class="sysgraph" id="sysgraph"></div>';
+          graph = '<div class="relgraph" id="relgraph"></div>';   // grafo único: carreira (âncoras) + peças + relações
           // dois GitHubs no topo, reforçando o split: pessoal (Dados) · rede (Sistemas/Web)
           var gl=(LANG==="pt-BR")
             ? {lead:"github:", me:"(eu · Dados)", net:"(a rede · Sistemas)"}
@@ -189,24 +229,34 @@
         APP.innerHTML='<article class="entry"><div class="crumb"><a href="?">'+L().index+'</a></div>'+
           '<div class="meta">'+meta.map(esc).join('<span>·</span> ')+'</div>'+
           '<h1 class="title">'+esc(e.title)+'</h1>'+
-          ghlinks+graph+mediaHtml(e.media)+'<div class="body">'+html+'</div></article>';
+          (e.abstract?'<div class="abstract">'+inline(e.abstract)+'</div>':(e.significance?'<p class="sig">'+esc(e.significance)+'</p>':''))+
+          (e.tech&&e.tech.length?'<div class="techtags">'+e.tech.map(function(t){return '<span class="tt">'+esc(t)+'</span>';}).join("")+'</div>':'')+
+          ghlinks+graph+mediaHtml(e.media)+'<div class="body">'+html+'</div>'+relHtml+'</article>';
         document.title=e.title+" — Yuri";
-        if(e.type==="portfolio"&&window.SystemGraph){
-          if(stacked){
-            var gw=document.getElementById("sysgraph-web"),gd=document.getElementById("sysgraph-data");
-            if(gw)window.SystemGraph.mount(gw,{lang:LANG,track:"web",tabs:false});
-            if(gd)window.SystemGraph.mount(gd,{lang:LANG,track:"data",tabs:false});
-          } else {
-            var track=new URL(location.href).searchParams.get("track")||"data";
-            var g=document.getElementById("sysgraph");if(g)window.SystemGraph.mount(g,{lang:LANG,track:track});
-          }
-        }
+        if(e.type==="portfolio"&&window.RelationsGraph){var rg=document.getElementById("relgraph");if(rg)window.RelationsGraph.mount(rg,{lang:LANG});}
       });
     });
   }
 
   // ── índice + filtros (duas seções: técnico / criativo) ──
-  var state={type:null,category:null,author:null,q:""};
+  var state={type:null,category:null,author:null,q:"",tech:{}};
+  // grupos de tech-stack: o grupo aparece colapsado (ex.: "AWS"); clicar seleciona todos os
+  // serviços presentes; o ▸ expande pra escolher um ou poucos. Só mostra membros presentes nos dados.
+  var TECH_GROUPS={};   // serviços AWS saíram do filtro da home → agora no hover do nó AWS no grafo
+  var techExpanded={};
+  var techLabel=(LANG==="pt-BR")?"stack":"stack";
+  function uniqTech(){var s={};visible().forEach(function(e){(e.tech||[]).forEach(function(t){if(t)s[t]=1;});});return Object.keys(s).sort();}
+  function techSelected(){return Object.keys(state.tech);}
+  // ordem do índice: ?sort=pop (importância curada, campo pop) | ?sort=random (estável na sessão) | default (data desc)
+  var SORT=(new URL(location.href)).searchParams.get("sort");
+  var RAND={};
+  function randRank(e){var k=e.slug;if(RAND[k]==null)RAND[k]=Math.random();return RAND[k];}
+  function byDateDesc(a,b){return String(b.added||b.date||b.created||"").localeCompare(String(a.added||a.date||a.created||""));}
+  function sortMode(arr){
+    if(SORT==="random")return arr.slice().sort(function(a,b){return randRank(a)-randRank(b);});
+    if(SORT==="date")return arr.slice().sort(byDateDesc);  // ordem antiga (data desc)
+    return arr.slice().sort(function(a,b){return (b.pop||0)-(a.pop||0)||byDateDesc(a,b);});  // padrão: popularidade
+  }
   function visible(){ return langSelect(DATA); }   // base já reduzida ao idioma (com fallback)
   function uniq(key){var s={};visible().forEach(function(e){var v=e[key];if(v)s[v]=1;});return Object.keys(s).sort();}
   // autores CANÔNICOS presentes (resolve variantes via neuro/authors.js: yuri =
@@ -226,16 +276,19 @@
     if(state.type&&e.type!==state.type)return false;
     if(state.category&&e.category!==state.category)return false;
     if(state.author){ if(window.NeuroAuthors){ if(!window.NeuroAuthors.match(e.author||"",state.author))return false; } else if(e.author!==state.author)return false; }
-    if(state.q){var hay=(e.title+" "+(e.author||"")+" "+(e.snippet||"")+" "+(e.tags||[]).join(" ")).toLowerCase();if(hay.indexOf(state.q.toLowerCase())===-1)return false;}
+    var tk=techSelected();
+    if(tk.length){var et=e.tech||[];if(!tk.some(function(t){return et.indexOf(t)>=0;}))return false;}
+    if(state.q){var hay=(e.title+" "+(e.author||"")+" "+(e.snippet||"")+" "+(e.tags||[]).join(" ")+" "+(e.tech||[]).join(" ")).toLowerCase();if(hay.indexOf(state.q.toLowerCase())===-1)return false;}
     return true;
   }
   function chip(label,active,on){var b=document.createElement("button");b.className="chip"+(active?" on":"")+(on==="cat"?" cat":"");b.textContent=label;return b;}
   function cardHtml(e){
-    var mk=(e.media||[]).map(function(m){return '<span>'+esc(m.kind)+'</span>';}).join("");
+    var mk=(e.media||[]).map(function(m){return '<span>'+esc(linkTitle(m))+'</span>';}).join("");
     return '<a class="card" href="?e='+encodeURIComponent(e.slug)+'">'+
-      '<div class="ct"><span class="t">'+esc(typeLabel(e.type))+'</span>'+(e.category?'<span class="cat">'+esc(e.category)+'</span>':'')+'</div>'+
+      '<div class="ct"><span class="t">'+esc(typeLabel(e.type))+'</span>'+(e.category?'<span class="cat">'+esc(catLabel(e.category))+'</span>':'')+'</div>'+
       '<h3>'+esc(e.title)+'</h3>'+
       (e.author?'<div class="by">'+esc(e.author)+(e.created?" · "+esc(e.created):"")+'</div>':(e.date?'<div class="by">'+esc(e.date)+'</div>':''))+
+      (e.significance?'<div class="sig">'+esc(e.significance)+'</div>':'')+
       (e.snippet?'<div class="snip">'+esc(e.snippet)+'</div>':'')+
       (mk?'<div class="mk">'+mk+'</div>':'')+'</a>';
   }
@@ -247,7 +300,28 @@
     var f=document.createElement("div");f.className="filters";
     var cats=uniq("category");
     if(cats.length){var cg=document.createElement("div");cg.className="grp";cg.innerHTML='<span class="flabel">'+esc(L().cat)+'</span>';
-      cats.forEach(function(c){var b=chip(c,state.category===c,"cat");b.onclick=function(){state.category=state.category===c?null:c;renderList();};cg.appendChild(b);});f.appendChild(cg);}
+      cats.forEach(function(c){var b=chip(catLabel(c),state.category===c,"cat");b.onclick=function(){state.category=state.category===c?null:c;renderList();};cg.appendChild(b);});f.appendChild(cg);}
+    // tech-stack: grupo (AWS) colapsado → clicar seleciona tudo; ▸ expande p/ escolher um ou poucos
+    var techAll=uniqTech();
+    if(techAll.length){
+      var th=document.createElement("div");th.className="grp grp-tech";th.innerHTML='<span class="flabel">'+esc(techLabel)+'</span>';
+      var grouped={};
+      Object.keys(TECH_GROUPS).forEach(function(g){
+        var mem=TECH_GROUPS[g].filter(function(t){return techAll.indexOf(t)>=0;});
+        if(!mem.length)return; mem.forEach(function(t){grouped[t]=1;});
+        var wrap=document.createElement("span");wrap.className="techgroup"+(techExpanded[g]?" open":"");
+        var allSel=mem.every(function(t){return state.tech[t];});
+        var pb=chip(g+" ("+mem.length+")",allSel);pb.classList.add("parent");
+        pb.onclick=function(){var on=mem.every(function(t){return state.tech[t];});mem.forEach(function(t){if(on)delete state.tech[t];else state.tech[t]=1;});renderIndex();};
+        var ex=document.createElement("button");ex.type="button";ex.className="techexp";ex.textContent=techExpanded[g]?"▾":"▸";
+        ex.onclick=function(){techExpanded[g]=!techExpanded[g];renderIndex();};
+        wrap.appendChild(pb);wrap.appendChild(ex);
+        if(techExpanded[g])mem.forEach(function(t){var cb=chip(t,!!state.tech[t]);cb.classList.add("child");cb.onclick=function(){if(state.tech[t])delete state.tech[t];else state.tech[t]=1;renderIndex();};wrap.appendChild(cb);});
+        th.appendChild(wrap);
+      });
+      techAll.filter(function(t){return !grouped[t];}).forEach(function(t){var cb=chip(t,!!state.tech[t]);cb.classList.add("tech");cb.onclick=function(){if(state.tech[t])delete state.tech[t];else state.tech[t]=1;renderIndex();};th.appendChild(cb);});
+      f.appendChild(th);
+    }
     var types=uniq("type");var tg=document.createElement("div");tg.className="grp";tg.innerHTML='<span class="flabel">'+esc(L().type)+'</span>';
     types.forEach(function(t){var b=chip(typeLabel(t),state.type===t);b.onclick=function(){state.type=state.type===t?null:t;renderList();};tg.appendChild(b);});f.appendChild(tg);
     var authors=authorList();if(authors.length){var ag=document.createElement("div");ag.className="grp";ag.innerHTML='<span class="flabel">'+esc(L().author)+'</span>';
@@ -259,7 +333,7 @@
       var l=visible().filter(matches);
       sections.innerHTML="";
       [["systems",L().systems],["creative",L().creative]].forEach(function(pair){
-        var group=l.filter(function(e){return (e.kind||"creative")===pair[0];});
+        var group=sortMode(l.filter(function(e){return (e.kind||"creative")===pair[0];}));
         if(!group.length)return;
         var sec=document.createElement("section");sec.className="section section-"+pair[0];
         sec.innerHTML='<h2 class="kind">'+esc(pair[1])+' <span class="n">'+L().count(group.length)+'</span></h2>'+
