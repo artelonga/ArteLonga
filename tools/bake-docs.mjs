@@ -47,7 +47,7 @@ function relinks(md, lang) {
 }
 
 const CSS = `
-  :root{--ink:#0a0a0a;--ink2:#444;--ink3:#888;--line:#e7e1da;--bg:#fbf9f6;--bg2:#fff;--accent:#9a3b2e}
+  :root{--ink:#0a0a0a;--ink2:#444;--ink3:#6a6a6a;--line:#e7e1da;--bg:#fbf9f6;--bg2:#fff;--accent:#9a3b2e}
   *{box-sizing:border-box} body{font-family:-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
     max-width:820px;margin:0 auto;padding:4vh 1.4rem 10vh;line-height:1.6;color:var(--ink);background:var(--bg)}
   a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(154,59,46,.25)}a:hover{border-bottom-color:var(--accent)}
@@ -61,13 +61,14 @@ const CSS = `
   code{background:var(--bg2);border:1px solid var(--line);border-radius:4px;padding:.05em .35em;font-size:.85em}
   pre{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:1em;overflow-x:auto}pre code{border:0;background:none;padding:0}
   hr{border:0;border-top:1px solid var(--line);margin:2em 0}
-  .mermaid svg{max-width:100%;height:auto;background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:.6rem}
+  .mermaid svg,.excalidraw svg{max-width:100%;height:auto;background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:.6rem}
+  .excalidraw{margin:1.2em 0;text-align:center}
   .crumb{display:flex;justify-content:space-between;font-size:.8rem;color:var(--ink3);margin-bottom:2em}
   .crumb .lang{font-weight:700;border:1px solid var(--line);border-radius:999px;padding:.1rem .6rem}
   .grp{margin:1.4em 0}.grp h2{border:0;padding:0;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink3)}
   .doclist{list-style:none;padding:0}.doclist li{margin:.5em 0}.doclist .src{font-size:.72rem;color:var(--ink3)}
   .tag{font-size:.6rem;font-weight:700;border-radius:999px;padding:.05rem .45rem;letter-spacing:.04em;vertical-align:middle}
-  .tag.dev{background:#eef1f6;color:var(--ink3)}.tag.pub{background:#e6f1e8;color:#3a7d44}
+  .tag.dev{background:#eef1f6;color:var(--ink3)}.tag.pub{background:#e6f1e8;color:#2e6b38}
   .tag.app{background:#fbeae6;color:var(--accent)}.tag.ext{background:#f0ece6;color:var(--ink2)}`;
 
 // CSS extra, só do mapa/lobby (index). Anexado ao CSS compartilhado nesta página.
@@ -118,7 +119,7 @@ const MAP_CSS = `
   .map-api-head{display:flex;align-items:center;justify-content:space-between;gap:1em;margin:0 0 .6em}
   .map-api-name{font-size:.98rem;font-weight:700;color:var(--ink);margin:0}
   .map-auth{font-size:.6rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:.2em .6em;border-radius:999px;white-space:nowrap}
-  .map-auth-publico{background:#e6f1e8;color:#3a7d44}
+  .map-auth-publico{background:#e6f1e8;color:#2e6b38}
   .map-auth-jwt{background:#eef1f6;color:#4452a6}
   .map-auth-token{background:#fbeae6;color:var(--accent)}
   table.map-ep{width:100%;border-collapse:collapse;font-size:.78rem;display:table;margin:0;overflow:visible}
@@ -157,17 +158,46 @@ ${bodyHtml}
 }
 
 async function render(page, body) {
-  return page.evaluate(async (mdBody) => {
+  // 1) markdown → HTML, troca cada bloco mermaid por um placeholder e coleta as definições
+  const { html: parsed, defs } = await page.evaluate((mdBody) => {
     const tmp = document.createElement("div");
     tmp.innerHTML = window.marked.parse(mdBody);
+    const defs = []; let i = 0;
     tmp.querySelectorAll("pre > code.language-mermaid").forEach(c => {
-      const div = document.createElement("div"); div.className = "mermaid"; div.textContent = c.textContent;
-      c.parentElement.replaceWith(div);
+      defs.push(c.textContent);
+      const ph = document.createElement("div"); ph.className = "diagram-ph"; ph.setAttribute("data-i", i++);
+      c.parentElement.replaceWith(ph);
     });
-    const out = document.getElementById("out"); out.innerHTML = tmp.innerHTML;
-    try { await window.mermaid.run({ querySelector: "#out .mermaid" }); } catch (e) {}
-    return out.innerHTML;
+    return { html: tmp.innerHTML, defs };
   }, body);
+
+  // 2) converte UM diagrama por evaluate (sequência precisa de medição de DOM isolada);
+  //    Excalidraw real; em falha, fallback pro mermaid handDrawn.
+  const svgs = [], scenes = [];
+  for (let i = 0; i < defs.length; i++) {
+    const r = await page.evaluate(async (d) => {
+      try { const { svg, scene } = await window.__toExcalidraw(d); return { ok: true, svg, scene }; }
+      catch (e) { return { ok: false, err: String(e) }; }
+    }, defs[i]);
+    if (r.ok) { svgs[i] = '<div class="excalidraw">' + r.svg + '</div>'; scenes.push(r.scene); }
+    else {
+      const m = await page.evaluate(async (d) => {
+        try { const { svg } = await window.mermaid.render("mm" + Math.floor(performance.now()) + Math.random().toString(36).slice(2), d); return svg; }
+        catch (e) { return null; }
+      }, defs[i]);
+      svgs[i] = '<div class="mermaid">' + (m || "") + '</div>';
+    }
+  }
+
+  // 3) injeta os SVGs nos placeholders, na ordem
+  return {
+    html: await page.evaluate(({ html, svgs }) => {
+      const out = document.getElementById("out"); out.innerHTML = html;
+      out.querySelectorAll(".diagram-ph").forEach(ph => { ph.outerHTML = svgs[+ph.getAttribute("data-i")] || ""; });
+      return out.innerHTML;
+    }, { html: parsed, svgs }),
+    scenes
+  };
 }
 
 async function main() {
@@ -175,10 +205,38 @@ async function main() {
   const page = await browser.newPage();
   await page.setContent(`<!doctype html><html><body><div id="out"></div>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script></body></html>`,
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+    <script type="module">
+      import { parseMermaidToExcalidraw } from "https://esm.sh/@excalidraw/mermaid-to-excalidraw@1.1.2";
+      import { convertToExcalidrawElements, exportToSvg } from "https://esm.sh/@excalidraw/excalidraw@0.18.0";
+      // mermaid → Excalidraw real (.excalidraw editável + SVG com Excalifont, traço à mão)
+      window.__toExcalidraw = async (defn) => {
+        const { elements, files } = await parseMermaidToExcalidraw(defn);   // fonte mermaid intacta
+        const fix = (s) => s.replace(/<br\\s*\\/?>/gi, "\\n");              // <br/> só no rótulo já convertido
+        elements.forEach((el) => {
+          if (typeof el.text === "string") el.text = fix(el.text);
+          if (el.label && typeof el.label.text === "string") el.label.text = fix(el.label.text);
+        });
+        const full = convertToExcalidrawElements(elements);
+        const svg = await exportToSvg({ elements: full, files: files||null, appState:{ exportBackground:true, viewBackgroundColor:"#fff7e8" }, exportPadding:16 });
+        svg.setAttribute("style","max-width:100%;height:auto");
+        return { svg: new XMLSerializer().serializeToString(svg),
+          scene: { type:"excalidraw", version:2, source:"https://artelonga.com.br", elements:full, appState:{ viewBackgroundColor:"#fff7e8" }, files:files||{} } };
+      };
+    </script></body></html>`,
     { waitUntil: "networkidle" });
-  await page.waitForFunction(() => window.marked && window.mermaid, null, { timeout: 20000 });
-  await page.evaluate(() => window.mermaid.initialize({ startOnLoad: false, theme: "neutral", securityLevel: "loose" }));
+  await page.waitForFunction(() => window.marked && window.mermaid && window.__toExcalidraw, null, { timeout: 30000 });
+  await page.evaluate(() => window.mermaid.initialize({
+    startOnLoad: false, securityLevel: "loose",
+    look: "handDrawn",          // estilo desenhado à mão (rough.js) — estética Excalidraw
+    theme: "base",
+    themeVariables: {
+      fontFamily: "'Space Mono', ui-monospace, monospace",
+      primaryColor: "#fdf0d5", primaryBorderColor: "#d98c3f", primaryTextColor: "#161413",
+      lineColor: "#c0612e", secondaryColor: "#fbe6c2", tertiaryColor: "#fff7e8",
+      clusterBkg: "#fff7e8", clusterBorder: "#e0a85a", edgeLabelBackground: "#fff7e8"
+    }
+  }));
 
   const done = [];
   for (const d of MANIFEST) {
@@ -192,9 +250,15 @@ async function main() {
     for (const lang of langs) {
       const md = present[lang];
       const title = frontTitle(md, d.slug); titles[lang] = title;
-      const html = await render(page, relinks(stripFront(md), lang));
+      const { html, scenes } = await render(page, relinks(stripFront(md), lang));
       await fs.writeFile(path.join(DOCS, outName(d.slug, lang)), docShell(title, html, d.group, d.slug, lang, langs.length > 1));
-      console.log(`[docs] ${outName(d.slug, lang)} (${d.group}/${lang})`);
+      // salva as cenas .excalidraw editáveis (uma por diagrama)
+      if (scenes.length) {
+        await fs.mkdir(path.join(DOCS, "diagrams"), { recursive: true });
+        for (let i = 0; i < scenes.length; i++)
+          await fs.writeFile(path.join(DOCS, "diagrams", `${d.slug}.${lang}.${i + 1}.excalidraw`), JSON.stringify(scenes[i]));
+      }
+      console.log(`[docs] ${outName(d.slug, lang)} (${d.group}/${lang})${scenes.length ? " · " + scenes.length + " excalidraw" : ""}`);
     }
     done.push({ slug: d.slug, group: d.group, title: titles.pt || titles.en, langs });
   }
