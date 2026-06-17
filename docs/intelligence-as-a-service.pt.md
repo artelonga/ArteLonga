@@ -25,26 +25,26 @@ comprova: [`telemetry-surfaces.md`](./telemetry-surfaces.md),
 
 ```mermaid
 flowchart LR
-  subgraph Free["The brain — left FREE (not a service)"]
-    H["Human"]
-    CR["Creativity · free expression"]
-    HW["Hardware<br/>computer · phone · pen & paper"]
+  subgraph Free["O cérebro — deixado LIVRE (não é serviço)"]
+    H["Humano"]
+    CR["Criatividade · livre expressão"]
+    HW["Hardware<br/>computador · celular · papel e caneta"]
   end
-  subgraph Service["Intelligence as a Service — the machine (deterministic) part"]
-    SCH["Schemas + API contracts<br/>deterministic · verifiable"]
-    R["Renderer (form)"]
-    D["Local data (data spec)"]
+  subgraph Service["Inteligência como Serviço — a parte de máquina (determinística)"]
+    SCH["Schemas + contratos de API<br/>determinístico · verificável"]
+    R["Renderizador (forma)"]
+    D["Dados locais (data spec)"]
   end
-  subgraph Platform["co — free software, shared (ñandé)"]
-    ID["Identity · users"]
+  subgraph Platform["co — software livre, compartilhado (ñandé)"]
+    ID["Identidade · usuários"]
     WH["Warehouse · analytics"]
-    PAY["Payment"]
+    PAY["Pagamento"]
     SYNC["Sync / KB"]
   end
   H --> CR
-  H -->|"specifies (schema / contract)"| Service
-  Service -->|"consented, PII-free aggregates"| Platform
-  Platform -->|"identity · history · payment"| Service
+  H -->|"especifica (schema / contrato)"| Service
+  Service -->|"agregados consentidos, sem PII"| Platform
+  Platform -->|"identidade · histórico · pagamento"| Service
 ```
 
 **Inteligência como Serviço** = a linha. O **cérebro permanece livre** (criatividade, livre
@@ -92,11 +92,11 @@ Quatro invariantes arquiteturais tornam um cérebro uma unidade barata e indepen
 
 ```mermaid
 flowchart TB
-  TPL["user = the template (reference brain)"]
-  TPL -->|"clone + data spec"| B1["brain 1<br/>user.artelonga.com.br (Fly)"]
-  TPL -->|"clone + data spec"| B2["brain 2<br/>client.newdomain.com (anywhere)"]
-  TPL -->|"clone + data spec"| B3["brain N<br/>a Raspberry Pi, a VPS, GH Pages…"]
-  B1 -->|"universe key"| CO["co — multi-tenant platform"]
+  TPL["user = o template (cérebro de referência)"]
+  TPL -->|"clone + data spec"| B1["cérebro 1<br/>user.artelonga.com.br (Fly)"]
+  TPL -->|"clone + data spec"| B2["cérebro 2<br/>cliente.novodominio.com (qualquer lugar)"]
+  TPL -->|"clone + data spec"| B3["cérebro N<br/>um Raspberry Pi, um VPS, GH Pages…"]
+  B1 -->|"universe key"| CO["co — plataforma multi-inquilino"]
   B2 -->|"universe key"| CO
   B3 -->|"universe key"| CO
 ```
@@ -130,22 +130,22 @@ sync**. Onboarding = conectar esses dois via a universe key.
 
 ```mermaid
 sequenceDiagram
-  participant U as User (new brain)
-  participant CO as co (platform)
-  participant S as Surface (the brain)
-  U->>CO: 1. register (email)
-  Note over CO: ADD → unique user · t_register ≈ instant
-  CO->>S: 2. provision universe + clone user template
-  S->>S: 3. deploy on a domain / machine (infra-agnostic)
+  participant U as Usuário (cérebro novo)
+  participant CO as co (plataforma)
+  participant S as Surface (o cérebro)
+  U->>CO: 1. registrar (email)
+  Note over CO: ADD → usuário único · t_registro ≈ instantâneo
+  CO->>S: 2. provisiona universe + clona template do user
+  S->>S: 3. deploy num domínio / máquina (agnóstico de infra)
   Note over S: t_deploy
-  U->>S: 4. add content (article/poem/ref/song/any file)
-  Note over S: write local (source of truth)<br/>cache-first render = instant
-  S-->>CO: 5. sync (consented rollups + KB) — async, non-blocking
+  U->>S: 4. adiciona conteúdo (artigo/poema/ref/canção/qualquer arquivo)
+  Note over S: escrita local (fonte da verdade)<br/>render cache-first = instantâneo
+  S-->>CO: 5. sync (rollups consentidos + KB) — async, non-blocking
   Note over CO: t_sync
-  U->>CO: 6. payment
-  Note over CO: conversion = t_register → t_payment
-  S-->>U: 7. content up-to-date, downstream available
-  Note over S: t_satisfaction
+  U->>CO: 6. pagamento
+  Note over CO: conversão = t_registro → t_pagamento
+  S-->>U: 7. conteúdo atualizado, downstream disponível
+  Note over S: t_satisfação
 ```
 
 **Os 7 passos a revisar em cada onboarding** (cada um é um gate com um dono e um
@@ -199,12 +199,12 @@ usuário é o cache hit, não o round-trip.
 
 ```mermaid
 flowchart LR
-  ADD["Add typed content + any file<br/>article · poem · reference · song · *.pdf/img/audio"]
-  ADD --> WRITE["Write to local universe state<br/>(markdown + files = source of truth)"]
-  WRITE --> BAKE["Register: schema-validate + bake index<br/>entries.json · authors · references"]
-  BAKE --> RENDER["Render (cache-first)<br/>available INSTANTLY, even if sync lags"]
-  BAKE -. "consented, async" .-> SYNC["Sync → co KB + warehouse"]
-  RENDER --> DOWN["Downstream: search · analytics · KB · agents"]
+  ADD["Adiciona conteúdo tipado + qualquer arquivo<br/>artigo · poema · referência · canção · *.pdf/img/áudio"]
+  ADD --> WRITE["Escreve no estado local do universe<br/>(markdown + arquivos = fonte da verdade)"]
+  WRITE --> BAKE["Registra: valida schema + bake do index<br/>entries.json · autores · referências"]
+  BAKE --> RENDER["Render (cache-first)<br/>disponível NA HORA, mesmo se o sync atrasar"]
+  BAKE -. "consentido, async" .-> SYNC["Sync → co KB + warehouse"]
+  RENDER --> DOWN["Downstream: busca · analytics · KB · agents"]
   SYNC --> DOWN
 ```
 
@@ -226,12 +226,12 @@ Mapeado para as mecânicas reais que temos:
 
 ```mermaid
 flowchart LR
-  V["Visitor / process"] --> Q{"cache / local available?"}
-  Q -->|yes| SERVE["serve instantly"]
-  Q -->|no| LOCAL["local universe state (NDJSON/markdown)"]
+  V["Visitante / processo"] --> Q{"cache / local disponível?"}
+  Q -->|sim| SERVE["serve na hora"]
+  Q -->|não| LOCAL["estado local do universe (NDJSON/markdown)"]
   LOCAL --> SERVE
-  INGEST["ingestion / sync"] -. "may break — non-fatal" .-> LOCAL
-  SERVE --> NOTE["availability decoupled from platform uptime"]
+  INGEST["ingestão / sync"] -. "pode quebrar — não fatal" .-> LOCAL
+  SERVE --> NOTE["disponibilidade desacoplada do uptime da plataforma"]
 ```
 
 ---
@@ -240,23 +240,23 @@ flowchart LR
 
 ```mermaid
 flowchart TB
-  subgraph EDGE["EDGE — the brains (sovereign, infra-free)"]
+  subgraph EDGE["EDGE — os cérebros (soberanos, sem infra)"]
     direction LR
-    E1["render (form)"]
-    E2["local data (NDJSON / markdown + files)"]
-    E3["embedded geo (CC0/DB-IP) · zero SaaS"]
+    E1["render (forma)"]
+    E2["dados locais (NDJSON / markdown + arquivos)"]
+    E3["geo embarcado (CC0/DB-IP) · zero SaaS"]
   end
-  subgraph CENTER["CENTER — co (free software, shared â Ã±andÃ©)"]
+  subgraph CENTER["CENTER — co (software livre, compartilhado (ñandé))"]
     direction LR
-    C1["identity · users (email = ADD)"]
-    C2["warehouse · rollups<br/>filterable, multi-tenant (universe key)"]
-    C3["payment"]
+    C1["identidade · usuários (email = ADD)"]
+    C2["warehouse · rollups<br/>filtrável, multi-inquilino (universe key)"]
+    C3["pagamento"]
     C4["KB · sync"]
   end
-  EDGE -->|"POST DailyRollup (consented, PII-free)"| CENTER
-  CENTER -->|"GET summary?universe= (history + bridge)"| EDGE
-  EDGE -->|"feedback (consented)"| CENTER
-  CENTER -->|"identity, entitlement, payment state"| EDGE
+  EDGE -->|"POST DailyRollup (consentido, sem PII)"| CENTER
+  CENTER -->|"GET summary?universe= (histórico + ponte)"| EDGE
+  EDGE -->|"feedback (consentido)"| CENTER
+  CENTER -->|"identidade, entitlement, estado de pagamento"| EDGE
 ```
 
 **O contrato é o schema, não a implementação** (`analytics-framework.md`).

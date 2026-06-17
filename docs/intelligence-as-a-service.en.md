@@ -246,7 +246,7 @@ flowchart TB
     E2["local data (NDJSON / markdown + files)"]
     E3["embedded geo (CC0/DB-IP) · zero SaaS"]
   end
-  subgraph CENTER["CENTER — co (free software, shared â Ã±andÃ©)"]
+  subgraph CENTER["CENTER — co (free software, shared â ñandé)"]
     direction LR
     C1["identity · users (email = ADD)"]
     C2["warehouse · rollups<br/>filterable, multi-tenant (universe key)"]
@@ -306,7 +306,7 @@ To onboard brain N:
 
 `user` is not a special case — it's the **de-facto template** for how artelonga scales
 to N brains, each sovereign, each on whatever infra is cheapest, each costing ~one
-small VM, integrated to one libre platform we all share (Ã±andÃ©).
+small VM, integrated to one libre platform we all share (ñandé).
 See [the /user template](./user-template.en.html).
 
 ---
