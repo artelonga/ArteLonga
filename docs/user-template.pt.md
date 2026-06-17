@@ -5,6 +5,20 @@ group: publico
 
 # O modelo `/user`
 
+## O que isto faz
+
+Um `/user` é o seu espaço na rede. Você escreve texto. O site, o endereço e os
+números saem desse texto. Você não monta servidor.
+
+Começar não custa nada. Um `/user` novo é uma linha a mais no banco de dados,
+sobre uma infraestrutura de cerca de US$ 4/mês que todos os espaços dividem. O
+custo de mais um espaço fica perto de zero, então o começo é de graça.
+
+O preço acompanha o uso. Enquanto é só texto e site, fica estático e leve.
+Quando precisa de mais, como um calendário ou um servidor por trás, a parte
+dinâmica sobe sob demanda e desliga quando ninguém usa (escala a zero). Você paga
+conforme o espaço cresce, não antes.
+
 Em toda a documentação, **`user`** é o espaço de exemplo — o seu. Onde você lê
 `/user/` ou `user.artelonga.com.br`, troque `user` pelo seu handle. É um modelo,
 não uma pessoa: serve igual pra um restaurante, uma comunidade ou você.

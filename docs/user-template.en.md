@@ -5,6 +5,20 @@ group: publico
 
 # The `/user` template
 
+## What this does
+
+A `/user` is your space on the network. You write text. The site, the address and
+the numbers come out of that text. You set up no server.
+
+Starting costs nothing. A new `/user` is one more row in the database, on top of
+shared infrastructure of about US$ 4/month that every space splits. The cost of one
+more space is near zero, so starting is free.
+
+Price follows usage. While it's only text and a site, it stays static and light.
+When it needs more, like a calendar or a backend, the dynamic part comes up on
+demand and shuts off when nobody uses it (scales to zero). You pay as the space
+grows, not before.
+
 Across the docs, **`user`** is the example space — yours. Wherever you read
 `/user/` or `user.artelonga.com.br`, swap `user` for your handle. It's a template,
 not a person: it works the same for a restaurant, a community, or you.
