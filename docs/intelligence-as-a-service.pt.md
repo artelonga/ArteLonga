@@ -24,27 +24,13 @@ comprova: [`telemetry-surfaces.md`](./telemetry-surfaces.md),
 ## 0. O conceito em uma imagem
 
 ```mermaid
-flowchart LR
-  subgraph Free["O cérebro — deixado LIVRE (não é serviço)"]
-    H["Humano"]
-    CR["Criatividade · livre expressão"]
-    HW["Hardware<br/>computador · celular · papel e caneta"]
-  end
-  subgraph Service["Inteligência como Serviço — a parte de máquina (determinística)"]
-    SCH["Schemas + contratos de API<br/>determinístico · verificável"]
-    R["Renderizador (forma)"]
-    D["Dados locais (data spec)"]
-  end
-  subgraph Platform["co — software livre, compartilhado (ñandé)"]
-    ID["Identidade · usuários"]
-    WH["Warehouse · analytics"]
-    PAY["Pagamento"]
-    SYNC["Sync / KB"]
-  end
-  H --> CR
-  H -->|"especifica (schema / contrato)"| Service
-  Service -->|"agregados consentidos, sem PII"| Platform
-  Platform -->|"identidade · histórico · pagamento"| Service
+flowchart TB
+  H["A pessoa pensa e cria (fica livre)"]
+  S["A máquina faz a parte repetível (o serviço)"]
+  CO["co: software livre que todos compartilham"]
+  H -->|"diz o que quer"| S
+  S -->|"manda o trabalho repetível"| CO
+  CO -->|"login, memória, pagamento"| S
 ```
 
 **Inteligência como Serviço** = a linha. O **cérebro permanece livre** (criatividade, livre
@@ -92,13 +78,13 @@ Quatro invariantes arquiteturais tornam um cérebro uma unidade barata e indepen
 
 ```mermaid
 flowchart TB
-  TPL["user = o template (cérebro de referência)"]
-  TPL -->|"clone + data spec"| B1["cérebro 1<br/>user.artelonga.com.br (Fly)"]
-  TPL -->|"clone + data spec"| B2["cérebro 2<br/>cliente.novodominio.com (qualquer lugar)"]
-  TPL -->|"clone + data spec"| B3["cérebro N<br/>um Raspberry Pi, um VPS, GH Pages…"]
-  B1 -->|"universe key"| CO["co — plataforma multi-inquilino"]
-  B2 -->|"universe key"| CO
-  B3 -->|"universe key"| CO
+  TPL["Um modelo de site"]
+  TPL -->|"copia"| B1["Site de uma pessoa (em qualquer endereço)"]
+  TPL -->|"copia"| B2["Site de outra pessoa"]
+  TPL -->|"copia"| B3["Site de mais alguém"]
+  B1 --> CO["co (o motor que todos compartilham)"]
+  B2 --> CO
+  B3 --> CO
 ```
 
 > **Liberdade de infra (hoje, literalmente verdade).** `user.artelonga.com.br` roda na Fly,
@@ -130,22 +116,17 @@ sync**. Onboarding = conectar esses dois via a universe key.
 
 ```mermaid
 sequenceDiagram
-  participant U as Usuário (cérebro novo)
-  participant CO as co (plataforma)
-  participant S as Surface (o cérebro)
-  U->>CO: 1. registrar (email)
-  Note over CO: ADD → usuário único · t_registro ≈ instantâneo
-  CO->>S: 2. provisiona universe + clona template do user
-  S->>S: 3. deploy num domínio / máquina (agnóstico de infra)
-  Note over S: t_deploy
-  U->>S: 4. adiciona conteúdo (artigo/poema/ref/canção/qualquer arquivo)
-  Note over S: escrita local (fonte da verdade)<br/>render cache-first = instantâneo
-  S-->>CO: 5. sync (rollups consentidos + KB) — async, non-blocking
-  Note over CO: t_sync
+  participant U as Pessoa
+  participant CO as co (a plataforma)
+  participant S as Site da pessoa
+  U->>CO: 1. cadastra (email)
+  CO->>S: 2. cria o site a partir de um modelo
+  S->>S: 3. publica num endereço
+  U->>S: 4. adiciona conteúdo
+  Note over S: aparece na hora
+  S-->>CO: 5. envia resumos (em segundo plano)
   U->>CO: 6. pagamento
-  Note over CO: conversão = t_registro → t_pagamento
-  S-->>U: 7. conteúdo atualizado, downstream disponível
-  Note over S: t_satisfação
+  S-->>U: 7. tudo no ar
 ```
 
 **Os 7 passos a revisar em cada onboarding** (cada um é um gate com um dono e um
@@ -199,13 +180,10 @@ usuário é o cache hit, não o round-trip.
 
 ```mermaid
 flowchart LR
-  ADD["Adiciona conteúdo tipado + qualquer arquivo<br/>artigo · poema · referência · canção · *.pdf/img/áudio"]
-  ADD --> WRITE["Escreve no estado local do universe<br/>(markdown + arquivos = fonte da verdade)"]
-  WRITE --> BAKE["Registra: valida schema + bake do index<br/>entries.json · autores · referências"]
-  BAKE --> RENDER["Render (cache-first)<br/>disponível NA HORA, mesmo se o sync atrasar"]
-  BAKE -. "consentido, async" .-> SYNC["Sync → co KB + warehouse"]
-  RENDER --> DOWN["Downstream: busca · analytics · KB · agents"]
-  SYNC --> DOWN
+  ADD["Você adiciona algo (texto, foto, áudio)"]
+  ADD --> SAVE["Salva no seu site"]
+  SAVE --> SHOW["Aparece na hora para quem visita"]
+  SAVE -. "em segundo plano" .-> CO["Envia uma cópia resumida pro co"]
 ```
 
 Mapeado para as mecânicas reais que temos:
@@ -226,12 +204,9 @@ Mapeado para as mecânicas reais que temos:
 
 ```mermaid
 flowchart LR
-  V["Visitante / processo"] --> Q{"cache / local disponível?"}
-  Q -->|sim| SERVE["serve na hora"]
-  Q -->|não| LOCAL["estado local do universe (NDJSON/markdown)"]
-  LOCAL --> SERVE
-  INGEST["ingestão / sync"] -. "pode quebrar — não fatal" .-> LOCAL
-  SERVE --> NOTE["disponibilidade desacoplada do uptime da plataforma"]
+  V["Uma visita chega"] --> S["O site serve do que está salvo nele"]
+  X["Se o envio pro co falhar"] -. "não atrapalha" .-> S
+  S --> OK["A página continua no ar"]
 ```
 
 ---
@@ -240,23 +215,17 @@ flowchart LR
 
 ```mermaid
 flowchart TB
-  subgraph EDGE["EDGE — os cérebros (soberanos, sem infra)"]
-    direction LR
-    E1["render (forma)"]
-    E2["dados locais (NDJSON / markdown + arquivos)"]
-    E3["geo embarcado (CC0/DB-IP) · zero SaaS"]
+  subgraph Site["Cada site (seu)"]
+    E1["mostra o conteúdo"]
+    E2["guarda os próprios dados"]
   end
-  subgraph CENTER["CENTER — co (software livre, compartilhado (ñandé))"]
-    direction LR
-    C1["identidade · usuários (email = ADD)"]
-    C2["warehouse · rollups<br/>filtrável, multi-inquilino (universe key)"]
-    C3["pagamento"]
-    C4["KB · sync"]
+  subgraph CO["co (compartilhado)"]
+    C1["login"]
+    C2["pagamento"]
+    C3["resumos e busca"]
   end
-  EDGE -->|"POST DailyRollup (consentido, sem PII)"| CENTER
-  CENTER -->|"GET summary?universe= (histórico + ponte)"| EDGE
-  EDGE -->|"feedback (consentido)"| CENTER
-  CENTER -->|"identidade, entitlement, estado de pagamento"| EDGE
+  Site -->|"manda resumos"| CO
+  CO -->|"login e pagamento"| Site
 ```
 
 **O contrato é o schema, não a implementação** (`analytics-framework.md`).

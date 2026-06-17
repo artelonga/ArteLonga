@@ -25,14 +25,12 @@ Conversion (the last step of the funnel — see [`lead-acquisition`](./lead-acqu
 **triggers the provisioning of the partner's Scrum board** in co:
 
 ```mermaid
-flowchart LR
-  L["Lead converte<br/>(registro → assinatura → pagamento)"] --> PROV["Provisiona Kanban (co board/quadro)"]
-  PROV --> RM["Product Roadmap<br/>(PO define)"]
-  RM --> PB["Product Backlog<br/>(co tasks: AL-N)"]
-  PB --> SB["Sprint Backlog<br/>(co tasks da sprint)"]
-  SB --> INC["Increment<br/>(release quinzenal, Thu 15h BRT)"]
-  INC --> DoD["Definition of Done<br/>(no calendário)"]
-  DoD -.feedback.-> RM
+flowchart TB
+  L["The client signs up<br/>(registers, subscribes, pays)"] --> PROV["Gets a task board<br/>already with a plan and a work list"]
+  PROV --> PLAN["The overall plan and the to-do list"]
+  PLAN --> SPRINT["The work for the next 2 weeks"]
+  SPRINT --> ENTREGA["A finished delivery<br/>(every Thursday, 3pm)"]
+  ENTREGA -. "lessons feed back into the plan" .-> PLAN
 ```
 
 **Delivered in a timely manner** = at the moment of conversion, the partner already receives a
@@ -73,15 +71,15 @@ PO and Devs **define the product roadmap, the product backlog and the sprint bac
 
 ```mermaid
 gantt
-  title Sprints (quinzenal · release Thu 15h BRT)
+  title 2-week cycles (delivery on Thursday, 3pm)
   dateFormat YYYY-MM-DD
   axisFormat %d/%m
-  section Phase C
-  AL-50 a 60 data modular TS OpenAPI signup :done, s1, 2026-05-08, 2026-05-21
-  section Observabilidade BaaS
-  Telemetria geo analytics framework BaaS identidade scrum :done, s2, 2026-06-05, 2026-06-18
-  section Proximo
-  features pos 06-18 :active, s3, 2026-06-18, 2026-07-02
+  section Cycle 1
+  Data tidy-up and sign-up :done, s1, 2026-05-08, 2026-05-21
+  section Cycle 2
+  Usage tracking, maps and partners :done, s2, 2026-06-05, 2026-06-18
+  section Cycle 3
+  Next deliveries :active, s3, 2026-06-18, 2026-07-02
 ```
 
 ---
@@ -91,8 +89,11 @@ gantt
 ### Product Roadmap (PO)
 
 ```mermaid
-flowchart LR
-  P1["Phase C<br/>refactor cross-repo"] --> P2["Observabilidade<br/>telemetria + analytics"] --> P3["BaaS<br/>escala horizontal"] --> P4["Conversão<br/>funil → pagamento"] --> P5["Parceiros<br/>onboarding (scrum)"]
+flowchart TB
+  P1["Organize the<br/>system's base"] --> P2["Measure how<br/>people use it"]
+  P2 --> P3["Grow to many<br/>sites at low cost"]
+  P3 --> P4["Turn a visitor<br/>into a client"]
+  P4 --> P5["Welcome partners<br/>(e.g. scrum)"]
 ```
 
 ### Product Backlog → co tasks

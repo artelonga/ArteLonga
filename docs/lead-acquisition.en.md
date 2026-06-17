@@ -7,15 +7,11 @@ side, with what observes each step and where the gaps are. Feeds the Scrum deliv
 
 ```mermaid
 flowchart TB
-  D["1 · DISCOVER — arrive via channel"] --> E["2 · ENGAGE — browse content"]
-  E --> I["3 · INTENT — hit a CTA"]
-  I --> C4a["4a · LEAD FORM<br/>POST /api/v1/leads (status: new)"]
-  I --> C4b["4b · SIGNUP<br/>auth/onboard-with-email + verify (magic code)"]
-  C4a --> Q["5 · QUALIFY — admin queue + triage"]
-  C4b --> R["6 · REGISTER — email = unique user (ADD)"]
-  Q --> CV["7 · CONVERT — subscription + payment"]
-  R --> CV
-  CV --> O["8 · ONBOARD — partner / brain (universe + scrum board)"]
+  D["A person arrives at the site"] --> E["Reads the content"]
+  E --> I["Clicks 'I want to know more'"]
+  I --> C["Leaves contact<br/>(a form or a sign-up)"]
+  C --> CV["Becomes a client<br/>(subscribes and pays)"]
+  CV --> O["Gets their space<br/>and their task board"]
 ```
 
 ## Step by step (grounded in the real machinery)

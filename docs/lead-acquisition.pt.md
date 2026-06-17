@@ -7,15 +7,11 @@ BaaS ([`brain-as-a-service.md`](./brain-as-a-service.md)).
 
 ```mermaid
 flowchart TB
-  D["1 · DISCOVER — arrive via channel"] --> E["2 · ENGAGE — browse content"]
-  E --> I["3 · INTENT — hit a CTA"]
-  I --> C4a["4a · LEAD FORM<br/>POST /api/v1/leads (status: new)"]
-  I --> C4b["4b · SIGNUP<br/>auth/onboard-with-email + verify (magic code)"]
-  C4a --> Q["5 · QUALIFY — admin queue + triage"]
-  C4b --> R["6 · REGISTER — email = unique user (ADD)"]
-  Q --> CV["7 · CONVERT — subscription + payment"]
-  R --> CV
-  CV --> O["8 · ONBOARD — partner / brain (universe + scrum board)"]
+  D["A pessoa chega ao site"] --> E["Lê o conteúdo"]
+  E --> I["Clica em 'quero saber mais'"]
+  I --> C["Deixa contato<br/>(formulário ou cadastro)"]
+  C --> CV["Vira cliente<br/>(assina e paga)"]
+  CV --> O["Recebe seu espaço<br/>e seu quadro de tarefas"]
 ```
 
 ## Passo a passo (ancorado na maquinaria real)
