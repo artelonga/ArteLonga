@@ -24,27 +24,13 @@ proves: [`telemetry-surfaces.md`](./telemetry-surfaces.md),
 ## 0. The concept in one picture
 
 ```mermaid
-flowchart LR
-  subgraph Free["The brain — left FREE (not a service)"]
-    H["Human"]
-    CR["Creativity · free expression"]
-    HW["Hardware<br/>computer · phone · pen & paper"]
-  end
-  subgraph Service["Intelligence as a Service — the machine (deterministic) part"]
-    SCH["Schemas + API contracts<br/>deterministic · verifiable"]
-    R["Renderer (form)"]
-    D["Local data (data spec)"]
-  end
-  subgraph Platform["co — free software, shared (ñandé)"]
-    ID["Identity · users"]
-    WH["Warehouse · analytics"]
-    PAY["Payment"]
-    SYNC["Sync / KB"]
-  end
-  H --> CR
-  H -->|"specifies (schema / contract)"| Service
-  Service -->|"consented, PII-free aggregates"| Platform
-  Platform -->|"identity · history · payment"| Service
+flowchart TB
+  H["A person thinks and creates (stays free)"]
+  S["The machine does the repetitive part (the service)"]
+  CO["co: free software everyone shares"]
+  H -->|"says what they want"| S
+  S -->|"hands off the repetitive work"| CO
+  CO -->|"login, memory, payment"| S
 ```
 
 **Intelligence as a Service** = the line. The **brain stays free** (creativity, free
@@ -92,13 +78,13 @@ Four architectural invariants make a brain a cheap, independent unit:
 
 ```mermaid
 flowchart TB
-  TPL["user = the template (reference brain)"]
-  TPL -->|"clone + data spec"| B1["brain 1<br/>user.artelonga.com.br (Fly)"]
-  TPL -->|"clone + data spec"| B2["brain 2<br/>client.newdomain.com (anywhere)"]
-  TPL -->|"clone + data spec"| B3["brain N<br/>a Raspberry Pi, a VPS, GH Pages…"]
-  B1 -->|"universe key"| CO["co — multi-tenant platform"]
-  B2 -->|"universe key"| CO
-  B3 -->|"universe key"| CO
+  TPL["One site template"]
+  TPL -->|"copy"| B1["Someone's site (any address)"]
+  TPL -->|"copy"| B2["Another person's site"]
+  TPL -->|"copy"| B3["Someone else's site"]
+  B1 --> CO["co (the shared engine)"]
+  B2 --> CO
+  B3 --> CO
 ```
 
 > **Infra freedom (today, literally true).** `user.artelonga.com.br` runs on Fly,
@@ -130,22 +116,17 @@ sync**. Onboarding = wiring those two via the universe key.
 
 ```mermaid
 sequenceDiagram
-  participant U as User (new brain)
-  participant CO as co (platform)
-  participant S as Surface (the brain)
-  U->>CO: 1. register (email)
-  Note over CO: ADD → unique user · t_register ≈ instant
-  CO->>S: 2. provision universe + clone user template
-  S->>S: 3. deploy on a domain / machine (infra-agnostic)
-  Note over S: t_deploy
-  U->>S: 4. add content (article/poem/ref/song/any file)
-  Note over S: write local (source of truth)<br/>cache-first render = instant
-  S-->>CO: 5. sync (consented rollups + KB) — async, non-blocking
-  Note over CO: t_sync
+  participant U as Person
+  participant CO as co (the platform)
+  participant S as The person's site
+  U->>CO: 1. sign up (email)
+  CO->>S: 2. create the site from a template
+  S->>S: 3. publish at an address
+  U->>S: 4. add content
+  Note over S: shows up right away
+  S-->>CO: 5. send summaries (in the background)
   U->>CO: 6. payment
-  Note over CO: conversion = t_register → t_payment
-  S-->>U: 7. content up-to-date, downstream available
-  Note over S: t_satisfaction
+  S-->>U: 7. all live
 ```
 
 **The 7 steps to review for every onboarding** (each is a gate with an owner and a
@@ -199,13 +180,10 @@ cache hit, not the round-trip.
 
 ```mermaid
 flowchart LR
-  ADD["Add typed content + any file<br/>article · poem · reference · song · *.pdf/img/audio"]
-  ADD --> WRITE["Write to local universe state<br/>(markdown + files = source of truth)"]
-  WRITE --> BAKE["Register: schema-validate + bake index<br/>entries.json · authors · references"]
-  BAKE --> RENDER["Render (cache-first)<br/>available INSTANTLY, even if sync lags"]
-  BAKE -. "consented, async" .-> SYNC["Sync → co KB + warehouse"]
-  RENDER --> DOWN["Downstream: search · analytics · KB · agents"]
-  SYNC --> DOWN
+  ADD["You add something (text, photo, audio)"]
+  ADD --> SAVE["Saved to your site"]
+  SAVE --> SHOW["Shows up right away for visitors"]
+  SAVE -. "in the background" .-> CO["Sends a short summary to co"]
 ```
 
 Mapped to real mechanics we have:
@@ -226,12 +204,9 @@ Mapped to real mechanics we have:
 
 ```mermaid
 flowchart LR
-  V["Visitor / process"] --> Q{"cache / local available?"}
-  Q -->|yes| SERVE["serve instantly"]
-  Q -->|no| LOCAL["local universe state (NDJSON/markdown)"]
-  LOCAL --> SERVE
-  INGEST["ingestion / sync"] -. "may break — non-fatal" .-> LOCAL
-  SERVE --> NOTE["availability decoupled from platform uptime"]
+  V["A visit arrives"] --> S["The site serves what's saved on it"]
+  X["If the send to co fails"] -. "no problem" .-> S
+  S --> OK["The page stays up"]
 ```
 
 ---
@@ -240,23 +215,17 @@ flowchart LR
 
 ```mermaid
 flowchart TB
-  subgraph EDGE["EDGE — the brains (sovereign, infra-free)"]
-    direction LR
-    E1["render (form)"]
-    E2["local data (NDJSON / markdown + files)"]
-    E3["embedded geo (CC0/DB-IP) · zero SaaS"]
+  subgraph Site["Each site (yours)"]
+    E1["shows the content"]
+    E2["keeps its own data"]
   end
-  subgraph CENTER["CENTER — co (free software, shared â ñandé)"]
-    direction LR
-    C1["identity · users (email = ADD)"]
-    C2["warehouse · rollups<br/>filterable, multi-tenant (universe key)"]
-    C3["payment"]
-    C4["KB · sync"]
+  subgraph CO["co (shared)"]
+    C1["login"]
+    C2["payment"]
+    C3["summaries and search"]
   end
-  EDGE -->|"POST DailyRollup (consented, PII-free)"| CENTER
-  CENTER -->|"GET summary?universe= (history + bridge)"| EDGE
-  EDGE -->|"feedback (consented)"| CENTER
-  CENTER -->|"identity, entitlement, payment state"| EDGE
+  Site -->|"sends summaries"| CO
+  CO -->|"login and payment"| Site
 ```
 
 **The contract is the schema, not the implementation** (`analytics-framework.md`).

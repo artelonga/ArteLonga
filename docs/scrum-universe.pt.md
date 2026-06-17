@@ -25,10 +25,10 @@ renderiza no cache mesmo se a ingestão quebrar**. Publicar = sair do estágio d
 ## 1. Por que uma *pasta* (e o ciclo de vida)
 
 ```mermaid
-flowchart LR
-  D["DRAFT<br/>single scrum.md"] -->|"gains an attachment<br/>(PDF, translation)"| F["FOLDER (lead)<br/>scrum/ — md + files + a responsible owner"]
-  F -->|"invite collaborator"| P["PARTNER<br/>external Scrum Master / client"]
-  F -.->|"grows → promote (zero data loss)"| S["SURFACE<br/>scrum.artelonga.com.br"]
+flowchart TB
+  D["Rascunho<br/>um arquivo de texto"] -->|"ganha um anexo<br/>(PDF, tradução)"| F["Pasta com um responsável<br/>texto + arquivos juntos"]
+  F -->|"convida alguém de fora"| P["Parceiro<br/>Scrum Master ou cliente"]
+  F -.->|"cresce e vira site próprio<br/>(sem perder nada)"| S["Site próprio<br/>scrum.artelonga.com.br"]
 ```
 
 - Um **`.md` não pode guardar binários** (o PDF do Scrum Guide, uma tradução pt-BR).
@@ -55,14 +55,14 @@ a promoção para uma surface muda o **host**, nunca o conteúdo ou a data spec.
 
 ```mermaid
 sequenceDiagram
-  participant M as Member (lead)
-  participant CO as co (universe API)
-  participant S as scrum/ folder + page
-  M->>CO: authenticate (member identity)
-  M->>CO: create/update entry (scrum.md, new notes) + upload attachment (any file type)
-  Note over CO: draft state · versioned · stored (entries + object storage)
-  CO->>S: publish → bake index → render (cache-first)
-  M->>CO: delete / archive
+  participant M as Membro
+  participant CO as Plataforma (co)
+  participant S as Pasta e página
+  M->>CO: entra na conta
+  M->>CO: escreve conteúdo e anexa arquivos
+  Note over CO: guarda como rascunho, com histórico
+  CO->>S: publica e mostra a página
+  M->>CO: apaga ou arquiva
 ```
 
 **Requisitos (CRUD do membro):**
@@ -80,15 +80,15 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-  participant L as Lead (member)
-  participant CO as co
-  participant P as Partner (external SM / client)
-  L->>CO: invite partner (email)
-  Note over CO: ADD user · grant scoped access to the scrum universe
-  CO-->>P: invitation (email)
-  P->>CO: accept → subscribe (assinatura)
-  P->>CO: read · comment / propose edits (scoped)
-  Note over CO: collaboration, not full ownership
+  participant L as Responsável
+  participant CO as Plataforma (co)
+  participant P as Parceiro convidado
+  L->>CO: convida por e-mail
+  Note over CO: cria a conta e libera só este espaço
+  CO-->>P: envia o convite
+  P->>CO: aceita e assina
+  P->>CO: lê, comenta e sugere mudanças
+  Note over CO: colabora, mas não é dono
 ```
 
 **Requisitos (convite de partner):**
@@ -109,24 +109,9 @@ conceitos de plataforma:
 
 ```mermaid
 flowchart TB
-  subgraph FOLDER["scrum/ (the folder = a universe)"]
-    C1["scrum.md + entries → co entries"]
-    C2["PDF + translation → co object storage"]
-    C3["lead → owner · partner → collaborator/subscriber"]
-  end
-  subgraph CO["co (platform)"]
-    U["universes (multi-tenant, public/private)"]
-    E["entries CRUD + history + proposals"]
-    ST["object storage (attachments, any type)"]
-    ID["identity · members · subscriptions"]
-    AN["analytics (rollups) · telemetry"]
-    PAY["payment"]
-  end
-  C1 --> E
-  C2 --> ST
-  C3 --> ID
-  FOLDER -->|universe key| U
-  FOLDER -.->|consented rollups| AN
+  C1["O texto e as notas"] --> E["A plataforma guarda o conteúdo"]
+  C2["Os arquivos anexados"] --> ST["A plataforma guarda os arquivos"]
+  C3["Responsável e parceiros"] --> ID["A plataforma cuida de quem é quem"]
 ```
 
 - **Contrato = o schema, não a implementação** ([`analytics-framework.md`](./analytics-framework.md)).

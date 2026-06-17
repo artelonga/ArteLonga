@@ -25,10 +25,10 @@ renderiza no cache mesmo se a ingestão quebrar**. Publicar = sair do estágio d
 ## 1. Why a *folder* (and the lifecycle)
 
 ```mermaid
-flowchart LR
-  D["DRAFT<br/>single scrum.md"] -->|"gains an attachment<br/>(PDF, translation)"| F["FOLDER (lead)<br/>scrum/ — md + files + a responsible owner"]
-  F -->|"invite collaborator"| P["PARTNER<br/>external Scrum Master / client"]
-  F -.->|"grows → promote (zero data loss)"| S["SURFACE<br/>scrum.artelonga.com.br"]
+flowchart TB
+  D["Draft<br/>one text file"] -->|"gains an attachment<br/>(PDF, translation)"| F["Folder with an owner<br/>text + files together"]
+  F -->|"invites someone outside"| P["Partner<br/>Scrum Master or client"]
+  F -.->|"grows into its own site<br/>(loses nothing)"| S["Its own site<br/>scrum.artelonga.com.br"]
 ```
 
 - A **`.md` can't hold binaries** (the Scrum Guide PDF, a pt-BR translation).
@@ -55,14 +55,14 @@ promotion to a surface changes the **host**, never the content or the data spec.
 
 ```mermaid
 sequenceDiagram
-  participant M as Member (lead)
-  participant CO as co (universe API)
-  participant S as scrum/ folder + page
-  M->>CO: authenticate (member identity)
-  M->>CO: create/update entry (scrum.md, new notes) + upload attachment (any file type)
-  Note over CO: draft state · versioned · stored (entries + object storage)
-  CO->>S: publish → bake index → render (cache-first)
-  M->>CO: delete / archive
+  participant M as Member
+  participant CO as Platform (co)
+  participant S as Folder and page
+  M->>CO: signs in
+  M->>CO: writes content and attaches files
+  Note over CO: keeps it as a draft, with history
+  CO->>S: publishes and shows the page
+  M->>CO: deletes or archives
 ```
 
 **Requirements (member CRUD):**
@@ -80,15 +80,15 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-  participant L as Lead (member)
-  participant CO as co
-  participant P as Partner (external SM / client)
-  L->>CO: invite partner (email)
-  Note over CO: ADD user · grant scoped access to the scrum universe
-  CO-->>P: invitation (email)
-  P->>CO: accept → subscribe (assinatura)
-  P->>CO: read · comment / propose edits (scoped)
-  Note over CO: collaboration, not full ownership
+  participant L as Owner
+  participant CO as Platform (co)
+  participant P as Invited partner
+  L->>CO: invites by email
+  Note over CO: creates the account, opens only this space
+  CO-->>P: sends the invite
+  P->>CO: accepts and subscribes
+  P->>CO: reads, comments, suggests changes
+  Note over CO: collaborates, but is not the owner
 ```
 
 **Requirements (partner invite):**
@@ -109,24 +109,9 @@ platform concepts:
 
 ```mermaid
 flowchart TB
-  subgraph FOLDER["scrum/ (the folder = a universe)"]
-    C1["scrum.md + entries → co entries"]
-    C2["PDF + translation → co object storage"]
-    C3["lead → owner · partner → collaborator/subscriber"]
-  end
-  subgraph CO["co (platform)"]
-    U["universes (multi-tenant, public/private)"]
-    E["entries CRUD + history + proposals"]
-    ST["object storage (attachments, any type)"]
-    ID["identity · members · subscriptions"]
-    AN["analytics (rollups) · telemetry"]
-    PAY["payment"]
-  end
-  C1 --> E
-  C2 --> ST
-  C3 --> ID
-  FOLDER -->|universe key| U
-  FOLDER -.->|consented rollups| AN
+  C1["The text and the notes"] --> E["The platform stores the content"]
+  C2["The attached files"] --> ST["The platform stores the files"]
+  C3["Owner and partners"] --> ID["The platform tracks who is who"]
 ```
 
 - **Contract = the schema, not the implementation** ([`analytics-framework.md`](./analytics-framework.md)).
