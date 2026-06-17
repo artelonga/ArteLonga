@@ -12,6 +12,33 @@ co-auto. Convenção em CLAUDE.md.
 
 ## [Unreleased]
 
+### Changed (`refactor`)
+
+- **Revamp do grafo do portfólio (`yuri/system-graph.js`) — renderização intuitiva.**
+  As duas faixas (Sistemas/Web · Dados) tinham arestas reta-centro-a-centro
+  atravessando rótulos e nós, orgs tracejadas virando rabisco no zoom-out, a pílula
+  "aresta" caindo em cima de nós, e câmera centrada no foco desperdiçando metade do
+  canvas. Agora: uma gramática geométrica por faixa (Dados = três colunas
+  publicações ← spine de orgs → trilho de sistemas, cada sistema na altura da org
+  que o entregou; Web = organograma arte→quilombo→co→leque, parceiros ao lado do
+  seu sistema); arestas em curva-S com tangentes alinhadas aos eixos, aparadas na
+  borda dos círculos, partida em leque pelo arco do hub; halo cor-de-papel em todo
+  rótulo; piso de tamanho de nó no zoom-out + tracejado proporcional ao raio;
+  câmera que enquadra a caixa dos nós visíveis (fit iterativo, ciente de que rótulos
+  não encolhem na proporção do zoom); pílula da aresta deslocada na normal da curva
+  (posição por aresta via `lt`). Mobile: rótulos de publicação e pílulas saem em
+  zoom < 0.45 (o tooltip cobre), `slabel` curto pra parceiros de nome longo
+  (Retro/CCA/NNB), setas flutuantes escondidas ≤600px, respiro pra legenda.
+  Bônus: link da U. Chicago na faixa Dados trocado de busca-Google pra página de
+  ator `/universidade-de-chicago/` (regra da casa). Verificado com screenshots
+  Playwright: desktop 980px, passo intermediário e mobile 390px, ambas as faixas.
+
+- **Portfólio (texto): miguel = o modelo se estende a qualquer caso de uso** (`docs`).
+  A frase "universos de stakeholder" (jargão) virou: "O modelo se estende a qualquer
+  caso de uso — até o miguel, universo de uma pessoa só com universos de projeto como
+  o mse, sobe na mesma API; cada conexão expande a rede para o próximo nicho."
+  EN espelhado. Primeira linha do body intacta (snippet do entries.json preservado).
+
 ## [0.22.0] — 2026-06-06 — Intelligence as a Service · docs bilíngues · surfaces na raiz · mapa de domínios
 
 ### Added (`feat`)
