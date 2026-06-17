@@ -448,7 +448,7 @@ async function main() {
   // Cada seção pode trazer um bloco HTML inline (`html`) além dos cartões de doc.
   const JOURNEY = [
     { n: "①", title: "O que é", cards: [
-      docCard("user-template", "O que é um /user e como ele vira user.artelonga.com.br — troque user por você.", "O modelo /user"),
+      docCard("user-template", "O que isto faz: você escreve, e o site e o endereço saem do texto. Começa de graça; o preço acompanha o uso.", "O modelo /user"),
       docCard("intelligence-as-a-service", "Cada site é soberano; um só conjunto de ferramentas; custo marginal quase zero.", "Inteligência como serviço (IaaS)"),
     ], html: `<p class="concept">Do que uma máquina executa sozinha à experiência sob medida de uma pessoa — um só conjunto de ferramentas serve as duas pontas. Nos exemplos, <code>user</code> é você.</p>` },
     { n: "②", title: "Construir", cards: [
@@ -512,7 +512,7 @@ async function main() {
 <style>${CSS}${MAP_CSS}</style></head><body>
 <div class="crumb"><span><a href="/">Arte Longa</a> · docs</span></div>
 <h1>Documentação — o mapa</h1>
-<p class="lede">Este é o ponto de entrada. A rede te dá um site que é seu, a infraestrutura pra mantê-lo no ar e os números pra crescer — um <code>/user</code> vira <code>user.artelonga.com.br</code>. Comece por onde quiser.</p>
+<p class="lede">O que isto faz: você escreve, e o site, o endereço e os números saem do texto. Começa de graça (o custo de mais um espaço fica perto de zero) e o preço acompanha o uso. Um <code>/user</code> vira <code>user.artelonga.com.br</code>. Comece por onde quiser.</p>
 
 <div class="spine" role="img" aria-label="espectro: 0 máquina a 100 pessoa">
   <span class="end left">0 · máquina (IA)</span>
