@@ -1,11 +1,11 @@
 {
-  "as_of": "2026-06-18T08:47:38.673305520+00:00",
+  "as_of": "2026-06-19T09:05:55.782414392+00:00",
   "items": [
     {
       "path": "/servicos/",
       "slug": "",
-      "views": 11,
-      "visitors": 5
+      "views": 10,
+      "visitors": 4
     },
     {
       "path": "/servicos/pensamento-islamico/",
@@ -70,18 +70,6 @@
     {
       "path": "/servicos/inteligencia-e-tecnologia/",
       "slug": "inteligencia-e-tecnologia",
-      "views": 1,
-      "visitors": 1
-    },
-    {
-      "path": "/servicos/psicologia-social-e-comunitaria/",
-      "slug": "psicologia-social-e-comunitaria",
-      "views": 1,
-      "visitors": 1
-    },
-    {
-      "path": "/servicos/saude-mental/",
-      "slug": "saude-mental",
       "views": 1,
       "visitors": 1
     }
