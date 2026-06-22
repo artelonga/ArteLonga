@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt"><head><title>1.3 Ferramental técnico de IA segura</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM Plex Mono&amp;family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;display=swap"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta property="og:title" content="1.3 Ferramental técnico de IA segura"/><meta property="og:description" content="ML que preserva privacidade, inteligência local/limitada, práticas de assurance, modelos abertos vs fechados, frameworks — com maturidade e aplicabilidade ao Brasil. ..."/><meta property="og:image" content="https://artelonga.com.br/static/og-image.png"/><meta property="og:width" content="1200"/><meta property="og:height" content="675"/><link rel="icon" href="../static/icon.png"/><meta name="description" content="ML que preserva privacidade, inteligência local/limitada, práticas de assurance, modelos abertos vs fechados, frameworks — com maturidade e aplicabilidade ao Brasil. ..."/><meta name="generator" content="Quartz"/><link href="../index.css" rel="stylesheet" type="text/css" spa-preserve/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css" rel="stylesheet" type="text/css" spa-preserve/><script src="../prescript.js" type="application/javascript" spa-preserve></script><script type="application/javascript" spa-preserve>const fetchData = fetch("../static/contentIndex.json").then(data => data.json())</script></head><body data-slug="analise/tecnica"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="..">GRSC Escola de Samba Amazônia</a></h2><div class="spacer mobile-only"></div><div class="search"><button class="search-button" id="search-button"><p>Pesquisar</p><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg></button><div id="search-container"><div id="search-space"><input autocomplete="off" id="search-bar" name="search" type="text" aria-label="Pesquisar por algo" placeholder="Pesquisar por algo"/><div id="search-layout" data-preview="true"></div></div></div></div><button class="darkmode" id="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="Tema escuro"><title>Tema escuro</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="Tema claro"><title>Tema claro</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button><div class="explorer desktop-only"><button type="button" id="explorer" data-behavior="collapse" data-collapsed="collapsed" data-savestate="true" data-tree="[{&quot;path&quot;:&quot;analise&quot;,&quot;collapsed&quot;:true},{&quot;path&quot;:&quot;dados&quot;,&quot;collapsed&quot;:true},{&quot;path&quot;:&quot;propostas&quot;,&quot;collapsed&quot;:true},{&quot;path&quot;:&quot;submissao&quot;,&quot;collapsed&quot;:true}]" aria-controls="explorer-content" aria-expanded="false"><h2>Explorador</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-content"><ul class="overflow" id="explorer-ul"><li><div class="folder-outer open"><ul style="padding-left:0;" class="content" data-folderul><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div data-folderpath="analise"><button class="folder-button"><span class="folder-title">analise</span></button></div></div><div class="folder-outer "><ul style="padding-left:1.4rem;" class="content" data-folderul="analise"><li><a href="../analise/regulacao" data-for="analise/regulacao">1.1 Regulação &amp; conformidade</a></li><li><a href="../analise/riscos" data-for="analise/riscos">1.2 Riscos &amp; danos documentados</a></li><li><a href="../analise/tecnica" data-for="analise/tecnica">1.3 Ferramental técnico de IA segura</a></li></ul></div></li><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div data-folderpath="dados"><button class="folder-button"><span class="folder-title">Fundação de dados — índice</span></button></div></div><div class="folder-outer "><ul style="padding-left:1.4rem;" class="content" data-folderul="dados"><li><a href="../dados/adocao-landscape" data-for="dados/adocao-landscape">Adoção de IA &amp; paisagem digital no Brasil — dados</a></li><li><a href="../dados/legislacao" data-for="dados/legislacao">Dados — Panorama legislativo e regulatório de IA no Brasil</a></li><li><a href="../dados/economia" data-for="dados/economia">Economia da IA no Brasil — brief quantitativo (mercado, investimento público, custo de cómputo, custo do dano)</a></li><li><a href="../dados/financiamento" data-for="dados/financiamento">Financiamento, grants e fellowships para o projeto IA Segura — brief com fontes (montantes, prazos, elegibilidade, fit)</a></li><li><a href="../dados/linguas-soberania" data-for="dados/linguas-soberania">Línguas sub-atendidas e soberania de dados</a></li><li><a href="../dados/produtos-servicos" data-for="dados/produtos-servicos">Produtos &amp; serviços — o mapa da IA segura, pt-BR e preservadora de privacidade no Brasil/LatAm</a></li><li><a href="../dados/unit-economics" data-for="dados/unit-economics">Unidade econômica de IA &amp; IaaS — quanto custa servir inteligência</a></li></ul></div></li><li><div class="folder-outer "><ul style="padding-left:0;" class="content" data-folderul></ul></div></li><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div data-folderpath="propostas"><button class="folder-button"><span class="folder-title">propostas</span></button></div></div><div class="folder-outer "><ul style="padding-left:1.4rem;" class="content" data-folderul="propostas"><li><a href="../propostas/principios" data-for="propostas/principios">2.1 Princípios — o que já praticamos, generalizado</a></li><li><a href="../propostas/intervencoes" data-for="propostas/intervencoes">2.2 Intervenções priorizadas</a></li><li><a href="../propostas/roadmap-modelos" data-for="propostas/roadmap-modelos">2.3 Roadmap de modelos — pt-BR, mbya, yoruba</a></li></ul></div></li><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div data-folderpath="submissao"><button class="folder-button"><span class="folder-title">submissao</span></button></div></div><div class="folder-outer "><ul style="padding-left:1.4rem;" class="content" data-folderul="submissao"><li><a href="../submissao/guia" data-for="submissao/guia">Guia de projeto &amp; submissão — Global South AI Safety Hackathon</a></li><li><a href="../submissao/relatorio" data-for="submissao/relatorio">Submission report — Safe AI in Brazil</a></li></ul></div></li><li><a href="../publicacao" data-for="publicacao">Publicação — uma fonte, duas renderizações</a></li></ul></div></li><li id="explorer-end"></li></ul></div></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../analise/">analise</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>1.3 Ferramental técnico de IA segura</a></div></nav><h1 class="article-title">1.3 Ferramental técnico de IA segura</h1><p show-comma="true" class="content-meta"><span>21 de jun. de 2026</span><span>Leitura de 7 min</span></p><ul class="tags"><li><a href="../tags/tecnica" class="internal tag-link">tecnica</a></li><li><a href="../tags/privacy-preserving-ml" class="internal tag-link">privacy-preserving-ml</a></li><li><a href="../tags/edge-ai" class="internal tag-link">edge-ai</a></li><li><a href="../tags/red-team" class="internal tag-link">red-team</a></li><li><a href="../tags/modelos-abertos" class="internal tag-link">modelos-abertos</a></li><li><a href="../tags/nist" class="internal tag-link">nist</a></li><li><a href="../tags/iso42001" class="internal tag-link">iso42001</a></li></ul></div></div><article class="popover-hint"><h1 id="13-ferramental-técnico-de-ia-segura">1.3 Ferramental técnico de IA segura<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#13-ferramental-técnico-de-ia-segura" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<blockquote>
+<p>Cada técnica leva um selo de <strong>maturidade</strong> (<em>madura</em> = em produção · <em>emergente</em>
+= real mas endurecendo · <em>pesquisa</em> = ainda não confiável em produção) e uma nota
+de <strong>aplicabilidade ao Brasil</strong> (custo, pt-BR, soberania).</p>
+</blockquote>
+<p><strong>Três achados que enquadram tudo:</strong></p>
+<ol>
+<li><strong>Técnicas que “parecem” privadas vazam sem <em>differential privacy</em>.</strong> Federated
+learning e dados sintéticos <strong>reconstroem/re-identificam</strong> sem DP (e, no FL,
+secure aggregation). <strong>DP é o tecido conjuntivo.</strong></li>
+<li><strong>Dois modos de falha estão honestamente em aberto</strong> — <em>prompt injection</em> e
+marca d’água robusta de texto de IA. Quem promete “prevenir” exagera; a postura
+é <strong>contenção + proveniência por assinatura</strong>.</li>
+<li><strong>A lacuna recorrente do Brasil é língua e guia técnico, não definição legal.</strong>
+Ferramentas de PII em pt-BR, guardrails, red-teams e evals são quase todos DIY;
+a ANPD dá definição jurídica, <strong>não</strong> padrão técnico (sem ε de referência). Essa
+lacuna é também o <strong>valor local mais claro a entregar</strong>.</li>
+</ol>
+<h2 id="privacy-preserving-ml">Privacy-preserving ML<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#privacy-preserving-ml" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li><strong>Differential Privacy (DP) — <em>madura</em>.</strong> Ruído calibrado; ε é o orçamento de
+privacidade. Custo de utilidade cresce com a dificuldade da tarefa (DP-SGD ~97%
+MNIST a ε=8, mas ~73% CIFAR-10). Produção: Apple (local DP), Google RAPPOR, Censo
+EUA 2020. <strong>NIST SP 800-226 (2025) não recomenda um ε único.</strong> <em>Brasil:</em> grátis,
+só software — melhor encaixe sob restrição de recursos; o difícil é <strong>escolher ε
+sem guia da ANPD em pt-BR.</strong></li>
+<li><strong>Federated Learning (FL) — <em>madura com DP + secure aggregation</em>.</strong> Treina sem o
+dado sair da fonte. <strong>FL sozinho NÃO é privado</strong> (“Deep Leakage from Gradients”
+reconstrói o dado a partir dos gradientes). <em>Brasil:</em> a variante <strong>cross-silo</strong>
+(poucas orgs confiáveis — ex.: hospitais do SUS) é o padrão realista; ótimo para
+dados de saúde/públicos <strong>inter-institucionais sem centralizar</strong> (LGPD-friendly).</li>
+<li><strong>Homomorphic Encryption (FHE) — <em>pesquisa/emergente</em>.</strong> Computa sobre cifrado;
+overhead severo (Concrete ML ~4 min/imagem em CIFAR-10). <em>Brasil:</em> ruim como
+caminho default em tempo real; <strong>reservar para lotes estreitos, offline, de alta
+sensibilidade.</strong> (Coincide com a postura honesta do nosso P9.)</li>
+<li><strong>Secure Multiparty Computation (MPC) — <em>madura para analytics em lote</em>.</strong> Várias
+partes computam sem revelar entradas (leilão de beterraba DK; estudo de <em>wage
+gap</em> em Boston; Estônia PRIST ligou ~10M registros fiscais + ~600K educacionais).
+Custo dominante = <strong>comunicação</strong> (rodadas de rede). <em>Brasil:</em> ótimo para
+estatística agregada inter-institucional (hiato salarial, prevalência em saúde)
+sem partilhar dado cru; sensível a banda em regiões de baixa conectividade.</li>
+<li><strong>Dados sintéticos — <em>madura em fidelidade, pesquisa em privacidade</em>.</strong> <strong>Não são
+anônimos automaticamente</strong> (Stadler, USENIX 2022; <em>outliers</em> ficam expostos). DP
+é a única garantia formal, com custo de utilidade. <em>Brasil:</em> úteis para
+dev/test/compartilhamento, <strong>não</strong> como anonimização-LGPD sem DP + teste de
+re-identificação.</li>
+<li><strong>Minimização / redação de PII — <em>framework maduro, DIY para pt-BR</em>.</strong> Microsoft
+Presidio <strong>não traz reconhecedores de CPF/CNPJ/RG</strong>; precisa de camada própria +
+modelo pt (spaCy/Stanza; pesquisa: BERTimbau, LeNER-Br ~92,5% F1). <em>Brasil:</em>
+<strong>primeiro passo de maior alavanca e menor custo</strong> (minimização é doutrina
+explícita da LGPD) — mas <strong>construa você a camada CPF/CNPJ/RG</strong> (contribuição
+local concreta e reutilizável).</li>
+</ul>
+<h2 id="inteligência-limitada--local--edge-o-dado-fica-com-o-usuário">Inteligência limitada / local / edge (“o dado fica com o usuário”)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#inteligência-limitada--local--edge-o-dado-fica-com-o-usuário" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li><strong>Engines &amp; hardware — <em>maduros</em>.</strong> llama.cpp/Ollama/MLX rodam 7B–70B
+quantizados em Apple Silicon e CPU. (Números de tok/s e RAM são <em>indicativos</em>,
+de benchmark de comunidade.) <strong>Quantização — <em>madura</em>:</strong> Q4_K_M ≈ −75% de tamanho
+a ~3,5% de perda (cuidado: raciocínio estruturado cai abaixo de 4 bits).</li>
+<li><strong>Small Language Models — <em>madura/emergente</em>.</strong> Phi-4 (14B) ~84,8 MMLU; SLMs
+entregam ~80–90% da qualidade de fronteira em tarefas focadas (resumo, rascunho,
+Q&amp;A, código); a diferença aparece em raciocínio multi-passo complexo.</li>
+<li><strong>RAG local — <em>emergente</em>.</strong> Pipeline 100% local mantém o dado no dispositivo;
+<strong>nuance adversarial:</strong> “local” reduz mas não elimina risco — o <strong>corpus de
+retrieval pode conter/vazar PII</strong>.</li>
+<li><strong>Modelos abertos em português.</strong> <strong>Sabiá</strong> (Maritaca, BR; atual <strong>Sabiá 4</strong>; benchmark Sabiá-3): ~<strong>79,0% vs 80,8%
+do GPT-4o</strong> em 93 exames brasileiros; API <strong>em BRL</strong>, ~3–4× mais barata/token.
+<strong>TeenyTinyLlama</strong> (Apache-2.0, treinado do zero em PT-BR). <strong>Gervásio/Albertina</strong>
+(PORTULAN, MIT — porém Gervásio é <em>fine-tune sobre base Llama</em>, que herda termos
+Llama). Benchmark atual: <strong>PoETa v2</strong>. <em>Caso de soberania/custo:</em> multas da LGPD
+chegam a 2% do faturamento BR (teto R<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">50</span><span class="mord mathnormal">mi</span><span class="mclose">)</span><span class="mord">—</span><span class="mord mathnormal">m</span><span class="mord mathnormal">o</span><span class="mord mathnormal">t</span><span class="mord mathnormal">orco</span><span class="mord mathnormal">n</span><span class="mord mathnormal">cre</span><span class="mord mathnormal">t</span><span class="mord mathnormal">o</span><span class="mord mathnormal">p</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">aman</span><span class="mord mathnormal">t</span><span class="mord mathnormal" style="margin-right:0.02778em;">er</span><span class="mord mathnormal">d</span><span class="mord mathnormal">a</span><span class="mord mathnormal">d</span><span class="mord mathnormal">o</span><span class="mord mathnormal">n</span><span class="mord mathnormal">o</span><span class="mord mathnormal">p</span><span class="mord mathnormal">a</span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord latin_fallback">ı</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.25em;"><span class="mord">ˊ</span></span></span></span></span></span></span><span class="mord mathnormal">s</span><span class="mord">.</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∗</span><span class="mord mathnormal">A</span><span class="mord mathnormal">t</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mord accent"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.75em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">c</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1944em;"><span class="mord">\c</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.25em;"><span></span></span></span></span></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6679em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">a</span></span><span style="top:-3.35em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.25em;"><span class="mord">~</span></span></span></span></span></span></span><span class="mord mathnormal">o</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.4653em;"></span><span class="mord">∗</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">a</span><span class="mord mathnormal">c</span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">a</span><span class="mord">&quot;</span></span></span></span>3.500/mês local vs $15k cloud” é <strong>refutada</strong>
+(não rastreável) — o argumento defensável é “<strong>sem taxa por token + residência de
+dados</strong>”, não um número.</li>
+</ul>
+<h2 id="assurance--segurança-de-ia">Assurance / segurança de IA<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#assurance--segurança-de-ia" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li><strong>Red-teaming — <em>emergente</em>.</strong> <strong>Crítico p/ Brasil:</strong> LLMs mostram até <strong>195%
+mais vulnerabilidades em não-inglês</strong> — red-team só em inglês <strong>subconta</strong> o risco
+em pt-BR.</li>
+<li><strong>Model/system cards — <em>conceito maduro, enforcement emergente</em>.</strong> Piso de
+documentação (Mitchell 2019 + Datasheets, Gebru 2018) — <strong>disciplina, não
+infraestrutura</strong>; maior alavanca de governança por menor custo.</li>
+<li><strong>Evals — <em>ferramenta madura, confiança imatura</em>.</strong> Adotar HELM, lm-eval-harness,
+<strong>Inspect AI</strong> (UK AISI). Cuidado: contaminação infla score; <strong>valor local =
+construir evals de segurança em pt-BR/contexto-Brasil.</strong></li>
+<li><strong>Guardrails — <em>emergentes</em>.</strong> Llama Guard / NeMo / Guardrails AI são
+<strong>derrotáveis</strong> (defesa em profundidade); treinados em inglês → <strong>sub-filtram
+pt-BR</strong> (orçar tuning local).</li>
+<li><strong>Prompt injection / jailbreak — <em>pesquisa, em aberto</em>.</strong> OWASP coloca como #1 e
+diz que <strong>pode não haver prevenção infalível</strong> (causa arquitetural). <strong>Postura:
+contenção (menor privilégio; nenhuma ação autônoma de alto risco sobre entrada não
+confiável), não prevenção.</strong> (Espelha nosso P4/P10.)</li>
+<li><strong>Proveniência / marca d’água — <em>C2PA madura; watermark de IA pesquisa</em>.</strong>
+Adotar <strong>C2PA</strong> (proveniência assinada, à prova de adulteração); marca d’água de
+texto degrada sob paráfrase — <strong>tratar como sinal fraco, nunca prova</strong>. (Espelha
+nosso P7: assinar.)</li>
+<li><strong>Cadeia de suprimento — <em>emergente</em>.</strong> Pesos abertos podem ter <em>backdoor</em>
+(NIST AI 100-2e2025) → tratar pesos como artefato de supply-chain: <strong>assinar,
+proveniência tipo SLSA, recusar não-assinado.</strong></li>
+</ul>
+<h2 id="aberto-vs-fechado-privacidade--soberania--três-camadas">Aberto vs fechado (privacidade &amp; soberania) — <strong>três camadas</strong><a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#aberto-vs-fechado-privacidade--soberania--três-camadas" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ol>
+<li><strong>API fechada</strong> — privacidade <strong>contratual e condicionada, não arquitetural</strong>
+(retenção default de dias; ZDR só por contrato enterprise).</li>
+<li><strong>Pesos abertos com restrições</strong> (Llama, BLOOM-RAIL) — auto-hospedável
+(soberania ✔) mas <strong>não OSI-aberto</strong> (Llama: teto de 700M MAU + veda treinar
+concorrente).</li>
+<li><strong>Totalmente aberto / OSAID</strong> (OLMo, Pythia) — <strong>só esta camada</strong> dá
+auditabilidade + reprodutibilidade (busca de PII/copyright no corpus, verificação
+de backdoor).</li>
+</ol>
+<ul>
+<li>“Pesos abertos” ≠ código aberto (OSI chama de <em>open-washing</em>). Precedente soberano
+converge para aberto: BLOOM (FR), OpenEuroLLM (UE), Sarvam (Índia, Apache-2.0),
+<strong>LatamGPT</strong> (PT/ES/indígenas). <strong>Brasil: PBIA (R<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord">23</span><span class="mord mathnormal">bia</span><span class="mord mathnormal">t</span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">e</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1944em;"><span class="mord">ˊ</span></span></span></span></span></span></span><span class="mord">2028</span><span class="mpunct">,</span><span class="mspace nobreak"> </span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span> 1,1 bi p/
+modelo em português + Santos Dumont).</strong> <strong>Tensão honesta:</strong> modelos de fronteira
+fechados ainda lideram; pilares defensáveis = <strong>residência/privacidade,
+auditabilidade, autonomia estratégica</strong> — não economia de custo ainda não provada.</li>
+</ul>
+<h2 id="frameworks-e-adoção-no-brasil">Frameworks (e adoção no Brasil)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#frameworks-e-adoção-no-brasil" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Framework</th><th>Maturidade</th><th>Custo</th><th>Brasil</th></tr></thead><tbody><tr><td><strong>NIST AI RMF</strong> + GenAI Profile</td><td>Madura, voluntária</td><td><strong>Grátis</strong></td><td>Melhor entrada de baixo custo; scaffold de governança</td></tr><tr><td><strong>ISO/IEC 42001:2023</strong> (SGIA)</td><td>Madura, <strong>certificável</strong></td><td>~US$15–50k* + 12–18 meses</td><td><strong>ABNT NBR ISO/IEC 42001:2024 em PT</strong>; padrão-ouro p/ órgãos públicos</td></tr><tr><td><strong>ISO/IEC 23894:2023</strong> (risco)</td><td>Madura, guia</td><td>compra da norma</td><td>Via ABNT NBR; incremental se já há ISO 31000</td></tr><tr><td><strong>OWASP Top 10 LLM 2025</strong></td><td>Atual, comunidade</td><td><strong>Grátis</strong></td><td>Checklist de engenharia/red-team; LLM02 ↔ LGPD</td></tr><tr><td><strong>MITRE ATLAS</strong></td><td>Madura, vivo</td><td><strong>Grátis</strong></td><td>TTPs de ataque a IA; par do OWASP</td></tr></tbody></table></div>
+<blockquote>
+<p><em>Custo da ISO 42001 é indicativo (consultoria), não da ISO.</em> <strong>Sequência de
+adoção (custo crescente):</strong> (1) grátis já — NIST AI RMF + OWASP LLM + MITRE
+ATLAS, mapeados à LGPD Art. 20; (2) baixo custo — ABNT NBR ISO/IEC 23894; (3)
+aspiracional — certificação ABNT NBR ISO/IEC 42001.</p>
+</blockquote>
+<p><strong>Contexto regulatório (gancho técnico):</strong> o <strong>sandbox de IA da ANPD</strong> (3
+participantes, até dez/2026, foco em transparência/explicabilidade/Art. 20) revela
+as <strong>expectativas de fato</strong> da ANPD <strong>antes mesmo do PL 2338</strong> — construir para elas
+já de-risca contra a LGPD de hoje e o Marco Legal amanhã. <strong>Lacuna:</strong> não existe
+<strong>padrão técnico/ε em pt-BR</strong> — a ANPD menciona DP só de passagem.</p>
+<hr/>
+<blockquote>
+<p><strong>Notas de verificação.</strong> Refutado e removido: a comparação de custo
+“$3.500/mês”. Indicativos (secundários): tok/s e RAM locais, custo da ISO 42001,
+contagens do MITRE ATLAS, “80–90%” dos SLMs. Âncoras de alta confiança
+(primárias): DP-SGD, FedAvg, Deep Leakage from Gradients, Concrete ML, Stadler
+USENIX’22, OWASP LLM’25, NIST AI RMF/800-226, OSI OSAID 1.0, licença Llama, Art.
+20 (veto), sandbox ANPD, ABNT 42001:2024, PBIA, Sabiá-3, TeenyTinyLlama. <strong>Lacuna
+real:</strong> nenhum deploy FL/MPC em instituições brasileiras foi localizado.</p>
+</blockquote></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>Visão de gráfico</h3><div class="graph-outer"><div id="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false}"></div><button id="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div id="global-graph-outer"><div id="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" id="toc" class aria-controls="toc-content" aria-expanded="true"><h3>Sumário</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="toc-content" class><ul class="overflow"><li class="depth-0"><a href="#13-ferramental-técnico-de-ia-segura" data-for="13-ferramental-técnico-de-ia-segura">1.3 Ferramental técnico de IA segura</a></li><li class="depth-1"><a href="#privacy-preserving-ml" data-for="privacy-preserving-ml">Privacy-preserving ML</a></li><li class="depth-1"><a href="#inteligência-limitada--local--edge-o-dado-fica-com-o-usuário" data-for="inteligência-limitada--local--edge-o-dado-fica-com-o-usuário">Inteligência limitada / local / edge (“o dado fica com o usuário”)</a></li><li class="depth-1"><a href="#assurance--segurança-de-ia" data-for="assurance--segurança-de-ia">Assurance / segurança de IA</a></li><li class="depth-1"><a href="#aberto-vs-fechado-privacidade--soberania--três-camadas" data-for="aberto-vs-fechado-privacidade--soberania--três-camadas">Aberto vs fechado (privacidade &amp; soberania) — três camadas</a></li><li class="depth-1"><a href="#frameworks-e-adoção-no-brasil" data-for="frameworks-e-adoção-no-brasil">Frameworks (e adoção no Brasil)</a></li></ul></div></div><div class="backlinks"><h3>Backlinks</h3><ul class="overflow"><li><a href="../dados/" class="internal">Fundação de dados — índice</a></li><li><a href="../dados/unit-economics" class="internal">Unidade econômica de IA &amp; IaaS — quanto custa servir inteligência</a></li><li><a href="../" class="internal">IA Segura no Brasil — plano de intervenção</a></li><li><a href="../submissao/guia" class="internal">Guia de projeto &amp; submissão — Global South AI Safety Hackathon</a></li></ul></div></div><footer class><p>Criado com <a href="https://quartz.jzhao.xyz/">Quartz v4.4.0</a> © 2026</p><ul><li><a href="https://github.com/jackyzha0/quartz">GitHub</a></li><li><a href="https://discord.gg/cRFFHYye7t">Discord Community</a></li></ul></footer></div></div></body><script type="application/javascript">function c(){let t=this.parentElement;t.classList.toggle("is-collapsed");let l=t.classList.contains("is-collapsed")?this.scrollHeight:t.scrollHeight;t.style.maxHeight=l+"px";let o=t,e=t.parentElement;for(;e;){if(!e.classList.contains("callout"))return;let n=e.classList.contains("is-collapsed")?e.scrollHeight:e.scrollHeight+o.scrollHeight;e.style.maxHeight=n+"px",o=e,e=e.parentElement}}function i(){let t=document.getElementsByClassName("callout is-collapsible");for(let s of t){let l=s.firstElementChild;if(l){l.addEventListener("click",c),window.addCleanup(()=>l.removeEventListener("click",c));let e=s.classList.contains("is-collapsed")?l.scrollHeight:s.scrollHeight;s.style.maxHeight=e+"px"}}}document.addEventListener("nav",i);window.addEventListener("resize",i);
+</script><script type="module">
+          let mermaidImport = undefined
+          document.addEventListener('nav', async () => {
+            if (document.querySelector("code.mermaid")) {
+              mermaidImport ||= await import('https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.7.0/mermaid.esm.min.mjs')
+              const mermaid = mermaidImport.default
+              const darkMode = document.documentElement.getAttribute('saved-theme') === 'dark'
+              mermaid.initialize({
+                startOnLoad: false,
+                securityLevel: 'loose',
+                theme: darkMode ? 'dark' : 'default'
+              })
+
+              await mermaid.run({
+                querySelector: '.mermaid'
+              })
+            }
+          });
+          </script><script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/copy-tex.min.js" type="application/javascript"></script><script src="../postscript.js" type="module"></script></html>

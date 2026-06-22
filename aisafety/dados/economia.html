@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="pt"><head><title>Economia da IA no Brasil — brief quantitativo (mercado, investimento público, custo de cómputo, custo do dano)</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM Plex Mono&amp;family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;display=swap"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta property="og:title" content="Economia da IA no Brasil — brief quantitativo (mercado, investimento público, custo de cómputo, custo do dano)"/><meta property="og:description" content="Economia da IA no Brasil — brief quantitativo O que este documento é. Um brief numbers-first sobre a economia da IA no Brasil para o projeto IA Segura: tamanho de mercado, investimento público (PBIA), estrutura de custo de cómputo/API, o custo do dano (multas LGPD, vigilância biométrica, violação de dados) e o custo energético."/><meta property="og:image" content="https://artelonga.com.br/static/og-image.png"/><meta property="og:width" content="1200"/><meta property="og:height" content="675"/><link rel="icon" href="../static/icon.png"/><meta name="description" content="Economia da IA no Brasil — brief quantitativo O que este documento é. Um brief numbers-first sobre a economia da IA no Brasil para o projeto IA Segura: tamanho de mercado, investimento público (PBIA), estrutura de custo de cómputo/API, o custo do dano (multas LGPD, vigilância biométrica, violação de dados) e o custo energético."/><meta name="generator" content="Quartz"/><link href="../index.css" rel="stylesheet" type="text/css" spa-preserve/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css" rel="stylesheet" type="text/css" spa-preserve/><script src="../prescript.js" type="application/javascript" spa-preserve></script><script type="application/javascript" spa-preserve>const fetchData = fetch("../static/contentIndex.json").then(data => data.json())</script></head><body data-slug="dados/economia"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="..">GRSC Escola de Samba Amazônia</a></h2><div class="spacer mobile-only"></div><div class="search"><button class="search-button" id="search-button"><p>Pesquisar</p><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg></button><div id="search-container"><div id="search-space"><input autocomplete="off" id="search-bar" name="search" type="text" aria-label="Pesquisar por algo" placeholder="Pesquisar por algo"/><div id="search-layout" data-preview="true"></div></div></div></div><button class="darkmode" id="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="Tema escuro"><title>Tema escuro</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="Tema claro"><title>Tema claro</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button><div class="explorer desktop-only"><button type="button" id="explorer" data-behavior="collapse" data-collapsed="collapsed" data-savestate="true" data-tree="[{&quot;path&quot;:&quot;analise&quot;,&quot;collapsed&quot;:true},{&quot;path&quot;:&quot;dados&quot;,&quot;collapsed&quot;:true},{&quot;path&quot;:&quot;propostas&quot;,&quot;collapsed&quot;:true},{&quot;path&quot;:&quot;submissao&quot;,&quot;collapsed&quot;:true}]" aria-controls="explorer-content" aria-expanded="false"><h2>Explorador</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-content"><ul class="overflow" id="explorer-ul"><li><div class="folder-outer open"><ul style="padding-left:0;" class="content" data-folderul><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div data-folderpath="analise"><button class="folder-button"><span class="folder-title">analise</span></button></div></div><div class="folder-outer "><ul style="padding-left:1.4rem;" class="content" data-folderul="analise"><li><a href="../analise/regulacao" data-for="analise/regulacao">1.1 Regulação &amp; conformidade</a></li><li><a href="../analise/riscos" data-for="analise/riscos">1.2 Riscos &amp; danos documentados</a></li><li><a href="../analise/tecnica" data-for="analise/tecnica">1.3 Ferramental técnico de IA segura</a></li></ul></div></li><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div data-folderpath="dados"><button class="folder-button"><span class="folder-title">Fundação de dados — índice</span></button></div></div><div class="folder-outer "><ul style="padding-left:1.4rem;" class="content" data-folderul="dados"><li><a href="../dados/adocao-landscape" data-for="dados/adocao-landscape">Adoção de IA &amp; paisagem digital no Brasil — dados</a></li><li><a href="../dados/legislacao" data-for="dados/legislacao">Dados — Panorama legislativo e regulatório de IA no Brasil</a></li><li><a href="../dados/economia" data-for="dados/economia">Economia da IA no Brasil — brief quantitativo (mercado, investimento público, custo de cómputo, custo do dano)</a></li><li><a href="../dados/financiamento" data-for="dados/financiamento">Financiamento, grants e fellowships para o projeto IA Segura — brief com fontes (montantes, prazos, elegibilidade, fit)</a></li><li><a href="../dados/linguas-soberania" data-for="dados/linguas-soberania">Línguas sub-atendidas e soberania de dados</a></li><li><a href="../dados/produtos-servicos" data-for="dados/produtos-servicos">Produtos &amp; serviços — o mapa da IA segura, pt-BR e preservadora de privacidade no Brasil/LatAm</a></li><li><a href="../dados/unit-economics" data-for="dados/unit-economics">Unidade econômica de IA &amp; IaaS — quanto custa servir inteligência</a></li></ul></div></li><li><div class="folder-outer "><ul style="padding-left:0;" class="content" data-folderul></ul></div></li><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div data-folderpath="propostas"><button class="folder-button"><span class="folder-title">propostas</span></button></div></div><div class="folder-outer "><ul style="padding-left:1.4rem;" class="content" data-folderul="propostas"><li><a href="../propostas/principios" data-for="propostas/principios">2.1 Princípios — o que já praticamos, generalizado</a></li><li><a href="../propostas/intervencoes" data-for="propostas/intervencoes">2.2 Intervenções priorizadas</a></li><li><a href="../propostas/roadmap-modelos" data-for="propostas/roadmap-modelos">2.3 Roadmap de modelos — pt-BR, mbya, yoruba</a></li></ul></div></li><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div data-folderpath="submissao"><button class="folder-button"><span class="folder-title">submissao</span></button></div></div><div class="folder-outer "><ul style="padding-left:1.4rem;" class="content" data-folderul="submissao"><li><a href="../submissao/guia" data-for="submissao/guia">Guia de projeto &amp; submissão — Global South AI Safety Hackathon</a></li><li><a href="../submissao/relatorio" data-for="submissao/relatorio">Submission report — Safe AI in Brazil</a></li></ul></div></li><li><a href="../publicacao" data-for="publicacao">Publicação — uma fonte, duas renderizações</a></li></ul></div></li><li id="explorer-end"></li></ul></div></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../dados/">Fundação de dados — índice</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>Economia da IA no Brasil — brief quantitativo (mercado, investimento público, custo de cómputo, custo do dano)</a></div></nav><h1 class="article-title">Economia da IA no Brasil — brief quantitativo (mercado, investimento público, custo de cómputo, custo do dano)</h1><p show-comma="true" class="content-meta"><span>21 de jun. de 2026</span><span>Leitura de 11 min</span></p><ul class="tags"><li><a href="../tags/economia-ia" class="internal tag-link">economia-ia</a></li><li><a href="../tags/mercado-brasil" class="internal tag-link">mercado-brasil</a></li><li><a href="../tags/pbia" class="internal tag-link">pbia</a></li><li><a href="../tags/lgpd" class="internal tag-link">lgpd</a></li><li><a href="../tags/reconhecimento-facial" class="internal tag-link">reconhecimento-facial</a></li><li><a href="../tags/gpu" class="internal tag-link">gpu</a></li><li><a href="../tags/api-pricing" class="internal tag-link">api-pricing</a></li><li><a href="../tags/privacidade-tech" class="internal tag-link">privacidade-tech</a></li><li><a href="../tags/energia" class="internal tag-link">energia</a></li></ul></div></div><article class="popover-hint"><h1 id="economia-da-ia-no-brasil--brief-quantitativo">Economia da IA no Brasil — brief quantitativo<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#economia-da-ia-no-brasil--brief-quantitativo" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<blockquote>
+<p><strong>O que este documento é.</strong> Um brief <strong>numbers-first</strong> sobre a economia da IA
+no Brasil para o projeto <em>IA Segura</em>: tamanho de mercado, investimento público
+(PBIA), estrutura de custo de cómputo/API, o <strong>custo do dano</strong> (multas LGPD,
+vigilância biométrica, violação de dados) e o custo energético. <strong>Cada cifra
+leva URL.</strong></p>
+<p><strong>Selos de proveniência.</strong> <strong><code>[PRIMÁRIA]</code></strong> = fonte oficial/de origem (órgão de
+governo, edital, tabela de preços do próprio fornecedor, relatório do autor do
+dado — IBM/Ponemon, IEA, contrato público). <strong><code>[SECUNDÁRIA]</code></strong> = consultoria de
+mercado, imprensa, ou agregador que reporta o número de terceiros. Onde fontes
+divergem (e divergem muito em “tamanho de mercado”), <strong>mostramos o intervalo</strong>,
+não uma cifra única.</p>
+<p><strong>Câmbio indicativo:</strong> US<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.4653em;"></span><span class="mord">∗</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span> 5,4** (jun 2026). Datas dos dados marcadas
+por linha.</p>
+</blockquote>
+<hr/>
+<h2 id="1-números-chave-tabela-mestra">1. Números-chave (tabela-mestra)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#1-números-chave-tabela-mestra" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>#</th><th>Indicador</th><th>Valor</th><th>Ano</th><th>Selo</th><th>Fonte</th></tr></thead><tbody><tr><td><strong>Mercado</strong></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>1</td><td>Mercado de IA Brasil (Statista)</td><td>**US<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">85</span><span class="mord mathnormal">bi</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord">∗</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.00773em;">GR</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">∗</span><span class="mord">33</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">3</span></span></span></span> 16,0 bi (2031)</td><td>2025</td><td><code>[SECUNDÁRIA]</code></td><td>Statista</td></tr><tr><td>2</td><td>Mercado de IA Brasil (Grand View)</td><td>**US<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord">17</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">8</span><span class="mord mathnormal">bi</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4653em;"></span><span class="mord">∗</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 99,8 bi (2033), CAGR 23%</td><td>2025</td><td><code>[SECUNDÁRIA]</code></td><td>Grand View</td></tr><tr><td>3</td><td>GenAI Brasil (Statista)</td><td>**US<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">92</span><span class="mord mathnormal">bi</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord">∗</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.00773em;">GR</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">∗</span><span class="mord">41</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">6</span></span></span></span> 5,24 bi (2030)</td><td>2025</td><td><code>[SECUNDÁRIA]</code></td><td>Statista</td></tr><tr><td>4</td><td>Data centers Brasil (mercado)</td><td>**US<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord">3</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">98</span><span class="mord mathnormal">bi</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4653em;"></span><span class="mord">∗</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 9,01 bi (2034), CAGR 9,5%</td><td>2025</td><td><code>[SECUNDÁRIA]</code></td><td>IMARC / Mordor</td></tr><tr><td>5</td><td>Cloud computing Brasil</td><td><strong>US$ 20,38 bi</strong>, CAGR 18,3%</td><td>2024</td><td><code>[SECUNDÁRIA]</code></td><td>Fortune Business Insights</td></tr><tr><td>6</td><td>Capex hyperscaler (Microsoft)</td><td><strong>US$ 2,7 bi</strong> em 3 anos (cloud + IA)</td><td>2024</td><td><code>[SECUNDÁRIA]</code></td><td>anúncio Microsoft via IMARC</td></tr><tr><td>7</td><td>Capex hyperscaler (AWS)</td><td><strong>US$ 1,8 bi</strong> expansão DC</td><td>2024</td><td><code>[SECUNDÁRIA]</code></td><td>DCD</td></tr><tr><td><strong>Investimento público</strong></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>8</td><td>PBIA 2024–2028 (total)</td><td><strong>R$ 23 bi</strong> em 4 anos</td><td>2024</td><td><code>[PRIMÁRIA]</code></td><td>MCTI</td></tr><tr><td>9</td><td>PBIA — modelo LLM em português + datasets</td><td><strong>R$ 1,1 bi</strong></td><td>2024</td><td><code>[PRIMÁRIA]</code></td><td>MCTI / LNCC</td></tr><tr><td>10</td><td>Santos Dumont (capacidade pós-ampliação)</td><td><strong>18,85 PFlops</strong> (pico ~20 quatrilhões op/s); +575%</td><td>2024</td><td><code>[PRIMÁRIA]</code></td><td>LNCC / MCTI</td></tr><tr><td>11</td><td>Fundo de IA BNDES + Finep (FIP)</td><td>**R<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6595em;"></span><span class="mord">205</span><span class="mord mathnormal">mi</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∗</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span> 125 BNDESPAR + R$ 80 FNDCT/Finep)</td><td>2026</td><td><code>[PRIMÁRIA]</code></td><td>BNDES / Finep</td></tr><tr><td><strong>Custo de cómputo &amp; API</strong></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>12</td><td>GPU H100 on-demand</td><td><strong>US$ 1,99–3,29/h</strong></td><td>2026</td><td><code>[SECUNDÁRIA]</code></td><td>RunPod / Lambda (índice)</td></tr><tr><td>13</td><td>GPU A100 80GB</td><td><strong>US$ 1,07–1,99/h</strong></td><td>2026</td><td><code>[SECUNDÁRIA]</code></td><td>índice de mercado</td></tr><tr><td>14</td><td>GPU RTX 4090</td><td><strong>US$ 0,20–0,34/h</strong></td><td>2026</td><td><code>[SECUNDÁRIA]</code></td><td>Salad / RunPod community</td></tr><tr><td>15</td><td>Fly.io GPU (descontinuação)</td><td><strong>fim em 31/jul/2026</strong>; A100 80G SXM US<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">50/</span><span class="mord mathnormal">h</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">L</span><span class="mord">40</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 0,70/h</td><td>2026</td><td><code>[PRIMÁRIA]</code></td><td>Fly.io docs</td></tr><tr><td>16</td><td>API — GPT-4o (in/out)</td><td><strong>US<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">50/</span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 10,00</strong> /1M tok</td><td>2026</td><td><code>[PRIMÁRIA]</code></td><td>OpenAI</td></tr><tr><td>17</td><td>API — Claude Opus 4.8 (in/out)</td><td><strong>US<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">5</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">00/</span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 25,00</strong> /1M tok</td><td>2026</td><td><code>[PRIMÁRIA]</code></td><td>Anthropic</td></tr><tr><td>18</td><td>API — Claude Sonnet 4.6 (in/out)</td><td><strong>US<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">3</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">00/</span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 15,00</strong> /1M tok</td><td>2026</td><td><code>[PRIMÁRIA]</code></td><td>Anthropic</td></tr><tr><td>19</td><td>API — Claude Haiku 4.5 (in/out)</td><td><strong>US<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">00/</span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 5,00</strong> /1M tok</td><td>2026</td><td><code>[PRIMÁRIA]</code></td><td>Anthropic</td></tr><tr><td>20</td><td><strong>API — Maritaca Sabiá-3 (in/out, BRL)</strong></td><td><strong>R<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">5</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">00/</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span> 10,00</strong> /1M tok</td><td>2026</td><td><code>[PRIMÁRIA]</code></td><td>Maritaca AI</td></tr><tr><td>21</td><td>API — Maritaca Sabiazinho-3 (in/out, BRL)</td><td><strong>R<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">00/</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span> 3,00</strong> /1M tok</td><td>2026</td><td><code>[PRIMÁRIA]</code></td><td>Maritaca AI</td></tr><tr><td>22</td><td>Inferência local (M4 Max, 14B)</td><td><strong>~US$ 0</strong> marginal (só energia)</td><td>2026</td><td><code>[SECUNDÁRIA]</code></td><td>hardware próprio</td></tr><tr><td><strong>Custo do dano / não-conformidade</strong></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>23</td><td>Teto multa LGPD</td><td><strong>2% do faturamento, máx. R$ 50 mi</strong> por infração</td><td>—</td><td><code>[PRIMÁRIA]</code></td><td>LGPD art. 52</td></tr><tr><td>24</td><td>1ª multa LGPD (ANPD) — Telekall</td><td><strong>R$ 14,4 mil</strong></td><td>2023</td><td><code>[PRIMÁRIA]</code></td><td>ANPD</td></tr><tr><td>25</td><td>Custo médio de violação de dados (Brasil)</td><td>**R<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.854em;vertical-align:-0.1944em;"></span><span class="mord">7</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">19</span><span class="mord mathnormal">mi</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∗</span><span class="mopen">(</span><span class="mord">2025</span><span class="mclose">)</span><span class="mpunct">;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span> 6,75 mi (2024)</td><td>2025</td><td><code>[PRIMÁRIA]</code></td><td>IBM / Ponemon</td></tr><tr><td>26</td><td>Smart Sampa (reconhecimento facial SP)</td><td>**R<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6595em;"></span><span class="mord">588</span><span class="mord mathnormal">mi</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∗</span><span class="mopen">(</span><span class="mord">5</span><span class="mord mathnormal">an</span><span class="mord mathnormal">os</span><span class="mpunct">,</span><span class="mspace nobreak"> </span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span> 9,8 mi/mês)</td><td>2023</td><td><code>[PRIMÁRIA]</code></td><td>Prefeitura SP / Intercept</td></tr><tr><td>27</td><td>Bahia — vigilância/reconhecimento facial</td><td><strong>R$ 665 mi</strong> (Oi + Avantia, até jul/2026)</td><td>2021–</td><td><code>[SECUNDÁRIA]</code></td><td>Intercept / Telesíntese</td></tr><tr><td>28</td><td>Paraná — reconhecimento facial em escolas</td><td><strong>R<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6595em;"></span><span class="mord">4</span><span class="mord mathnormal">mi</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span> 12 mi</strong> (Celepar/Valid); +R$ 6,5 mi Educatron</td><td>2023–24</td><td><code>[SECUNDÁRIA]</code></td><td>Agência Pública / Núcleo</td></tr><tr><td>29</td><td>Paraná — pedido de indenização (MP)</td><td><strong>R$ 15 mi</strong> (dano moral coletivo, LGPD)</td><td>2024</td><td><code>[SECUNDÁRIA]</code></td><td>MP-PR via imprensa</td></tr><tr><td><strong>Energia</strong></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>30</td><td>Consumo de DCs no Brasil</td><td><strong>~8,2 TWh (~1,7%)</strong> → 3,9% da eletricidade em 2029</td><td>2024</td><td><code>[SECUNDÁRIA]</code></td><td>Brasscom / Gazeta Mercantil</td></tr><tr><td>31</td><td>Consumo global de DCs</td><td><strong>415 TWh (~1,5%)</strong> → 945 TWh em 2030</td><td>2024</td><td><code>[SECUNDÁRIA]</code></td><td>IEA via imprensa</td></tr></tbody></table></div>
+<hr/>
+<h2 id="2-mercado--crescimento">2. Mercado &amp; crescimento<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2-mercado--crescimento" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Atenção à divergência entre fontes</strong> — é a maior fragilidade desta seção. As
+consultorias usam definições de “mercado de IA” incompatíveis (software puro vs.
+serviços + hardware + cloud), produzindo cifras que diferem por <strong>6×</strong>:</p>
+<ul>
+<li>
+<p><strong>Mercado de IA, Brasil:</strong></p>
+<ul>
+<li>Statista: <strong>US<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">85</span><span class="mord mathnormal">bi</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord">∗</span><span class="mord mathnormal">e</span><span class="mord mathnormal">m</span><span class="mord">2025</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.00773em;">GR</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">∗</span><span class="mord">33</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">3</span></span></span></span> 15,99 bi</strong> em 2031
+<code>[SECUNDÁRIA]</code> — <a href="https://www.statista.com/outlook/tmo/artificial-intelligence/brazil" class="external">Statista<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Grand View Research: <strong>US<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord">17</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">81</span><span class="mord mathnormal">bi</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">∗</span><span class="mord mathnormal">e</span><span class="mord mathnormal">m</span><span class="mord">2025</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.4653em;"></span><span class="mord">∗</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 99,85 bi</strong> em 2033,
+CAGR 23% (2026–33), com <em>Services</em> como maior segmento <code>[SECUNDÁRIA]</code> —
+<a href="https://www.grandviewresearch.com/horizon/outlook/artificial-intelligence-market/brazil" class="external">Grand View<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>→ <strong>Brasil é o maior mercado de IA da América Latina</strong> e o de crescimento
+mais rápido na região (ambas as fontes concordam neste ponto qualitativo).</li>
+</ul>
+</li>
+<li>
+<p><strong>GenAI, Brasil:</strong></p>
+<ul>
+<li>Statista: <strong>US<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">92</span><span class="mord mathnormal">bi</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord">∗</span><span class="mord mathnormal">e</span><span class="mord mathnormal">m</span><span class="mord">2025</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.00773em;">GR</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">∗</span><span class="mord">41</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">6</span></span></span></span> 5,24 bi</strong>
+em 2030 <code>[SECUNDÁRIA]</code> —
+<a href="https://www.statista.com/outlook/tmo/artificial-intelligence/generative-ai/brazil" class="external">Statista GenAI<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>IMARC: US<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">371</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">2</span><span class="mord mathnormal">mi</span><span class="mopen">(</span><span class="mord">2025</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 1.481,5 mi (2034), CAGR 16,6% <code>[SECUNDÁRIA]</code>
+— <a href="https://www.imarcgroup.com/brazil-generative-ai-market" class="external">IMARC<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+</ul>
+</li>
+<li>
+<p><strong>Data centers &amp; cloud, Brasil:</strong></p>
+<ul>
+<li>Mercado de DC: <strong>US<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">3</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">98</span><span class="mord mathnormal">bi</span><span class="mopen">(</span><span class="mord">2025</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 9,01 bi (2034)</strong>, CAGR 9,5%
+<code>[SECUNDÁRIA]</code> — <a href="https://www.imarcgroup.com/brazil-data-center-market" class="external">IMARC<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Cloud computing: <strong>US$ 20,38 bi (2024)</strong>, CAGR 18,3% <code>[SECUNDÁRIA]</code> —
+<a href="https://www.fortunebusinessinsights.com/brazil-cloud-computing-market-113912" class="external">Fortune Business Insights<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Capex de hyperscalers: <strong>Microsoft US<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">7</span><span class="mord mathnormal">bi</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∗</span><span class="mopen">(</span><span class="mord">3</span><span class="mord mathnormal">an</span><span class="mord mathnormal">os</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal">u</span><span class="mord mathnormal">d</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mord mathnormal">A</span><span class="mclose">)</span><span class="mpunct">;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">∗</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 1,8 bi</strong> (expansão DC); entradas de capital em DC > <strong>US$ 3 bi</strong>
+em 2024 (DigitalBridge/Scala, Aligned/ODATA, Digital Realty/Ascenty)
+<code>[SECUNDÁRIA]</code> —
+<a href="https://www.datacenterdynamics.com/en/news/aws-to-invest-18bn-on-expanding-brazilian-data-center-operations/" class="external">DCD (AWS)<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> ·
+<a href="https://vocal.media/journal/hyperscale-expansions-by-microsoft-aws-and-google-fuel-brazil-s-9-50-cagr-data-center-growth-to-usd-9-billion" class="external">vocal.media (hyperscale)<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><strong>Leitura para o IA Segura:</strong> o crescimento é real e de dois dígitos altos, mas
+a cifra absoluta depende inteiramente da definição. Use sempre o <strong>intervalo</strong>
+(US$ 2,85–17,8 bi para “mercado de IA” em 2025) e cite a fonte; nunca uma
+consultoria isolada como se fosse fato.</p>
+</blockquote>
+<hr/>
+<h2 id="3-investimento-público--pbia-e-fomento">3. Investimento público — PBIA e fomento<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#3-investimento-público--pbia-e-fomento" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li><strong>PBIA (Plano Brasileiro de Inteligência Artificial) 2024–2028:</strong> total de
+<strong>R$ 23 bilhões</strong> em 4 anos <code>[PRIMÁRIA]</code> —
+<a href="https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/transformacaodigital/plano-brasileiro-de-inteligencia-artificial" class="external">MCTI<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a>
+(<a href="https://www.gov.br/mcti/pt-br/centrais-de-conteudo/publicacoes-mcti/plano-brasileiro-de-inteligencia-artificial/pbia_mcti_2025.pdf" class="external">PDF oficial do plano<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a>).
+<ul>
+<li>Linha <strong>modelo de linguagem em português + datasets nacionais:</strong> <strong>R$ 1,1 bi</strong>,
+com meta de LLM “robusto” em português em ~12 meses para reduzir dependência
+externa <code>[PRIMÁRIA]</code> —
+<a href="https://www.gov.br/lncc/pt-br/assuntos/noticias/ultimas-noticias-1/plano-brasileiro-de-inteligencia-artificial-pbia-2024-2028" class="external">LNCC<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+</ul>
+</li>
+<li><strong>Supercomputador Santos Dumont (LNCC, Petrópolis-RJ):</strong> ampliação como
+“primeiro passo” do PBIA elevou a capacidade para <strong>18,85 PFlops</strong> (pico ~20
+quatrilhões de operações/s), um aumento de <strong>+575%</strong>; entre os Top 100 do mundo
+<code>[PRIMÁRIA]</code> —
+<a href="https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/noticias/2024/12/supercomputador-santos-dumont-esta-no-top-100-dos-mais-poderosos-do-mundo" class="external">MCTI / Top 100<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> ·
+<a href="https://blog.nvidia.com.br/blog/santos-dumont-supercomputador-do-lncc-recebe-ampliacao-quatro-vezes-maior-como-primeiro-passo-do-plano-brasileiro-de-inteligencia-artificial/" class="external">NVIDIA blog (4×)<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li><strong>Fundo de IA BNDES + Finep (FIP de startups):</strong> edital de **R<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord">205</span><span class="mord mathnormal">mi</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">h</span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6679em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">o</span></span><span style="top:-3.35em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1944em;"><span class="mord">~</span></span></span></span></span></span></span><span class="mord mathnormal">es</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∗</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10903em;">BN</span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord mathnormal" style="margin-right:0.13889em;">ESP</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mord mathnormal">a</span><span class="mord mathnormal">t</span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">e</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1944em;"><span class="mord">ˊ</span></span></span></span></span></span></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span> 125 mi + FNDCT/Finep até R$ 80 mi); 30% dos recursos Finep
+direcionados a Norte/Nordeste/Centro-Oeste. Alinhado ao PBIA. Contexto: 39% do
+capital de venture no Brasil foi a empresas de IA em 2025 <code>[PRIMÁRIA]</code> —
+<a href="https://agenciabrasil.ebc.com.br/economia/noticia/2026-04/finep-e-bndes-lancam-edital-para-selecionar-gestor-de-fundo-de-ia" class="external">BNDES/Finep via Agência Brasil<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> ·
+<a href="https://convergenciadigital.com.br/governo/bndes-e-finep-lancam-edital-de-r-205-milhoes-para-eleger-gestor-de-fundo-de-inteligencia-artificial/" class="external">Convergência Digital<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+</ul>
+<hr/>
+<h2 id="4-estrutura-de-custo--gpu-cloud-e-api">4. Estrutura de custo — GPU, cloud e API<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#4-estrutura-de-custo--gpu-cloud-e-api" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="41-gpu--cloud-hora">4.1 GPU / cloud hora<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#41-gpu--cloud-hora" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Recurso</th><th>Preço/h</th><th>Selo</th><th>Fonte</th></tr></thead><tbody><tr><td>H100 on-demand</td><td>US$ 1,99–3,29</td><td><code>[SECUNDÁRIA]</code></td><td>RunPod / Lambda</td></tr><tr><td>A100 80GB</td><td>US$ 1,07–1,99</td><td><code>[SECUNDÁRIA]</code></td><td>índice de mercado</td></tr><tr><td>RTX 4090</td><td>US$ 0,20–0,34</td><td><code>[SECUNDÁRIA]</code></td><td>Salad / RunPod community</td></tr><tr><td><strong>Fly.io A100 80G SXM</strong></td><td><strong>US$ 1,50</strong></td><td><code>[PRIMÁRIA]</code></td><td>Fly.io</td></tr><tr><td><strong>Fly.io L40S</strong></td><td><strong>US$ 0,70</strong></td><td><code>[PRIMÁRIA]</code></td><td>Fly.io</td></tr><tr><td>Fly.io A100 40G PCIe</td><td>US$ 1,25</td><td><code>[PRIMÁRIA]</code></td><td>Fly.io</td></tr><tr><td>Fly.io A10</td><td>US$ 0,75</td><td><code>[PRIMÁRIA]</code></td><td>Fly.io</td></tr></tbody></table></div>
+<blockquote>
+<p>⚠️ <strong>Fly.io descontinua GPUs em 31/jul/2026</strong> (modelos A10, L40S, A100 40G PCIe,
+A100 80G SXM). Antecipado no blog “We Were Wrong About GPUs”. Para o IA Segura /
+CO: o caminho à prova de descontinuação é Modal/RunPod/Lambda ou a variante
+CPU+scale-to-zero — nunca expor o servidor de inferência publicamente (Ollama
+não tem auth) <code>[PRIMÁRIA]</code> —
+<a href="https://fly.io/docs/gpus/" class="external">Fly GPU docs<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> ·
+<a href="https://community.fly.io/t/gpu-migration-fly-io-gpus-will-be-deprecated-as-of-july-31-2026/27110" class="external">anúncio de descontinuação<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> ·
+<a href="https://fly.io/blog/wrong-about-gpu/" class="external">We Were Wrong About GPUs<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></p>
+</blockquote>
+<h3 id="42-api-por-1m-tokens--fronteira-global-vs-soberano-em-brl">4.2 API por 1M tokens — fronteira global vs. soberano em BRL<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#42-api-por-1m-tokens--fronteira-global-vs-soberano-em-brl" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Modelo</th><th>Input</th><th>Output</th><th>Moeda</th><th>Selo</th><th>Fonte</th></tr></thead><tbody><tr><td>GPT-4o (OpenAI)</td><td>US$ 2,50</td><td>US$ 10,00</td><td>USD</td><td><code>[PRIMÁRIA]</code></td><td>OpenAI</td></tr><tr><td>Claude Opus 4.8 (Anthropic)</td><td>US$ 5,00</td><td>US$ 25,00</td><td>USD</td><td><code>[PRIMÁRIA]</code></td><td>Anthropic</td></tr><tr><td>Claude Sonnet 4.6</td><td>US$ 3,00</td><td>US$ 15,00</td><td>USD</td><td><code>[PRIMÁRIA]</code></td><td>Anthropic</td></tr><tr><td>Claude Haiku 4.5</td><td>US$ 1,00</td><td>US$ 5,00</td><td>USD</td><td><code>[PRIMÁRIA]</code></td><td>Anthropic</td></tr><tr><td><strong>Maritaca Sabiá-3</strong> (128k ctx)</td><td><strong>R$ 5,00</strong></td><td><strong>R$ 10,00</strong></td><td><strong>BRL</strong></td><td><code>[PRIMÁRIA]</code></td><td><a href="https://docs.maritaca.ai/pt/precos" class="external">Maritaca<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></td></tr><tr><td><strong>Maritaca Sabiazinho-3</strong> (32k ctx)</td><td><strong>R$ 1,00</strong></td><td><strong>R$ 3,00</strong></td><td><strong>BRL</strong></td><td><code>[PRIMÁRIA]</code></td><td><a href="https://docs.maritaca.ai/pt/precos" class="external">Maritaca<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></td></tr></tbody></table></div>
+<p>Preço Anthropic/OpenAI: tabela vigente jun 2026
+(<a href="https://openai.com/api/pricing/" class="external">OpenAI<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> ·
+<a href="https://platform.claude.com/docs/en/about-claude/models/overview" class="external">Anthropic<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a>).
+Maritaca: input reaproveitado entre requisições tem <strong>−75%</strong>; R$ 20 de crédito
+inicial.</p>
+<blockquote>
+<p><strong>O ponto soberano:</strong> Sabiá-3 a <strong>R<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">5/</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span> 10 por 1M tok</strong> é, ao câmbio de
+~R<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">5</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">4/</span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span>, <strong>comparável a Sonnet</strong> (US<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">3/</span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 15 ≈ R<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">16/</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span> 81) — ou seja, o
+modelo brasileiro é <strong>substancialmente mais barato em output</strong> e cotado
+diretamente em reais (sem exposição cambial). Para <em>IA Segura</em>, é o caso mais
+forte de soberania com economia de unidade favorável.</p>
+</blockquote>
+<h3 id="43-local--overhead-de-privacidade">4.3 Local &amp; overhead de privacidade<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#43-local--overhead-de-privacidade" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>Inferência local</strong> (M4 Max 36GB, modelo 14B ~9 GB, ~79 tok/s): custo marginal
+<strong>~US$ 0</strong> (só energia); zero dado sai da máquina <code>[SECUNDÁRIA]</code>.</li>
+<li><strong>Custo de tecnologias de privacidade (ordem de grandeza):</strong>
+<ul>
+<li><strong>Differential Privacy (DP):</strong> overhead <strong>~0</strong> — o ruído é só CPU; barato
+online <code>[SECUNDÁRIA]</code>.</li>
+<li><strong>FHE (criptografia totalmente homomórfica):</strong> <strong>~10³–10⁶× mais lento</strong> que
+cómputo em claro (o <em>bootstrapping</em> sozinho é >100× mais caro que uma
+operação primitiva; ciphertexts CKKS crescem <strong>~50×</strong> vs. plaintext) —
+impraticável para inferência online <code>[PRIMÁRIA/arXiv]</code> —
+<a href="https://arxiv.org/pdf/2112.06396" class="external">arXiv 2112.06396<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li><strong>MPC (computação multipartidária segura):</strong> limitado por <strong>banda/latência</strong>
+(interação linear no nº de partes); inviável em redes de alta latência ou
+deployments muito grandes <code>[SECUNDÁRIA]</code> —
+<a href="https://fiveable.me/edge-ai-and-computing/unit-11/homomorphic-encryption-secure-multi-party-computation/study-guide/zgVvHydApcBVPctz" class="external">Fiveable<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><strong>Leitura:</strong> a privacidade <em>barata</em> (DP, processamento local) é a viável hoje;
+FHE/MPC ainda têm overhead de ordens de grandeza que os tira do caminho de
+inferência em tempo real. A defesa de privacidade pragmática é **minimizar dado</p>
+<ul>
+<li>processar local**, não criptografia homomórfica.</li>
+</ul>
+</blockquote>
+<hr/>
+<h2 id="5-custo-do-dano--não-conformidade">5. Custo do dano / não-conformidade<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#5-custo-do-dano--não-conformidade" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="51-lgpd--anpd">5.1 LGPD &amp; ANPD<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#51-lgpd--anpd" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>Teto de sanção:</strong> multa simples de até <strong>2% do faturamento</strong> do grupo no
+Brasil no último exercício, <strong>limitada a R$ 50 milhões por infração</strong>
+<code>[PRIMÁRIA]</code> —
+<a href="https://lgpd-brasil.info/capitulo_08/artigo_52" class="external">LGPD art. 52, lgpd-brasil.info<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li><strong>Primeira multa aplicada pela ANPD</strong> (Telekall Infoservice, microempresa):
+<strong>R$ 14,4 mil</strong> — tratamento sem base legal (art. 7º) + ausência de DPO
+(art. 41); denúncia ligada a dados de eleitores no WhatsApp <code>[PRIMÁRIA]</code> —
+<a href="https://www.gov.br/anpd/pt-br/assuntos/noticias/anpd-aplica-a-primeira-multa-por-descumprimento-a-lgpd" class="external">ANPD (gov.br)<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li><strong>Mudança de regime:</strong> a ANPD saiu do modo “orientação” (2021–24) para o modo
+fiscalizatório; cresce o nº de sanções em 2024–26 <code>[SECUNDÁRIA]</code> —
+<a href="https://truzzi.com.br/a-era-da-orientacao-acabou-as-primeiras-multas-da-anpd-e-o-novo-cenario-da-lgpd/" class="external">Truzzi<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+</ul>
+<h3 id="52-custo-de-violação-de-dados-ibmponemon">5.2 Custo de violação de dados (IBM/Ponemon)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#52-custo-de-violação-de-dados-ibmponemon" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>Custo médio de uma violação de dados no Brasil:</strong> <strong>R<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord">7</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">19</span><span class="mord mathnormal">mi</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">h</span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6679em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">o</span></span><span style="top:-3.35em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1944em;"><span class="mord">~</span></span></span></span></span></span></span><span class="mord mathnormal">es</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∗</span><span class="mopen">(</span><span class="mord">2025</span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">an</span><span class="mord mathnormal">t</span><span class="mord mathnormal">e</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">∗</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span> 6,75 milhões</strong> (2024) — alta de 6,5%. Estudo Ponemon/IBM, 600
+organizações globais; <strong>87%</strong> das organizações brasileiras estudadas não tinham
+política de governança de IA <code>[PRIMÁRIA]</code> —
+<a href="https://abes.org.br/en/relatorio-da-ibm-custo-medio-de-uma-violacao-de-dados-no-brasil-atinge-r-719-milhoes/" class="external">IBM via ABES<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> ·
+<a href="https://www.ibm.com/reports/data-breach" class="external">IBM Cost of a Data Breach<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+</ul>
+<h3 id="53-contratos-de-reconhecimento-facial-vigilância-biométrica">5.3 Contratos de reconhecimento facial (vigilância biométrica)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#53-contratos-de-reconhecimento-facial-vigilância-biométrica" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Programa</th><th>Valor</th><th>Período</th><th>Selo</th><th>Fonte</th></tr></thead><tbody><tr><td><strong>Smart Sampa</strong> (São Paulo, até 40 mil câmeras)</td><td>**R<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6595em;"></span><span class="mord">588</span><span class="mord mathnormal">mi</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∗</span><span class="mopen">(</span><span class="mspace nobreak"> </span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span> 9,8 mi/mês)</td><td>2023–2028</td><td><code>[PRIMÁRIA]</code></td><td><a href="https://prefeitura.sp.gov.br/w/noticia/prefeito-assina-contrato-para-o-inicio-do-smart-sampa-maior-programa-de-videomonitoramento-da-cidade-com-ate-40-mil-cameras-2" class="external">Prefeitura SP<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> · <a href="https://www.intercept.com.br/2023/08/14/smart-sampa-denunciada-por-corrupcao-capturar-seu-rosto-em-sp/" class="external">Intercept<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></td></tr><tr><td><strong>Bahia</strong> (Oi Soluções + Avantia, 78 municípios)</td><td><strong>R$ 665 mi</strong></td><td>2021–jul/2026</td><td><code>[SECUNDÁRIA]</code></td><td><a href="https://www.intercept.com.br/2023/07/31/reconhecimento-facial-na-bahia-custearia-um-hospital-e-mil-ambulancias-com-uti/" class="external">Intercept<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> · <a href="https://www.telesintese.com.br/bahia-contrata-sistema-de-reconhecimento-facial-da-oi-solucoes/" class="external">Telesíntese<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></td></tr><tr><td><strong>Paraná — escolas</strong> (Celepar/Valid; +Educatron)</td><td><strong>R<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6595em;"></span><span class="mord">4</span><span class="mord mathnormal">mi</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span> 12 mi</strong> (via aditivos); +R$ 6,5 mi</td><td>2023–2024</td><td><code>[SECUNDÁRIA]</code></td><td><a href="https://apublica.org/2023/10/reconhecimento-facial-no-parana-impoe-monitoramento-de-emocoes-em-escolas/" class="external">Agência Pública<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> · <a href="https://nucleo.jor.br/reportagem/2026/03/13/sistema-reconhecimento-facial-escolas-parana-brasil/" class="external">Núcleo<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></td></tr><tr><td><strong>Paraná — indenização (pedido do MP)</strong></td><td><strong>R$ 15 mi</strong> (dano moral coletivo, LGPD)</td><td>2024</td><td><code>[SECUNDÁRIA]</code></td><td><a href="https://revistassp.com.br/ministerio-publico-pede-indenizacao-de-r-15-milhoes-por-supostas-irregularidades-no-reconhecimento-facial-de-alunos-de-escolas-publicas-no-parana/" class="external">Revista SSP<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></td></tr></tbody></table></div>
+<blockquote>
+<p>**Total parcial só destes contratos públicos de vigilância biométrica:</p>
+<blockquote>
+<p>R<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">25</span><span class="mord mathnormal">bi</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">h</span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6679em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">a</span></span><span style="top:-3.35em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.25em;"><span class="mord">~</span></span></span></span></span></span></span><span class="mord mathnormal">o</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∗</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mord mathnormal">ma</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal" style="margin-right:0.05764em;">tS</span><span class="mord mathnormal">am</span><span class="mord mathnormal">p</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span> 588 mi + Bahia R$ 665 mi), antes de contar
+Paraná e dezenas de programas municipais menores. Caso do Paraná notável por
+monitorar <strong>emoções</strong> de >1.600 escolas e por prisões indevidas documentadas no
+Smart Sampa
+(<a href="https://agenciabrasil.ebc.com.br/geral/noticia/2026-02/pesquisa-aponta-problemas-e-prisoes-indevidas-partir-do-smart-sampa" class="external">Agência Brasil, 2026<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a>).</p>
+</blockquote>
+</blockquote>
+<hr/>
+<h2 id="6-energia--sustentabilidade">6. Energia &amp; sustentabilidade<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#6-energia--sustentabilidade" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li><strong>Brasil:</strong> data centers responderam por <strong>~8,2 TWh (~1,7%)</strong> da eletricidade
+em 2024; projeção de <strong>3,9%</strong> até 2029 <code>[SECUNDÁRIA]</code> —
+<a href="https://www.gazetamercantil.digital/ate-2029-data-centers-devem-consumir-39-da-energia-no-brasil/" class="external">Gazeta Mercantil / Brasscom<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li><strong>Global:</strong> DCs consumiram <strong>415 TWh (~1,5%</strong> da eletricidade mundial) em 2024;
+projeção de <strong>945 TWh</strong> até 2030 <code>[SECUNDÁRIA]</code> —
+<a href="https://brasilamazoniaagora.com.br/ia-data-centers-clima-geopolitica/" class="external">Brasil Amazônia Agora (cita IEA)<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li><strong>Água:</strong> demanda hídrica de IA pode chegar a <strong>1,2 trilhão de litros até 2030</strong>;
+benefício fiscal do programa federal <strong>Redata</strong> exige WUE ≤ <strong>0,05 L/kWh/ano</strong>
+<code>[SECUNDÁRIA]</code> —
+<a href="https://canalsolar.com.br/datacenters-agua-energia-inflexao-era-ia/" class="external">Canal Solar<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> ·
+<a href="https://jornal.unesp.br/2026/03/20/especialistas-alertam-para-alto-consumo-de-agua-por-data-centers-em-meio-a-incentivos-do-governo-para-atracao-de-projetos/" class="external">Jornal da Unesp<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li><strong>Vantagem comparativa do Brasil:</strong> matriz elétrica predominantemente renovável
+torna o país destino atrativo para DCs com menor pegada de carbono por kWh
+<code>[SECUNDÁRIA]</code>.</li>
+</ul>
+<hr/>
+<h2 id="notas-de-verificação">Notas de verificação<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#notas-de-verificação" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ol>
+<li><strong>Divergência de tamanho de mercado (§2) é a maior incerteza.</strong> Statista
+(US<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">85</span><span class="mord mathnormal">bi</span><span class="mclose">)</span><span class="mord mathnormal">e</span><span class="mord mathnormal">G</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">an</span><span class="mord mathnormal">d</span><span class="mord mathnormal">Vi</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 17,81 bi) diferem por ~6× para “mercado de IA
+Brasil 2025” — definições incompatíveis. <strong>Nunca cite uma só consultoria como
+fato</strong>; use o intervalo. Todas estas linhas são <code>[SECUNDÁRIA]</code>.</li>
+<li><strong>PBIA R<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord">23</span><span class="mord mathnormal">bi</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span> 1,1 bi confirmados em fonte primária</strong> (MCTI/LNCC). O PDF
+oficial do plano é a fonte de última instância. A cifra de R$ 1,1 bi é a linha
+de “modelo em português + datasets” — não confundir com o total.</li>
+<li><strong>Santos Dumont:</strong> “+575%” e “18,85 PFlops” vêm do MCTI/LNCC; o blog da NVIDIA
+descreve “4× maior” (formulação diferente do mesmo evento de ampliação). Ambos
+citados.</li>
+<li><strong>Preços de API são tabela do próprio fornecedor (<code>[PRIMÁRIA]</code>)</strong> e mudam.
+Anthropic confirmado contra a referência interna do skill claude-api (jun 2026):
+Opus 4.8 US<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">5/</span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 25, Sonnet 4.6 US<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">3/</span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 15, Haiku 4.5 US<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1/</span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 5. Maritaca
+confirmado em docs.maritaca.ai. Reconferir antes de usar em decisão de custo.</li>
+<li><strong>GPU/h (<code>[SECUNDÁRIA]</code>)</strong> são intervalos de índices de mercado (RunPod,
+Lambda, Salad), voláteis. Fly.io (<code>[PRIMÁRIA]</code>) é tabela oficial + a
+descontinuação de 31/jul/2026 está confirmada em docs e no fórum oficial.</li>
+<li><strong>FHE 10³–10⁶×:</strong> a literatura varia. arXiv 2112.06396 dá ~1000× como baseline
+e o bootstrapping como gargalo; outras fontes chegam a 10⁶× para cargas
+pesadas. Mantido como intervalo de ordem de grandeza, não cifra exata.</li>
+<li><strong>Contratos de vigilância:</strong> Smart Sampa R<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">588</span><span class="mord mathnormal">mi</span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">e</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1944em;"><span class="mord">ˊ</span></span></span></span></span></span></span><span class="mord mathnormal">p</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">im</span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">a</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.25em;"><span class="mord">ˊ</span></span></span></span></span></span></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">i</span><span class="mord mathnormal">o</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mord mathnormal">re</span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mord mathnormal">e</span><span class="mord mathnormal">i</span><span class="mord mathnormal">t</span><span class="mord mathnormal">u</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.13889em;">SP</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">re</span><span class="mord mathnormal">p</span><span class="mord mathnormal" style="margin-right:0.02778em;">or</span><span class="mord mathnormal">t</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal">e</span><span class="mord mathnormal">m</span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mord mathnormal">n</span><span class="mord mathnormal">t</span><span class="mord mathnormal">erce</span><span class="mord mathnormal">pt</span><span class="mclose">)</span><span class="mord">.</span><span class="mord mathnormal" style="margin-right:0.05017em;">B</span><span class="mord mathnormal">ahia</span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span> 665 mi e Paraná R$ 4–12 mi são reportagem
+investigativa (<code>[SECUNDÁRIA]</code>) — valores acumulados/aditivos, sujeitos a
+atualização; o valor da Bahia agrega vigilância + telecom, não só facial.</li>
+<li><strong>Custo de violação IBM/Ponemon:</strong> R<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord">7</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">19</span><span class="mord mathnormal">mi</span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">e</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1944em;"><span class="mord">ˊ</span></span></span></span></span></span></span><span class="mord mathnormal">o</span><span class="mord mathnormal">n</span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">u</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.2222em;"><span class="mord">ˊ</span></span></span></span></span></span></span><span class="mord mathnormal">m</span><span class="mord mathnormal">ero</span><span class="mord mathnormal">d</span><span class="mord mathnormal">e</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">∗</span><span class="mord">2025</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord">∗</span><span class="mpunct">;</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span> 6,75 mi
+é 2024. O relatório cobre mar/2024–fev/2025. Fonte primária é IBM; ABES e
+BNamericas reportam o mesmo número.</li>
+<li><strong>Energia:</strong> as cifras de DC no Brasil (Brasscom) e globais (IEA) chegam via
+imprensa; reconferir o estudo Brasscom original e o <em>Electricity 2024/2025</em> da
+IEA para citação acadêmica.</li>
+<li><strong>Selos:</strong> <code>[PRIMÁRIA]</code> = órgão de governo, edital, tabela do fornecedor,
+autor do dado (IBM/Ponemon, arXiv), contrato público. <code>[SECUNDÁRIA]</code> =
+consultoria, imprensa, agregador. Onde a busca não alcançou a fonte de origem
+(ex.: estudo Brasscom completo), o item ficou <code>[SECUNDÁRIA]</code> por precaução.</li>
+</ol></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>Visão de gráfico</h3><div class="graph-outer"><div id="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false}"></div><button id="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div id="global-graph-outer"><div id="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" id="toc" class aria-controls="toc-content" aria-expanded="true"><h3>Sumário</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="toc-content" class><ul class="overflow"><li class="depth-0"><a href="#economia-da-ia-no-brasil--brief-quantitativo" data-for="economia-da-ia-no-brasil--brief-quantitativo">Economia da IA no Brasil — brief quantitativo</a></li><li class="depth-1"><a href="#1-números-chave-tabela-mestra" data-for="1-números-chave-tabela-mestra">1. Números-chave (tabela-mestra)</a></li><li class="depth-1"><a href="#2-mercado--crescimento" data-for="2-mercado--crescimento">2. Mercado &amp; crescimento</a></li><li class="depth-1"><a href="#3-investimento-público--pbia-e-fomento" data-for="3-investimento-público--pbia-e-fomento">3. Investimento público — PBIA e fomento</a></li><li class="depth-1"><a href="#4-estrutura-de-custo--gpu-cloud-e-api" data-for="4-estrutura-de-custo--gpu-cloud-e-api">4. Estrutura de custo — GPU, cloud e API</a></li><li class="depth-2"><a href="#41-gpu--cloud-hora" data-for="41-gpu--cloud-hora">4.1 GPU / cloud hora</a></li><li class="depth-2"><a href="#42-api-por-1m-tokens--fronteira-global-vs-soberano-em-brl" data-for="42-api-por-1m-tokens--fronteira-global-vs-soberano-em-brl">4.2 API por 1M tokens — fronteira global vs. soberano em BRL</a></li><li class="depth-2"><a href="#43-local--overhead-de-privacidade" data-for="43-local--overhead-de-privacidade">4.3 Local &amp; overhead de privacidade</a></li><li class="depth-1"><a href="#5-custo-do-dano--não-conformidade" data-for="5-custo-do-dano--não-conformidade">5. Custo do dano / não-conformidade</a></li><li class="depth-2"><a href="#51-lgpd--anpd" data-for="51-lgpd--anpd">5.1 LGPD &amp; ANPD</a></li><li class="depth-2"><a href="#52-custo-de-violação-de-dados-ibmponemon" data-for="52-custo-de-violação-de-dados-ibmponemon">5.2 Custo de violação de dados (IBM/Ponemon)</a></li><li class="depth-2"><a href="#53-contratos-de-reconhecimento-facial-vigilância-biométrica" data-for="53-contratos-de-reconhecimento-facial-vigilância-biométrica">5.3 Contratos de reconhecimento facial (vigilância biométrica)</a></li><li class="depth-1"><a href="#6-energia--sustentabilidade" data-for="6-energia--sustentabilidade">6. Energia &amp; sustentabilidade</a></li><li class="depth-1"><a href="#notas-de-verificação" data-for="notas-de-verificação">Notas de verificação</a></li></ul></div></div><div class="backlinks"><h3>Backlinks</h3><ul class="overflow"><li>Sem backlinks encontrados</li></ul></div></div><footer class><p>Criado com <a href="https://quartz.jzhao.xyz/">Quartz v4.4.0</a> © 2026</p><ul><li><a href="https://github.com/jackyzha0/quartz">GitHub</a></li><li><a href="https://discord.gg/cRFFHYye7t">Discord Community</a></li></ul></footer></div></div></body><script type="application/javascript">function c(){let t=this.parentElement;t.classList.toggle("is-collapsed");let l=t.classList.contains("is-collapsed")?this.scrollHeight:t.scrollHeight;t.style.maxHeight=l+"px";let o=t,e=t.parentElement;for(;e;){if(!e.classList.contains("callout"))return;let n=e.classList.contains("is-collapsed")?e.scrollHeight:e.scrollHeight+o.scrollHeight;e.style.maxHeight=n+"px",o=e,e=e.parentElement}}function i(){let t=document.getElementsByClassName("callout is-collapsible");for(let s of t){let l=s.firstElementChild;if(l){l.addEventListener("click",c),window.addCleanup(()=>l.removeEventListener("click",c));let e=s.classList.contains("is-collapsed")?l.scrollHeight:s.scrollHeight;s.style.maxHeight=e+"px"}}}document.addEventListener("nav",i);window.addEventListener("resize",i);
+</script><script type="module">
+          let mermaidImport = undefined
+          document.addEventListener('nav', async () => {
+            if (document.querySelector("code.mermaid")) {
+              mermaidImport ||= await import('https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.7.0/mermaid.esm.min.mjs')
+              const mermaid = mermaidImport.default
+              const darkMode = document.documentElement.getAttribute('saved-theme') === 'dark'
+              mermaid.initialize({
+                startOnLoad: false,
+                securityLevel: 'loose',
+                theme: darkMode ? 'dark' : 'default'
+              })
+
+              await mermaid.run({
+                querySelector: '.mermaid'
+              })
+            }
+          });
+          </script><script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/copy-tex.min.js" type="application/javascript"></script><script src="../postscript.js" type="module"></script></html>
