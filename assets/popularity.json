@@ -1,11 +1,11 @@
 {
-  "as_of": "2026-06-24T07:41:12.924325494+00:00",
+  "as_of": "2026-06-25T07:42:24.726750800+00:00",
   "items": [
     {
       "path": "/servicos/",
       "slug": "",
-      "views": 10,
-      "visitors": 4
+      "views": 7,
+      "visitors": 3
     },
     {
       "path": "/servicos/pensamento-islamico/",
@@ -30,12 +30,6 @@
       "slug": "gestao-administrativa",
       "views": 5,
       "visitors": 2
-    },
-    {
-      "path": "/servicos/traducao-en-pt/",
-      "slug": "traducao-en-pt",
-      "views": 3,
-      "visitors": 1
     },
     {
       "path": "/servicos/automacao-de-processos/",
