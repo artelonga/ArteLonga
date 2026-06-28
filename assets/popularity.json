@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-06-27T06:52:35.958339310+00:00",
+  "as_of": "2026-06-28T07:51:46.596979619+00:00",
   "items": [
     {
       "path": "/servicos/",
@@ -58,6 +58,12 @@
     {
       "path": "/servicos/inteligencia-e-tecnologia/",
       "slug": "inteligencia-e-tecnologia",
+      "views": 1,
+      "visitors": 1
+    },
+    {
+      "path": "/servicos/privacidade-e-seguranca/",
+      "slug": "privacidade-e-seguranca",
       "views": 1,
       "visitors": 1
     }
