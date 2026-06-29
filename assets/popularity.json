@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-06-28T07:51:46.596979619+00:00",
+  "as_of": "2026-06-29T08:59:22.949692313+00:00",
   "items": [
     {
       "path": "/servicos/",
@@ -20,16 +20,16 @@
       "visitors": 3
     },
     {
-      "path": "/servicos/desenvolvimento-de-api/",
-      "slug": "desenvolvimento-de-api",
-      "views": 5,
-      "visitors": 2
-    },
-    {
       "path": "/servicos/gestao-administrativa/",
       "slug": "gestao-administrativa",
       "views": 5,
       "visitors": 2
+    },
+    {
+      "path": "/servicos/desenvolvimento-de-api/",
+      "slug": "desenvolvimento-de-api",
+      "views": 4,
+      "visitors": 1
     },
     {
       "path": "/servicos/automacao-de-processos/",
