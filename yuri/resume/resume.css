@@ -30,14 +30,16 @@ ul{margin:.4rem 0 0 1.2rem;font-size:.9rem}
 li{margin-top:.15rem}
 .sk{font-size:.88rem;margin-top:.28rem}
 .sk b{color:#111}
+.subh{font-family:system-ui,sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dark);margin-top:.5rem}
 .proj{font-size:.88rem;margin-top:.28rem}
 .proj a{color:var(--blue);text-decoration:none;font-weight:bold}
 .proj .tech{color:#555;font-style:italic}
 .ref{font-size:.82rem;color:#555;font-style:italic;margin-top:.6rem}
 a{color:var(--blue)}
 @media print{
+  html{font-size:13.6px}
   body{background:#fff}
-  .bar{display:none}
+  .bar,.fc-fab{display:none}
   .page{box-shadow:none;margin:0;max-width:none;padding:0}
-  @page{size:A4;margin:11mm}
+  @page{size:A4;margin:8mm}
 }
