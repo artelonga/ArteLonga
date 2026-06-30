@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-06-29T08:59:22.949692313+00:00",
+  "as_of": "2026-06-30T07:53:54.792174820+00:00",
   "items": [
     {
       "path": "/servicos/",
@@ -34,12 +34,6 @@
     {
       "path": "/servicos/automacao-de-processos/",
       "slug": "automacao-de-processos",
-      "views": 1,
-      "visitors": 1
-    },
-    {
-      "path": "/servicos/computacao/",
-      "slug": "computacao",
       "views": 1,
       "visitors": 1
     },
