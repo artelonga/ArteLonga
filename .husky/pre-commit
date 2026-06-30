@@ -11,3 +11,7 @@
 . "$(dirname "$0")/_/husky.sh"
 
 node tools/pre-commit-check.mjs
+
+# secure-publish gate (AGPL public repo): block sensitive content from being
+# committed. Toggle in secure-publish.config.json (enforce) or SECURE_PUBLISH=off.
+node tools/secure-publish.mjs scan --staged

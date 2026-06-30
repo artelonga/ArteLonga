@@ -1,0 +1,10 @@
+{
+  "enforce": true,
+  "blockOnPII": false,
+  "maxBytes": 2000000,
+  "allow": [
+    ".env.example",
+    "**/*.example",
+    "secure-publish.config.json"
+  ]
+}

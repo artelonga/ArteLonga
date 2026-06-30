@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+# Pre-push hook — secure-publish gate (defense in depth before the PUBLIC remote).
+# Scans the whole tracked tree for secrets / sensitive files. Catches anything
+# that slipped past pre-commit, on any branch being pushed.
+#
+# Toggle: secure-publish.config.json (enforce) or SECURE_PUBLISH=off.
+# Emergency bypass (not recommended): git push --no-verify
+#
+# NOTE: this guards future commits/pushes. Before flipping the repo to PUBLIC,
+# also run a one-time history audit:  npm run secure:audit
+
+. "$(dirname "$0")/_/husky.sh"
+
+node tools/secure-publish.mjs scan --all
