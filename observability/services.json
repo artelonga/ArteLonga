@@ -65,10 +65,10 @@
   },
   {
     "name": "retro",
-    "url": "https://retro.artelonga.com.br",
-    "type": "undeployed",
+    "url": "https://artelonga-retro.fly.dev",
+    "type": "surface",
     "fly_app": "artelonga-retro",
     "health_path": "/api/health",
-    "notes": "Retro Umarizal partner universe. NOT deployed, no DNS — flagged. fly_app reserved but inactive."
+    "notes": "Retro Umarizal — deployed on Fly (taken over from Hostinger 2026-06-16); page-view beacon → co + feedback → co. Custom DNS (retroumarizal.com.br / retro.artelonga.com.br) cutover Hostinger→Fly pending."
   }
 ]
