@@ -1,0 +1,24 @@
+# gitleaks config — the default ruleset PLUS an allowlist for known false
+# positives, so the history scan is deterministically clean for CI / the
+# account-wide compliance suite. AGPL, like the rest of the repo.
+#
+# Run:  gitleaks detect --no-banner --redact     (auto-detects this config)
+#
+# The in-repo backstop is tools/secure-publish.mjs (scans ALL files, every
+# commit/push); this allowlist only quiets gitleaks' broad generic-api-key rule
+# on two reference-data files where `key:` is a *citation key*, not a secret.
+
+title = "ArteLonga — gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = """Bibliography / scrum reference data: the `key:` field is a \
+citation key (e.g. "sciadv2020", "scrum-guide-2020"), not an API key. These are \
+gitleaks generic-api-key false positives. secure-publish remains the backstop \
+scanning every file on every commit/push."""
+paths = [
+  '''neuro/references\.js''',
+  '''scrum/scrum\.md''',
+]
