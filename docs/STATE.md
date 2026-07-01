@@ -1,4 +1,4 @@
-# Estado do projeto · 2026-06-01
+# Estado do projeto · 2026-07-01
 
 > Snapshot auto-gerado por `tools/bake-state.mjs` — não editar à mão.
 > Para um dev novo (ou agente AI) entender em 10 minutos: o que é, como
@@ -172,95 +172,39 @@ Memory system:
 
 ## Última release
 
-## [0.14.0] — 2026-05-20 — Phase C wave 4-8 close (modular data, TypeScript runtime, OpenAPI codegen, signup integration, dist cleanup)
+## [0.22.0] — 2026-06-06 — Intelligence as a Service · docs bilíngues · surfaces na raiz · mapa de domínios
 
-### Theme
+### Added (`feat`)
 
-Phase C of the cross-repo refactor lands ten user-stories (AL-51 through AL-60) into a single semver-meaningful release. Three converging threads:
+- **Intelligence as a Service** (ex-"Brain as a Service") — rebrand **filosófico**: a
+  **inteligência de máquina** (determinística — o que *schema*/contrato de API capturam)
+  é o **serviço**; o **cérebro** (inteligência biológica, humana) fica **livre** pra criar.
+  Narrativa **livre** (co é software livre) + **ñandé** (nós inclusivo). `git mv` +
+  redirect no URL antigo.
+- **Docs bilíngues (pt+en)** — `bake-docs` reescrito: pt primária + `.en.html`, toggle de
+  idioma + hreflang, render de diagrama compartilhado; 9 docs traduzidos. Forma em inglês,
+  conteúdo no idioma.
+- **Surfaces servem na própria raiz** — `yuri.artelonga.com.br/aws` (não `/yuri/aws/`);
+  `/yuri/aws/` segue como fallback.
+- **`/aws` bilíngue** — tutorial + estudo de caso: tira de experiência/escala, custo
+  estimável (~US$150/mês por cliente de alta demanda), DynamoDB reenquadrado pela decisão.
+- **Mapa de domínios** — `deploy/domains.yaml` (fonte única de domínios/CNAMEs/surfaces +
+  registro dos DNS) + `/docs/domains.html` (mapa + audit de drift); `deploy-surface` lê o
+  registro. Linkado no portfólio.
+- **Toda universe vira entrada no portfólio** do yuri.
 
-1. **Modular data layer** (AL-53, AL-54) — `assets/data.js` (3372 LOC) split into six per-collection modules; bootstrap loads only what each page needs (`/solucoes/` drops 70% of payload).
-2. **TypeScript runtime + OpenAPI as single source of truth** (AL-55, AL-56) — `analytics.js` + `al-signup.js` migrated to TS; `openapi/artelonga.yaml` drives `src/types.gen.ts` via `npm run gen-types`; pre-commit hook detects drift.
-3. **Auth + ecosystem integration** (AL-50, AL-51, AL-52, AL-57, AL-58, AL-59, AL-60) — `/entrar/` signup flow bridges to CO via email magic-code, dist artifacts dropped from version control, analytics aligned with `STORAGE_KEYS` from AL-53.
+### Fixed (`fix`)
 
-### Why
-
-ArteLonga was the largest non-CO repo in the audit (74 .js files, hand-maintained data, no type system). Phase C made the site (a) faster to render (per-page bundles), (b) safe to evolve (TS + OpenAPI), (c) auth-ready against the broader CO ecosystem. Release-tag aligns the deploy with the ecosystem-wide integration verification milestone.
-
-
-
-### Refactored (AL-54: Split assets/data.js into per-collection modules)
-
-`assets/data.js` (3372 LOC, 122KB) dividido em seis módulos independentes:
-`data.people.js`, `data.communities.js`, `data.services.js`, `data.solutions.js`,
-`data.missions.js` e `data.finances.js` — cada um auto-gerado pelo bake script correspondente.
-`data.core.js` (hand-maintained) lê de `window.AL.*` e exporta todas as funções e derivações.
-
-`bootstrap.js` atualizado com lógica URL-based: carrega apenas os módulos que cada página
-precisa. Exemplos: `/` carrega people + communities + services + finances + core (105KB, -14%);
-`/solucoes/` carrega só solutions + core (37KB, -70%); `/contato/` carrega só core (24KB, -80%).
-
-`window.AL` API surface preservada integralmente — comportamento runtime idêntico.
-Todos os seis bake scripts atualizados para dual-write (data.js + arquivo per-collection).
-Pre-commit hook estendido para verificar drift em ambos os formatos. `V` bumped em `bootstrap.js`.
-
-### Refactored (AL-56: Migrar analytics.js e al-signup.js para TypeScript)
-
-`assets/analytics.js` e `assets/al-signup.js` migrados de vanilla JS para TypeScript em
-`src/runtime/analytics.ts` e `src/runtime/al-signup.ts`. Comportamento em runtime preservado
-bit-a-bit — ambos compilados para IIFE via novo `vite.runtime.config.ts` (lib mode, sem
-minificação). `build:runtime` adicionado ao `package.json`; integrado ao `npm run build`.
-
-APIs públicas (`window.AL_track`, `window.AL_analytics`, `window.AL_experiments`) tipadas em
-`src/types.ts` como interfaces `ALAnalyticsAPI`, `ALAnalyticsInfo`, `ALExperimentsAPI` com
-declaração global no `Window`. `analytics.ts` importa `STORAGE_KEYS` de `src/lib/storage-keys`
-(AL-53), eliminando strings mágicas. `V` bumped em `bootstrap.js`.
-
-### Added (AL-55: OpenAPI codegen para src/types.ts)
-
-`openapi-typescript` adicionado como devDep. `npm run gen-types` gera `src/types.gen.ts` a partir de
-`openapi/artelonga.yaml` (single source of truth). `src/types.ts` reduzido a re-exports dos tipos
-gerados + tipos UI-only sem equivalente no schema (`FaixaPreco`, `FaixaPlano`, `EssayItem`,
-`DefaultLocation`, `UniverseData`). `npm run gen-types` integrado ao início de `npm run bake`.
-Pre-commit hook estendido para detectar drift entre `openapi/artelonga.yaml` e `src/types.gen.ts`.
-
-OpenAPI schema também corrigido: campos faltantes adicionados a `Person` (`deathDate`, `bioHidden`,
-`bioAudio`, `emBreve`, `aposentado`, `underage`, `muted`, `site`, `essaysTitle`), `Community`
-(`bioCurta`, `muted`, `emBreve`, `emMemoria`), `Service` (`children`, `descNossa`, `summary`,
-`nome`), `Contacts` (`whatsappDisplay`, `instagram`), `PortfolioPoem` (`autor`); campos `required`
-ajustados nos schemas de finance (`FinanceCost.breakdown`, `FinanceRecurrentItem`,
-`FinanceRampaItem`, `FinanceProject`); novo schema `FinanceProBono` para itens pro-bono.
-
-### Added (AL-50: signup form — email magic-code flow com CO account)
-
-Nova página `/entrar/` com fluxo de autenticação em dois passos: email → código mágico de 6 dígitos.
-Integra com o endpoint CO-205 (`/api/v1/auth/onboard-with-email`) já live em `co.artelonga.com.br`.
-Ao confirmar o código, um cookie de sessão é setado no domínio `.artelonga.com.br`, dando acesso ao
-ecossistema CO (co.artelonga.com.br, quilomboaraucaria.org via SSO bridge). Origin `artelonga` é
-enviado para analytics e tracking de campanhas.
-
-**`/entrar/index.html`** (NEW): dois painéis alternados — passo 1 (email + Google OAuth) e passo 2
-(código + reenvio com cooldown de 60s + editar email). Estilos inline seguindo o padrão `.fp-form`
-da `/faca-parte/`. Carrega `al-signup.js` via `<script defer>`. Mobile responsive ≤ 768px.
-
-**`assets/al-signup.js`** (NEW): módulo vanilla JS que orquestra todo o fluxo — POST para
-`onboard-with-email`, transição email→code, POST para `verify`, redirect para `/` no sucesso,
-inline error sem roundtrip para email inválido, cooldown de reenvio, Google OAuth start.
-Na carga da página, verifica `/auth/me` e redireciona para `/` se já autenticado.
-
-**Header auth indicator**: `SiteHeader.ts` ganhou `#al-header-auth` placeholder e `initHeaderAuth()`.
-Na home, após o render, faz fetch de `/api/v1/auth/me` — se logado mostra "Olá, {nome} · Sair",
-se deslogado mostra "Entrar →" apontando para `/entrar/`. Logout chama `POST /auth/logout` e recarrega.
-
-**`assets/site.css`**: novos seletores `.site-header-nav`, `.site-cta-entrar`, `.al-auth-greeting`,
-`.al-auth-logout` para suportar o estado de autenticação no header da home.
-
----
+- **surface:** 301 trailing-slash pra diretórios — causa-raiz do `/aws/en` 404 (links
+  relativos resolviam contra o pai). Sistêmico + guard `dirCheck` no deploy gate.
+- **IaaS:** "inteligência delimitada" → **inteligência de máquina (determinística)**,
+  em contraste com a biológica.
 
 ---
 
 ## Recentes feats (últimos 30 dias)
 
-_(nenhum no período)_
+- feat(security): secure-publish gate — toggle + staging review for the public repo (#95) (38e2452)
 
 ## Recentes fixes (últimos 30 dias)
 
