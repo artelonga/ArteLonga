@@ -1,12 +1,6 @@
 {
-  "as_of": "2026-07-02T07:33:14.205483800+00:00",
+  "as_of": "2026-07-03T07:20:39.398345506+00:00",
   "items": [
-    {
-      "path": "/servicos/",
-      "slug": "",
-      "views": 6,
-      "visitors": 2
-    },
     {
       "path": "/servicos/pensamento-islamico/",
       "slug": "pensamento-islamico",
@@ -29,6 +23,12 @@
       "path": "/servicos/desenvolvimento-de-api/",
       "slug": "desenvolvimento-de-api",
       "views": 4,
+      "visitors": 1
+    },
+    {
+      "path": "/servicos/",
+      "slug": "",
+      "views": 2,
       "visitors": 1
     },
     {
