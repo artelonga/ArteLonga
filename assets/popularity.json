@@ -1,24 +1,6 @@
 {
-  "as_of": "2026-07-05T07:25:56.595151870+00:00",
+  "as_of": "2026-07-06T08:21:05.461541268+00:00",
   "items": [
-    {
-      "path": "/servicos/pensamento-islamico/",
-      "slug": "pensamento-islamico",
-      "views": 6,
-      "visitors": 2
-    },
-    {
-      "path": "/servicos/alimentacao-e-bebidas/",
-      "slug": "alimentacao-e-bebidas",
-      "views": 5,
-      "visitors": 3
-    },
-    {
-      "path": "/servicos/gestao-administrativa/",
-      "slug": "gestao-administrativa",
-      "views": 5,
-      "visitors": 2
-    },
     {
       "path": "/servicos/desenvolvimento-de-api/",
       "slug": "desenvolvimento-de-api",
