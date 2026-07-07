@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-07-06T08:21:05.461541268+00:00",
+  "as_of": "2026-07-07T07:38:48.146604592+00:00",
   "items": [
     {
       "path": "/servicos/desenvolvimento-de-api/",
@@ -11,12 +11,6 @@
       "path": "/servicos/",
       "slug": "",
       "views": 2,
-      "visitors": 1
-    },
-    {
-      "path": "/servicos/inteligencia-e-tecnologia/",
-      "slug": "inteligencia-e-tecnologia",
-      "views": 1,
       "visitors": 1
     },
     {
