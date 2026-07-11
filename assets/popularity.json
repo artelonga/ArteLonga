@@ -1,6 +1,18 @@
 {
-  "as_of": "2026-07-10T07:35:28.321386076+00:00",
+  "as_of": "2026-07-11T06:12:51.154355081+00:00",
   "items": [
+    {
+      "path": "/servicos/agrofloresta/",
+      "slug": "agrofloresta",
+      "views": 3,
+      "visitors": 1
+    },
+    {
+      "path": "/servicos/alimentacao-e-bebidas/",
+      "slug": "alimentacao-e-bebidas",
+      "views": 3,
+      "visitors": 1
+    },
     {
       "path": "/servicos/acompanhamento-nutricional/",
       "slug": "acompanhamento-nutricional",
