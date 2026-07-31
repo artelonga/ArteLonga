@@ -1,6 +1,18 @@
 {
-  "as_of": "2026-07-30T06:27:56.806723487+00:00",
+  "as_of": "2026-07-31T06:43:23.693973341+00:00",
   "items": [
+    {
+      "path": "/servicos/alimentacao-e-bebidas/",
+      "slug": "alimentacao-e-bebidas",
+      "views": 5,
+      "visitors": 2
+    },
+    {
+      "path": "/servicos/acompanhamento-nutricional/",
+      "slug": "acompanhamento-nutricional",
+      "views": 3,
+      "visitors": 2
+    },
     {
       "path": "/servicos/agrofloresta/",
       "slug": "agrofloresta",
@@ -8,15 +20,15 @@
       "visitors": 1
     },
     {
-      "path": "/servicos/alimentacao-e-bebidas/",
-      "slug": "alimentacao-e-bebidas",
-      "views": 3,
+      "path": "/servicos/",
+      "slug": "",
+      "views": 1,
       "visitors": 1
     },
     {
-      "path": "/servicos/acompanhamento-nutricional/",
-      "slug": "acompanhamento-nutricional",
-      "views": 2,
+      "path": "/servicos/automacao-de-processos/",
+      "slug": "automacao-de-processos",
+      "views": 1,
       "visitors": 1
     }
   ],
