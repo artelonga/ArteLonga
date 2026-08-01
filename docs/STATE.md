@@ -1,4 +1,4 @@
-# Estado do projeto · 2026-07-01
+# Estado do projeto · 2026-08-01
 
 > Snapshot auto-gerado por `tools/bake-state.mjs` — não editar à mão.
 > Para um dev novo (ou agente AI) entender em 10 minutos: o que é, como
@@ -204,7 +204,7 @@ Memory system:
 
 ## Recentes feats (últimos 30 dias)
 
-- feat(security): secure-publish gate — toggle + staging review for the public repo (#95) (38e2452)
+_(nenhum no período)_
 
 ## Recentes fixes (últimos 30 dias)
 
