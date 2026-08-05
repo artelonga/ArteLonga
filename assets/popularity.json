@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-08-04T06:27:43.824591596+00:00",
+  "as_of": "2026-08-05T06:27:56.357247580+00:00",
   "items": [
     {
       "path": "/servicos/alimentacao-e-bebidas/",
@@ -28,6 +28,36 @@
     {
       "path": "/servicos/automacao-de-processos/",
       "slug": "automacao-de-processos",
+      "views": 1,
+      "visitors": 1
+    },
+    {
+      "path": "/servicos/futebol-e-esporte/",
+      "slug": "futebol-e-esporte",
+      "views": 1,
+      "visitors": 1
+    },
+    {
+      "path": "/servicos/murais-e-fachadas/",
+      "slug": "murais-e-fachadas",
+      "views": 1,
+      "visitors": 1
+    },
+    {
+      "path": "/servicos/traducao-pt-en/",
+      "slug": "traducao-pt-en",
+      "views": 1,
+      "visitors": 1
+    },
+    {
+      "path": "/servicos/traducao/",
+      "slug": "traducao",
+      "views": 1,
+      "visitors": 1
+    },
+    {
+      "path": "/servicos/yoga/",
+      "slug": "yoga",
       "views": 1,
       "visitors": 1
     }
