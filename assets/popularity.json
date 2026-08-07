@@ -1,16 +1,10 @@
 {
-  "as_of": "2026-08-06T06:30:21.432965440+00:00",
+  "as_of": "2026-08-07T05:39:46.822095291+00:00",
   "items": [
     {
       "path": "/servicos/alimentacao-e-bebidas/",
       "slug": "alimentacao-e-bebidas",
       "views": 5,
-      "visitors": 2
-    },
-    {
-      "path": "/servicos/acompanhamento-nutricional/",
-      "slug": "acompanhamento-nutricional",
-      "views": 3,
       "visitors": 2
     },
     {
@@ -22,6 +16,12 @@
     {
       "path": "/servicos/",
       "slug": "",
+      "views": 1,
+      "visitors": 1
+    },
+    {
+      "path": "/servicos/acompanhamento-nutricional/",
+      "slug": "acompanhamento-nutricional",
       "views": 1,
       "visitors": 1
     },
