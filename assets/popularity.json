@@ -1,16 +1,10 @@
 {
-  "as_of": "2026-08-09T05:04:31.056837132+00:00",
+  "as_of": "2026-08-10T05:26:40.605143339+00:00",
   "items": [
     {
       "path": "/servicos/alimentacao-e-bebidas/",
       "slug": "alimentacao-e-bebidas",
-      "views": 5,
-      "visitors": 2
-    },
-    {
-      "path": "/servicos/agrofloresta/",
-      "slug": "agrofloresta",
-      "views": 3,
+      "views": 2,
       "visitors": 1
     },
     {
