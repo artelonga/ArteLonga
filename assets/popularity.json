@@ -1,11 +1,17 @@
 {
-  "as_of": "2026-08-17T04:41:03.904907825+00:00",
+  "as_of": "2026-08-18T04:34:54.628461342+00:00",
   "items": [
     {
       "path": "/servicos/alimentacao-e-bebidas/",
       "slug": "alimentacao-e-bebidas",
       "views": 2,
       "visitors": 1
+    },
+    {
+      "path": "/servicos/yoga/",
+      "slug": "yoga",
+      "views": 2,
+      "visitors": 2
     },
     {
       "path": "/servicos/",
@@ -20,8 +26,44 @@
       "visitors": 1
     },
     {
+      "path": "/servicos/alfabetizacao/",
+      "slug": "alfabetizacao",
+      "views": 1,
+      "visitors": 1
+    },
+    {
+      "path": "/servicos/assistencia-tecnica/",
+      "slug": "assistencia-tecnica",
+      "views": 1,
+      "visitors": 1
+    },
+    {
+      "path": "/servicos/auditoria/",
+      "slug": "auditoria",
+      "views": 1,
+      "visitors": 1
+    },
+    {
+      "path": "/servicos/autocuidado/",
+      "slug": "autocuidado",
+      "views": 1,
+      "visitors": 1
+    },
+    {
       "path": "/servicos/automacao-de-processos/",
       "slug": "automacao-de-processos",
+      "views": 1,
+      "visitors": 1
+    },
+    {
+      "path": "/servicos/cantora/",
+      "slug": "cantora",
+      "views": 1,
+      "visitors": 1
+    },
+    {
+      "path": "/servicos/conexoes/",
+      "slug": "conexoes",
       "views": 1,
       "visitors": 1
     },
@@ -32,8 +74,26 @@
       "visitors": 1
     },
     {
+      "path": "/servicos/gestao-administrativa/",
+      "slug": "gestao-administrativa",
+      "views": 1,
+      "visitors": 1
+    },
+    {
+      "path": "/servicos/grafite/",
+      "slug": "grafite",
+      "views": 1,
+      "visitors": 1
+    },
+    {
       "path": "/servicos/murais-e-fachadas/",
       "slug": "murais-e-fachadas",
+      "views": 1,
+      "visitors": 1
+    },
+    {
+      "path": "/servicos/traducao-en-pt/",
+      "slug": "traducao-en-pt",
       "views": 1,
       "visitors": 1
     },
@@ -46,12 +106,6 @@
     {
       "path": "/servicos/traducao/",
       "slug": "traducao",
-      "views": 1,
-      "visitors": 1
-    },
-    {
-      "path": "/servicos/yoga/",
-      "slug": "yoga",
       "views": 1,
       "visitors": 1
     }
