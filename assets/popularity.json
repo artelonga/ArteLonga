@@ -1,29 +1,11 @@
 {
-  "as_of": "2026-08-30T09:46:59.562090349+00:00",
+  "as_of": "2026-08-31T10:36:59.117120463+00:00",
   "items": [
-    {
-      "path": "/servicos/alimentacao-e-bebidas/",
-      "slug": "alimentacao-e-bebidas",
-      "views": 2,
-      "visitors": 1
-    },
     {
       "path": "/servicos/yoga/",
       "slug": "yoga",
       "views": 2,
       "visitors": 2
-    },
-    {
-      "path": "/servicos/",
-      "slug": "",
-      "views": 1,
-      "visitors": 1
-    },
-    {
-      "path": "/servicos/acompanhamento-nutricional/",
-      "slug": "acompanhamento-nutricional",
-      "views": 1,
-      "visitors": 1
     },
     {
       "path": "/servicos/agrofloresta/",
@@ -52,12 +34,6 @@
     {
       "path": "/servicos/autocuidado/",
       "slug": "autocuidado",
-      "views": 1,
-      "visitors": 1
-    },
-    {
-      "path": "/servicos/automacao-de-processos/",
-      "slug": "automacao-de-processos",
       "views": 1,
       "visitors": 1
     },
