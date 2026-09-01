@@ -1,4 +1,4 @@
-# Estado do projeto · 2026-08-01
+# Estado do projeto · 2026-09-01
 
 > Snapshot auto-gerado por `tools/bake-state.mjs` — não editar à mão.
 > Para um dev novo (ou agente AI) entender em 10 minutos: o que é, como
