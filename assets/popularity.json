@@ -1,12 +1,6 @@
 {
-  "as_of": "2026-09-03T08:36:04.200087984+00:00",
+  "as_of": "2026-09-04T08:31:08.812783664+00:00",
   "items": [
-    {
-      "path": "/servicos/yoga/",
-      "slug": "yoga",
-      "views": 2,
-      "visitors": 2
-    },
     {
       "path": "/servicos/agrofloresta/",
       "slug": "agrofloresta",
@@ -50,12 +44,6 @@
       "visitors": 1
     },
     {
-      "path": "/servicos/futebol-e-esporte/",
-      "slug": "futebol-e-esporte",
-      "views": 1,
-      "visitors": 1
-    },
-    {
       "path": "/servicos/gestao-administrativa/",
       "slug": "gestao-administrativa",
       "views": 1,
@@ -68,26 +56,14 @@
       "visitors": 1
     },
     {
-      "path": "/servicos/murais-e-fachadas/",
-      "slug": "murais-e-fachadas",
-      "views": 1,
-      "visitors": 1
-    },
-    {
       "path": "/servicos/traducao-en-pt/",
       "slug": "traducao-en-pt",
       "views": 1,
       "visitors": 1
     },
     {
-      "path": "/servicos/traducao-pt-en/",
-      "slug": "traducao-pt-en",
-      "views": 1,
-      "visitors": 1
-    },
-    {
-      "path": "/servicos/traducao/",
-      "slug": "traducao",
+      "path": "/servicos/yoga/",
+      "slug": "yoga",
       "views": 1,
       "visitors": 1
     }
