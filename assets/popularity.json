@@ -1,69 +1,9 @@
 {
-  "as_of": "2026-09-16T09:07:22.396268280+00:00",
+  "as_of": "2026-09-17T09:14:58.245288145+00:00",
   "items": [
     {
       "path": "/servicos/agrofloresta/",
       "slug": "agrofloresta",
-      "views": 1,
-      "visitors": 1
-    },
-    {
-      "path": "/servicos/alfabetizacao/",
-      "slug": "alfabetizacao",
-      "views": 1,
-      "visitors": 1
-    },
-    {
-      "path": "/servicos/assistencia-tecnica/",
-      "slug": "assistencia-tecnica",
-      "views": 1,
-      "visitors": 1
-    },
-    {
-      "path": "/servicos/auditoria/",
-      "slug": "auditoria",
-      "views": 1,
-      "visitors": 1
-    },
-    {
-      "path": "/servicos/autocuidado/",
-      "slug": "autocuidado",
-      "views": 1,
-      "visitors": 1
-    },
-    {
-      "path": "/servicos/cantora/",
-      "slug": "cantora",
-      "views": 1,
-      "visitors": 1
-    },
-    {
-      "path": "/servicos/conexoes/",
-      "slug": "conexoes",
-      "views": 1,
-      "visitors": 1
-    },
-    {
-      "path": "/servicos/gestao-administrativa/",
-      "slug": "gestao-administrativa",
-      "views": 1,
-      "visitors": 1
-    },
-    {
-      "path": "/servicos/grafite/",
-      "slug": "grafite",
-      "views": 1,
-      "visitors": 1
-    },
-    {
-      "path": "/servicos/traducao-en-pt/",
-      "slug": "traducao-en-pt",
-      "views": 1,
-      "visitors": 1
-    },
-    {
-      "path": "/servicos/yoga/",
-      "slug": "yoga",
       "views": 1,
       "visitors": 1
     }
