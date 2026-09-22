@@ -1,9 +1,21 @@
 {
-  "as_of": "2026-09-21T09:40:21.498603815+00:00",
+  "as_of": "2026-09-22T09:04:51.895826264+00:00",
   "items": [
+    {
+      "path": "/servicos/",
+      "slug": "",
+      "views": 1,
+      "visitors": 1
+    },
     {
       "path": "/servicos/agrofloresta/",
       "slug": "agrofloresta",
+      "views": 1,
+      "visitors": 1
+    },
+    {
+      "path": "/servicos/gestao-contabil/",
+      "slug": "gestao-contabil",
       "views": 1,
       "visitors": 1
     }
